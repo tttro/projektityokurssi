@@ -1,0 +1,5 @@
+# Git ignore
+*~
+*.DS_Store
+.idea
+*.pyc
