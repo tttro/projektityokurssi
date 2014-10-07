@@ -1,6 +1,7 @@
 LBD
 =================
-Context aware data presentation application
+This projects is a part of Tampere University of Technology course Project Work on
+Pervasive Systems.
 
 Tampere University of Technology
-TIE-13100 Project Work on Pervasive Systems
+
