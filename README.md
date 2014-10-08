@@ -13,7 +13,10 @@ Project home page: http://www.cs.tut.fi/~taipale/project-lbd/
 Web
 * Angular.js
 * Bootstrap
+* Google Maps Javascript API v3 
 
 Mobile
+* Google Maps
 
 Backend (REST-api)
+* Django
