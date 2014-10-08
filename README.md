@@ -3,6 +3,17 @@ LBD
 This projects is a part of Tampere University of Technology course Project Work on
 Pervasive Systems and whole application is licenced under the MIT License (MIT).
 
-### Description
+Description
+-----------------
 
 Project home page: http://www.cs.tut.fi/~taipale/project-lbd/
+
+3rd party libraries
+-------------------
+Web
+* Angular.js
+* Bootstrap
+
+Mobile
+
+Backend (REST-api)
