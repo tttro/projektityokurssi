@@ -10,3 +10,4 @@ backend/manage.py
 *.settings
 *.zargo~
 
+__pycache__
