@@ -1,4 +1,5 @@
 import time
+import mongoengine
 
 __author__ = 'xc-'
 
@@ -31,24 +32,33 @@ class StreetlightHandler(HandlerBase):
 
     def insert_to_db(self, jsonItem):
         itemsInserted = 0
+        start = time.time()*1000
         for item in jsonItem["features"]:
-            Streetlights.objects(feature_id=item["id"]).\
-                update_one(set__type=item["type"],
-                            set__geometry=Geometry(set__type=item["geometry"]["type"],
-                                            set__coordinates=item["geometry"]["coordinates"]
-                            ),
-                            set__geometry_name=item["geometry_name"],
-                            set__properties=Properties(set__KATUVALO_ID=item["properties"]["KATUVALO_ID"],
-                                                    set__NIMI=item["properties"]["NIMI"],
-                                                    set__TYYPPI_KOODI=item["properties"]["TYYPPI_KOODI"],
-                                                    set__TYYPPI=item["properties"]["TYYPPI"],
-                                                    set__LAMPPU_TYYPPI_KOODI=item["properties"]["LAMPPU_TYYPPI_KOODI"],
-                                                    set__LAMPPU_TYYPPI=item["properties"]["LAMPPU_TYYPPI"]
-                            ),
-                            upsert=True
-            )
-
+            fid = item.pop("id")
+            temp = Streetlights.from_json(json.dumps(item))
+            temp.feature_id = fid
+            # Streetlights.objects(feature_id=item["id"]).\
+            #     update_one(set__type=item["type"],
+            #                 set__geometry=Geometry(set__type=item["geometry"]["type"],
+            #                                 set__coordinates=item["geometry"]["coordinates"]
+            #                 ),
+            #                 set__geometry_name=item["geometry_name"],
+            #                 set__properties=Properties(set__KATUVALO_ID=item["properties"]["KATUVALO_ID"],
+            #                                         set__NIMI=item["properties"]["NIMI"],
+            #                                         set__TYYPPI_KOODI=item["properties"]["TYYPPI_KOODI"],
+            #                                         set__TYYPPI=item["properties"]["TYYPPI"],
+            #                                         set__LAMPPU_TYYPPI_KOODI=item["properties"]["LAMPPU_TYYPPI_KOODI"],
+            #                                         set__LAMPPU_TYYPPI=item["properties"]["LAMPPU_TYYPPI"]
+            #                 ),
+            #                 upsert=True
+            # )
+            try:
+                temp.save()
+            except mongoengine.NotUniqueError:
+                pass
             itemsInserted += 1
+        end = time.time()*1000
+        print("TIME: "+str(start-end))
         return itemsInserted
 
 

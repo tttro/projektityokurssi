@@ -14,7 +14,7 @@ class Properties(EmbeddedDocument):
 
 class Streetlights(Document):
     type = StringField()
-    feature_id = StringField()
+    feature_id = StringField(unique=True)
     geometry =  EmbeddedDocumentField(Geometry)
     geometry_name = StringField()
     properties = EmbeddedDocumentField(Properties)
