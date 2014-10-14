@@ -163,7 +163,7 @@ def collection_near(request, *args, **kwargs):
 def getjson(request):
     fac = HandlerFactory("Streetlights").create()
     fac.update_db()
-    return HttpResponse("FOOBAR")
+    return HttpResponse("FOOBAR", status=200)
 # @restifier
 # def get_near(request):
 #     (23.795199257764725, 61.503697166613755)

@@ -1,5 +1,5 @@
 """
-Django settings for lbd_backend project.
+Django settings for mysite project.
 
 For more information on this file, see
 https://docs.djangoproject.com/en/1.6/topics/settings/
@@ -10,45 +10,56 @@ https://docs.djangoproject.com/en/1.6/ref/settings/
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
+import socket
 import mongoengine
 
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
 
+# openshift is our PAAS for now.
+ON_PAAS = 'OPENSHIFT_REPO_DIR' in os.environ
+
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.6/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'g4u6wlxg))t&zev3-gq@e*t-nt#p@!e3k7x3u$+bb7-+_mv9++'
+if ON_PAAS:
+    SECRET_KEY = os.environ['OPENSHIFT_SECRET_TOKEN']
+else:
+    # SECURITY WARNING: keep the secret key used in production secret!
+    SECRET_KEY = ')_7av^!cy(wfx=k#3*7x+(=j^fzv+ot^1@sh9s9t=8$bu@r(z$'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+# adjust to turn off when on Openshift, but allow an environment variable to override on PAAS
+DEBUG = not ON_PAAS
+DEBUG = DEBUG or 'DEBUG' in os.environ
+if ON_PAAS and DEBUG:
+    print("*** Warning - Debug mode is on ***")
 
 TEMPLATE_DEBUG = True
 
-ALLOWED_HOSTS = []
+if ON_PAAS:
+    ALLOWED_HOSTS = [os.environ['OPENSHIFT_APP_DNS'], socket.gethostname()]
+else:
+    ALLOWED_HOSTS = []
 
-AUTHENTICATION_BACKENDS = (
-    'mongoengine.django.auth.MongoEngineBackend',
-)
 
 # Application definition
 
 INSTALLED_APPS = (
-    'lbd_backend.LBD_REST_locationdata',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'lbd_backend.LBD_REST_locationdata',
 )
 
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
-    #'django.middleware.csrf.CsrfViewMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
@@ -58,27 +69,31 @@ ROOT_URLCONF = 'lbd_backend.urls'
 
 WSGI_APPLICATION = 'lbd_backend.wsgi.application'
 
-TEST_RUNNER = 'yourproject.tests.NoSQLTestRunner'
 
+# Database
+# https://docs.djangoproject.com/en/1.6/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': ''
+if ON_PAAS:
+    DATABASES = {
+        'default': {
+            'ENGINE': '',                   
+        },
     }
-}
+    mongoengine.connect(os.environ['OPENSHIFT_APP_NAME'],
+        username=os.environ['OPENSHIFT_MONGODB_DB_USERNAME'],
+        password=os.environ['OPENSHIFT_MONGODB_DB_PASSWORD'],
+        host=os.environ['OPENSHIFT_MONGODB_DB_HOST'],
+        port=int(os.environ['OPENSHIFT_MONGODB_DB_PORT']))
 
-SESSION_ENGINE = 'mongoengine.django.sessions'
+else:
+    # stock django
+    DATABASES = {
+        'default': {
+            'ENGINE': '',
+        }
+    }
+    mongoengine.connect("lbd_backend", host="127.0.0.1:27017")
 
-# _MONGODB_USER = 'mongouser'
-# _MONGODB_PASSWD = 'password'
-# _MONGODB_HOST = 'thehost'
-# _MONGODB_NAME = 'thedb'
-# _MONGODB_DATABASE_HOST = \
-#     'mongodb://%s:%s@%s/%s' \
-#     % (_MONGODB_USER, _MONGODB_PASSWD, _MONGODB_HOST, _MONGODB_NAME)
-#
-# mongoengine.connect(_MONGODB_NAME, host=_MONGODB_DATABASE_HOST)
-mongoengine.connect("lbd_backend", host="127.0.0.1:27017")
 # Internationalization
 # https://docs.djangoproject.com/en/1.6/topics/i18n/
 
@@ -95,5 +110,16 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.6/howto/static-files/
-
 STATIC_URL = '/static/'
+#STATIC_ROOT = os.path.join(BASE_DIR, 'wsgi','static')
+#STATICFILES_FINDERS = (
+#    'django.contrib.staticfiles.finders.FileSystemFinder',
+#    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+#
+#)
+
+AUTHENTICATION_BACKENDS = (
+                            'mongoengine.django.auth.MongoEngineBackend',
+                            )
+SESSION_ENGINE = 'mongoengine.django.sessions'
+

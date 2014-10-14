@@ -32,7 +32,6 @@ class StreetlightHandler(HandlerBase):
 
     def insert_to_db(self, jsonItem):
         itemsInserted = 0
-        start = time.time()*1000
         for item in jsonItem["features"]:
             fid = item.pop("id")
             temp = Streetlights.from_json(json.dumps(item))
@@ -57,8 +56,7 @@ class StreetlightHandler(HandlerBase):
             except mongoengine.NotUniqueError:
                 pass
             itemsInserted += 1
-        end = time.time()*1000
-        print("TIME: "+str(start-end))
+            
         return itemsInserted
 
 
