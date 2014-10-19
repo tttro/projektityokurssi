@@ -1,0 +1,52 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>DEMO</title>
+        <meta name="description" content="LBD web-client demo">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <style>
+          html, body, #map,.list {
+          height: 100%;
+          margin: 0px;
+          padding: 0px
+          }
+          ul { list-style: none; padding: 0 0 0 5px;}
+          li { margin: 5px 0;}
+          
+          .w20p { width: 20%;}
+          .w80p { width: 80%;}
+          .w20p,.w80p {
+          float: left;
+          }
+          
+          .list {
+          overflow-y:scroll;
+          }
+        </style>
+        <!-- Google Maps JavaScript API v3 -->
+        <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>
+        <!-- JS -->
+        <script>
+        // Initialize Google Map
+				var map;
+				function initialize() {
+				  var myLatlng = new google.maps.LatLng(61.497978, 23.764931); // Tampere
+
+  				var mapOptions = {
+  				  zoom: 13,
+  				  center: myLatlng
+				  }
+			    map = new google.maps.Map(document.getElementById('map'),mapOptions);
+        }
+        google.maps.event.addDomListener(window, 'load', initialize);
+
+      </script>
+    </head>
+    <body>
+      <header>Logo</header>
+      <div class="sidebar"></div>
+      <div id="map"></div>
+    </body>
+</html>
