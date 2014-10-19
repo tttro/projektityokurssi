@@ -32,37 +32,38 @@ class StreetlightHandler(HandlerBase):
 
     def insert_to_db(self, jsonItem):
         itemsInserted = 0
+        itemlist = list()
+        self.modelobject.drop_collection()
         for item in jsonItem["features"]:
             fid = item.pop("id")
-            temp = Streetlights.from_json(json.dumps(item))
+            temp = self.modelobject.from_json(json.dumps(item))
             temp.feature_id = fid
-            # Streetlights.objects(feature_id=item["id"]).\
-            #     update_one(set__type=item["type"],
-            #                 set__geometry=Geometry(set__type=item["geometry"]["type"],
-            #                                 set__coordinates=item["geometry"]["coordinates"]
-            #                 ),
-            #                 set__geometry_name=item["geometry_name"],
-            #                 set__properties=Properties(set__KATUVALO_ID=item["properties"]["KATUVALO_ID"],
-            #                                         set__NIMI=item["properties"]["NIMI"],
-            #                                         set__TYYPPI_KOODI=item["properties"]["TYYPPI_KOODI"],
-            #                                         set__TYYPPI=item["properties"]["TYYPPI"],
-            #                                         set__LAMPPU_TYYPPI_KOODI=item["properties"]["LAMPPU_TYYPPI_KOODI"],
-            #                                         set__LAMPPU_TYYPPI=item["properties"]["LAMPPU_TYYPPI"]
-            #                 ),
-            #                 upsert=True
-            # )
-            try:
-                temp.save()
-            except mongoengine.NotUniqueError:
-                pass
+            itemlist.append(temp)
+
             itemsInserted += 1
-            
+        self.modelobject.objects().insert(itemlist)
+
         return itemsInserted
 
 
+    def get_by_id(self, iid):
+        return self.modelobject.objects(id=iid).to_json()
+
+
+    def get_by_handler_id(self, iid):
+        return self.modelobject.objects().get(feature_id=iid).to_json()
+
+
+    def get_by_handler_json(self, jsonitem):
+        return self.modelobject.objects().get(feature_id=jsonitem["feature_id"]).to_json()
+
+
     def get_near(self, latitude, longitude, range=0.001):
-        results = self.modelobject.objects(geometry__geo_within_center=[(float(latitude), float(longitude)), range]).to_json()
-        return results
+        return self.modelobject.objects(geometry__geo_within_center=[(float(latitude), float(longitude)), range]).to_json()
+
+
+    def get_within_rectangle(self, xtop, ytop, xbottom, ybottom):
+        return self.modelobject.objects(geometry__geo_within_box=[(xtop,ytop), (xbottom,ybottom)]).to_json()
 
 
     def get_all(self):
@@ -104,14 +105,5 @@ class StreetlightHandler(HandlerBase):
         return self.modelobject.objects().count()
 
 
-    def get_by_id(self, iid):
-        return self.modelobject.objects(id=iid).to_json()
 
-
-    def get_by_handler_id(self, iid):
-        return self.modelobject.objects().get(feature_id=iid).to_json()
-
-
-    def get_by_handler_json(self, jsonitem):
-        return self.modelobject.objects().get(feature_id=jsonitem["feature_id"]).to_json()
 
