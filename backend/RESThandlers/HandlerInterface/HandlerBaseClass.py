@@ -43,13 +43,23 @@ class HandlerBase(object):
     #       float ybottom: latitude of bottom left corner
     # Returns all items within a defined rectangle
     # Returns a JSON string
-    def get_within_rectangle(self, xtop, ytop, xbottom, ybottom):
+    def get_within_rectangle(self, xtop_right, ytop_right, xbottom_left, ybottom_left):
         raise NotImplementedError("Get_within_rectangle not supported or implemented.")
+
+    # Get_within_rectangle_mini
+    # As Get_within_rectangle, but json only contains id and coordinates for each item
+    def get_within_rectangle_mini(self, xtop_right, ytop_right, xbottom_left, ybottom_left):
+        raise NotImplementedError("Get_within_rectangle_mini not supported or implemented")
 
     # Get_all
     # Returns all items in REST or in duplication database
     def get_all(self):
         raise NotImplementedError("Not Implemented")
+
+    # Get_all_mini
+    # As Get_all, but json only contains id and coordinate for each item
+    def get_all_mini(self):
+        raise NotImplementedError("Get_all_mini not supported or implemented")
 
     # Delete all
     # Return values:

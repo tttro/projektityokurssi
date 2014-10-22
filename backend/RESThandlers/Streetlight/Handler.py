@@ -26,11 +26,7 @@ class StreetlightHandler(HandlerBase):
 
     def update_db(self):
         req = urllib.urlopen('http://tampere.navici.com/tampere_wfs_geoserver/opendata/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=opendata:WFS_KATUVALO&outputFormat=json&srsName=EPSG:4326', proxies={})
-        data = json.loads(req.read())
-        return self.insert_to_db(data)
-
-
-    def insert_to_db(self, jsonItem):
+        jsonItem = json.loads(req.read())
         itemsInserted = 0
         itemlist = list()
         self.modelobject.drop_collection()
@@ -39,7 +35,6 @@ class StreetlightHandler(HandlerBase):
             temp = self.modelobject.from_json(json.dumps(item))
             temp.feature_id = fid
             itemlist.append(temp)
-
             itemsInserted += 1
         self.modelobject.objects().insert(itemlist)
 
@@ -62,12 +57,41 @@ class StreetlightHandler(HandlerBase):
         return self.modelobject.objects(geometry__geo_within_center=[(float(latitude), float(longitude)), range]).to_json()
 
 
-    def get_within_rectangle(self, xtop, ytop, xbottom, ybottom):
-        return self.modelobject.objects(geometry__geo_within_box=[(xtop,ytop), (xbottom,ybottom)]).to_json()
+    def get_within_rectangle(self, xtop_right, ytop_right, xbottom_left, ybottom_left):
+        return self.modelobject.objects(geometry__geo_within_box=
+                                        [(xbottom_left,ybottom_left), (xtop_right,ytop_right)]).to_json()
+
+
+    def get_within_rectangle_mini(self,xtop_right, ytop_right, xbottom_left, ybottom_left):
+        obs = self.modelobject.objects(geometry__geo_within_box=
+                                       [(xbottom_left,ybottom_left), (xtop_right,ytop_right)])
+        print(obs)
+        itemlist = list()
+        for item in obs:
+            temp = {
+                "id": item.feature_id,
+                "coordinates": item.geometry.coordinates
+            }
+            itemlist.append(temp)
+
+        return json.dumps(itemlist)
 
 
     def get_all(self):
         return self.modelobject.objects().to_json()
+
+    def get_all_mini(self):
+        obs = self.modelobject.objects()
+        itemlist = list()
+        for item in obs:
+            temp = {
+                "id": item.feature_id,
+                "coordinates": item.geometry.coordinates
+            }
+            itemlist.append(temp)
+
+        return json.dumps(itemlist)
+
 
     # Return values:
     #       Boolean: True if all were deleted, False if objects remain in db after deletion
@@ -80,6 +104,17 @@ class StreetlightHandler(HandlerBase):
         else:
             return False
 
+    def delete_near(self, latitude, longitude, range):
+        itemcount = self.modelobject.objects(geometry__geo_within_center=
+                                             [(float(latitude), float(longitude)), range]).count()
+
+        delcount = self.modelobject.objects(geometry__geo_within_center=
+                                            [(float(latitude), float(longitude)), range]).delete()
+
+        if itemcount == delcount:
+            return True
+        else:
+            return False
     # Function delete_item
     # Parameters:
     #       jsonitem: a Python json object (returned by json.loads())
