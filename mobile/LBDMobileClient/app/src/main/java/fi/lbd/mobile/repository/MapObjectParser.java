@@ -9,7 +9,8 @@ import android.util.Log;
 import java.util.ArrayList;
 import java.util.List;
 
-import fi.lbd.mobile.mapobjects.BasicMapObject;
+import fi.lbd.mobile.mapobjects.ImmutableMapObject;
+import fi.lbd.mobile.mapobjects.ImmutablePointLocation;
 import fi.lbd.mobile.mapobjects.MapObject;
 import fi.lbd.mobile.mapobjects.PointLocation;
 
@@ -43,7 +44,7 @@ public final class MapObjectParser {
 
 
 		String objId = getId(odInfo, odData);
-        PointLocation pointLocation = getPointLocation(odInfo, odData);
+        ImmutablePointLocation pointLocation = getPointLocation(odInfo, odData);
 
         Log.i(MapObjectParser.class.getSimpleName(), "Object id: "+ objId);
 //		Iterator<?> iter = jsonObj.keys();
@@ -51,7 +52,7 @@ public final class MapObjectParser {
 //			String key = (String)iter.next();
 //			Log.i(MapObjectParser.class.getSimpleName(), "Obj: "+ key + " val: "+ jsonObj.get(key));
 //		}
-		return new BasicMapObject(objId, pointLocation);
+		return new ImmutableMapObject(objId, pointLocation);
 	}
 	
 	private static String getId(JSONObject odInfo, JSONObject odData) throws JSONException {
@@ -59,10 +60,10 @@ public final class MapObjectParser {
 		return odData.getString(identifier);
 	}
 	
-	private static PointLocation getPointLocation(JSONObject odInfo, JSONObject odData) throws JSONException {
+	private static ImmutablePointLocation getPointLocation(JSONObject odInfo, JSONObject odData) throws JSONException {
         JSONObject geometry = odData.getJSONObject("geometry");
         String coordinates = geometry.getString("coordinates");
-		return PointLocation.parseFromString(coordinates);
+		return ImmutablePointLocation.parseFromString(coordinates);
 	}
 
 

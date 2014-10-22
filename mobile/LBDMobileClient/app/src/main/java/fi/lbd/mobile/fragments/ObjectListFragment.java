@@ -2,16 +2,19 @@ package fi.lbd.mobile.fragments;
 
 import android.app.ListFragment;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.ArrayAdapter;
+import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.squareup.otto.Subscribe;
 
-import fi.lbd.mobile.BusHandler;
+import fi.lbd.mobile.events.BusHandler;
+import fi.lbd.mobile.R;
 import fi.lbd.mobile.events.RequestViewChangeEvent;
-import fi.lbd.mobile.mapobjects.MapObject;
-import fi.lbd.mobile.events.ReturnMapObjectsEvent;
+import fi.lbd.mobile.events.ReturnNearObjectsEvent;
+import fi.lbd.mobile.mapobjects.SelectionManager;
 
 
 /**
@@ -21,35 +24,44 @@ import fi.lbd.mobile.events.ReturnMapObjectsEvent;
  * Created by tommi on 19.10.2014.
  */
 public class ObjectListFragment extends ListFragment {
-    private ArrayAdapter<MapObject> adapter;
+    private ListMapObjectAdapter adapter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        this.adapter = new ArrayAdapter<MapObject>(getActivity(), android.R.layout.simple_list_item_1);
+        this.adapter = new ListMapObjectAdapter(this.getActivity());
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.listview_fragment, container, false);
+        return view;
     }
 
     @Override
     public void onResume() {
         super.onResume();
         setListAdapter(this.adapter);
-        BusHandler.BUS.register(this);
+        BusHandler.getBus().register(this);
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        BusHandler.BUS.unregister(this);
+        BusHandler.getBus().unregister(this);
     }
 
 	@Override
     public void onListItemClick(ListView l, View v, int position, long id) {
-        BusHandler.BUS.post(new RequestViewChangeEvent(RequestViewChangeEvent.ViewType.Map, this.adapter.getItem(position)));
+        SelectionManager.get().setSelection(this.adapter.get(position));
+        BusHandler.getBus().post(new RequestViewChangeEvent(RequestViewChangeEvent.ViewType.Map));
 	}
 
     @Subscribe
-    public void returnedMapObjects(ReturnMapObjectsEvent event) {
+    public void onEvent(ReturnNearObjectsEvent event) {
         this.adapter.clear();
         this.adapter.addAll(event.getMapObjects());
+        this.getListView().requestLayout();
+        Toast.makeText(this.getActivity(), "returnedMapObjects: count: "+event.getMapObjects().size(), Toast.LENGTH_LONG).show();
     }
 } 

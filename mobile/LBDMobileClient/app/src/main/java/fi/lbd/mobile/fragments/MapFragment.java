@@ -12,5 +12,5 @@ import fi.lbd.mobile.mapobjects.MapObject;
  * Created by tommi on 19.10.2014.
  */
 public abstract class MapFragment extends Fragment {
-    public abstract void setCurrentMapObjects(List<MapObject> currentObjects);
+
 }

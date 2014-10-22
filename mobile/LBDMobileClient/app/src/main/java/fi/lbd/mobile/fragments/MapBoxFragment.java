@@ -29,6 +29,7 @@ import fi.lbd.mobile.mapobjects.MapObject;
 
 // TODO: Kesken koko luokka
 // https://github.com/mapbox/mapbox-android-sdk/blob/mb-pages/QUICKSTART.md#on-runtime
+@Deprecated
 public class MapBoxFragment extends MapFragment {
     private UserLocationOverlay myLocationOverlay;
     private MapView mapView;
@@ -62,8 +63,11 @@ public class MapBoxFragment extends MapFragment {
 
         boolean first = true;
         for (MapObject obj : this.currentObjects) {
-            LatLng location = new LatLng(obj.getPointLocation().latitude, obj.getPointLocation().longitude);
+            LatLng location = new LatLng(obj.getPointLocation().getLatitude(), obj.getPointLocation().getLongitude());
             Marker marker = new Marker(mapView, "Tolppa", "Superhieno katulamppu", location);
+            //marker.setImage(this.getResources().getDrawable(android.R.drawable.ic_menu_mylocation));
+            marker.setImage(this.getResources().getDrawable(android.R.drawable.presence_online));
+
             mapView.addMarker(marker);
 
             if (first) {
@@ -74,11 +78,11 @@ public class MapBoxFragment extends MapFragment {
         return mapView;
 	}
 
-    @Override
-    public void setCurrentMapObjects(List<MapObject> currentObjects) {
-        this.currentObjects.clear();
-        this.currentObjects.addAll(currentObjects);
-    }
+//    @Override
+//    public void setCurrentMapObjects(List<MapObject> currentObjects) {
+//        this.currentObjects.clear();
+//        this.currentObjects.addAll(currentObjects);
+//    }
 
 //    protected void replaceMapView(String layer) {
 //        if (TextUtils.isEmpty(layer) || TextUtils.isEmpty(currentMap) || currentMap.equalsIgnoreCase(layer)) {
