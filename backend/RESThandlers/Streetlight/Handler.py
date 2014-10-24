@@ -65,7 +65,6 @@ class StreetlightHandler(HandlerBase):
     def get_within_rectangle_mini(self,xtop_right, ytop_right, xbottom_left, ybottom_left):
         obs = self.modelobject.objects(geometry__geo_within_box=
                                        [(xbottom_left,ybottom_left), (xtop_right,ytop_right)])
-        print(obs)
         itemlist = list()
         for item in obs:
             temp = {

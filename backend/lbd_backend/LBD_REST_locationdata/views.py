@@ -85,7 +85,7 @@ def single_resource(request, *args, **kwargs):
 def collection(request, *args, **kwargs):
     handlerinterface = kwargs["handlerinterface"]
     if request.method == "GET":
-        urlmini = request.GET.get("mini", None)
+        urlmini = request.GET.get("mini", "")
         if urlmini.lower() == "true":
             items = json.loads(handlerinterface.get_all_mini())
         else:
