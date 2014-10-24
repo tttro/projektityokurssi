@@ -12,10 +12,10 @@ import fi.lbd.mobile.mapobjects.MapObject;
  *
  * Created by tommi on 19.10.2014.
  */
-public class ReturnMapObjectsEvent {
+public class ReturnNearObjectsEvent extends AbstractEvent {
     private final List<MapObject> mapObjects;
 
-    public ReturnMapObjectsEvent(@Nullable List<MapObject> mapObjects) {
+    public ReturnNearObjectsEvent(@Nullable List<MapObject> mapObjects) {
         this.mapObjects = mapObjects;
     }
 

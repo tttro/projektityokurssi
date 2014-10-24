@@ -9,7 +9,7 @@ import fi.lbd.mobile.mapobjects.PointLocation;
  *
  * Created by tommi on 19.10.2014.
  */
-public class RequestNearObjectsEvent {
+public class RequestNearObjectsEvent extends AbstractEvent {
     private PointLocation location;
 
     public RequestNearObjectsEvent(@NonNull PointLocation location) {

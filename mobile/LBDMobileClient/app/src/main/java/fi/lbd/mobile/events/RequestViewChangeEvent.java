@@ -13,31 +13,14 @@ import fi.lbd.mobile.mapobjects.MapObject;
  *
  * Created by tommi on 19.10.2014.
  */
-public class RequestViewChangeEvent {
+public class RequestViewChangeEvent extends AbstractEvent {
     public enum ViewType {Map};
     private final ViewType type;
-    private final List<MapObject> mapObjects;
 
-    public RequestViewChangeEvent(@NonNull ViewType type, @Nullable List<MapObject> mapObjects) {
+    public RequestViewChangeEvent(@NonNull ViewType type) {
         this.type = type;
-        this.mapObjects = mapObjects;
     }
-
-    public RequestViewChangeEvent(@NonNull ViewType type, @Nullable MapObject mapObject) {
-        this.type = type;
-        if (mapObject != null) {
-            this.mapObjects = new ArrayList<MapObject>();
-            this.mapObjects.add(mapObject);
-        } else {
-            this.mapObjects = null;
-        }
-    }
-
     public ViewType getViewType() {
         return this.type;
-    }
-
-    public List<MapObject> getMapObjects() {
-        return this.mapObjects;
     }
 }
