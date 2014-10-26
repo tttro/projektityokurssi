@@ -13,9 +13,24 @@ mapControllers.controller('mapController', function($scope, $window){
     }
 
     var mapOptions = {
-        zoom: 15,
+        zoom: 13,
         center: defaultPoint
     }
 
     $scope.map = new google.maps.Map(document.getElementById('map'), mapOptions);
+
+    var marker = new google.maps.Marker({
+        map: $scope.map,
+        position: defaultPoint,
+        title: 'Item',
+        icon: {
+            path: google.maps.SymbolPath.CIRCLE,
+            fillColor: 'red',
+            fillOpacity: 0.6,
+            scale: 7,
+            strokeColor: 'black',
+            strokeWeight: 1
+        }
+    });
+
 });
