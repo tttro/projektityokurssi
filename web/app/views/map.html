@@ -1,1 +1,4 @@
-<div id="map" class="map" ng-controller="mapController"></div>
+<div ng-controller="mapController" class="map">
+    <button ng-click="toggleStreetview()" id="panel">{{btnText}}</button>
+    <div id="map" ng-controller="mapController"></div>
+</div>

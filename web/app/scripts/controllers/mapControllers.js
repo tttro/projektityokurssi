@@ -14,7 +14,8 @@ mapControllers.controller('mapController', function($scope, $window){
 
     var mapOptions = {
         zoom: 13,
-        center: defaultPoint
+        center: defaultPoint,
+        streetViewControl: false
     }
 
     $scope.map = new google.maps.Map(document.getElementById('map'), mapOptions);
@@ -32,5 +33,27 @@ mapControllers.controller('mapController', function($scope, $window){
             strokeWeight: 1
         }
     });
+
+    var panorama;
+    $scope.btnText = "Streetview";
+
+    panorama = $scope.map.getStreetView();
+    panorama.setPosition(defaultPoint);
+    panorama.setPov(/** @type {google.maps.StreetViewPov} */({
+        heading: 265,
+        pitch: 0
+    }));
+
+    $scope.toggleStreetview = function(item, event){
+        var toggle = panorama.getVisible();
+        if (toggle == false) {
+            panorama.setVisible(true);
+            $scope.btnText = "2D map";
+        } else {
+            panorama.setVisible(false);
+            $scope.btnText = "Streetview";
+        }
+
+    }
 
 });
