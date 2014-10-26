@@ -1,9 +1,11 @@
-<div class="hero-unit">
-  <h1>Cheerio!</h1>
-  <p>You now have</p>
-  <ul>
-      <li ng-repeat="thing in awesomeThings">{{thing}}</li>
-  </ul>
-  <p>installed.</p>
-  <h3>Enjoy coding! - Yeoman</h3>
+<div id="tabs" ng-controller="TabNavController">
+    <ul>
+        <li ng-repeat="tab in tabs"
+        ng-class="{active:isActiveTab(tab.url}"
+        ng-click="onClickTab(tab)"></li>
+    </ul>
 </div>
+<!-- Item list -->
+<div class="items" ng-controller="itemsController"></div>
+<!-- Message list -->
+<div class="messages" ng-controller="messagesController"></div>

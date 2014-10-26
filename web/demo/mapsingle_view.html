@@ -1,0 +1,37 @@
+﻿
+<div ng-controller="mapSingleController">
+    <div class="w20p list">
+	
+        <nav>
+            <ul class="nav nav-tabs nav-justified" role="tablist">
+                <li class="active"><a href="#">Tasks</a></li>
+                <li><a href="#">Inbox</a></li>
+            </ul>
+        </nav>
+        <div class="search">
+            <form class="navbar-form navbar-left" role="search">
+                <div class="form-group">
+                    <input type="text" class="form-control" placeholder="Search"/>
+                </div>
+                
+            </form>
+        </div>
+        <div class="taskList">
+            <ul id="itemList" class="list-group">
+                <li ng-repeat="task in taskList | orderBy : 'task'" class="list-group-item">
+
+
+                    id:{{task.id}}
+                    <br/>{{task.name}}
+                    <div class="fright"><span class="label label-default">Info</span></div>
+
+
+                </li>
+            </ul>
+        </div>
+    </div>
+
+
+    <div class="w80p" id="map">
+    </div>
+</div>

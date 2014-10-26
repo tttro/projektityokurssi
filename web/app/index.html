@@ -1,25 +1,47 @@
 <!DOCTYPE html>
-<html lang="en" ng-app="webApp">
+<html lang="en" ng-app="app">
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <title>Web-client</title>
-        <meta name="description" content="LBD Web-client">
+        <meta name="description" content="Web-client">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="styles/bootstrap.min.css">
         <link rel="stylesheet" href="styles/main.css">
 
         <!-- Google Maps JavaScript API v3 -->
         <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>
-        <!-- Angular.js -->
-
-        <script src="scripts/vendor/angular.min.js"></script>
         <!--[if lt IE 9]>
         <script src="scripts/vendor/html5shiv.min.js"></script>
         <![endif]-->
     </head>
     <body>
-        <h1>Web-client</h1>
 
+        <!-- Top element -->
+        <header>
+            <h1 class="logo">LBD</h1>
+            <div class="user">Tiina Testaaja</div>
+        </header>
+
+        <!-- Main container -->
+        <div class="container">
+            <div class="w20p floatl" ng-include src="'views/sidebar.html'"></div>
+            <div class="w80p floatl" ng-include src="'views/map.html'"></div>
+        </div>
+
+
+        <!-- AngularJS core-->
+        <script src="scripts/vendor/angular.min.js"></script>
+
+        <!-- AngularJS additional modules-->
+        <script src="scripts/vendor/angular-route.min.js"></script>
+
+        <!-- Controllers -->
+        <script src="scripts/controllers/mapControllers.js"></script>
+        <script src="scripts/controllers/messageControllers.js"></script>
+        <script src="scripts/controllers/itemControllers.js"></script>
+
+        <!-- Application files -->
+        <script src="scripts/app.js"></script>
     </body>
 </html>
