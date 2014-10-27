@@ -15,3 +15,4 @@ class MetaData(mongoengine.DynamicEmbeddedDocument):
 class MetaDocument(mongoengine.Document):
     open_data_id = mongoengine.EmbeddedDocumentField(DataId)
     meta_data = mongoengine.EmbeddedDocumentField(MetaData)
+    collection = mongoengine.StringField()

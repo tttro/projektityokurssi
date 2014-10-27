@@ -206,24 +206,18 @@ def collection_inarea(request, *args, **kwargs):
     ytop_right = float(request.GET.get('ytopright'))
     xbottom_left = float(request.GET.get('xbottomleft'))
     ybottom_left = float(request.GET.get('ybottomleft'))
+    urlmini = request.GET.get('mini', "")
 
     handlerinterface = kwargs["handlerinterface"]
 
-    objects = handlerinterface.get_within_rectangle_mini(xtop_right, ytop_right, xbottom_left, ybottom_left)
-    obsjson = json.loads(objects)
-    itemlist = list()
+    if urlmini.lower() == "true":
+        mini = True
+    else:
+        mini = False
 
-    for item in obsjson:
-        try:
-            metob = MetaDocument.objects().get(open_data_id__document_id=item["id"]).to_json()
-            metobjson = json.loads(metob)
-        except mongoengine.DoesNotExist:
-            metobjson = {}
+    objects = handlerinterface.get_within_rectangle(xtop_right, ytop_right, xbottom_left, ybottom_left, mini)
 
-
-        itemlist.append(combine_data_meta(item, metobjson))
-
-    return HttpResponse(status=s_codes["OK"], content=json.dumps(itemlist), content_type="application/json")
+    return HttpResponse(status=s_codes["OK"], content=json.dumps(objects), content_type="application/json")
 
 
 def getjson(request):

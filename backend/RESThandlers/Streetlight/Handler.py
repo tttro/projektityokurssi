@@ -1,5 +1,6 @@
 import time
 import mongoengine
+from RESThandlers.HandlerInterface.Exceptions import GenericDBError
 
 __author__ = 'xc-'
 
@@ -18,10 +19,42 @@ class StreetlightHandler(HandlerBase):
             "identifier_field_name": "feature_id"
         })
 
+    _doc_structure = {
+        "_id": 0,
+        "type": 1,
+        "id": "$feature_id",
+        "geometry": {
+            "type": 1,
+            "coordinates": 1
+        },
+        "geometry_name": 1,
+        "properties": {
+            "KATUVALO_ID": 1,
+            "NIMI": 1,
+            "TYYPPI_KOODI": 1,
+            "LAMPPU_TYYPPI_KOODI": 1,
+            "LAMPPU_TYYPPI": 1
+        }
+    }
+
+    _doc_structure_mini = {
+        "_id": 0,
+        "type": 1,
+        "id": "$feature_id",
+        "geometry": {
+            "type": 1,
+            "coordinates": 1
+        },
+    }
+
+    _featurecollection = {
+        "type": "Feature",
+        "totalFeatures": None,
+        "features": list()
+    }
 
     def __init__(self):
         self.modelobject = Streetlights
-
 
 
     def update_db(self):
@@ -57,39 +90,57 @@ class StreetlightHandler(HandlerBase):
         return self.modelobject.objects(geometry__geo_within_center=[(float(latitude), float(longitude)), range]).to_json()
 
 
-    def get_within_rectangle(self, xtop_right, ytop_right, xbottom_left, ybottom_left):
-        return self.modelobject.objects(geometry__geo_within_box=
-                                        [(xbottom_left,ybottom_left), (xtop_right,ytop_right)]).to_json()
+    def get_within_rectangle(self,xtop_right, ytop_right, xbottom_left, ybottom_left, mini=False):
 
+        if mini:
+            doc_structure = self._doc_structure_mini
+        else:
+            doc_structure = self._doc_structure
 
-    def get_within_rectangle_mini(self,xtop_right, ytop_right, xbottom_left, ybottom_left):
-        obs = self.modelobject.objects(geometry__geo_within_box=
-                                       [(xbottom_left,ybottom_left), (xtop_right,ytop_right)])
-        itemlist = list()
-        for item in obs:
-            temp = {
-                "id": item.feature_id,
-                "coordinates": item.geometry.coordinates
-            }
-            itemlist.append(temp)
+        raw = self.modelobject._get_collection().aggregate([{'$match':
+                                                                 {'geometry':
+                                                                      {'$geoWithin':
+                                                                           {'$box': [[xbottom_left, ybottom_left ],
+                                                                                     [xtop_right, ytop_right]]}
+                                                                      }
+                                                                 }
+                                                            },
+                                                            {'$project':
+                                                                    doc_structure
+                                                            }])
+        if int(raw["ok"]) != 1:
+            raise GenericDBError("Database query failed. Status: "+str(raw["ok"]))
+        else:
+            f_count = self.modelobject.objects(geometry__geo_within_box=
+                                        [(xbottom_left,ybottom_left), (xtop_right,ytop_right)]).count()
+            featurecollection = self._featurecollection
+            featurecollection["totalFeatures"] = f_count
+            featurecollection["features"] = raw["result"]
 
-        return json.dumps(itemlist)
+            return featurecollection
 
 
     def get_all(self):
-        return self.modelobject.objects().to_json()
+        raw = self.modelobject._get_collection().aggregate([{'$project':self._doc_structure}])
+        if int(raw["ok"]) != 1:
+            raise GenericDBError("Database query failed. Status: "+str(raw["ok"]))
+        else:
+            featurecollection = self._featurecollection
+            featurecollection["totalFeatures"] = self.modelobject.objects().count()
+            featurecollection["features"] = raw["result"]
+
+            return featurecollection
 
     def get_all_mini(self):
-        obs = self.modelobject.objects()
-        itemlist = list()
-        for item in obs:
-            temp = {
-                "id": item.feature_id,
-                "coordinates": item.geometry.coordinates
-            }
-            itemlist.append(temp)
+        raw = self.modelobject._get_collection().aggregate([{'$project':self._doc_structure_mini}])
+        if int(raw["ok"]) != 1:
+            raise GenericDBError("Database query failed. Status: "+str(raw["ok"]))
+        else:
+            featurecollection = self._featurecollection
+            featurecollection["totalFeatures"] = self.modelobject.objects().count()
+            featurecollection["features"] = raw["result"]
 
-        return json.dumps(itemlist)
+            return featurecollection
 
 
     # Return values:
