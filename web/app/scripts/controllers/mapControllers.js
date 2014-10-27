@@ -5,7 +5,7 @@ mapControllers.controller('mapController', function($scope, $window){
 
     var defaultPoint = new google.maps.LatLng(61.497978, 23.764931); // Tampere
 
-    // Get users location
+    // Get user's location
     if($window.navigator.geolocation) {
         $window.navigator.geolocation.getCurrentPosition(function(position){
             defaultPoint = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
