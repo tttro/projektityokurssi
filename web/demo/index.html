@@ -1,52 +1,118 @@
-<!doctype html>
-<html>
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title>DEMO</title>
-        <meta name="description" content="LBD web-client demo">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <style>
-          html, body, #map,.list {
-          height: 100%;
-          margin: 0px;
-          padding: 0px
-          }
-          ul { list-style: none; padding: 0 0 0 5px;}
-          li { margin: 5px 0;}
-          
-          .w20p { width: 20%;}
-          .w80p { width: 80%;}
-          .w20p,.w80p {
-          float: left;
-          }
-          
-          .list {
-          overflow-y:scroll;
-          }
-        </style>
-        <!-- Google Maps JavaScript API v3 -->
-        <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>
-        <!-- JS -->
-        <script>
-        // Initialize Google Map
-				var map;
-				function initialize() {
-				  var myLatlng = new google.maps.LatLng(61.497978, 23.764931); // Tampere
+﻿<!doctype html>
+<html ng-app="demoApp">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<title>DEMO</title>
+		<meta name="description" content="">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+		<!-- Google Maps JavaScript API v3 -->
+		<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>
 
-  				var mapOptions = {
-  				  zoom: 13,
-  				  center: myLatlng
-				  }
-			    map = new google.maps.Map(document.getElementById('map'),mapOptions);
+		<style>
+		html, body, .ng-scope,#map,.list {
+			height: 100%;
+			margin: 0px;
+			padding: 0px
+		}
+		ul { list-style: none; padding: 0 0 0 5px;}
+		li { margin: 5px 0;}
+		
+		.w20p { width: 20%;}
+		.w80p { width: 80%;}
+		.w20p,.w80p {
+			float: left;
+		}
+		
+		.list {
+			overflow-y:scroll;
+		}
+        header {
+            background-color: #e5e5e5;
+            border-bottom: 1px solid #e5e5e5;
+            box-sizing: border-box;
+            height: 72px;
+            top: 0;
+            width: 100%;
+			background: -moz-linear-gradient(center top , #f9f9f9 0%, #eeeeee 100%) repeat scroll 0 0 rgba(0, 0, 0, 0);
+			border-bottom: 1px solid #e6e6e6;
+			box-shadow: 0 2px 2px rgba(0, 0, 0, 0.2);
+			padding: 10px 0;
+			position: relative;
+			z-index: 10;
         }
-        google.maps.event.addDomListener(window, 'load', initialize);
 
-      </script>
-    </head>
-    <body>
-      <header>Logo</header>
-      <div class="sidebar"></div>
-      <div id="map"></div>
-    </body>
+        .logo {
+            color: #333;
+            display: block;
+            float: left;
+            height: 30px;
+            margin: 6px 0 10px 15px;
+            position: relative;
+            width: 150px;
+            background-image: 
+        }
+
+
+		.navcus {
+			float: right;
+			list-style: none outside none;
+			margin: -3px 0 0;
+			padding-right: 45px;
+		}
+		.search{
+			display: inline-block;
+			position: relative;
+		}
+		.taskList{
+			margin: 0 5px;
+		}
+		nav {
+			margin: 5px 0;
+		}
+		.list-group-item{
+			background-color: #efefef;
+			padding: 5px;
+			margin-bottom: 2px;
+		}
+		.list-group-item:hover{
+			background-color: #ccc;
+			cursor: pointer;
+		}
+		.fright {
+			float:right;
+		}
+		.search,
+		.navbar-form,
+		.navbar-form .form-group,
+		.navbar-form .form-control  {
+			width: 100%;
+		}
+
+		.detailview{
+			padding: 10px;
+		}
+	   .pagination-cont {
+			position: absolute;
+			bottom: 0px;
+			margin-left: 20px;
+	   }
+		</style>
+	</head>
+	<body >
+	<header>
+		<h1 class="logo">DEMO</h1>
+		<ul class="nav nav-pills navcus">
+			<li><a href="#/map">Map</a></li>
+			<li><a href="#/list">List</a></li>
+		</ul>
+	</header>
+    <div ng-view></div>
+	<!-- Angular.js core -->
+	<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.25/angular.min.js"></script>
+	<script src="https://code.angularjs.org/1.2.26/angular-route.min.js"></script>
+
+	<script src="main.js"></script>
+	</body>
 </html>

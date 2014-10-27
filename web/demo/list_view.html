@@ -1,0 +1,15 @@
+﻿
+<div ng-controller="listController" style="margin: 2%;">
+	<input type="text" class="form-control" placeholder="Search" ng-model="query">
+	<br>
+    <div class="list">
+		<ul id="itemList" class="list-group">
+			<li ng-repeat="light in lightList | orderBy : 'id' | filter:query" class="list-group-item">
+				{{light.id}}
+				<br>{{light.properties.NIMI}}
+				<br>{{light.properties.TYYPPI}}
+				<a href="#/map/{{light.id}}" class="btn btn-default">Go to map</a>
+			</li>
+		</ul>
+    </div>
+</div>

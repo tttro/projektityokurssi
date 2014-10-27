@@ -4,3 +4,42 @@ Descr:		Web-client custom styles
 Version:	0.1
 Licence:	MIT License
 -------------------------------------------------------------------*/
+
+html, body{
+    height:100%;
+    margin: 0;
+    padding: 0;
+}
+.container {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+
+}
+.w20p,.w80p{
+    height: 100%;
+}
+#map,
+.map {
+    height: 100%;
+    position: relative;
+}
+.floatl{
+    float: left;
+}
+.w20p {
+    width: 20%;
+}
+.w80p {
+    width: 80%;
+}
+#panel {
+    position: absolute;
+    top: 5px;
+    left: 80%;
+    z-index: 5;
+    background-color: #fff;
+    padding: 5px;
+    border: 1px solid #999;
+}
