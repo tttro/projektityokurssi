@@ -22,7 +22,7 @@ class HandlerBase(object):
     # Insert_to_db
     # Inserts jsonItem to database.
     # Content of jsonItem depends on the Handler implementation
-    def insert_to_db(self, jsonItem):
+    def insert_to_db(self, jsonitem):
         raise NotImplementedError("Not Implemented")
 
     # Get_near
@@ -32,7 +32,7 @@ class HandlerBase(object):
     #       float range
     # Returns all items from database within range from each other
     # Return a JSON string
-    def get_near(self, latitude, longitude, range):
+    def get_near(self, longitude, latitude, nrange):
         raise NotImplementedError("Not Implemented")
 
     # Get_within_rectangle:
@@ -46,31 +46,17 @@ class HandlerBase(object):
     def get_within_rectangle(self, xtop_right, ytop_right, xbottom_left, ybottom_left, mini=False):
         raise NotImplementedError("Get_within_rectangle not supported or implemented.")
 
-
     # Get_all
     # Returns all items in REST or in duplication database as GeoJSON FeatureCollecion formatted
-    # Python dictionary
-    def get_all(self):
+    # Python dictionary. With mini = True excludes properties and fields not defined in chapter 2.3.1
+    # of the document "JSON formats in LBD system".
+    def get_all(self, mini=False):
         raise NotImplementedError("Not Implemented")
-
-    # Get_all_mini
-    # Otherwise as Get_all, but excludes properties and fields not defined in chapter 2.3.1 of the
-    # document "JSON formats in LBD system"
-    def get_all_mini(self):
-        raise NotImplementedError("Get_all_mini not supported or implemented")
 
     # Delete all
     # Return values:
     #       Boolean: True if all were deleted, False if objects remain in db after deletion
     def delete_all(self):
-        raise NotImplementedError("Not Implemented")
-
-    # Delete_item_by_handler_json
-    # Parameters:
-    #       string jsonitem: json string containing the item to be deleted from REST or duplication database
-    # Deletes the given item from REST or duplication database
-    # No return value
-    def delete_item_by_handler_json(self, jsonitem):
         raise NotImplementedError("Not Implemented")
 
     # Delete_item_by_handler_id
@@ -79,7 +65,6 @@ class HandlerBase(object):
     # Deletes the item with the given id from REST
     def delete_item_by_handler_id(self, iid):
         raise NotImplementedError("Not Implemented")
-
 
     # Function delete_item_by_id
     # Parameters:
@@ -95,7 +80,7 @@ class HandlerBase(object):
     #       float longitude
     #       float range
     # Deletes all objects within range from a coordinate
-    def delete_near(self, latitude, longitude, range):
+    def delete_near(self, latitude, longitude, nrange):
         raise NotImplementedError("Deletion near location is not implemented")
 
     # Get_item_count
@@ -105,20 +90,9 @@ class HandlerBase(object):
 
     # Get_by_id
     # Parameters:
-    #       string iid: a database id of the object
+    #       string iid: GeoJSON id of the object
     # Returns the object as a GeoJSON Feature object formatted Python dictionary
     def get_by_id(self, iid):
-        raise NotImplementedError("Not Implemented")
-
-    # Get_by_handler_json
-    # Parameters:
-    #       string jsonitem:
-    # Returns the object as a GeoJSON Feature object formatted Python dictionary
-    def get_by_handler_json(self, jsonitem):
-        raise NotImplementedError("Not Implemented")
-
-
-    def get_by_handler_id(self, iid):
         raise NotImplementedError("Not Implemented")
 
     def search_from_rest(self, phrase):
