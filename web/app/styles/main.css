@@ -6,6 +6,7 @@ Licence:	MIT License
 -------------------------------------------------------------------*/
 
 html, body{
+    font-family: 'Source Sans Pro', sans-serif;
     height:100%;
     margin: 0;
     padding: 0;
@@ -19,11 +20,11 @@ html, body{
 }
 .w20p,.w80p{
     height: 100%;
+    overflow: hidden;
 }
-#map,
+
 .map {
     height: 100%;
-    position: relative;
 }
 .fleft{
     float: left;
@@ -42,4 +43,30 @@ html, body{
     background-color: #fff;
     padding: 5px;
     border: 1px solid #999;
+}
+
+.sidebar {
+    background: #2f3a41;
+    color: #fff;
+}
+header {
+    background: #edeeef;
+    height: 70px;
+    margin: 0;
+    padding: 0;
+}
+header .logo {
+    margin: 0;
+}
+
+#tabs {
+    list-style-type: none;
+}
+#tabs li {
+    background: #1b2831;
+    display: inline-block;
+}
+
+#tabs li.active {
+    background: #2f3a41;
 }

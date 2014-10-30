@@ -6,8 +6,10 @@
         <title>Web-client</title>
         <meta name="description" content="Web-client">
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro' rel='stylesheet' type='text/css'>
         <link rel="stylesheet" href="styles/bootstrap.min.css">
         <link rel="stylesheet" href="styles/main.css">
+
 
         <!-- Google Maps JavaScript API v3 -->
         <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>
@@ -20,7 +22,7 @@
         <!-- Main container -->
         <div class="container">
             <!-- Include sidebar -->
-            <div class="w20p fleft" ng-include src="'views/sidebar.html'"></div>
+            <div class="w20p fleft sidebar" ng-include src="'views/sidebar.html'"></div>
             <div class="w80p fleft">
                 <!-- Include header -->
                 <ng-include src="'views/header.partial.html'"></ng-include>
