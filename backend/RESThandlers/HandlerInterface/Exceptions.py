@@ -10,3 +10,6 @@ class MultipleObjectsFound(Exception):
 
 class GenericDBError(Exception):
     pass
+
+class CollectionNotInstalled(Exception):
+    pass

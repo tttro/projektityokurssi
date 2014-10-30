@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
 import json
 import urllib
 
@@ -5,6 +7,8 @@ __author__ = 'xc-'
 
 from lbd_backend.LBD_REST_locationdata.models import *
 from RESThandlers.Streetlight import models as SL
+import time
+import datetime
 import mongoengine
 
 req = urllib.urlopen(
@@ -19,27 +23,21 @@ for item in jsonitem["features"]:
     fid = item.pop("id")
     temp = SL.Streetlights.from_json(json.dumps(item))
     temp.feature_id = fid
-    itemlist.append(temp)
+    temp.save()
     itemsinserted += 1
-SL.Streetlights.objects().insert(itemlist)
 
 o = SL.Streetlights.objects()
+MetaDocument.drop_collection()
 
 for item in o:
     try:
-        temp = MetaDocument.objects().get(feature_id=item.feature_id)
-        temp.meta_data.status = "SNAFU"
+        temp = MetaDocument(
+            feature_id = item.feature_id,
+            collection = "Streetlights",
+            meta_data = MetaData(status="SNAFU", modified=int(time.time()), modifier="Seppo Sähkäri")
+        )
         temp.save()
-    except mongoengine.DoesNotExist:
-        try:
-            temp = MetaDocument(
-                feature_id = item.feature_id,
-                collection = "Streetlights",
-                meta_data = MetaData(status="SNAFU")
-            )
-            temp.save()
-        except mongoengine.NotUniqueError:
-            pass
-    except mongoengine.MultipleObjectsReturned:
+    except mongoengine.NotUniqueError:
         pass
+
 
