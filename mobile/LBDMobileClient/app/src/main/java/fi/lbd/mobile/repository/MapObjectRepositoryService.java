@@ -16,6 +16,7 @@ import fi.lbd.mobile.events.RequestNearObjectsEvent;
 import fi.lbd.mobile.events.RequestObjectsInAreaEvent;
 import fi.lbd.mobile.events.ReturnNearObjectsEvent;
 import fi.lbd.mobile.events.ReturnObjectsInAreaEvent;
+import fi.lbd.mobile.mapobjects.ImmutablePointLocation;
 import fi.lbd.mobile.mapobjects.MapObject;
 
 /**
@@ -94,7 +95,7 @@ public class MapObjectRepositoryService extends Service {
 
         // TODO:
         } else if (event instanceof RequestObjectsInAreaEvent) {
-            List<MapObject> objects = this.repo.getObjectsNearLocation(null);
+            List<MapObject> objects = this.repo.getObjectsNearLocation(new ImmutablePointLocation(23.795199257764725, 61.503697166613755));
             BusHandler.getBus().post(new ReturnObjectsInAreaEvent(objects));
         }
 

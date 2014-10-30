@@ -1,5 +1,7 @@
 package fi.lbd.mobile.mapobjects;
 
+import java.util.Map;
+
 /**
  *
  *
@@ -8,4 +10,5 @@ package fi.lbd.mobile.mapobjects;
 public interface MapObject {
     String getId();
     PointLocation getPointLocation();
+    Map<String, String> getAdditionalProperties();
 }

@@ -3,5 +3,5 @@
     android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="fi.lbd.mobile.MainActivity"
+    tools:context="fi.lbd.mobile.MapActivity"
     tools:ignore="MergeRootFrame" />
