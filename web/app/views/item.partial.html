@@ -1,1 +1,10 @@
-items
+<input type="text" ng-model="searchItem">
+<img ng-show="loading" src="img/ajax-loader.gif" alt="loading">
+<ul>
+    <li ng-repeat="item in items.features | filter:searchItem">
+        {{item.id}}
+        <div class="list-item">
+            <div ng-repeat="pro in item.properties">{{pro}}</div>
+        </div>
+    </li>
+</ul>

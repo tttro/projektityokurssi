@@ -59,14 +59,37 @@ header .logo {
     margin: 0;
 }
 
-#tabs {
+#tabs ul,
+.tab-content ul{
     list-style-type: none;
+    margin: 0;
+    padding: 0;
 }
-#tabs li {
+.tab-content ul li {
+    border-bottom: 1px solid #222e36;
+    padding: 10px 0;
+}
+.list-item {
+    padding: 10px;
+}
+#tabs,
+.tabs-content
+{
+    width: 100%;
+}
+#tabs ul li {
     background: #1b2831;
     display: inline-block;
+    width: 49%;
+    padding: 20px;
+    font-size: 16px;
+    text-align: center;
+}
+#tabs ul li a{
+    color: #fff;
+    padding: 20px;
 }
 
-#tabs li.active {
+#tabs ul li.active {
     background: #2f3a41;
 }
