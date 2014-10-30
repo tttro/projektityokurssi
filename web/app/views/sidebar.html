@@ -10,7 +10,13 @@
 </div>
 <div class="tab-content">
     <div ng-switch="main.active.tab">
-        <div ng-switch-when='items' ng-controller="itemController"></div>
-        <div ng-switch-when='messages' ng-controller="messageController"></div>
+        <!-- Items -->
+        <div ng-switch-default='items' ng-controller="itemController">
+            <ng-include src="'views/item.partial.html'"/>
+        </div>
+        <!-- Messages -->
+        <div ng-switch-when='messages' ng-controller="messageController">
+            <ng-include src="'views/message.partial.html'"/>
+        </div>
     </div>
 </div>
