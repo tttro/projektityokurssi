@@ -1,9 +1,11 @@
 package fi.lbd.mobile.fragments;
 
 import android.os.Bundle;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdate;
@@ -21,9 +23,10 @@ import com.squareup.otto.Subscribe;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
-import fi.lbd.mobile.events.BusHandler;
 import fi.lbd.mobile.R;
+import fi.lbd.mobile.events.BusHandler;
 import fi.lbd.mobile.events.RequestObjectsInAreaEvent;
 import fi.lbd.mobile.events.ReturnObjectsInAreaEvent;
 import fi.lbd.mobile.mapobjects.MapObject;
@@ -39,7 +42,7 @@ public class GoogleMapFragment extends MapFragment {
     private List<Marker> currentMarkers = new ArrayList<Marker>();
 
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+	public View onCreateView(final LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.googlemap_fragment, container, false);
 		this.mapView = (MapView)view.findViewById(R.id.mapview);
         this.mapView.onCreate(savedInstanceState);
@@ -47,6 +50,35 @@ public class GoogleMapFragment extends MapFragment {
         this.map = this.mapView.getMap();
         this.map.getUiSettings().setMyLocationButtonEnabled(false);
         this.map.setMyLocationEnabled(true);
+        this.map.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
+
+            // Use default InfoWindow frame
+            @Override
+            public View getInfoWindow(Marker marker) {
+                return null;
+            }
+
+            // Defines the contents of the InfoWindow
+            @Override
+            public View getInfoContents(Marker marker) {
+
+                // Getting view from the layout file info_window_layout
+                View v = inflater.inflate(R.layout.map_info_view, null);
+
+                TextView objectIdField = (TextView) v.findViewById(R.id.objectid);
+                objectIdField.setText(marker.getTitle());
+
+                TextView coordinatesField = (TextView) v.findViewById(R.id.coordinates);
+                coordinatesField.setText("["+marker.getPosition().latitude +", "+ marker.getPosition().longitude +"]");
+
+                TextView infoField = (TextView) v.findViewById(R.id.info);
+                infoField.setText(Html.fromHtml(marker.getSnippet()));
+                return v;
+
+            }
+
+        });
+
         MapsInitializer.initialize(this.getActivity());
 
         MapObject selectedObject = SelectionManager.get().getSelectedObject();
@@ -112,12 +144,21 @@ public class GoogleMapFragment extends MapFragment {
                         mapObject.getId().equals(SelectionManager.get().getSelectedObject().getId())) {
                     icon = BitmapDescriptorFactory.fromResource(android.R.drawable.presence_online);
                 }
+                StringBuilder snippet = new StringBuilder();
+                for (Map.Entry<String, String> entry : mapObject.getAdditionalProperties().entrySet()) {
+                    snippet.append("<b>");
+                    snippet.append(entry.getKey());
+                    snippet.append(": ");
+                    snippet.append("</b>");
+                    snippet.append(entry.getValue());
+                    snippet.append("<br>");
+                }
+                snippet.append("<br><b><font color=\"blue\">Click for detailed info.</font></b><br>");
                 Marker marker = map.addMarker(
                         new MarkerOptions()
                                 .position(location)
                                 .title(mapObject.getId())
-                                .snippet("[" + mapObject.getPointLocation().getLatitude() +
-                                        ", " + mapObject.getPointLocation().getLongitude() + "]")
+                                .snippet(snippet.toString())
                                 .icon(icon));
 //                GroundOverlay groundOverlay = map.addGroundOverlay(new GroundOverlayOptions()
 //                        .image(image)

@@ -49,9 +49,5 @@ mapControllers.controller('mapController', function($scope, $window){
 
     }
 
-    $scope.updateLocation = function(item, event){
-        //marker.setPosition(defaultPoint);
-    }
-
 });
 

@@ -5,13 +5,13 @@
     android:focusable="true"
     android:focusableInTouchMode="true">
 
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:id="@+id/editText"
-        android:layout_gravity="center_horizontal"
-        android:text="Search..."
-        android:textColor="@android:color/darker_gray" />
+    <!--<EditText-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="48dp"-->
+        <!--android:id="@+id/editText"-->
+        <!--android:layout_gravity="center_horizontal"-->
+        <!--android:text="Search..."-->
+        <!--android:textColor="@android:color/darker_gray" />-->
 
     <ListView
         android:id="@id/android:list"

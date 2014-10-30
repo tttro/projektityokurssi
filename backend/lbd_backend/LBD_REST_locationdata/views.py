@@ -3,12 +3,14 @@ import mongoengine
 
 from django.shortcuts import HttpResponse
 from django.views.decorators.http import require_http_methods
+from pymongo.errors import DuplicateKeyError
+import time
 
 from RESThandlers.HandlerInterface.Factory import HandlerFactory
 
 from lbd_backend.LBD_REST_locationdata.decorators import location_collection
-from lbd_backend.LBD_REST_locationdata.models import MetaDocument, DataId, MetaData
-from lbd_backend.utils import combine_data_meta, s_codes
+from lbd_backend.LBD_REST_locationdata.models import MetaDocument, MetaData
+from lbd_backend.utils import s_codes
 
 @location_collection
 @require_http_methods(["GET", "DELETE", "PUT"])
@@ -18,30 +20,38 @@ def single_resource(request, *args, **kwargs):
     if "resource" not in kwargs:
         return HttpResponse(status=s_codes["NOTFOUND"])
 
+    #############################################################
+    #
+    # GET
+    #
+    #############################################################
     if request.method == "GET":
         # Try to get resource
         # Possible exceptions:
         #       mongoengine.DoesNotExist: Resource not found
         #       mongoengine.MultipleObjectsReturned: Multiple objects returned instead of one
         #       NotImplementedError: REST handler does not support this method or it has not been implemented otherwise
-        try:
-            datatemp = json.loads(handlerinterface.get_by_handler_id(kwargs["resource"]))
+        datatemp = handlerinterface.get_by_id(kwargs["resource"])
 
-            try:
-                metatemp = json.loads(MetaDocument.objects().get(open_data_id__document_id=kwargs["resource"]).to_json())
-            except mongoengine.DoesNotExist:
-                metatemp = " "
-            except mongoengine.MultipleObjectsReturned:
-                return HttpResponse(status=s_codes["NOTFOUND"])
-
-            combined = combine_data_meta(datatemp, metatemp)
-            result = json.dumps(combined)
-
-            return HttpResponse(content=result, status=s_codes["OK"], content_type="application/json")
-        except (mongoengine.DoesNotExist, mongoengine.MultipleObjectsReturned) as e:
+        if datatemp is None:
             return HttpResponse(status=s_codes["NOTFOUND"])
+        else:
+            try:
+                metatemp = None
+                metatemp = MetaDocument._get_collection().find_one({"feature_id":datatemp["id"]})
+            except DuplicateKeyError:
+                HttpResponse(status=s_codes["INTERNALERROR"])
 
+            if metatemp is not None:
+                datatemp["properties"]["metadata"] = metatemp["meta_data"]
 
+            return HttpResponse(status=s_codes["OK"], content_type="application/json", content=json.dumps(datatemp))
+
+    #############################################################
+    #
+    # DELETE
+    #
+    #############################################################
     elif request.method == "DELETE":
         try:
             metaobject = MetaDocument.objects.get(open_data_id__document_id=kwargs["resource"])
@@ -52,6 +62,11 @@ def single_resource(request, *args, **kwargs):
             metaobject.delete()
             return HttpResponse(status=s_codes["OK"])
 
+    #############################################################
+    #
+    # PUT
+    #
+    #############################################################
     elif request.method == "PUT":
         body = request.body
 
@@ -84,25 +99,32 @@ def single_resource(request, *args, **kwargs):
 @require_http_methods(["GET", "DELETE", "PUT", "POST"])
 def collection(request, *args, **kwargs):
     handlerinterface = kwargs["handlerinterface"]
+    collection = kwargs["collection"]
+
+    #############################################################
+    #
+    # GET
+    #
+    #############################################################
     if request.method == "GET":
         urlmini = request.GET.get("mini", "")
         if urlmini.lower() == "true":
-            items = json.loads(handlerinterface.get_all_mini())
+            mini = True
         else:
-            items = json.loads(handlerinterface.get_all())
+            mini = False
 
-        itemlist = list()
-        for item in items:
-            try:
-                temp = MetaDocument.objects().get(open_data_id__document_id=kwargs["id_field_name"]).to_json()
-            except (mongoengine.DoesNotExist, mongoengine.MultipleObjectsReturned):
-                temp = "{}"
-            itemlist.append(combine_data_meta(item, json.loads(temp)))
-            if  len(itemlist) == 1000:
-                break
+        items = handlerinterface.get_all(mini)
 
-        return HttpResponse(content=json.dumps(itemlist), status=s_codes["OK"], content_type="application/json")
+        if not mini:
+            items = _addmeta(items, collection)
 
+        return HttpResponse(content=json.dumps(items), status=s_codes["OK"], content_type="application/json")
+
+    #############################################################
+    #
+    # DELETE
+    #
+    #############################################################
     elif request.method == "DELETE":
         MetaDocument.objects().delete()
         if MetaDocument.objects().count() == 0:
@@ -110,6 +132,11 @@ def collection(request, *args, **kwargs):
         else:
             return HttpResponse(status=s_codes["INTERNALERROR"])
 
+    #############################################################
+    #
+    # PUT
+    #
+    #############################################################
     elif request.method == "PUT":
         MetaDocument.objects().delete()
         if MetaDocument.objects().count() == 0:
@@ -129,7 +156,13 @@ def collection(request, *args, **kwargs):
             MetaDocument.objects().insert(itemlist)
             return HttpResponse(status=s_codes["OK"])
         else:
-            return HttpResponse(status=s_codes["INTERNALERROR"]) #TODO: Or some better code, like 500
+            return HttpResponse(status=s_codes["INTERNALERROR"])
+
+    #############################################################
+    #
+    # POST
+    #
+    #############################################################
     elif request.method == "POST":
         itemjson = json.loads(request.body)
         try:
@@ -152,78 +185,98 @@ def collection(request, *args, **kwargs):
 @location_collection
 @require_http_methods(["GET", "DELETE"])
 def collection_near(request, *args, **kwargs):
+    try:
+        latitude = float(request.GET.get('latitude', None))
+        longitude = float(request.GET.get('longitude', None))
+    except (TypeError, ValueError):
+        return HttpResponse(status=s_codes["NOTFOUND"])
+
+    try:
+        nrange = float(request.GET.get('range', None))
+    except (TypeError, ValueError):
+        nrange = None
+
     handlerinterface = kwargs["handlerinterface"]
+    collection = kwargs["collection"]
+
+    #############################################################
+    #
+    # GET
+    #
+    #############################################################
     if request.method == "GET":
-        latitude = request.GET.get('latitude', None)
-        longitude = request.GET.get('longitude', None)
-        range = request.GET.get('range', None)
-
-        if latitude is None or longitude is None:
-            return HttpResponse(status=s_codes["NOTFOUND"])
+        urlmini = request.GET.get("mini", "")
+        if urlmini.lower() == "true":
+            mini = True
         else:
-            if range is None:
-                cont = handlerinterface.get_near(latitude, longitude)
-            else:
-                cont = handlerinterface.get_near(latitude, longitude, range)
+            mini = False
 
-            datajson = json.loads(cont)
-            combined = list()
-            for item in datajson:
-                try:
-                    meta = MetaDocument.objects().get(open_data_id__document_id=
-                                                      kwargs["id_field_name"]).to_json() #TODO Make the item["..."] generic by asking field name from handler
-                except MetaDocument.DoesNotExist:
-                    meta = "{}"
-                temp = combine_data_meta(item, json.loads(meta))
-                combined.append(temp)
-            combinedjson = json.dumps(combined)
-            return HttpResponse(status=s_codes["OK"], content=combinedjson)
+        if nrange is None:
+            items = handlerinterface.get_near(latitude, longitude, mini=mini)
+        else:
+            items = handlerinterface.get_near(latitude, longitude, nrange, mini=mini)
 
+        if not mini:
+            items = _addmeta(items, collection)
+
+        return HttpResponse(status=s_codes["OK"], content=json.dumps(items), content_type="application/json")
+
+    #############################################################
+    #
+    # DELETE
+    #
+    #############################################################
     elif request.method == "DELETE":
-        latitude = request.GET.get('latitude', None)
-        longitude = request.GET.get('longitude', None)
-        range = request.GET.get('range', None)
-
-        if latitude is None or longitude is None:
-            return HttpResponse(status=s_codes["NOTFOUND"])
+        if nrange is None:
+            result = handlerinterface.delete_near(latitude, longitude)
         else:
-            if range is None:
-                result = handlerinterface.delete_near(latitude, longitude)
-            else:
-                result = handlerinterface.delete_near(latitude, longitude, range)
+            result = handlerinterface.delete_near(latitude, longitude, nrange)
 
-            if result:
-                return HttpResponse(status=s_codes["OK"])
-            else:
-                return HttpResponse(status=s_codes["NOTFOUND"])
+        if result:
+            return HttpResponse(status=s_codes["OK"])
+        else:
+            return HttpResponse(status=s_codes["NOTFOUND"])
 
 
 @location_collection
 @require_http_methods(["GET"])
 def collection_inarea(request, *args, **kwargs):
-
-    xtop_right = float(request.GET.get('xtopright'))
-    ytop_right = float(request.GET.get('ytopright'))
-    xbottom_left = float(request.GET.get('xbottomleft'))
-    ybottom_left = float(request.GET.get('ybottomleft'))
+    try:
+        xtop_right = float(request.GET.get('xtopright', None))
+        ytop_right = float(request.GET.get('ytopright', None))
+        xbottom_left = float(request.GET.get('xbottomleft', None))
+        ybottom_left = float(request.GET.get('ybottomleft', None))
+    except (TypeError, ValueError):
+        return HttpResponse(status=s_codes["NOTFOUND"])
+    urlmini = request.GET.get('mini', "")
 
     handlerinterface = kwargs["handlerinterface"]
+    collection = kwargs["collection"]
+    #############################################################
+    #
+    # GET
+    #
+    #############################################################
+    if request.method == "GET":
+        if urlmini.lower() == "true":
+            mini = True
+        else:
+            mini = False
 
-    objects = handlerinterface.get_within_rectangle_mini(xtop_right, ytop_right, xbottom_left, ybottom_left)
-    obsjson = json.loads(objects)
-    itemlist = list()
+        items = handlerinterface.get_within_rectangle(xtop_right, ytop_right, xbottom_left, ybottom_left, mini)
 
-    for item in obsjson:
-        try:
-            metob = MetaDocument.objects().get(open_data_id__document_id=item["id"]).to_json()
-            metobjson = json.loads(metob)
-        except mongoengine.DoesNotExist:
-            metobjson = {}
+        if not mini:
+            items = _addmeta(items, collection)
 
+        return HttpResponse(status=s_codes["OK"], content=json.dumps(items), content_type="application/json")
 
-        itemlist.append(combine_data_meta(item, metobjson))
-
-    return HttpResponse(status=s_codes["OK"], content=json.dumps(itemlist), content_type="application/json")
+    #############################################################
+    #
+    # DELETE
+    #
+    #############################################################
+    elif request.method == "DELETE":
+        return HttpResponse(status=s_codes["TEAPOT"], content="I'm a little teapot short and stout. Here is my handle. Here is my spout")
 
 
 def getjson(request):
@@ -231,7 +284,32 @@ def getjson(request):
 
     return HttpResponse(fac.get_all_mini(), status=s_codes["OK"])
 
+def _addmeta(items, collection):
+    metaitems = MetaDocument._get_collection().aggregate([
+        {"$match":
+             {"collection": collection}
+        },
+        {"$project":
+             {"_id": 0,
+              "feature_id": 1,
+              "collection": 1,
+              "meta_data":
+                  {"status": 1,
+                   "modified": 1,
+                   "modifier": 1}
+             }
+        }
+    ])
+    if int(metaitems["ok"]) == 1 and len(metaitems) > 0:
+        tempdict = {}
+        for item in metaitems["result"]:
+            tempdict[item["feature_id"]] = item["meta_data"]
 
+        for item in items["features"]:
+            if item["id"] in tempdict:
+                item["properties"]["metadata"] = tempdict[item["id"]]
+
+    return items
 # @restifier
 # def get_near(request):
 #     (23.795199257764725, 61.503697166613755)
