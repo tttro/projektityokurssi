@@ -257,7 +257,7 @@ def collection_inarea(request, *args, **kwargs):
     # GET
     #
     #############################################################
-    if request.METHOD == "GET":
+    if request.method == "GET":
         if urlmini.lower() == "true":
             mini = True
         else:
@@ -275,7 +275,7 @@ def collection_inarea(request, *args, **kwargs):
     # DELETE
     #
     #############################################################
-    elif request.METHOD == "DELETE":
+    elif request.method == "DELETE":
         return HttpResponse(status=s_codes["TEAPOT"], content="I'm a little teapot short and stout. Here is my handle. Here is my spout")
 
 
