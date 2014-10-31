@@ -1,9 +1,19 @@
 var mapControllers = angular.module('mapControllers', []);
 
-mapControllers.controller('mapController', function($scope, $window){
+mapControllers.controller('mapController', function($scope, $window, StreetlightTest){
 
 
     var defaultPoint = new google.maps.LatLng(61.497978, 23.764931); // Tampere
+
+    if($window.navigator.geolocation)
+    {
+        $window.navigator.geolocation.getCurrentPosition(function(position){
+            defaultPoint = new google.maps.LatLng(position.coords.latitude, position.coords.longitude)
+        }, function() {
+           handleNoGeolocation(true);
+        });
+
+    }
 
     var mapOptions = {
         zoom: 13,
@@ -49,5 +59,13 @@ mapControllers.controller('mapController', function($scope, $window){
 
     }
 
+    function handleNoGeolocation(error) {
+        if(error) {
+            alert("Geolocation service failed.");
+        }
+        else {
+            alert("Your browser doesn't support geolocation.");
+        }
+    }
 });
 

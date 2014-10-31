@@ -45,10 +45,7 @@ html, body{
     border: 1px solid #999;
 }
 
-.sidebar {
-    background: #2f3a41;
-    color: #fff;
-}
+
 header {
     background: #edeeef;
     height: 70px;
@@ -58,7 +55,19 @@ header {
 header .logo {
     margin: 0;
 }
+.search-form {
+    width: 100%;
+    padding: 10px;
+}
+.search-input {
+    width: 100%;
+    padding: 10px;
+}
 
+/* Tabs and sidebar */
+.sidebar {
+    background: #2f3a41;
+}
 #tabs ul,
 .tab-content ul{
     list-style-type: none;
@@ -67,6 +76,7 @@ header .logo {
 }
 .tab-content ul li {
     border-bottom: 1px solid #222e36;
+    color: #fff;
     padding: 10px 0;
 }
 .list-item {
@@ -92,4 +102,9 @@ header .logo {
 
 #tabs ul li.active {
     background: #2f3a41;
+}
+
+.loading {
+    text-align: center;
+    width: 100%;
 }

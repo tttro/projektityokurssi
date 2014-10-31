@@ -1,5 +1,5 @@
-<input type="text" ng-model="searchItem">
-<img ng-show="loading" src="img/ajax-loader.gif" alt="loading">
+<div class="search-form"><input class="search-input" type="text" ng-model="searchItem"></div>
+<div ng-show="loading" class="loading"><img src="img/ajax-loader.gif" alt="loading"></div>
 <ul>
     <li ng-repeat="item in items.features | filter:searchItem">
         {{item.id}}
