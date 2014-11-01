@@ -119,11 +119,11 @@ mapControllers.controller('mapController', function($scope, $window, Streetlight
             var iWindow = new google.maps.InfoWindow();
             iWindow.setContent(marker.content);
 
-            if(!null) {
+            if(openedMarkerWindow != null) {
                 openedMarkerWindow.close(); // Close a previous window
             }
 
-            openedMarkerWindow = marker;
+            openedMarkerWindow = iWindow;
             iWindow.open($scope.map, marker);
 
         });

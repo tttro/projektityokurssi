@@ -77,7 +77,7 @@ header .logo {
 .tab-content ul li {
     border-bottom: 1px solid #222e36;
     color: #fff;
-    padding: 10px 0;
+    padding: 20px 0;
 }
 .list-item {
     padding: 10px;
@@ -91,13 +91,14 @@ header .logo {
     background: #1b2831;
     display: inline-block;
     width: 49%;
-    padding: 20px;
+    padding: 10%;
     font-size: 16px;
     text-align: center;
 }
 #tabs ul li a{
     color: #fff;
-    padding: 20px;
+    /*padding: 20%;*/
+    display: block;
 }
 
 #tabs ul li.active {
