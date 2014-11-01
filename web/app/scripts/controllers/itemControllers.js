@@ -3,7 +3,6 @@ var itemControllers = angular.module('itemControllers', []);
 
 itemControllers.controller('itemController', function($scope, $http, StreetlightTest){
 
-
     $scope.items = StreetlightTest.getData(); // Get local data
 
     if (!$scope.items) {
@@ -13,7 +12,5 @@ itemControllers.controller('itemController', function($scope, $http, Streetlight
             $scope.loading = false;
         });
     }
-
-
 
 });

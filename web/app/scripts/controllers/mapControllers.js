@@ -5,6 +5,7 @@ mapControllers.controller('mapController', function($scope, $window, Streetlight
 
     var defaultPoint = new google.maps.LatLng(61.497978, 23.764931); // Tampere
 
+    /*** Get user geolocation from browser ***/
     if($window.navigator.geolocation)
     {
         $window.navigator.geolocation.getCurrentPosition(function(position){
@@ -15,6 +16,7 @@ mapControllers.controller('mapController', function($scope, $window, Streetlight
 
     }
 
+    // Init map
     var mapOptions = {
         zoom: 13,
         center: defaultPoint,
@@ -23,7 +25,10 @@ mapControllers.controller('mapController', function($scope, $window, Streetlight
 
     $scope.map = new google.maps.Map(document.getElementById('map'), mapOptions);
 
-    var marker = new google.maps.Marker({
+    var markers = [];
+
+    // Default marker
+    var defaultMarker = new google.maps.Marker({
         map: $scope.map,
         position: defaultPoint,
         title: 'Item',
@@ -37,6 +42,8 @@ mapControllers.controller('mapController', function($scope, $window, Streetlight
         }
     });
 
+    /*** StreetView ***/
+
     var panorama;
     $scope.btnText = "Streetview";
 
@@ -47,6 +54,7 @@ mapControllers.controller('mapController', function($scope, $window, Streetlight
         pitch: 0
     }));
 
+    // Toggle button for streetview/2D map
     $scope.toggleStreetview = function(item, event){
         var toggle = panorama.getVisible();
         if (toggle == false) {
@@ -54,18 +62,73 @@ mapControllers.controller('mapController', function($scope, $window, Streetlight
             $scope.btnText = "2D map";
         } else {
             panorama.setVisible(false);
-            $scope.btnText = "Streetview";
+            $scope.btnText = "StreetView";
         }
 
     }
 
-    function handleNoGeolocation(error) {
+    /*** Event from service, data is raedy
+     *  Add markers when all data fetched from server
+     * ***/
+    $scope.$on('dataIsLoaded', function() {
+        loadMarkers(StreetlightTest.getData());
+    });
+
+    /*** Helper functions ***/
+    var handleNoGeolocation = function (error) {
         if(error) {
             alert("Geolocation service failed.");
         }
         else {
             alert("Your browser doesn't support geolocation.");
         }
+    }
+
+    var loadMarkers =  function (data) {
+
+        angular.forEach(data.features, function(value,key){
+            //console.log(value.id + " / " + value.geometry.coordinates[1]);
+            createMarker(value);
+        });
+    }
+    var openedMarkerWindow = null;
+    var createMarker = function (item) {
+        //console.log(item.geometry.coordinates[1]);
+        var marker = new google.maps.Marker({
+            map: $scope.map,
+            position: new google.maps.LatLng(
+                item.geometry.coordinates[1], // Lat
+                item.geometry.coordinates[0]), // Lng
+            title: item.id,
+            icon: {
+                path: google.maps.SymbolPath.CIRCLE,
+                fillColor: 'red',
+                fillOpacity: 0.6,
+                scale: 5,
+                strokeColor: 'black',
+                strokeWeight: 1
+            }
+        });
+
+        marker.content = ""; // TODO
+
+        // add click event for marker
+        google.maps.event.addListener(marker, 'click', function() {
+
+            $scope.map.setCenter(marker.getPosition());
+            var iWindow = new google.maps.InfoWindow();
+            iWindow.setContent(marker.content);
+
+            if(!null) {
+                openedMarkerWindow.close(); // Close a previous window
+            }
+
+            openedMarkerWindow = marker;
+            iWindow.open($scope.map, marker);
+
+        });
+
+        markers.push(marker); // Add marker into list
     }
 });
 

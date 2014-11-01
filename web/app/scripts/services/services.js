@@ -14,7 +14,7 @@ dataServices.factory('StreetlightNear', ['$resource', function($resource){
     });
 }]);
 
-dataServices.factory('StreetlightTest', ['$http', function($http){
+dataServices.factory('StreetlightTest', ['$http','$rootScope', function($http, $rootScope){
     var dataStorage;
     return {
         getData: function(callback) {
@@ -25,6 +25,7 @@ dataServices.factory('StreetlightTest', ['$http', function($http){
                 .success(function(data){
                     dataStorage = data;
                     callback(data);
+                    $rootScope.$broadcast('dataIsLoaded');
 
             }).error(function(){
                     console.log("error:streelight", error);

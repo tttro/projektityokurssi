@@ -1,15 +1,16 @@
 <div id="tabs">
+
     <ul>
-        <li ng-class="{active: main.active.tab == 'items'}">
-            <a ng-click="main.active.tab = 'items'">Items</a>
+        <li ng-class="{active: tab == 'items'}">
+            <a ng-click="tab = 'items'">Items</a>
         </li>
-        <li ng-class="{active: main.active.tab == 'messages'}">
-            <a ng-click="main.active.tab = 'messages'">Messages</a>
+        <li ng-class="{active: tab == 'messages'}">
+            <a ng-click="tab = 'messages'">Messages</a>
         </li>
     </ul>
 </div>
 <div class="tab-content">
-    <div ng-switch="main.active.tab">
+    <div ng-switch="tab">
         <!-- Items -->
         <div ng-switch-default='items' ng-controller="itemController">
             <ng-include src="'views/item.partial.html'"/>
