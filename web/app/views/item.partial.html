@@ -1,10 +1,18 @@
-<div class="search-form"><input class="search-input" type="text" ng-model="searchItem"></div>
+<div class="search-form">
+    <div class="input-group">
+        <input class="search-input" type="text" ng-model="searchItem">
+        <span class="input-group-btn"><button><img width="32" src="img/search.png"></button></span>
+    </div>
+
+</div>
 <div ng-show="loading" class="loading"><img src="img/ajax-loader.gif" alt="loading"></div>
 <ul>
-    <li ng-repeat="item in items.features | filter:searchItem">
-        {{item.id}}
-        <div class="list-item">
-            <div ng-repeat="pro in item.properties">{{pro}}</div>
+    <li ng-repeat="item in items.features | filter:searchItem" ng-click="m.open = !m.open">
+        <div class="accord-title" is-open="m.open"><a href="" ng-click="showMarker(item.id)">{{item.id}}</a></div>
+        <div class="accord-content" ng-show="m.open" >
+            <div class="list-item">
+                <div ng-repeat="pro in item.properties">{{pro}}</div>
+            </div>
         </div>
     </li>
 </ul>

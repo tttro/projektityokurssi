@@ -5,22 +5,20 @@ mapControllers.controller('mapController', function($scope, $window, Streetlight
 
     var defaultPoint = new google.maps.LatLng(61.497978, 23.764931); // Tampere
 
-    /*** Get user geolocation from browser ***/
-    if($window.navigator.geolocation)
-    {
-        $window.navigator.geolocation.getCurrentPosition(function(position){
-            defaultPoint = new google.maps.LatLng(position.coords.latitude, position.coords.longitude)
-        }, function() {
-           handleNoGeolocation(true);
-        });
-
-    }
-
     // Init map
     var mapOptions = {
         zoom: 13,
         center: defaultPoint,
-        streetViewControl: false
+        streetViewControl: false, zoomControl: true,
+        zoomControlOptions: {
+            style: google.maps.ZoomControlStyle.LARGE,
+            position: google.maps.ControlPosition.TOP_RIGHT
+        },
+        panControl: true,
+        panControlOptions: {
+            position: google.maps.ControlPosition.TOP_RIGHT
+        }
+
     }
 
     $scope.map = new google.maps.Map(document.getElementById('map'), mapOptions);
@@ -67,11 +65,38 @@ mapControllers.controller('mapController', function($scope, $window, Streetlight
 
     }
 
-    /*** Event from service, data is raedy
+    /*** Event from service, data is ready
      *  Add markers when all data fetched from server
      * ***/
     $scope.$on('dataIsLoaded', function() {
-        loadMarkers(StreetlightTest.getData());
+        var data;
+        StreetlightTest.fetchData(function(results) {
+            loadMarkers(results);
+        });
+
+    });
+
+    $scope.setUserLocation = function() {
+        /*** Get user geolocation from browser ***/
+        if(navigator.geolocation)
+        {
+            navigator.geolocation.getCurrentPosition(function(position){
+                var currentPosition =  new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+                $scope.map.setCenter(currentPosition);
+            }, function() {
+                handleNoGeolocation(true);
+            });
+
+        }
+
+    }
+
+    $scope.$on('showMarker',function(event, data){
+        var markerId = data;
+        var marker = markers[markerId];
+        google.maps.event.trigger(marker, 'click');
+        panorama.setPosition(marker.getPosition());
+        event.stopPropagation();
     });
 
     /*** Helper functions ***/
@@ -93,7 +118,7 @@ mapControllers.controller('mapController', function($scope, $window, Streetlight
     }
     var openedMarkerWindow = null;
     var createMarker = function (item) {
-        //console.log(item.geometry.coordinates[1]);
+
         var marker = new google.maps.Marker({
             map: $scope.map,
             position: new google.maps.LatLng(
@@ -110,7 +135,7 @@ mapControllers.controller('mapController', function($scope, $window, Streetlight
             }
         });
 
-        marker.content = ""; // TODO
+        marker.content = "<div class='infowindow'><h3>"+item.id+"</h3></div>"; // TODO
 
         // add click event for marker
         google.maps.event.addListener(marker, 'click', function() {
@@ -128,7 +153,7 @@ mapControllers.controller('mapController', function($scope, $window, Streetlight
 
         });
 
-        markers.push(marker); // Add marker into list
+        markers[item.id] = marker; // Add marker into list
     }
 });
 
