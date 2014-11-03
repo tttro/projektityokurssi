@@ -1,6 +1,7 @@
 package fi.lbd.mobile.fragments;
 
 import android.content.Intent;
+import android.location.Location;
 import android.os.Bundle;
 import android.text.Html;
 import android.view.LayoutInflater;
@@ -9,6 +10,9 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.common.GooglePlayServicesClient;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationClient;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -21,6 +25,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.squareup.otto.Subscribe;
+import com.google.android.gms.common.ConnectionResult;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,11 +43,16 @@ public class GoogleMapFragment extends MapFragment {
 	private MapView mapView;
 	private GoogleMap map;
     private MapObject selectedObject;
+    private LocationClient mLocationClient;
 
     // TODO: Joku grid model?
     private List<Marker> currentMarkers = new ArrayList<Marker>();
 
-	@Override
+    public static GoogleMapFragment newInstance(){
+        return new GoogleMapFragment();
+    }
+
+    @Override
 	public View onCreateView(final LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.googlemap_fragment, container, false);
 		this.mapView = (MapView)view.findViewById(R.id.mapview);
@@ -51,8 +61,8 @@ public class GoogleMapFragment extends MapFragment {
         this.map = this.mapView.getMap();
         this.map.getUiSettings().setMyLocationButtonEnabled(true);
         this.map.setMyLocationEnabled(true);
-        this.map.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
 
+        this.map.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
             // Use default InfoWindow frame
             @Override
             public View getInfoWindow(Marker marker) {
@@ -90,6 +100,12 @@ public class GoogleMapFragment extends MapFragment {
         if(selectedObject != null){
             PointLocation location = selectedObject.getPointLocation();
             CameraUpdate cameraLocation = CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), 18);
+            this.map.moveCamera(cameraLocation);
+        }
+
+        // TODO: Käytä käyttäjän sijaintia, täytyy hakea LocationClientilla
+        else {
+            CameraUpdate cameraLocation = CameraUpdateFactory.newLatLngZoom(new LatLng(61.5, 23.795), 16);
             this.map.moveCamera(cameraLocation);
         }
 

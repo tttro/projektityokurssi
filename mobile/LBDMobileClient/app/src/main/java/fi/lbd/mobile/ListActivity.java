@@ -3,7 +3,6 @@ package fi.lbd.mobile;
 import java.util.Locale;
 
 import android.app.Activity;
-import android.app.ActionBar;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
@@ -15,6 +14,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import fi.lbd.mobile.fragments.GoogleMapFragment;
 import fi.lbd.mobile.fragments.InboxFragment;
 import fi.lbd.mobile.fragments.ListClickListener;
 import fi.lbd.mobile.fragments.ObjectListFragment;
@@ -22,7 +22,7 @@ import fi.lbd.mobile.mapobjects.MapObject;
 import fi.lbd.mobile.repository.MapObjectRepositoryService;
 
 
-public class ListActivity extends Activity implements ActionBar.TabListener, ListClickListener<MapObject> {
+public class ListActivity extends Activity implements ListClickListener<MapObject> {
     // Keeps loaded fragments in memory
     private SectionsPagerAdapter sectionsPagerAdapter;
     private ViewPager viewPager;
@@ -36,32 +36,10 @@ public class ListActivity extends Activity implements ActionBar.TabListener, Lis
         // Start the object repository service. // TODO: Missä käynnistys?
         startService(new Intent(this, MapObjectRepositoryService.class));
 
-        // Set up the action bar.
-        final ActionBar actionBar = getActionBar();
-        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-//        actionBar.setBackgroundDrawable(new ColorDrawable(Color.parseColor("#F7FBFC")));
-//        actionBar.setStackedBackgroundDrawable(new ColorDrawable(Color.parseColor("#BBDDF8")));
-        actionBar.setTitle("Items");
-
         this.sectionsPagerAdapter = new SectionsPagerAdapter(getFragmentManager());
         this.viewPager = (ViewPager) findViewById(R.id.pager);
         this.viewPager.setAdapter(this.sectionsPagerAdapter);
-
-        this.viewPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
-            @Override
-            public void onPageSelected(int position) {
-                actionBar.setSelectedNavigationItem(position);
-            }
-        });
-
-        // Add the tabs from the adapter
-        for (int i = 0; i < sectionsPagerAdapter.getCount(); i++) {
-            actionBar.addTab(
-                actionBar.newTab()
-                    .setIcon(sectionsPagerAdapter.getPageIcon(i))
-                    .setText(sectionsPagerAdapter.getPageTitle(i))
-                    .setTabListener(this));
-        }
+        viewPager.setCurrentItem(1);
     }
 
 
@@ -80,19 +58,6 @@ public class ListActivity extends Activity implements ActionBar.TabListener, Lis
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    public void onTabSelected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
-        this.viewPager.setCurrentItem(tab.getPosition());
-    }
-
-    @Override
-    public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
-    }
-
-    @Override
-    public void onTabReselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
-    }
-
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
         public SectionsPagerAdapter(FragmentManager fm) {
@@ -102,11 +67,14 @@ public class ListActivity extends Activity implements ActionBar.TabListener, Lis
         @Override
         public Fragment getItem(int position) {
             if (position == 0) {
+                InboxFragment frag = InboxFragment.newInstance();
+                return frag;
+            } else if (position == 1) {
                 ObjectListFragment frag = ObjectListFragment.newInstance();
                 frag.addListClickListener(ListActivity.this);
                 return frag;
-            } else if (position == 1) {
-                InboxFragment frag = InboxFragment.newInstance();
+            } else if (position == 2){
+                GoogleMapFragment frag = GoogleMapFragment.newInstance();
                 return frag;
             }
             return null;
@@ -114,7 +82,7 @@ public class ListActivity extends Activity implements ActionBar.TabListener, Lis
 
         @Override
         public int getCount() {
-            return 2;
+            return 3;
         }
 
         @Override
@@ -122,9 +90,11 @@ public class ListActivity extends Activity implements ActionBar.TabListener, Lis
             Locale l = Locale.getDefault();
             switch (position) {
                 case 0:
-                    return getString(R.string.title_tab_objects).toUpperCase(l);
-                case 1:
                     return getString(R.string.title_tab_messages).toUpperCase(l);
+                case 1:
+                    return getString(R.string.title_tab_objects).toUpperCase(l);
+                case 2:
+                    return getString(R.string.title_tab_map).toUpperCase(l);
             }
             return null;
         }
@@ -152,6 +122,4 @@ public class ListActivity extends Activity implements ActionBar.TabListener, Lis
         intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
         startActivity(intent);
     }
-
-
 }
