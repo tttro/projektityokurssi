@@ -148,6 +148,7 @@ public class ListActivity extends Activity implements ActionBar.TabListener, Lis
     @Override
     public void onClick(MapObject object) {
         Intent intent = new Intent(this, MapActivity.class);
+        intent.putExtra("selectedObject", object);
         intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
         startActivity(intent);
     }

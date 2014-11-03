@@ -7,7 +7,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.squareup.otto.Subscribe;
 
@@ -20,7 +19,6 @@ import fi.lbd.mobile.events.RequestNearObjectsEvent;
 import fi.lbd.mobile.events.ReturnNearObjectsEvent;
 import fi.lbd.mobile.mapobjects.ImmutablePointLocation;
 import fi.lbd.mobile.mapobjects.MapObject;
-import fi.lbd.mobile.mapobjects.SelectionManager;
 
 
 /**
@@ -81,7 +79,7 @@ public class ObjectListFragment extends ListFragment {
 
 	@Override
     public void onListItemClick(ListView l, View v, int position, long id) {
-        SelectionManager.get().setSelection(this.adapter.get(position));
+        //SelectionManager.get().setSelection(this.adapter.get(position));
         notifyClickListeners(this.adapter.get(position));
 	}
 
