@@ -1,5 +1,8 @@
 package fi.lbd.mobile;
 
+import java.util.ArrayDeque;
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.Locale;
 
 import android.app.Activity;
@@ -7,9 +10,11 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.support.v13.app.FragmentPagerAdapter;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
+import android.support.v4.view.PagerTabStrip;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -23,11 +28,20 @@ import fi.lbd.mobile.mapobjects.MapObject;
 import fi.lbd.mobile.repository.MapObjectRepositoryService;
 
 
-public class ListActivity extends Activity implements ListClickListener<MapObject> {
+public class ListActivity extends Activity {
     // Keeps loaded fragments in memory
     private SectionsPagerAdapter sectionsPagerAdapter;
     private ViewPager viewPager;
-    private final int startPage = 1;
+
+    // Declare constants for tab UI
+    private static final int START_TAB = 1;
+    private static final int MSG_TAB = 0;
+    private static final int OBJ_TAB = 1;
+    private static final int MAP_TAB = 2;
+    private static final int TAB_COUNT = 3;
+
+    // Data structure to save previous tabs in order to restore them when back button is pressed.
+    private ArrayDeque<Integer> pageStack;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,10 +52,25 @@ public class ListActivity extends Activity implements ListClickListener<MapObjec
         // Start the object repository service. // TODO: Missä käynnistys?
         startService(new Intent(this, MapObjectRepositoryService.class));
 
+        pageStack = new ArrayDeque<Integer>();
+        pageStack.push(START_TAB);
+
         this.sectionsPagerAdapter = new SectionsPagerAdapter(getFragmentManager());
         this.viewPager = (ViewPager) findViewById(R.id.pager);
         this.viewPager.setAdapter(this.sectionsPagerAdapter);
-        viewPager.setCurrentItem(startPage);
+        viewPager.setCurrentItem(START_TAB);
+
+        // http://stackoverflow.com/questions/13185476/how-to-handle-back-button-using-view-pager
+        viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageSelected(int i) {
+                pageStack.push(i);
+            }
+            @Override
+            public void onPageScrolled(int i, float v, int j) {}
+            @Override
+            public void onPageScrollStateChanged(int i) {}
+        });
     }
 
 
@@ -68,14 +97,13 @@ public class ListActivity extends Activity implements ListClickListener<MapObjec
 
         @Override
         public Fragment getItem(int position) {
-            if (position == 0) {
+            if (position == MSG_TAB) {
                 InboxFragment frag = InboxFragment.newInstance();
                 return frag;
-            } else if (position == 1) {
+            } else if (position == OBJ_TAB) {
                 ObjectListFragment frag = ObjectListFragment.newInstance();
-                frag.addListClickListener(ListActivity.this);
                 return frag;
-            } else if (position == 2){
+            } else if (position == MAP_TAB){
                 GoogleMapFragment frag = GoogleMapFragment.newInstance();
                 return frag;
             }
@@ -84,31 +112,21 @@ public class ListActivity extends Activity implements ListClickListener<MapObjec
 
         @Override
         public int getCount() {
-            return 3;
+            return TAB_COUNT;
         }
 
         @Override
         public CharSequence getPageTitle(int position) {
             Locale l = Locale.getDefault();
             switch (position) {
-                case 0:
+                case MSG_TAB:
                     return getString(R.string.title_tab_messages).toUpperCase(l);
-                case 1:
+                case OBJ_TAB:
                     return getString(R.string.title_tab_objects).toUpperCase(l);
-                case 2:
+                case MAP_TAB:
                     return getString(R.string.title_tab_map).toUpperCase(l);
             }
             return null;
-        }
-
-        public int getPageIcon(int position) {
-            switch (position) {
-                case 0:
-                    return android.R.drawable.ic_menu_search;
-                case 1:
-                    return android.R.drawable.sym_action_email;
-            }
-            return 0;
         }
     }
 
@@ -117,19 +135,22 @@ public class ListActivity extends Activity implements ListClickListener<MapObjec
         stopService(new Intent(this, MapObjectRepositoryService.class)); // TODO: Missä pysäytys?
     }
 
-    @Override
-    public void onClick(MapObject object) {
-        Intent intent = new Intent(this, MapActivity.class);
-        intent.putExtra("selectedObject", object);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-        startActivity(intent);
-    }
-
     public void onDetailsClick(View view){
         Intent intent = new Intent(this, DetailsActivity.class);
         startActivity(intent);
     }
     public void onMapClick(View view){
-        viewPager.setCurrentItem(2);
+        viewPager.setCurrentItem(MAP_TAB);
+    }
+
+    // http://stackoverflow.com/questions/13185476/how-to-handle-back-button-using-view-pager
+    @Override
+    public void onBackPressed() {
+        if(pageStack.size() > 1) {
+            pageStack.pop();
+            viewPager.setCurrentItem(pageStack.peek(), true);
+        } else {
+            super.onBackPressed(); // This will pop the Activity from the stack.
+        }
     }
 }
