@@ -1,18 +1,26 @@
 package fi.lbd.mobile.fragments;
 
+import android.app.Fragment;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.app.ListFragment;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ExpandableListView;
+import android.widget.ListAdapter;
 import android.widget.ListView;
 
 import com.squareup.otto.Subscribe;
 
 import java.util.ArrayList;
 import java.util.List;
+import android.widget.ExpandableListAdapter;
 
+import fi.lbd.mobile.adapters.ListExpandableAdapter;
+import fi.lbd.mobile.adapters.ListMapObjectAdapter;
 import fi.lbd.mobile.events.BusHandler;
 import fi.lbd.mobile.R;
 import fi.lbd.mobile.events.RequestNearObjectsEvent;
@@ -28,9 +36,9 @@ import fi.lbd.mobile.mapobjects.MapObject;
  * Created by tommi on 19.10.2014.
  */
 public class ObjectListFragment extends ListFragment {
-    private ListMapObjectAdapter adapter;
+    private ListExpandableAdapter adapter;
     private List<ListClickListener<MapObject>> listClickListeners = new ArrayList<>();
-
+    private ExpandableListView expview;
     public static ObjectListFragment newInstance() {
         return new ObjectListFragment();
     }
@@ -38,7 +46,7 @@ public class ObjectListFragment extends ListFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        this.adapter = new ListMapObjectAdapter(this.getActivity());
+        this.adapter = new ListExpandableAdapter(this.getActivity());
 
         // Requests the default map objects from the object repository through OTTO-bus. TODO: Parempi tapa tehdä?
         AsyncTask task = new AsyncTask<Void,Void,Void>(){
@@ -60,14 +68,16 @@ public class ObjectListFragment extends ListFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.listview_fragment, container, false);
+        View view = inflater.inflate(R.layout.listview_search_fragment, container, false);
+        expview = (ExpandableListView) view.findViewById(android.R.id.list);
         return view;
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        setListAdapter(this.adapter);
+        expview.setAdapter(this.adapter);
+
         BusHandler.getBus().register(this);
     }
 

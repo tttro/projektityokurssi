@@ -13,6 +13,7 @@ import android.support.v4.view.ViewPager;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
+import android.view.View;
 
 import fi.lbd.mobile.fragments.GoogleMapFragment;
 import fi.lbd.mobile.fragments.InboxFragment;
@@ -26,6 +27,7 @@ public class ListActivity extends Activity implements ListClickListener<MapObjec
     // Keeps loaded fragments in memory
     private SectionsPagerAdapter sectionsPagerAdapter;
     private ViewPager viewPager;
+    private final int startPage = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,7 +41,7 @@ public class ListActivity extends Activity implements ListClickListener<MapObjec
         this.sectionsPagerAdapter = new SectionsPagerAdapter(getFragmentManager());
         this.viewPager = (ViewPager) findViewById(R.id.pager);
         this.viewPager.setAdapter(this.sectionsPagerAdapter);
-        viewPager.setCurrentItem(1);
+        viewPager.setCurrentItem(startPage);
     }
 
 
@@ -121,5 +123,13 @@ public class ListActivity extends Activity implements ListClickListener<MapObjec
         intent.putExtra("selectedObject", object);
         intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
         startActivity(intent);
+    }
+
+    public void onDetailsClick(View view){
+        Intent intent = new Intent(this, DetailsActivity.class);
+        startActivity(intent);
+    }
+    public void onMapClick(View view){
+        viewPager.setCurrentItem(2);
     }
 }

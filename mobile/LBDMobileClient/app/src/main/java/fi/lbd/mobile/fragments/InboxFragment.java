@@ -6,9 +6,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import fi.lbd.mobile.R;
+import fi.lbd.mobile.adapters.ListMapObjectAdapter;
 import fi.lbd.mobile.events.BusHandler;
 
 

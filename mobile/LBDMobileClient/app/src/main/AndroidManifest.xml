@@ -59,11 +59,16 @@
             android:name="com.google.android.maps.v2.API_KEY"
             android:value="@string/GoogleMapsApiKey" />
 
-        <!--android:theme="@android:style/Theme.Holo.Light.NoActionBar"-->
+        <!-- android:theme="@android:style/Theme.Holo.Light.NoActionBar" -->
         <activity
             android:name=".MapActivity"
-            android:theme="@android:style/Theme.Holo.Light.NoActionBar"
-            android:label="@string/title_activity_map" >
+            android:label="@string/title_activity_map"
+            android:theme="@android:style/Theme.Holo.Light.NoActionBar" >
+        </activity>
+        <activity
+            android:name=".DetailsActivity"
+            android:label="@string/title_activity_details"
+            android:theme="@android:style/Theme.Holo.Light.NoActionBar" >
         </activity>
     </application>
 

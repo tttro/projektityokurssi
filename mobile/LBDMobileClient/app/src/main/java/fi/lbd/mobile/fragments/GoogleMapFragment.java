@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.GoogleMap.OnInfoWindowClickListener;
 import com.google.android.gms.common.GooglePlayServicesClient;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationClient;
@@ -31,6 +32,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import fi.lbd.mobile.DetailsActivity;
 import fi.lbd.mobile.R;
 import fi.lbd.mobile.events.BusHandler;
 import fi.lbd.mobile.events.RequestObjectsInAreaEvent;
@@ -39,7 +41,7 @@ import fi.lbd.mobile.mapobjects.MapObject;
 import fi.lbd.mobile.mapobjects.PointLocation;
 
 // http://stackoverflow.com/questions/13713066/google-maps-android-api-v2-very-slow-when-adding-lots-of-markers
-public class GoogleMapFragment extends MapFragment {
+public class GoogleMapFragment extends MapFragment implements OnInfoWindowClickListener {
 	private MapView mapView;
 	private GoogleMap map;
     private MapObject selectedObject;
@@ -61,7 +63,7 @@ public class GoogleMapFragment extends MapFragment {
         this.map = this.mapView.getMap();
         this.map.getUiSettings().setMyLocationButtonEnabled(true);
         this.map.setMyLocationEnabled(true);
-
+        this.map.setOnInfoWindowClickListener(this);
         this.map.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
             // Use default InfoWindow frame
             @Override
@@ -190,4 +192,10 @@ public class GoogleMapFragment extends MapFragment {
             }
         }
     }
+    @Override
+    public void onInfoWindowClick(Marker marker) {
+        Intent intent = new Intent(this.getActivity(), DetailsActivity.class);
+        startActivity(intent);
+    }
+
 }
