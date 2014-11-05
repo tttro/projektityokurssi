@@ -1,8 +1,9 @@
 var mapControllers = angular.module('mapControllers', []);
 
-mapControllers.controller('mapController', function($scope, $window, StreetlightTest){
+mapControllers.controller('mapController', function($scope, $window, StreetlightTest, StreetlightNear){
 
     var defaultPoint = new google.maps.LatLng(61.51241, 23.634931); // Tampere
+    $scope.userLocationMarker = null;
 
     // Init map
     var mapOptions = {
@@ -33,7 +34,12 @@ mapControllers.controller('mapController', function($scope, $window, Streetlight
 
             navigator.geolocation.getCurrentPosition(function(position){
                 var currentPosition =  new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+                createGeoMarker(currentPosition);
+
                 $scope.map.setCenter(currentPosition);
+
+                var nearItems = StreetlightNear.get(position.coords.latitude, position.coords.longitude);
+                loadMarkers(nearItems);
 
             }, function() {
                 handleNoGeolocation(true);
@@ -46,24 +52,10 @@ mapControllers.controller('mapController', function($scope, $window, Streetlight
         $scope.loading = false;
     });
 
-
+    createGeoMarker(defaultPoint);
 
     $scope.markers = [];
 
-    // Default marker
-    var defaultMarker = new google.maps.Marker({
-        map: $scope.map,
-        position: defaultPoint,
-        title: 'Item',
-        icon: {
-            path: google.maps.SymbolPath.CIRCLE,
-            fillColor: 'blue',
-            fillOpacity: 0.6,
-            scale: 7,
-            strokeColor: 'black',
-            strokeWeight: 1
-        }
-    });
 
     /*** StreetView ***/
 
@@ -94,11 +86,12 @@ mapControllers.controller('mapController', function($scope, $window, Streetlight
     /*** Event from service, data is ready
      *  Add markers when all data fetched from server
      * ***/
-    $scope.$on('dataIsLoaded', function() {
+    $scope.$on('dataIsLoaded', function(e) {
         var data;
         StreetlightTest.fetchData(function(results) {
             loadMarkers(results);
         });
+        console.log(e);
 
     });
 
@@ -173,5 +166,24 @@ mapControllers.controller('mapController', function($scope, $window, Streetlight
         $scope.markers[item.id] = marker; // Add marker into list
     }
 
+    function createGeoMarker(gPoint){
+        if($scope.userLocationMarker != null) {
+            $scope.userLocationMarker.setMap(null);
+        }
+        var marker = new google.maps.Marker({
+            map: $scope.map,
+            position: gPoint,
+            title: 'Item',
+            icon: {
+                path: google.maps.SymbolPath.CIRCLE,
+                fillColor: 'blue',
+                fillOpacity: 0.6,
+                scale: 7,
+                strokeColor: 'black',
+                strokeWeight: 1
+            }
+        });
+        $scope.userLocationMarker = marker;
+    }
 
 });
