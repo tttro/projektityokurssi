@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
 import android.text.Html;
+import android.text.Selection;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,21 +36,23 @@ import java.util.Map;
 
 import fi.lbd.mobile.DetailsActivity;
 import fi.lbd.mobile.R;
+import fi.lbd.mobile.SelectionManager;
 import fi.lbd.mobile.events.BusHandler;
 import fi.lbd.mobile.events.RequestObjectsInAreaEvent;
 import fi.lbd.mobile.events.ReturnObjectsInAreaEvent;
+import fi.lbd.mobile.events.SelectMapObjectEvent;
 import fi.lbd.mobile.mapobjects.MapObject;
 import fi.lbd.mobile.mapobjects.PointLocation;
 
 // http://stackoverflow.com/questions/13713066/google-maps-android-api-v2-very-slow-when-adding-lots-of-markers
-public class GoogleMapFragment extends MapFragment implements OnInfoWindowClickListener {
+public class GoogleMapFragment extends MapFragment implements OnInfoWindowClickListener, GoogleMap.OnMarkerClickListener, GoogleMap.OnMapClickListener {
 	private MapView mapView;
 	private GoogleMap map;
-    private MapObject selectedObject;
     private LocationClient mLocationClient;
 
     // TODO: Joku grid model?
     private List<Marker> currentMarkers = new ArrayList<Marker>();
+    private Marker activeMarker;
 
     public static GoogleMapFragment newInstance(){
         return new GoogleMapFragment();
@@ -64,6 +68,8 @@ public class GoogleMapFragment extends MapFragment implements OnInfoWindowClickL
         this.map.getUiSettings().setMyLocationButtonEnabled(true);
         this.map.setMyLocationEnabled(true);
         this.map.setOnInfoWindowClickListener(this);
+        this.map.setOnMarkerClickListener(this);
+        this.map.setOnMapClickListener(this);
         this.map.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
             // Use default InfoWindow frame
             @Override
@@ -96,11 +102,13 @@ public class GoogleMapFragment extends MapFragment implements OnInfoWindowClickL
 
         // Deserialize object sent from ListActivity, then set it selected.
         // Sets null if no object was sent.
-        Intent i = this.getActivity().getIntent();
-        selectedObject = (MapObject)i.getSerializableExtra("selectedObject");
+       // Intent i = this.getActivity().getIntent();
+        //selectedObject = (MapObject)i.getSerializableExtra("selectedObject");
 
-        if(selectedObject != null){
-            PointLocation location = selectedObject.getPointLocation();
+        // TODO: siirä nämä jonnekin missä suoritetaan aina karttavälilehden aktivoituessa
+        MapObject o = SelectionManager.get().getSelectedObject();
+        if(o != null){
+            PointLocation location = o.getPointLocation();
             CameraUpdate cameraLocation = CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), 18);
             this.map.moveCamera(cameraLocation);
         }
@@ -161,8 +169,8 @@ public class GoogleMapFragment extends MapFragment implements OnInfoWindowClickL
                 BitmapDescriptor icon = BitmapDescriptorFactory.fromResource(android.R.drawable.presence_invisible);
                 LatLng location = new LatLng(mapObject.getPointLocation().getLatitude(),
                         mapObject.getPointLocation().getLongitude());
-                if (selectedObject != null &&
-                        mapObject.getId().equals(selectedObject.getId())) {
+                if (SelectionManager.get().getSelectedObject() != null &&
+                        mapObject.getId().equals(SelectionManager.get().getSelectedObject().getId())) {
                     icon = BitmapDescriptorFactory.fromResource(android.R.drawable.presence_online);
                 }
                 StringBuilder snippet = new StringBuilder();
@@ -181,9 +189,11 @@ public class GoogleMapFragment extends MapFragment implements OnInfoWindowClickL
                                 .title(mapObject.getId())
                                 .snippet(snippet.toString())
                                 .icon(icon));
-                if(selectedObject != null &&
-                        mapObject.getId().equals(selectedObject.getId())){
+                currentMarkers.add(marker);
+                if(SelectionManager.get().getSelectedObject() != null &&
+                        mapObject.getId().equals(SelectionManager.get().getSelectedObject().getId())){
                     marker.showInfoWindow();
+                    activeMarker = marker;
                 }
 //                GroundOverlay groundOverlay = map.addGroundOverlay(new GroundOverlayOptions()
 //                        .image(image)
@@ -192,10 +202,64 @@ public class GoogleMapFragment extends MapFragment implements OnInfoWindowClickL
             }
         }
     }
+
+    // TODO: markerien sitominen objekteihin ???
     @Override
     public void onInfoWindowClick(Marker marker) {
         Intent intent = new Intent(this.getActivity(), DetailsActivity.class);
         startActivity(intent);
     }
 
+    // TODO: Keksi järkevämpi tapa tehdä ??
+    @Subscribe
+    public void onEvent(SelectMapObjectEvent event){
+        MapsInitializer.initialize(this.getActivity());
+        MapObject o = SelectionManager.get().getSelectedObject();
+        PointLocation location = o.getPointLocation();
+        CameraUpdate cameraLocation = CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), 18);
+        this.map.moveCamera(cameraLocation);
+
+        if(o != null && !currentMarkers.isEmpty()){
+              Marker m = findMarker(o);
+              onMarkerClick(m);
+              // For some reason infowindow doesn't show if this isn't called again
+              m.showInfoWindow();
+        }
+        // TODO: Käytä käyttäjän sijaintia, täytyy hakea LocationClientilla
+        else {
+            cameraLocation = CameraUpdateFactory.newLatLngZoom(new LatLng(61.5, 23.795), 16);
+            this.map.moveCamera(cameraLocation);
+        }
+    }
+
+    @Override
+    public boolean onMarkerClick(Marker marker){
+        if (!currentMarkers.isEmpty()) {
+            if(activeMarker != null){
+                activeMarker.setIcon(BitmapDescriptorFactory.fromResource(android.R.drawable.presence_invisible));
+            }
+                marker.setIcon(BitmapDescriptorFactory.fromResource(android.R.drawable.presence_online));
+                activeMarker = marker;
+        }
+        // False for default behavior (center camera and open infowindow)
+        return false;
+    }
+
+    @Override
+    public void onMapClick(LatLng point){
+        if(activeMarker != null){
+            activeMarker.setIcon(BitmapDescriptorFactory.fromResource(android.R.drawable.presence_invisible));
+        }
+    }
+
+    public Marker findMarker(MapObject object){
+        if (!currentMarkers.isEmpty()){
+            for (Marker m : this.currentMarkers) {
+                if (m.getTitle().equals(object.getId())) {
+                    return m;
+                }
+            }
+        }
+        return null;
+    }
 }

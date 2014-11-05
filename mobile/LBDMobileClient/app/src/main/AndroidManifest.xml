@@ -61,11 +61,6 @@
 
         <!-- android:theme="@android:style/Theme.Holo.Light.NoActionBar" -->
         <activity
-            android:name=".MapActivity"
-            android:label="@string/title_activity_map"
-            android:theme="@android:style/Theme.Holo.Light.NoActionBar" >
-        </activity>
-        <activity
             android:name=".DetailsActivity"
             android:label="@string/title_activity_details"
             android:theme="@android:style/Theme.Holo.Light.NoActionBar" >

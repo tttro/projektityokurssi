@@ -43,10 +43,15 @@ public class ObjectListFragment extends ListFragment {
         return new ObjectListFragment();
     }
 
+    private int firstVisiblePosition;
+    private ArrayList<Boolean> groupExpandedArray;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.adapter = new ListExpandableAdapter(this.getActivity());
+        this.groupExpandedArray = new ArrayList<Boolean>();
+        this.firstVisiblePosition = 0;
 
         // Requests the default map objects from the object repository through OTTO-bus. TODO: Parempi tapa tehdä?
         AsyncTask task = new AsyncTask<Void,Void,Void>(){
@@ -79,12 +84,26 @@ public class ObjectListFragment extends ListFragment {
         expview.setAdapter(this.adapter);
 
         BusHandler.getBus().register(this);
+
+        for (int i=0; i<groupExpandedArray.size() ;i++){
+            if (groupExpandedArray.get(i) == true)
+                expview.expandGroup(i);
+        }
+        expview.setSelection(firstVisiblePosition );
     }
 
     @Override
     public void onPause() {
         super.onPause();
         BusHandler.getBus().unregister(this);
+
+        int numberOfGroups = adapter.getGroupCount();
+
+        groupExpandedArray.clear();
+        for (int i=0;i<numberOfGroups;i++){
+            groupExpandedArray.add(expview.isGroupExpanded(i));
+        }
+        firstVisiblePosition = expview.getFirstVisiblePosition();
     }
 
 	@Override

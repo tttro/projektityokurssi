@@ -27,7 +27,6 @@ public class ListExpandableAdapter extends BaseExpandableListAdapter {
     private ArrayList<MapObject> objects;
     private Context context;
 
-
     public ListExpandableAdapter(Context context) {
         this.context = context;
         this.objects = new ArrayList<MapObject>();
@@ -108,12 +107,13 @@ public class ListExpandableAdapter extends BaseExpandableListAdapter {
             LayoutInflater inflater = ((Activity) this.context).getLayoutInflater();
             view = inflater.inflate(R.layout.listview_expanded_row, parent, false);
 
-            // Cant recover parent´s tag in ListActivity??
-            // TODO: better solution
-            view.findViewById(R.id.detailsButton).setTag(getGroup(groupPosition));
-            view.findViewById(R.id.mapButton).setTag(getGroup(groupPosition));
-        }
 
+        }
+        // Cant recover parent´s tag in ListActivity??
+        // TODO: better solution
+        view.findViewById(R.id.detailsButton).setTag(getGroup(groupPosition));
+        view.findViewById(R.id.mapButton).setTag(getGroup(groupPosition));
+        Log.d("TAG SET-----------------------------------------------------------------------", ((MapObject)getGroup(groupPosition)).getId());
         /*
         view.setOnClickListener(new View.OnClickListener() {
             @Override

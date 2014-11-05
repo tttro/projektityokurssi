@@ -21,6 +21,8 @@ import android.view.MenuItem;
 import android.widget.Toast;
 import android.view.View;
 
+import fi.lbd.mobile.events.BusHandler;
+import fi.lbd.mobile.events.SelectMapObjectEvent;
 import fi.lbd.mobile.fragments.GoogleMapFragment;
 import fi.lbd.mobile.fragments.InboxFragment;
 import fi.lbd.mobile.fragments.ListClickListener;
@@ -47,6 +49,9 @@ public class ListActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        BusHandler.getBus().register(this);
+
         //getWindow().requestFeature(Window.FEATURE_ACTION_BAR_OVERLAY);
         setContentView(R.layout.activity_list);
 
@@ -73,6 +78,7 @@ public class ListActivity extends Activity {
             public void onPageScrollStateChanged(int i) {}
         });
     }
+
 
 
     @Override
@@ -134,6 +140,7 @@ public class ListActivity extends Activity {
     protected void onDestroy() {
         super.onDestroy();
         stopService(new Intent(this, MapObjectRepositoryService.class)); // TODO: Missä pysäytys?
+        BusHandler.getBus().unregister(this);
     }
 
     public void onDetailsClick(View view){
@@ -147,6 +154,12 @@ public class ListActivity extends Activity {
         }
     }
     public void onMapClick(View view){
+        MapObject o = (MapObject)view.getTag();
+
+        Log.d("TAG RECEIVED------------------", o.getId());
+
+        SelectionManager.get().setSelection(o);
+        BusHandler.getBus().post(new SelectMapObjectEvent());
         viewPager.setCurrentItem(MAP_TAB);
     }
 
