@@ -59,16 +59,9 @@ class HandlerBase(object):
     def delete_all(self):
         raise NotImplementedError("Not Implemented")
 
-    # Delete_item_by_handler_id
-    # Parameters:
-    #       string iid: id used in the REST to identify different objects
-    # Deletes the item with the given id from REST
-    def delete_item_by_handler_id(self, iid):
-        raise NotImplementedError("Not Implemented")
-
     # Function delete_item_by_id
     # Parameters:
-    #       iid: a MongoDB id
+    #       iid: a GeoJSON id
     # Return values:
     #       Boolean: True if one item was deleted, False if deletion failed
     def delete_item_by_id(self, iid):

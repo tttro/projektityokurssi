@@ -181,11 +181,11 @@ class StreetlightHandler(HandlerBase):
     # Function delete_item
     # Parameters:
     # jsonitem: a Python json object (returned by json.loads())
-    def delete_item_by_handler_json(self, jsonitem):
-        self.modelobject.objects().get(feature_id=jsonitem["feature_id"]).delete()
-
-    def delete_item_by_handler_id(self, iid):
-        self.modelobject.objects().get(feature_id=iid).delete()
+    # def delete_item_by_handler_json(self, jsonitem):
+    #     self.modelobject.objects().get(feature_id=jsonitem["feature_id"]).delete()
+    #
+    # def delete_item_by_handler_id(self, iid):
+    #     self.modelobject.objects().get(feature_id=iid).delete()
 
     # Function delete_item_by_id
     # Parameters:
