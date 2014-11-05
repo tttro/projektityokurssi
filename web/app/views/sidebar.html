@@ -1,16 +1,26 @@
+<!-- sidebar.html -->
+<!-- Tabs -->
 <div id="tabs">
-    <ul>
-        <li ng-class="{active: main.active.tab == 'items'}">
-            <a ng-click="main.active.tab = 'items'">Items</a>
+    <ul ng-init="tab = 'items'">
+        <li ng-class="{active: tab == 'items'}">
+            <a ng-click="tab = 'items'"><img src="img/point.png" alt="point img"><br>Items</a>
         </li>
-        <li ng-class="{active: main.active.tab == 'messages'}">
-            <a ng-click="main.active.tab = 'messages'">Messages</a>
+        <li ng-class="{active: tab == 'messages'}">
+            <a ng-click="tab = 'messages'"><img src="img/message.png" alt="message img"><br>Messages</a>
         </li>
     </ul>
 </div>
+<!-- // Tabs -->
 <div class="tab-content">
-    <div ng-switch="main.active.tab">
-        <div ng-switch-when='items' ng-controller="itemController"></div>
-        <div ng-switch-when='messages' ng-controller="messageController"></div>
+    <div ng-switch="tab">
+        <!-- Items -->
+        <div ng-switch-default='items' ng-controller="itemController">
+            <ng-include src="'views/item.partial.html'"/>
+        </div>
+        <!-- Messages -->
+        <div ng-switch-when='messages' ng-controller="messageController">
+            <ng-include src="'views/message.partial.html'"/>
+        </div>
     </div>
 </div>
+<!-- // sidebar.html -->

@@ -1,9 +1,12 @@
 package fi.lbd.mobile.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdate;
@@ -21,41 +24,73 @@ import com.squareup.otto.Subscribe;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
-import fi.lbd.mobile.events.BusHandler;
 import fi.lbd.mobile.R;
+import fi.lbd.mobile.events.BusHandler;
 import fi.lbd.mobile.events.RequestObjectsInAreaEvent;
 import fi.lbd.mobile.events.ReturnObjectsInAreaEvent;
 import fi.lbd.mobile.mapobjects.MapObject;
 import fi.lbd.mobile.mapobjects.PointLocation;
-import fi.lbd.mobile.mapobjects.SelectionManager;
 
 // http://stackoverflow.com/questions/13713066/google-maps-android-api-v2-very-slow-when-adding-lots-of-markers
 public class GoogleMapFragment extends MapFragment {
 	private MapView mapView;
 	private GoogleMap map;
+    private MapObject selectedObject;
 
     // TODO: Joku grid model?
     private List<Marker> currentMarkers = new ArrayList<Marker>();
 
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+	public View onCreateView(final LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.googlemap_fragment, container, false);
 		this.mapView = (MapView)view.findViewById(R.id.mapview);
         this.mapView.onCreate(savedInstanceState);
 
         this.map = this.mapView.getMap();
-        this.map.getUiSettings().setMyLocationButtonEnabled(false);
+        this.map.getUiSettings().setMyLocationButtonEnabled(true);
         this.map.setMyLocationEnabled(true);
+        this.map.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
+
+            // Use default InfoWindow frame
+            @Override
+            public View getInfoWindow(Marker marker) {
+                return null;
+            }
+
+            // Defines the contents of the InfoWindow
+            @Override
+            public View getInfoContents(Marker marker) {
+
+                // Getting view from the layout file info_window_layout
+                View v = inflater.inflate(R.layout.map_info_view, null);
+
+                TextView objectIdField = (TextView) v.findViewById(R.id.objectid);
+                objectIdField.setText(marker.getTitle());
+
+                TextView coordinatesField = (TextView) v.findViewById(R.id.coordinates);
+                coordinatesField.setText("["+marker.getPosition().latitude +", "+ marker.getPosition().longitude +"]");
+
+                TextView infoField = (TextView) v.findViewById(R.id.info);
+                infoField.setText(Html.fromHtml(marker.getSnippet()));
+                return v;
+
+            }
+
+        });
+
         MapsInitializer.initialize(this.getActivity());
 
-        MapObject selectedObject = SelectionManager.get().getSelectedObject();
-        if (selectedObject != null) {
+        // Deserialize object sent from ListActivity, then set it selected.
+        // Sets null if no object was sent.
+        Intent i = this.getActivity().getIntent();
+        selectedObject = (MapObject)i.getSerializableExtra("selectedObject");
+
+        if(selectedObject != null){
             PointLocation location = selectedObject.getPointLocation();
-            CameraUpdate cameraLocation = CameraUpdateFactory.newLatLng(new LatLng(location.getLatitude(), location.getLongitude()));
-            CameraUpdate cameraZoom = CameraUpdateFactory.zoomTo(15);
+            CameraUpdate cameraLocation = CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), 18);
             this.map.moveCamera(cameraLocation);
-            this.map.animateCamera(cameraZoom);
         }
 
         requestMapObjects(this.map.getProjection());
@@ -108,17 +143,30 @@ public class GoogleMapFragment extends MapFragment {
                 BitmapDescriptor icon = BitmapDescriptorFactory.fromResource(android.R.drawable.presence_invisible);
                 LatLng location = new LatLng(mapObject.getPointLocation().getLatitude(),
                         mapObject.getPointLocation().getLongitude());
-                if (SelectionManager.get().getSelectedObject() != null &&
-                        mapObject.getId().equals(SelectionManager.get().getSelectedObject().getId())) {
+                if (selectedObject != null &&
+                        mapObject.getId().equals(selectedObject.getId())) {
                     icon = BitmapDescriptorFactory.fromResource(android.R.drawable.presence_online);
                 }
+                StringBuilder snippet = new StringBuilder();
+                for (Map.Entry<String, String> entry : mapObject.getAdditionalProperties().entrySet()) {
+                    snippet.append("<b>");
+                    snippet.append(entry.getKey());
+                    snippet.append(": ");
+                    snippet.append("</b>");
+                    snippet.append(entry.getValue());
+                    snippet.append("<br>");
+                }
+                snippet.append("<br><b><font color=\"blue\">Click for detailed info.</font></b><br>");
                 Marker marker = map.addMarker(
                         new MarkerOptions()
                                 .position(location)
                                 .title(mapObject.getId())
-                                .snippet("[" + mapObject.getPointLocation().getLatitude() +
-                                        ", " + mapObject.getPointLocation().getLongitude() + "]")
+                                .snippet(snippet.toString())
                                 .icon(icon));
+                if(selectedObject != null &&
+                        mapObject.getId().equals(selectedObject.getId())){
+                    marker.showInfoWindow();
+                }
 //                GroundOverlay groundOverlay = map.addGroundOverlay(new GroundOverlayOptions()
 //                        .image(image)
 //                        .positionFromBounds(bounds)

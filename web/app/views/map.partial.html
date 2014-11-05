@@ -1,0 +1,15 @@
+<!-- map.partial.html -->
+<div ng-controller="mapController" class="map">
+
+    <!-- Additional buttons -->
+    <button ng-click="toggleStreetview()" id="panel">{{btnText}}</button>
+    <button id="btnGeolocation"><img width="20" src="img/geo.png"  ></button>
+
+    <!-- Map main canvas -->
+    <div id="map" class="map" ng-controller="mapController"></div>
+
+    <!-- Hidden loading overlay -->
+    <div ng-show="loading" id="loadingOverlay">
+        <div class="loadingContent"><img src="img/ajax-loader_2.gif"></div>
+    </div>
+</div>

@@ -6,6 +6,7 @@ Licence:	MIT License
 -------------------------------------------------------------------*/
 
 html, body{
+    font-family: 'Source Sans Pro', sans-serif;
     height:100%;
     margin: 0;
     padding: 0;
@@ -19,27 +20,154 @@ html, body{
 }
 .w20p,.w80p{
     height: 100%;
+
 }
-#map,
+
 .map {
     height: 100%;
     position: relative;
 }
-.floatl{
+.fleft{
     float: left;
+}
+.fright{
+    float: right;
 }
 .w20p {
     width: 20%;
+    overflow-y: scroll;
 }
 .w80p {
     width: 80%;
+    overflow: hidden;
 }
 #panel {
     position: absolute;
     top: 5px;
     left: 80%;
     z-index: 5;
+
+    direction: ltr;
+    overflow: hidden;
+    text-align: center;
+    color: rgb(0, 0, 0);
+    font-family: Roboto, Arial, sans-serif;
+    -webkit-user-select: none;
+    font-size: 11px;
+    padding: 1px 6px;
+    border-bottom-left-radius: 2px;
+    border-top-left-radius: 2px;
+    -webkit-background-clip: padding-box;
+    border: 1px solid rgba(0, 0, 0, 0.14902);
+    -webkit-box-shadow: rgba(0, 0, 0, 0.298039) 0px 1px 4px -1px;
+    box-shadow: rgba(0, 0, 0, 0.298039) 0px 1px 4px -1px;
+    min-width: 33px;
+    font-weight: 500;
+    background-color: rgb(255, 255, 255);
+    background-clip: padding-box;
+}
+#btnGeolocation{
+    position: absolute;
+    top: 5px;
+    left: 1%;
+    z-index: 5;
     background-color: #fff;
     padding: 5px;
     border: 1px solid #999;
+}
+
+header {
+    background: #edeeef;
+    height: 70px;
+    margin: 0;
+    padding: 0;
+}
+header .logo {
+    margin: 0;
+    margin-left: 20px;
+}
+.logo h4 {
+    margin-top: 25px;
+    margin-left: 10px;
+}
+
+header .user {
+    margin-top: 20px;
+}
+
+header a {
+    color: #184663;
+}
+
+.search-input {
+    width: 100%;
+    padding: 10px;
+}
+
+/* Tabs and sidebar */
+.sidebar {
+    background: #2f3a41;
+}
+#tabs ul,
+.tab-content ul{
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+.tab-content ul li {
+    border-bottom: 1px solid #222e36;
+    color: #fff;
+    padding: 20px 0;
+}
+.tab-content .accord-title {
+
+}
+.tab-content .accord-content {
+
+}
+.tab-content ul {
+
+}
+
+.accord-content {
+    padding: 10px;
+}
+.search-form{
+    margin: 0 0 25px;
+    padding: 12px 14px;
+}
+
+#tabs,
+.tabs-content
+{
+    width: 100%;
+}
+#tabs ul li {
+    background: #1b2831;
+    display: inline-block;
+    width: 49%;
+
+    font-size: 16px;
+    text-align: center;
+}
+#tabs ul li a{
+    color: #fff;
+    padding: 20%;
+    display: block;
+}
+
+#tabs ul li.active {
+    background: #2f3a41;
+}
+
+.loading {
+    text-align: center;
+    width: 100%;
+}
+.accord-title {
+    margin: 0 5px;
+}
+
+.header-toolbar {
+    margin-right: 20px;
 }

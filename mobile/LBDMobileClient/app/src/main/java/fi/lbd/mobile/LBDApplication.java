@@ -7,7 +7,6 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import fi.lbd.mobile.events.BusHandler;
-import fi.lbd.mobile.mapobjects.SelectionManager;
 
 /**
  * Created by tommi on 22.10.2014.
@@ -28,7 +27,6 @@ public class LBDApplication extends Application {
         // TODO: Dependency injection?
         //"the static variables instances are bound to the class loader of the class that first initialized them"
         BusHandler.initialize();
-        SelectionManager.initialize();
         lueTestiData();
 
     }
