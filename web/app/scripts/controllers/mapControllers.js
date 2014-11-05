@@ -2,12 +2,11 @@ var mapControllers = angular.module('mapControllers', []);
 
 mapControllers.controller('mapController', function($scope, $window, StreetlightTest){
 
-
-    var defaultPoint = new google.maps.LatLng(61.497978, 23.764931); // Tampere
+    var defaultPoint = new google.maps.LatLng(61.51241, 23.634931); // Tampere
 
     // Init map
     var mapOptions = {
-        zoom: 13,
+        zoom: 15,
         center: defaultPoint,
         streetViewControl: false, zoomControl: true,
         zoomControlOptions: {
@@ -23,7 +22,33 @@ mapControllers.controller('mapController', function($scope, $window, Streetlight
 
     $scope.map = new google.maps.Map(document.getElementById('map'), mapOptions);
 
-    var markers = [];
+
+    /*** Init google maps events ***/
+
+    var geoButton = document.getElementById('btnGeolocation');
+    google.maps.event.addDomListener(geoButton, 'click', function(){
+
+        if(navigator.geolocation)
+        {
+
+            navigator.geolocation.getCurrentPosition(function(position){
+                var currentPosition =  new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+                $scope.map.setCenter(currentPosition);
+
+            }, function() {
+                handleNoGeolocation(true);
+            });
+
+        }
+    });
+
+    google.maps.event.addListener($scope.map, 'idle', function(){
+        $scope.loading = false;
+    });
+
+
+
+    $scope.markers = [];
 
     // Default marker
     var defaultMarker = new google.maps.Marker({
@@ -32,7 +57,7 @@ mapControllers.controller('mapController', function($scope, $window, Streetlight
         title: 'Item',
         icon: {
             path: google.maps.SymbolPath.CIRCLE,
-            fillColor: 'red',
+            fillColor: 'blue',
             fillOpacity: 0.6,
             scale: 7,
             strokeColor: 'black',
@@ -48,8 +73,9 @@ mapControllers.controller('mapController', function($scope, $window, Streetlight
     panorama = $scope.map.getStreetView();
     panorama.setPosition(defaultPoint);
     panorama.setPov(/** @type {google.maps.StreetViewPov} */({
-        heading: 265,
-        pitch: 0
+        heading: 50,
+        pitch: 0,
+        zoom : 0
     }));
 
     // Toggle button for streetview/2D map
@@ -76,27 +102,12 @@ mapControllers.controller('mapController', function($scope, $window, Streetlight
 
     });
 
-    $scope.setUserLocation = function() {
-        /*** Get user geolocation from browser ***/
-        if(navigator.geolocation)
-        {
-            navigator.geolocation.getCurrentPosition(function(position){
-                var currentPosition =  new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-                $scope.map.setCenter(currentPosition);
-            }, function() {
-                handleNoGeolocation(true);
-            });
-
-        }
-
-    }
 
     $scope.$on('showMarker',function(event, data){
         var markerId = data;
-        var marker = markers[markerId];
+        var marker = $scope.markers[markerId];
         google.maps.event.trigger(marker, 'click');
         panorama.setPosition(marker.getPosition());
-        event.stopPropagation();
     });
 
     /*** Helper functions ***/
@@ -135,25 +146,32 @@ mapControllers.controller('mapController', function($scope, $window, Streetlight
             }
         });
 
-        marker.content = "<div class='infowindow'><h3>"+item.id+"</h3></div>"; // TODO
+        marker.content = "<div class='infowindow'><h3>"+item.id+"</h3><p>"+ item.properties.NIMI + "<br>" + item.properties.LAMPPU_TYYPPI_KOODI + "<br>" + item.properties.LAMPPU_TYYPPI+"</p></div>"; // TODO
 
         // add click event for marker
         google.maps.event.addListener(marker, 'click', function() {
 
             $scope.map.setCenter(marker.getPosition());
             var iWindow = new google.maps.InfoWindow();
-            iWindow.setContent(marker.content);
 
-            if(openedMarkerWindow != null) {
-                openedMarkerWindow.close(); // Close a previous window
+            if(openedMarkerWindow != null)// Close a previous window
+            {
+                openedMarkerWindow.close();
+            }
+            if ($scope.map.getStreetView().getVisible()) {
+                iWindow.setContent(marker.content);
+                iWindow.open($scope.map.getStreetView(), this);
+            } else {
+                iWindow.setContent(marker.content);
+                iWindow.open($scope.map, this);
             }
 
             openedMarkerWindow = iWindow;
-            iWindow.open($scope.map, marker);
 
         });
 
-        markers[item.id] = marker; // Add marker into list
+        $scope.markers[item.id] = marker; // Add marker into list
     }
-});
 
+
+});
