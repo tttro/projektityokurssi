@@ -90,13 +90,15 @@ public class ObjectListFragment extends ListFragment {
 	@Override
     public void onListItemClick(ListView l, View v, int position, long id) {
         //SelectionManager.get().setSelection(this.adapter.get(position));
-        notifyClickListeners(this.adapter.get(position));
+        notifyClickListeners((MapObject)this.adapter.getGroup(position));
 	}
 
     @Subscribe
     public void onEvent(ReturnNearObjectsEvent event) {
         this.adapter.clear();
-        this.adapter.addAll(event.getMapObjects());
+        if (event.getMapObjects() != null) {
+            this.adapter.addAll(event.getMapObjects());
+        }
         this.getListView().requestLayout();
     }
 

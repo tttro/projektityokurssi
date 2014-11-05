@@ -15,6 +15,7 @@ import android.support.v13.app.FragmentPagerAdapter;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.PagerTabStrip;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -136,8 +137,14 @@ public class ListActivity extends Activity {
     }
 
     public void onDetailsClick(View view){
-        Intent intent = new Intent(this, DetailsActivity.class);
-        startActivity(intent);
+
+        // Retrieve object for which the button was pressed
+        MapObject o = (MapObject)view.getTag();
+        if (o != null) {
+            Intent intent = new Intent(this, DetailsActivity.class);
+            intent.putExtra("selectedObject", o);
+            startActivity(intent);
+        }
     }
     public void onMapClick(View view){
         viewPager.setCurrentItem(MAP_TAB);
