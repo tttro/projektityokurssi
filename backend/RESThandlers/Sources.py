@@ -5,7 +5,6 @@ __author__ = 'xc-'
 
 _installedSources = {
     "Streetlights": {
-        "handler": Handler.StreetlightHandler,
-        "id_field": "feature_id"
+        "handler": Handler.StreetlightHandler
     }
 }

@@ -195,6 +195,14 @@ def collection_near(request, *args, **kwargs):
         nrange = float(request.GET.get('range', None))
     except (TypeError, ValueError):
         nrange = None
+    #
+    # urlmini = request.GET.get('mini', "")
+    #
+    # if urlmini.lower() == "true":
+    #     mini = True
+    # else:
+    #     mini = False
+
 
     handlerinterface = kwargs["handlerinterface"]
     collection = kwargs["collection"]
@@ -212,14 +220,15 @@ def collection_near(request, *args, **kwargs):
             mini = False
 
         if nrange is None:
-            items = handlerinterface.get_near(latitude, longitude, mini=mini)
+            items = handlerinterface.get_near(longitude, latitude, mini=mini)
         else:
-            items = handlerinterface.get_near(latitude, longitude, nrange, mini=mini)
-
-        if not mini:
-            items = _addmeta(items, collection)
-
-        return HttpResponse(status=s_codes["OK"], content=json.dumps(items), content_type="application/json")
+            items = handlerinterface.get_near(longitude, latitude, nrange, mini=mini)
+        if items is not None:
+            if not mini:
+                items = _addmeta(items, collection)
+            return HttpResponse(status=s_codes["OK"], content=json.dumps(items), content_type="application/json")
+        else:
+            return HttpResponse(status=s_codes["NOTFOUND"])
 
     #############################################################
     #

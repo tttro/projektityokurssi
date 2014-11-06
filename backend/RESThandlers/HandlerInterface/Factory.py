@@ -13,6 +13,3 @@ class HandlerFactory(object):
 
     def create(self):
         return _installedSources[self._collection_]["handler"]()
-
-    def get_id_field_name(self):
-        return _installedSources[self._collection_]["id_field"]
