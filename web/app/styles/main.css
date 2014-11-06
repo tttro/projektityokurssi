@@ -67,13 +67,12 @@ html, body{
     background-clip: padding-box;
 }
 #btnGeolocation{
-    position: absolute;
-    top: 5px;
-    left: 1%;
-    z-index: 5;
+
     background-color: #fff;
     padding: 5px;
     border: 1px solid #999;
+    margin-right: 5px;
+    margin-left: 5px;
 }
 
 header {
@@ -99,11 +98,13 @@ header a {
     color: #184663;
 }
 
-.search-input {
+.search-input, .sendmsg-form {
     width: 100%;
     padding: 10px;
 }
-
+.sendmsg-form label {
+    color: #fff;
+}
 /* Tabs and sidebar */
 .sidebar {
     background: #2f3a41;
@@ -113,11 +114,13 @@ header a {
     list-style-type: none;
     margin: 0;
     padding: 0;
+    border-top: 1px solid #222e36;
+
 }
 .tab-content ul li {
     border-bottom: 1px solid #222e36;
     color: #fff;
-    padding: 20px 0;
+    padding: 20px 10px;
 }
 .tab-content .accord-title {
 
@@ -133,7 +136,7 @@ header a {
     padding: 10px;
 }
 .search-form{
-    margin: 0 0 25px;
+    margin: 25px 0;
     padding: 12px 14px;
 }
 
@@ -170,4 +173,70 @@ header a {
 
 .header-toolbar {
     margin-right: 20px;
+}
+
+#loadingOverlay {
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    background: #fff;
+    opacity: 0.8;
+    filter: alpha(opacity=80);
+    z-index: 9999;
+}
+
+#loadingOverlay .loadingContent {
+    width: 50px;
+    height: 57px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin: -28px 0 0 -25px;
+}
+
+/* map search */
+.controls {
+    margin-top: 16px;
+    border: 1px solid transparent;
+    border-radius: 2px 0 0 2px;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    height: 32px;
+    outline: none;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+}
+
+#pac-input {
+    background-color: #fff;
+    padding: 0 11px 0 13px;
+    width: 400px;
+    font-family: Roboto;
+    font-size: 15px;
+    font-weight: 300;
+    text-overflow: ellipsis;
+}
+
+#pac-input:focus {
+    border-color: #4d90fe;
+    margin-left: -1px;
+    padding-left: 14px;  /* Regular padding-left + 1. */
+    width: 401px;
+}
+
+.pac-container {
+    font-family: Roboto;
+}
+
+#type-selector {
+    color: #fff;
+    background-color: #4d90fe;
+    padding: 5px 11px 0px 11px;
+}
+
+#type-selector label {
+    font-family: Roboto;
+    font-size: 13px;
+    font-weight: 300;
 }

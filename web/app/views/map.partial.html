@@ -2,8 +2,9 @@
 <div ng-controller="mapController" class="map">
 
     <!-- Additional buttons -->
+    <input id="pac-input" class="controls" type="text" placeholder="Search by address">
     <button ng-click="toggleStreetview()" id="panel">{{btnText}}</button>
-    <button id="btnGeolocation"><img width="20" src="img/geo.png"  ></button>
+    <button id="btnGeolocation" ng-show="btnGeolocation" class="controls"><img width="20" src="img/geo.png" ></button>
 
     <!-- Map main canvas -->
     <div id="map" class="map"></div>
