@@ -10,7 +10,8 @@ from RESThandlers.HandlerInterface.Factory import HandlerFactory
 
 from lbd_backend.LBD_REST_locationdata.decorators import location_collection
 from lbd_backend.LBD_REST_locationdata.models import MetaDocument, MetaData
-from lbd_backend.utils import s_codes
+from lbd_backend.utils import s_codes, geo_json_scheme_validation
+
 
 @location_collection
 @require_http_methods(["GET", "DELETE", "PUT"])
@@ -32,6 +33,8 @@ def single_resource(request, *args, **kwargs):
         #       mongoengine.MultipleObjectsReturned: Multiple objects returned instead of one
         #       NotImplementedError: REST handler does not support this method or it has not been implemented otherwise
         datatemp = handlerinterface.get_by_id(kwargs["resource"])
+
+        print(geo_json_scheme_validation(datatemp))
 
         if datatemp is None:
             return HttpResponse(status=s_codes["NOTFOUND"])
