@@ -3,9 +3,6 @@ var itemControllers = angular.module('itemControllers', []);
 
 itemControllers.controller('itemController', function($scope, $http, $rootScope, StreetlightTest){
 
-    //$scope.items = StreetlightTest.getData(); // Get local data
-
-
         $scope.loading = true;
         StreetlightTest.fetchData(function(results) {
             $scope.items = results;

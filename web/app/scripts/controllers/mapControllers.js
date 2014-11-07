@@ -10,7 +10,8 @@ mapControllers.controller('mapController', function($scope, $window, Streetlight
     var mapOptions = {
         zoom: 15,
         center: defaultPoint,
-        streetViewControl: false, zoomControl: true,
+        streetViewControl: false,
+        zoomControl: true,
         zoomControlOptions: {
             style: google.maps.ZoomControlStyle.LARGE,
             position: google.maps.ControlPosition.TOP_RIGHT
@@ -23,7 +24,7 @@ mapControllers.controller('mapController', function($scope, $window, Streetlight
     }
 
     $scope.map = new google.maps.Map(document.getElementById('map'), mapOptions);
-
+    var infoWindow = new google.maps.InfoWindow();
 
     /*** Init google maps events ***/
 
@@ -42,14 +43,14 @@ mapControllers.controller('mapController', function($scope, $window, Streetlight
                 $scope.loading = true;
                 console.log(position.coords.latitude+", " +position.coords.longitude);
                 var currentPosition =  new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-                StreetlightNear.get(position.coords.latitude, position.coords.longitude,function(results) {
+                /*StreetlightNear.get(position.coords.latitude, position.coords.longitude,function(results) {
                     $scope.items = results;
                     $rootScope.$broadcast('dataIsLoaded');
 
                     loadMarkers(results);
                     $scope.loading = false;
 
-                });
+                });*/
                 createGeoMarker(currentPosition);
 
                 $scope.map.setCenter(currentPosition);
@@ -74,13 +75,13 @@ mapControllers.controller('mapController', function($scope, $window, Streetlight
 
     /*** StreetView ***/
 
-    $scope.panorama;
+    var panorama;
     $scope.btnText = "Streetview";
 
-    $scope.panorama = $scope.map.getStreetView();
-    $scope.panorama.setPosition(defaultPoint);
-    $scope.panorama.setOptions({ enableCloseButton: false });
-    $scope.panorama.setPov(/** @type {google.maps.StreetViewPov} */({
+    panorama = $scope.map.getStreetView();
+    panorama.setPosition(defaultPoint);
+    panorama.setOptions({ enableCloseButton: false });
+    panorama.setPov(/** @type {google.maps.StreetViewPov} */({
         heading: 50,
         pitch: 0,
         zoom : 0
@@ -88,13 +89,13 @@ mapControllers.controller('mapController', function($scope, $window, Streetlight
 
     // Toggle button for streetview/2D map
     $scope.toggleStreetview = function(item, event){
-        var toggle = $scope.panorama.getVisible();
+        var toggle = panorama.getVisible();
         if (toggle == false) {
-            $scope.panorama.setVisible(true);
+            panorama.setVisible(true);
             $scope.btnText = "Go back to 2D map";
             $scope.btnGeolocation = false;
         } else {
-            $scope.panorama.setVisible(false);
+            panorama.setVisible(false);
             $scope.btnText = "Go to StreetView";
             $scope.btnGeolocation = true;
         }
@@ -117,7 +118,7 @@ mapControllers.controller('mapController', function($scope, $window, Streetlight
         var markerId = data;
         var marker = markers[markerId];
         google.maps.event.trigger(marker, 'click');
-        $scope.panorama.setPosition(marker.getPosition());
+        panorama.setPosition(marker.getPosition());
     });
 
     /*** Helper functions ***/
@@ -164,22 +165,21 @@ mapControllers.controller('mapController', function($scope, $window, Streetlight
         google.maps.event.addListener(marker, 'click', function() {
 
             $scope.map.setCenter(marker.getPosition());
-            $scope.panorama.setPosition(marker.getPosition());
-            var iWindow = new google.maps.InfoWindow();
+            panorama.setPosition(marker.getPosition());
 
             if(openedMarkerWindow != null)// Close a previous window
             {
                 openedMarkerWindow.close();
             }
             if ($scope.map.getStreetView().getVisible()) {
-                iWindow.setContent(marker.content);
-                iWindow.open($scope.map.getStreetView(), this);
+                infoWindow.setContent(marker.content);
+                infoWindow.open($scope.map.getStreetView(), this);
             } else {
-                iWindow.setContent(marker.content);
-                iWindow.open($scope.map, this);
+                infoWindow.setContent(marker.content);
+                infoWindow.open($scope.map, this);
             }
 
-            openedMarkerWindow = iWindow;
+            openedMarkerWindow = infoWindow;
 
         });
 
