@@ -1,6 +1,5 @@
 import json
 from unittest import TestCase
-import urllib
 from lbd_backend.utils import geo_json_scheme_validation
 __author__ = 'xc-'
 
@@ -23,6 +22,100 @@ class TestGeo_json_scheme_validation(TestCase):
     def test_geo_json_scheme_validation_valid(self):
         print "Running test: Valid GeoJSON Feature"
         self.assertTrue(geo_json_scheme_validation(self.jsondata), "Validation failed!")
+        print "Test passed!"
+
+    def test_empty_json(self):
+        print "Running test: Empty JSON"
+        temp = {}
+        self.assertFalse(geo_json_scheme_validation(temp), "Validation succeeded with invalid json")
+        print "Test passed!"
+
+    def test_type_key_upper_case(self):
+        print "Running test: Feature type key written in upper case letters"
+        temp = dict(self.jsondata)
+        v = temp["type"]
+        del temp["type"]
+        temp[unicode("TYPE")] = v
+        print temp
+        self.assertFalse(geo_json_scheme_validation(temp), "Validation succeeded with invalid key")
+        print "Test passed!"
+
+    def test_geometry_key_upper_case(self):
+        print "Running test: Feature type key written in upper case letters"
+        temp = dict(self.jsondata)
+        v = temp["geometry"]
+        del temp["geometry"]
+        temp[unicode("GEOMETRY")] = v
+        print temp
+        self.assertFalse(geo_json_scheme_validation(temp), "Validation succeeded with invalid key")
+        print "Test passed!"
+
+    def test_properties_key_upper_case(self):
+        print "Running test: Feature type key written in upper case letters"
+        temp = dict(self.jsondata)
+        v = temp["properties"]
+        del temp["properties"]
+        temp[unicode("PROPERTIES")] = v
+        print temp
+        self.assertFalse(geo_json_scheme_validation(temp), "Validation succeeded with invalid key")
+        print "Test passed!"
+
+    def test_id_key_upper_case(self):
+        print "Running test: Feature type key written in upper case letters"
+        temp = dict(self.jsondata)
+        v = temp["id"]
+        del temp["id"]
+        temp[unicode("ID")] = v
+        print temp
+        self.assertFalse(geo_json_scheme_validation(temp), "Validation succeeded with invalid key")
+        print "Test passed!"
+
+    def test_geometry_type_key_upper_case(self):
+        print "Running test: Feature type key written in upper case letters"
+        temp = dict(self.jsondata)
+        v = temp["geometry"]["type"]
+        del temp["geometry"]["type"]
+        temp["geometry"][unicode("TYPE")] = v
+        print temp
+        self.assertFalse(geo_json_scheme_validation(temp), "Validation succeeded with invalid key")
+        print "Test passed!"
+
+    def test_geometry_coordinates_key_upper_case(self):
+        print "Running test: Feature type key written in upper case letters"
+        temp = dict(self.jsondata)
+        v = temp["geometry"]["coordinates"]
+        del temp["geometry"]["coordinates"]
+        temp["geometry"][unicode("COORDINATES")] = v
+        print temp
+        self.assertFalse(geo_json_scheme_validation(temp), "Validation succeeded with invalid key")
+        print "Test passed!"
+
+    def test_properties_metadata_key_upper_case(self):
+        print "Running test: Feature type key written in upper case letters"
+        temp = dict(self.jsondata)
+        v = temp["properties"]["metadata"]
+        del temp["properties"]["metadata"]
+        temp["properties"][unicode("METADATA")] = v
+        print temp
+        self.assertFalse(geo_json_scheme_validation(temp), "Validation succeeded with invalid key")
+        print "Test passed!"
+
+    def test_properties_metadata_status_key_upper_case(self):
+        print "Running test: Feature type key written in upper case letters"
+        temp = dict(self.jsondata)
+        v = temp["properties"]["metadata"]["status"]
+        del temp["properties"]["metadata"]["status"]
+        temp["properties"]["metadata"][unicode("STATUS")] = v
+        print temp
+        self.assertFalse(geo_json_scheme_validation(temp), "Validation succeeded with invalid key")
+        print "Test passed!"
+
+    def test_type_value_upper_case(self):
+        print "Running test: Feature type value written in upper case letters"
+        temp = dict(self.jsondata)
+        temp["type"] = unicode("FEATURE")
+        print temp
+        self.assertTrue(geo_json_scheme_validation(temp), "Validation failed with minor style mistake")
         print "Test passed!"
 
     def test_undefined_type_value(self):
@@ -56,17 +149,19 @@ class TestGeo_json_scheme_validation(TestCase):
             if type(item) is not skip:
                 temp = dict(self.jsondata)
                 temp["type"] = item
-                temp_result = geo_json_scheme_validation(temp)
+                try:
+                    temp_result = geo_json_scheme_validation(temp)
+                except Exception as e:
+                    temp_result = e.message
                 results[str(type(item))] = temp_result
                 if temp_result == True:
                     to_fail = True
         print "Results:"
-        for r,v in results.iteritems():
+        for r, v in results.iteritems():
             print str(r)+":"+str(v)
         if to_fail:
             self.fail("Validation succeeded with wrong element type")
         print "Test passed!"
-
 
     def test_missing_geometry(self):
         print "Running test: Missing 'geometry' field"
@@ -107,10 +202,10 @@ class TestGeo_json_scheme_validation(TestCase):
                 temp["geometry"]["type"] = item
                 temp_result = geo_json_scheme_validation(temp)
                 results[str(type(item))] = temp_result
-                if temp_result == True:
+                if temp_result:
                     to_fail = True
         print "Results:"
-        for r,v in results.iteritems():
+        for r, v in results.iteritems():
             print str(r)+":"+str(v)
         if to_fail:
             self.fail()
@@ -140,7 +235,7 @@ class TestGeo_json_scheme_validation(TestCase):
                 if temp_result == True:
                     to_fail = True
         print "Results:"
-        for r,v in results.iteritems():
+        for r, v in results.iteritems():
             print str(r)+":"+str(v)
         if to_fail:
             self.fail()
@@ -160,7 +255,7 @@ class TestGeo_json_scheme_validation(TestCase):
                 if temp_result == True:
                     to_fail = True
         print "Results:"
-        for r,v in results.iteritems():
+        for r, v in results.iteritems():
             print str(r)+":"+str(v)
         if to_fail:
             self.fail()
@@ -180,7 +275,7 @@ class TestGeo_json_scheme_validation(TestCase):
                 if temp_result == True:
                     to_fail = True
         print "Results:"
-        for r,v in results.iteritems():
+        for r, v in results.iteritems():
             print str(r)+":"+str(v)
         if to_fail:
             self.fail()
@@ -214,7 +309,7 @@ class TestGeo_json_scheme_validation(TestCase):
                 if temp_result == True:
                     to_fail = True
         print "Results:"
-        for r,v in results.iteritems():
+        for r, v in results.iteritems():
             print str(r)+":"+str(v)
         if to_fail:
             self.fail()
@@ -245,7 +340,7 @@ class TestGeo_json_scheme_validation(TestCase):
                 if temp_result == True:
                     to_fail = True
         print "Results:"
-        for r,v in results.iteritems():
+        for r, v in results.iteritems():
             print str(r)+":"+str(v)
         if to_fail:
             self.fail()
@@ -286,8 +381,94 @@ class TestGeo_json_scheme_validation(TestCase):
                 if temp_result == True:
                     to_fail = True
         print "Results:"
-        for r,v in results.iteritems():
+        for r, v in results.iteritems():
             print str(r)+":"+str(v)
         if to_fail:
             self.fail()
+        print "Test passed!"
+
+    def test_extra_top_level_field(self):
+        print "Running test: Extra top level field"
+        temp = dict(self.jsondata)
+        temp["dasfooBAR"] = unicode("BLERGH")
+        print temp
+        self.assertTrue(geo_json_scheme_validation(temp), "Validation failed with extra field")
+        print "Test passed!"
+
+
+class TestGeo_json_scheme_validation_FeatureCollection(TestCase):
+
+    def __init__(self, *args, **kwargs):
+        super(TestGeo_json_scheme_validation_FeatureCollection, self).__init__(*args, **kwargs)
+
+        # valid GeoJSON Feature
+        jsonstring = '{"totalFeatures": 2, "type": "FeatureCollection", "features": [{"geometry": {"type": "Point", ' \
+                     '"coordinates": [23.643239226767022, 61.519112683582854]}, "id": "WFS_KATUVALO.405172", "type": ' \
+                     '"Feature", "properties": {"NIMI": "XPWR_6769212", "LAMPPU_TYYPPI_KOODI": "100340", ' \
+                     '"TYYPPI_KOODI": "105007", "KATUVALO_ID": 405172, "LAMPPU_TYYPPI": "ST 100 (SIEMENS)", ' \
+                     '"metadata": {"status": "SNAFU", "modifier": "Seppo S\u00e4hk\u00e4ri", ' \
+                     '"modified": 1414663769}}, "geometry_name": "GEOLOC"}, {"geometry": {"type": "Point", ' \
+                     '"coordinates": [23.643239226767022, 61.519112683582854]}, "id": "WFS_KATUVALO.405171", "type": ' \
+                     '"Feature", "properties": {"NIMI": "XPWR_6769211", "LAMPPU_TYYPPI_KOODI": "100340", ' \
+                     '"TYYPPI_KOODI": "105007", "KATUVALO_ID": 405171, "LAMPPU_TYYPPI": "ST 100 (SIEMENS)", ' \
+                     '"metadata": {"status": "SNAFU", "modifier": "Seppo S\u00e4hk\u00e4ri", ' \
+                     '"modified": 1414663769}}, "geometry_name": "GEOLOC"}]}'
+        self.jsondata = json.loads(jsonstring)
+        # List of types to test
+        self.typetestlist = [1, 1.0, unicode("Foo"), str("Bar"), {"a": "b"}, ("a", "b"), ["a", "b"]]
+
+    def test_featurecollection_valid(self):
+        print "Running test: Valid featurecollection"
+        self.assertTrue(geo_json_scheme_validation(self.jsondata), "Validation failed with valid geojson")
+        print "Test passed!"
+
+    def test_totalfeatures_key_upper_case(self):
+        print "Running test: totalfeatures in upper case"
+        temp = dict(self.jsondata)
+        v = temp["totalFeatures"]
+        del temp["totalFeatures"]
+        temp[unicode("TOTALFEATURES")] = v
+        print temp
+        self.assertFalse(geo_json_scheme_validation(temp), "Validation succeeded with incorrect field name")
+        print "Test passed!"
+
+    def test_type_key_upper_case(self):
+        print "Running test: type in upper case"
+        temp = dict(self.jsondata)
+        v = temp["type"]
+        del temp["type"]
+        temp[unicode("TYPE")] = v
+        print temp
+        self.assertFalse(geo_json_scheme_validation(temp), "Validation succeeded with incorrect field name")
+        print "Test passed!"
+
+    def test_features_key_upper_case(self):
+        print "Running test: features in upper case"
+        temp = dict(self.jsondata)
+        v = temp["features"]
+        del temp["features"]
+        temp[unicode("FEATURES")] = v
+        print temp
+        self.assertFalse(geo_json_scheme_validation(temp), "Validation succeeded with incorrect field name")
+        print "Test passed!"
+
+    def test_totalfeatures_missing(self):
+        print "Running test: missing totalFeatures field"
+        temp = dict(self.jsondata)
+        del temp["totalFeatures"]
+        self.assertTrue(geo_json_scheme_validation(temp), "Validation failed with optional field missing")
+        print "Test passed!"
+
+    def test_type_missing(self):
+        print "Running test: missing type field"
+        temp = dict(self.jsondata)
+        del temp["type"]
+        self.assertFalse(geo_json_scheme_validation(temp), "Validation succeeded with required field missing")
+        print "Test passed!"
+
+    def test_features_missing(self):
+        print "Running test: missing features field"
+        temp = dict(self.jsondata)
+        del temp["features"]
+        self.assertFalse(geo_json_scheme_validation(temp), "Validation succeeded with required field missing")
         print "Test passed!"

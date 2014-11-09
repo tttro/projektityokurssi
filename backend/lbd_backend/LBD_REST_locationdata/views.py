@@ -229,6 +229,7 @@ def collection_near(request, *args, **kwargs):
         if items is not None:
             if not mini:
                 items = _addmeta(items, collection)
+            print geo_json_scheme_validation(items)
             return HttpResponse(status=s_codes["OK"], content=json.dumps(items), content_type="application/json")
         else:
             return HttpResponse(status=s_codes["NOTFOUND"])
