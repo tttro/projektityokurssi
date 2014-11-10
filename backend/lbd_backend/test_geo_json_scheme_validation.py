@@ -1,8 +1,9 @@
+# -*- coding: utf-8 -*-
+__author__ = 'Aki Mäkinen'
+
 import json
 from unittest import TestCase
 from lbd_backend.utils import geo_json_scheme_validation
-__author__ = 'xc-'
-
 
 class TestGeo_json_scheme_validation(TestCase):
 
@@ -472,3 +473,19 @@ class TestGeo_json_scheme_validation_FeatureCollection(TestCase):
         del temp["features"]
         self.assertFalse(geo_json_scheme_validation(temp), "Validation succeeded with required field missing")
         print "Test passed!"
+
+    def test_empty_feature(self):
+        print "Running test: one feature is empty"
+        temp = dict(self.jsondata)
+        temp["features"][0] = {}
+        print temp
+        self.assertFalse(geo_json_scheme_validation(temp), "Validation succeeded with empty feature")
+        print "Test passed!"
+
+    def test_invalid_feature(self):
+        print "Running test: invalid feature"
+        temp = dict(self.jsondata)
+        del temp["features"][0]["type"]
+        print temp
+        self.assertFalse(geo_json_scheme_validation(temp), "Validation succeeded with invalid feature")
+        print "Test passed"

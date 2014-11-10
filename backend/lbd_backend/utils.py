@@ -1,5 +1,12 @@
-__author__ = 'xc-'
-import json
+# -*- coding: utf-8 -*-
+"""
+.. module:: Backend.utils
+    :platform: Unix, Windows
+.. moduleauthor:: Aki Mäkinen <aki.makinen@outlook.com>
+
+"""
+
+__author__ = 'Aki Mäkinen'
 
 s_codes = {
     "OK": 200,
@@ -47,6 +54,14 @@ _geojson_featurecollection_fields = {
 }
 
 def geo_json_scheme_validation(jsondict):
+    """
+    GeoJSON validator
+    :param jsondict:
+    :return:
+    """
+    if not isinstance(jsondict, dict):
+        return False
+
     if "type" in jsondict:
         # Check that the given itemdict follows the given format.
         # Stops at the first error returning False

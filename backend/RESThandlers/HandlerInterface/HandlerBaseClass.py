@@ -1,4 +1,11 @@
-__author__ = 'xc-'
+# -*- coding: utf-8 -*-
+"""
+.. module:: Handlers.Interface.base
+    :platform: Unix, Windows
+.. moduleauthor:: Aki Mäkinen <aki.makinen@outlook.com>
+
+"""
+__author__ = 'Aki Mäkinen'
 
 # Class HandlerBase
 # Interface and base for Handler classes. If REST or duplication database does not support a function (for example
@@ -89,4 +96,4 @@ class HandlerBase(object):
         raise NotImplementedError("Not Implemented")
 
     def search_from_rest(self, phrase):
-        raise NotImplementedError("Search fw wrom REST not Implemented")
+        raise NotImplementedError("Search from REST not Implemented")
