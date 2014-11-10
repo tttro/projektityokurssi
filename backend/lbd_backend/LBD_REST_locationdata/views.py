@@ -17,14 +17,16 @@ import mongoengine
 from django.shortcuts import HttpResponse
 from django.views.decorators.http import require_http_methods
 from pymongo.errors import DuplicateKeyError
+import time
 
 from RESThandlers.HandlerInterface.Factory import HandlerFactory
-from lbd_backend.LBD_REST_locationdata.decorators import location_collection
+from lbd_backend.LBD_REST_locationdata.decorators import location_collection, this_is_a_login_wrapper_dummy
 from lbd_backend.LBD_REST_locationdata.models import MetaDocument, MetaData
 from lbd_backend.utils import s_codes, geo_json_scheme_validation
 
 
 @location_collection
+@this_is_a_login_wrapper_dummy
 @require_http_methods(["GET", "DELETE", "PUT"])
 def single_resource(request, *args, **kwargs):
     """
@@ -66,9 +68,6 @@ def single_resource(request, *args, **kwargs):
         #       mongoengine.MultipleObjectsReturned: Multiple objects returned instead of one
         #       NotImplementedError: REST handler does not support this method or it has not been implemented otherwise
         datatemp = handlerinterface.get_by_id(kwargs["resource"])
-
-        print(geo_json_scheme_validation(datatemp))
-
         if datatemp is None:
             return HttpResponse(status=s_codes["NOTFOUND"])
         else:
@@ -106,33 +105,39 @@ def single_resource(request, *args, **kwargs):
     #############################################################
     elif request.method == "PUT":
         body = request.body
-
         content_json = json.loads(body)
-        try:
-            temp = MetaDocument.objects().get(open_data_id__document_id=content_json["open_data_id"]["document_id"])
-            temp.meta_data.status = content_json["meta_data"]["status"]
-            temp.save()
-        except mongoengine.DoesNotExist:
+        if geo_json_scheme_validation(content_json):
             try:
-                temp = MetaDocument(open_data_id=DataId(
-                                                    id_field_name=content_json["open_data_id"]["id_field_name"],
-                                                    document_id=content_json["open_data_id"]["document_id"]
-                                ),
-                                meta_data=MetaData(
-                                                    status=content_json["meta_data"]["status"]
-                                )
-                )
-                temp.save()
-            except mongoengine.NotUniqueError:
-                return HttpResponse(status=s_codes["NOTFOUND"])
-        except mongoengine.MultipleObjectsReturned:
-            return HttpResponse(status=s_codes["NOTFOUND"])
+                try:
+                    temp = MetaDocument.objects().get(feature_id=content_json["id"])
+                    temp.meta_data.status = content_json["meta_data"]["status"]
+                    temp.meta_data.modified = int(time.time())
+                    temp.save()
+                except mongoengine.DoesNotExist:
+                    try:
+                        temp = MetaDocument(open_data_id=DataId(
+                                                            id_field_name=content_json["open_data_id"]["id_field_name"],
+                                                            document_id=content_json["open_data_id"]["document_id"]
+                                        ),
+                                        meta_data=MetaData(
+                                                            status=content_json["meta_data"]["status"]
+                                        )
+                        )
+                        temp.save()
+                    except mongoengine.NotUniqueError:
+                        return HttpResponse(status=s_codes["NOTFOUND"])
+                except mongoengine.MultipleObjectsReturned:
+                    return HttpResponse(status=s_codes["NOTFOUND"])
+                return HttpResponse(status=s_codes["OK"])
 
+            except KeyError:
+                return HttpResponse(status=s_codes["BAD"])
 
-        return HttpResponse(status=s_codes["OK"])
-
+        else:
+            return HttpResponse(status=s_codes["BAD"])
 
 @location_collection
+@this_is_a_login_wrapper_dummy
 @require_http_methods(["GET", "DELETE", "PUT", "POST"])
 def collection(request, *args, **kwargs):
     """
@@ -204,25 +209,11 @@ def collection(request, *args, **kwargs):
     #
     #############################################################
     elif request.method == "POST":
-        itemjson = json.loads(request.body)
-        try:
-            temp = MetaDocument(open_data_id=DataId(
-                                                        id_field_name=itemjson["open_data_id"]["id_field_name"],
-                                                        document_id=itemjson["open_data_id"]["document_id"]
-                                    ),
-                                    meta_data=MetaData(
-                                                        status=itemjson["meta_data"]["status"]
-                                    )
-                    )
-            temp.save()
-        except mongoengine.NotUniqueError:
-            return HttpResponse(status=s_codes["NOTFOUND"])
-        return HttpResponse(status=s_codes["OK"])
-
-    return HttpResponse(status=s_codes["TEAPOT"])
+        return HttpResponse(status=s_codes["TEAPOT"])
 
 
 @location_collection
+@this_is_a_login_wrapper_dummy
 @require_http_methods(["GET", "DELETE"])
 def collection_near(request, *args, **kwargs):
     try:
@@ -288,6 +279,7 @@ def collection_near(request, *args, **kwargs):
 
 
 @location_collection
+@this_is_a_login_wrapper_dummy
 @require_http_methods(["GET", "DELETE"])
 def collection_inarea(request, *args, **kwargs):
     try:

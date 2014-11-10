@@ -30,3 +30,19 @@ def location_collection(func):
         except NotImplementedError:
             return HttpResponse(status=418)
     return wrapper
+
+def this_is_a_login_wrapper_dummy(func):
+    @wraps(func)
+    def wrapper(request, *args, **kwargs):
+        users = ["SimoSahkari",
+                 "TiinaTeekkari",
+                 "HeliHumanisti",
+                 "TeePannu"]
+        if "HTTP_LBD_LOGIN_HEADER" in request.META:
+            if request.META["HTTP_LBD_LOGIN_HEADER"] in users:
+                return func(request, *args, **kwargs)
+            else:
+                return HttpResponse(status=403)
+        else:
+            return HttpResponse(status=400)
+    return wrapper
