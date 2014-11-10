@@ -1,1 +1,31 @@
-message
+<div class="search-form">
+    <div class="input-group">
+        <input type="text" class="form-control" ng-model="searchMessage">
+      <span class="input-group-btn">
+        <button class="btn btn-default" type="button">Search</button>
+      </span>
+    </div><!-- /input-group -->
+</div>
+
+<div class="sendmsg-form">
+    <div class="form-group">
+        <label for="messageTitle">Title</label>
+        <input type="text" class="form-control" id="messageTitle" placeholder="Enter title">
+    </div>
+    <div class="form-group">
+        <label for="messageContent">Content</label>
+        <textarea class="form-control" rows="3" id="messageContent"></textarea>
+    </div>
+    <button class="btn btn-primary">Send</button>
+</div>
+        <ul>
+            <li ng-repeat="message in messageList | filter:searchMessage">
+                <div class="accord-title" is-open="m.open" ng-click="m.open = !m.open">
+                    {{message.date}} {{message.title}}
+                </div>
+                <div class="accord-content" ng-show="m.open" >
+                   {{message.content}}
+                </div>
+            </li>
+        </ul>
+
