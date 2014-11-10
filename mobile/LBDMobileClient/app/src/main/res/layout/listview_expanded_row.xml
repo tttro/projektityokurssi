@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="10dp">
+
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Show details"
+        android:id="@+id/detailsButton"
+        android:background="#fff"
+        android:layout_marginLeft="20dp"
+        android:layout_gravity="top"
+        android:padding="5dp"
+        android:onClick="onDetailsClick"/>
+
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:text="Show on map"
+        android:background="#fff"
+        android:id="@+id/mapButton"
+        android:layout_marginLeft="20dp"
+        android:layout_gravity="top"
+        android:padding="5dp"
+        android:onClick="onMapClick"/>
+
+</LinearLayout>
