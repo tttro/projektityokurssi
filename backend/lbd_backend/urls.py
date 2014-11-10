@@ -1,20 +1,20 @@
-from django.conf.urls import patterns, include, url
+# -*- coding: utf-8 -*-
+"""
+.. module:: lbd_backend.urls
+    :platform: Unix, Windows
+    :synopsis: This module handles http requests related to location data.
+"""
+
+__author__ = 'Aki Mäkinen'
+
+
+from django.conf.urls import patterns, url
 from lbd_backend.LBD_REST_locationdata.views import single_resource, collection, \
-    collection_near, getjson, collection_inarea
+    collection_near, collection_inarea
 from django.contrib import admin
 admin.autodiscover()
 
 urlpatterns = patterns('',
-    # Examples:
-    # url(r'^$', 'lbd_backend.views.home', name='home'),
-    # url(r'^blog/', include('blog.urls')),
-
-    #url(r'^admin/', include(admin.site.urls)),
-    #url(r'^$', getjson),
-    #url(r'^changejson$', changejson),
-    # url(r'^api/(?P<collection>\w+)$', changejson),
-    # url(r'^api/(?P<collection>\w+)/(?P<resource>\w+)$', resttest),
-
     # REST API
     url(r'^locationdata/api/(?P<collection>\w+)/$', collection),
     url(r'^locationdata/api/(?P<collection>\w+)/(?P<resource>(\w|\.)+)$', single_resource),

@@ -1,3 +1,13 @@
+# -*- coding: utf-8 -*-
+"""
+.. module:: Handlers.Streetlight.models
+    :platform: Unix, Windows
+.. moduleauthor:: Aki Mäkinen <aki.makinen@outlook.com>
+
+"""
+
+__author__ = 'Aki Mäkinen'
+
 from mongoengine import *
 
 class Geometry(EmbeddedDocument):

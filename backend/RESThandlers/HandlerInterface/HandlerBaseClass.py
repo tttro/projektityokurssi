@@ -1,4 +1,11 @@
-__author__ = 'xc-'
+# -*- coding: utf-8 -*-
+"""
+.. module:: Handlers.Interface.base
+    :platform: Unix, Windows
+.. moduleauthor:: Aki Mäkinen <aki.makinen@outlook.com>
+
+"""
+__author__ = 'Aki Mäkinen'
 
 # Class HandlerBase
 # Interface and base for Handler classes. If REST or duplication database does not support a function (for example
@@ -59,16 +66,9 @@ class HandlerBase(object):
     def delete_all(self):
         raise NotImplementedError("Not Implemented")
 
-    # Delete_item_by_handler_id
-    # Parameters:
-    #       string iid: id used in the REST to identify different objects
-    # Deletes the item with the given id from REST
-    def delete_item_by_handler_id(self, iid):
-        raise NotImplementedError("Not Implemented")
-
     # Function delete_item_by_id
     # Parameters:
-    #       iid: a MongoDB id
+    #       iid: a GeoJSON id
     # Return values:
     #       Boolean: True if one item was deleted, False if deletion failed
     def delete_item_by_id(self, iid):
@@ -96,4 +96,4 @@ class HandlerBase(object):
         raise NotImplementedError("Not Implemented")
 
     def search_from_rest(self, phrase):
-        raise NotImplementedError("Search fw wrom REST not Implemented")
+        raise NotImplementedError("Search from REST not Implemented")

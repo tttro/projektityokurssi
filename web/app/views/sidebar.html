@@ -1,5 +1,7 @@
+<!-- sidebar.html -->
+<!-- Tabs -->
 <div id="tabs">
-    <ul>
+    <ul ng-init="tab = 'items'">
         <li ng-class="{active: tab == 'items'}">
             <a ng-click="tab = 'items'"><img src="img/point.png" alt="point img"><br>Items</a>
         </li>
@@ -8,6 +10,7 @@
         </li>
     </ul>
 </div>
+<!-- // Tabs -->
 <div class="tab-content">
     <div ng-switch="tab">
         <!-- Items -->
@@ -20,3 +23,4 @@
         </div>
     </div>
 </div>
+<!-- // sidebar.html -->
