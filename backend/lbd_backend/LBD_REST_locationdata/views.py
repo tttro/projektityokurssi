@@ -115,15 +115,7 @@ def single_resource(request, *args, **kwargs):
                     temp.save()
                 except mongoengine.DoesNotExist:
                     try:
-                        temp = MetaDocument(open_data_id=DataId(
-                                                            id_field_name=content_json["open_data_id"]["id_field_name"],
-                                                            document_id=content_json["open_data_id"]["document_id"]
-                                        ),
-                                        meta_data=MetaData(
-                                                            status=content_json["meta_data"]["status"]
-                                        )
-                        )
-                        temp.save()
+                        pass
                     except mongoengine.NotUniqueError:
                         return HttpResponse(status=s_codes["NOTFOUND"])
                 except mongoengine.MultipleObjectsReturned:
