@@ -99,13 +99,6 @@ public class GoogleMapFragment extends MapFragment implements OnInfoWindowClickL
         });
 
         MapsInitializer.initialize(this.getActivity());
-
-        // Deserialize object sent from ListActivity, then set it selected.
-        // Sets null if no object was sent.
-       // Intent i = this.getActivity().getIntent();
-        //selectedObject = (MapObject)i.getSerializableExtra("selectedObject");
-
-        // TODO: siirä nämä jonnekin missä suoritetaan aina karttavälilehden aktivoituessa
         MapObject o = SelectionManager.get().getSelectedObject();
         if(o != null){
             PointLocation location = o.getPointLocation();
@@ -210,7 +203,6 @@ public class GoogleMapFragment extends MapFragment implements OnInfoWindowClickL
         startActivity(intent);
     }
 
-    // TODO: Keksi järkevämpi tapa tehdä ??
     @Subscribe
     public void onEvent(SelectMapObjectEvent event){
         MapsInitializer.initialize(this.getActivity());

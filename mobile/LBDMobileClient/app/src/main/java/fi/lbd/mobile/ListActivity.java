@@ -14,12 +14,13 @@ import android.support.annotation.NonNull;
 import android.support.v13.app.FragmentPagerAdapter;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
-import android.support.v4.view.PagerTabStrip;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 import android.view.View;
+
+import com.google.android.gms.maps.GoogleMapOptions;
 
 import fi.lbd.mobile.events.BusHandler;
 import fi.lbd.mobile.events.SelectMapObjectEvent;
@@ -78,8 +79,6 @@ public class ListActivity extends Activity {
             public void onPageScrollStateChanged(int i) {}
         });
     }
-
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -144,23 +143,34 @@ public class ListActivity extends Activity {
     }
 
     public void onDetailsClick(View view){
-
         // Retrieve object for which the button was pressed
-        MapObject o = (MapObject)view.getTag();
-        if (o != null) {
+        MapObject object = null;
+        try {
+            object = (MapObject)((View)(view.getParent()).getParent()).getTag();
+        } catch (Exception e){
+            e.printStackTrace();
+            Log.d("NO OBJECT TAG RECEIVED", "-----ON DETAILS CLICK");
+        }
+        if (object != null) {
+            SelectionManager.get().setSelection(object);
             Intent intent = new Intent(this, DetailsActivity.class);
-            intent.putExtra("selectedObject", o);
             startActivity(intent);
         }
     }
     public void onMapClick(View view){
-        MapObject o = (MapObject)view.getTag();
-
-        Log.d("TAG RECEIVED------------------", o.getId());
-
-        SelectionManager.get().setSelection(o);
-        BusHandler.getBus().post(new SelectMapObjectEvent());
-        viewPager.setCurrentItem(MAP_TAB);
+        // Retrieve object for which the button was pressed
+        MapObject object = null;
+        try {
+            object = (MapObject)((View)(view.getParent()).getParent()).getTag();
+        } catch (Exception e){
+            e.printStackTrace();
+            Log.d("NO OBJECT TAG RECEIVED", "-----ON MAP CLICK");
+        }
+        if (object != null){
+            SelectionManager.get().setSelection(object);
+            BusHandler.getBus().post(new SelectMapObjectEvent());
+            viewPager.setCurrentItem(MAP_TAB);
+        }
     }
 
     // http://stackoverflow.com/questions/13185476/how-to-handle-back-button-using-view-pager
@@ -170,6 +180,7 @@ public class ListActivity extends Activity {
             pageStack.pop();
             viewPager.setCurrentItem(pageStack.peek(), true);
         } else {
+            pageStack.clear();
             super.onBackPressed(); // This will pop the Activity from the stack.
         }
     }

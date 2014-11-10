@@ -106,14 +106,11 @@ public class ListExpandableAdapter extends BaseExpandableListAdapter {
         if (view == null) {
             LayoutInflater inflater = ((Activity) this.context).getLayoutInflater();
             view = inflater.inflate(R.layout.listview_expanded_row, parent, false);
-
-
         }
-        // Cant recover parent´s tag in ListActivity??
-        // TODO: better solution
-        view.findViewById(R.id.detailsButton).setTag(getGroup(groupPosition));
-        view.findViewById(R.id.mapButton).setTag(getGroup(groupPosition));
-        Log.d("TAG SET-----------------------------------------------------------------------", ((MapObject)getGroup(groupPosition)).getId());
+        // Tag links the expanded item to its location object
+        parent.setTag(getGroup(groupPosition));
+        Log.d("TAG SET--------------------", ((MapObject)getGroup(groupPosition)).getId());
+
         /*
         view.setOnClickListener(new View.OnClickListener() {
             @Override

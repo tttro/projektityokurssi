@@ -16,12 +16,11 @@ public class DetailsActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_details);
-        Intent i = this.getIntent();
-        MapObject o = (MapObject)i.getSerializableExtra("selectedObject");
+        MapObject object = SelectionManager.get().getSelectedObject();
 
-        if(o != null) {
+        if(object != null) {
             TextView text = (TextView) findViewById(R.id.detailsText);
-            text.setText("This is a detail view for object    " + o.getId());
+            text.setText("This is a detail view for object    " + object.getId());
         }
         else {
             TextView text = (TextView) findViewById(R.id.detailsText);
