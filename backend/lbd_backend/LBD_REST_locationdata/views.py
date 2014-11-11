@@ -108,18 +108,26 @@ def single_resource(request, *args, **kwargs):
         content_json = json.loads(body)
         if geo_json_scheme_validation(content_json):
             try:
+                if content_json["id"] != kwargs["resource"]:
+                    return HttpResponse(status=s_codes["BAD"])
                 try:
                     temp = MetaDocument.objects().get(feature_id=content_json["id"])
-                    temp.meta_data.status = content_json["meta_data"]["status"]
+                    temp.meta_data.status = content_json["properties"]["metadata"]["status"]
                     temp.meta_data.modified = int(time.time())
+                    temp.meta_data.modifier = kwargs["lbduser"]
                     temp.save()
                 except mongoengine.DoesNotExist:
                     try:
-                        pass
+                        temp = MetaDocument(feature_id = content_json["id"], collection = kwargs["collection"],
+                                            meta_data = MetaData(
+                                                status = content_json["properties"]["metadata"]["status"],
+                                                modified = int(time.time()), modifier = kwargs["lbduser"]
+                                            ))
+                        temp.save()
                     except mongoengine.NotUniqueError:
-                        return HttpResponse(status=s_codes["NOTFOUND"])
+                        return HttpResponse(status=s_codes["INTERNALERROR"])
                 except mongoengine.MultipleObjectsReturned:
-                    return HttpResponse(status=s_codes["NOTFOUND"])
+                    return HttpResponse(status=s_codes["INTERNALERROR"])
                 return HttpResponse(status=s_codes["OK"])
 
             except KeyError:
@@ -177,20 +185,24 @@ def collection(request, *args, **kwargs):
     elif request.method == "PUT":
         MetaDocument.objects().delete()
         if MetaDocument.objects().count() == 0:
-            coljson = json.loads(request.body)
-            itemlist = list()
-            for item in coljson:
-                temp = MetaDocument(open_data_id=DataId(
-                                                    id_field_name=item["open_data_id"]["id_field_name"],
-                                                    document_id=item["open_data_id"]["document_id"]
-                                ),
-                                meta_data=MetaData(
-                                                    status=item["meta_data"]["status"]
-                                )
-                )
-                itemlist.append(temp)
-
-            MetaDocument.objects().insert(itemlist)
+            body = request.body
+            content_json = json.loads(body)
+            if geo_json_scheme_validation(content_json):
+                try:
+                    for feature in content_json["features"]:
+                        try:
+                            temp = MetaDocument(feature_id = feature["id"], collection = kwargs["collection"],
+                                        meta_data = MetaData(
+                                            status = feature["properties"]["metadata"]["status"],
+                                            modified = int(time.time()), modifier = kwargs["lbduser"]
+                                        ))
+                            temp.save()
+                        except mongoengine.NotUniqueError:
+                            pass
+                except KeyError:
+                    return HttpResponse(status=s_codes["BAD"])
+            else:
+                return HttpResponse(status=s_codes["BAD"])
             return HttpResponse(status=s_codes["OK"])
         else:
             return HttpResponse(status=s_codes["INTERNALERROR"])
@@ -201,7 +213,25 @@ def collection(request, *args, **kwargs):
     #
     #############################################################
     elif request.method == "POST":
-        return HttpResponse(status=s_codes["TEAPOT"])
+        body = request.body
+        content_json = json.loads(body)
+        if geo_json_scheme_validation(content_json):
+            try:
+                temp = MetaDocument(feature_id = content_json["id"], collection = kwargs["collection"],
+                                    meta_data = MetaData(
+                                        status = content_json["properties"]["metadata"]["status"],
+                                        modified = int(time.time()), modifier = kwargs["lbduser"]
+                                    ))
+                temp.save()
+            except mongoengine.NotUniqueError:
+                pass
+            except KeyError:
+                return HttpResponse(status=s_codes["BAD"])
+
+            return HttpResponse(status=s_codes["OK"])
+        else:
+            return HttpResponse(status=s_codes["BAD"])
+
 
 
 @location_collection
