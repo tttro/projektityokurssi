@@ -38,11 +38,6 @@ ROOT_URLCONF = 'lbd_backend.urls'
 
 WSGI_APPLICATION = 'lbd_backend.wsgi.application'
 
-DATABASES = {
-    'default': {
-        'ENGINE': '',
-    }
-}
 mongoengine.connect("lbd_backend", host="127.0.0.1:27017")
 
 LANGUAGE_CODE = 'en-us'
@@ -60,3 +55,4 @@ AUTHENTICATION_BACKENDS = (
                             )
 SESSION_ENGINE = 'mongoengine.django.sessions'
 
+TEST_RUNNER = 'lbd_backend.LBD_REST_locationdata.testrunner.NoSQLTestRunner'

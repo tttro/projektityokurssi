@@ -56,9 +56,16 @@ _geojson_featurecollection_fields = {
 
 def geo_json_scheme_validation(jsondict):
     """
-    GeoJSON validator
-    :param jsondict:
-    :return:
+    A simple GeoJSON validator.
+
+    Uses the GeoJSON definitions described in LBD JSON Formats document.
+
+    .. note::
+
+        This function is a if-else hell...
+
+    :param jsondict: GeoJSON formatted Python dictionary containing either GeoJSON Feature or FeatureCollection.
+    :return Boolean: True or False depending on the result of the validation
     """
     if not isinstance(jsondict, dict):
         return False
