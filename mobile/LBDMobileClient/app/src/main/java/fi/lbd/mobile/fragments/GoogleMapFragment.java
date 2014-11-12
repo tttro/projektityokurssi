@@ -141,10 +141,9 @@ public class GoogleMapFragment extends MapFragment implements OnInfoWindowClickL
         }
         // TODO: Käytä käyttäjän sijaintia, täytyy hakea LocationClientilla
         else {
-            CameraUpdate cameraLocation = CameraUpdateFactory.newLatLngZoom(new LatLng(61.5, 23.795), 16);
+            CameraUpdate cameraLocation = CameraUpdateFactory.newLatLngZoom(new LatLng(61.510990, 23.777361), 16);
             this.map.moveCamera(cameraLocation);
         }
-
 		return view;
 	}
 
