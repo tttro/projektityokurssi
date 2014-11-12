@@ -229,6 +229,7 @@ public class GoogleMapFragment extends MapFragment implements OnInfoWindowClickL
 
     @Override
     public void onInfoWindowClick(Marker marker) {
+        SelectionManager.get().setSelection(findMapObject(marker));
         Intent intent = new Intent(this.getActivity(), DetailsActivity.class);
         startActivity(intent);
     }
@@ -246,6 +247,7 @@ public class GoogleMapFragment extends MapFragment implements OnInfoWindowClickL
             if (m != null) {
 //                onMarkerClick(m);
                 deselectOldMapObjects();
+                SelectionManager.get().setSelection(o);
                 m.setIcon(BitmapDescriptorFactory.fromResource(android.R.drawable.presence_online));
 
                 // For some reason infowindow doesn't show if this isn't called again
@@ -278,10 +280,7 @@ public class GoogleMapFragment extends MapFragment implements OnInfoWindowClickL
 
     @Override
     public void onMapClick(LatLng point){
-        Marker activeMarker = findMarker(SelectionManager.get().getSelectedObject());
-        if(activeMarker != null){
-            activeMarker.setIcon(BitmapDescriptorFactory.fromResource(android.R.drawable.presence_invisible));
-        }
+        deselectOldMapObjects();
     }
 
     public Marker findMarker(MapObject object){

@@ -135,7 +135,7 @@ public class ListActivity extends Activity {
     }
 
     public void onDetailsClick(View view){
-        // Retrieve object for which the button was pressed
+        // Retrieve object for which the Details-button was pressed
         MapObject object = null;
         try {
             object = (MapObject)((View)(view.getParent()).getParent()).getTag();
@@ -150,7 +150,7 @@ public class ListActivity extends Activity {
         }
     }
     public void onMapClick(View view){
-        // Retrieve object for which the button was pressed
+        // Retrieve object for which the Map-button was pressed
         MapObject object = null;
         try {
             object = (MapObject)((View)(view.getParent()).getParent()).getTag();
