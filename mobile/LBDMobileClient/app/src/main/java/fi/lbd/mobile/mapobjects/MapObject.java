@@ -12,4 +12,5 @@ public interface MapObject extends Serializable {
     String getId();
     PointLocation getPointLocation();
     Map<String, String> getAdditionalProperties();
+    boolean isMinimized();
 }

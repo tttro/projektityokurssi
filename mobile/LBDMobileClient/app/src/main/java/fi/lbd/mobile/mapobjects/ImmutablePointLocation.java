@@ -2,7 +2,7 @@ package fi.lbd.mobile.mapobjects;
 
 import android.util.Log;
 
-import fi.lbd.mobile.repository.MapObjectParser;
+import fi.lbd.mobile.backendhandler.MapObjectParser;
 
 /**
  * Created by tommi on 22.10.2014.
@@ -44,5 +44,30 @@ public class ImmutablePointLocation implements PointLocation {
         double longitude = Double.parseDouble(parts[1]);
         double latitude = Double.parseDouble(parts[2]);
         return new ImmutablePointLocation(latitude,longitude);
+    }
+
+    // Generated equals and hash:
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        ImmutablePointLocation that = (ImmutablePointLocation) o;
+
+        if (Double.compare(that.latitude, latitude) != 0) return false;
+        if (Double.compare(that.longitude, longitude) != 0) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result;
+        long temp;
+        temp = Double.doubleToLongBits(latitude);
+        result = (int) (temp ^ (temp >>> 32));
+        temp = Double.doubleToLongBits(longitude);
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
+        return result;
     }
 }
