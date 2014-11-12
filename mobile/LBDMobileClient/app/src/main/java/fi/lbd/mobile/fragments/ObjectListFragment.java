@@ -66,7 +66,7 @@ public class ObjectListFragment extends ListFragment {
             }
             @Override
             protected void onPostExecute(Void result) {
-                BusHandler.getBus().post(new RequestNearObjectsEvent(new ImmutablePointLocation(23.795199257764725, 61.503697166613755))); // TODO: Actual location
+                BusHandler.getBus().post(new RequestNearObjectsEvent(new ImmutablePointLocation(23.795199257764725, 61.503697166613755), 0.001)); // TODO: Actual location
             }
         }.execute();
     }

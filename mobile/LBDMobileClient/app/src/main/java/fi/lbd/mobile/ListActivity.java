@@ -1,35 +1,27 @@
 package fi.lbd.mobile;
 
-import java.util.ArrayDeque;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.Locale;
-
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.content.Intent;
-import android.support.annotation.NonNull;
-import android.support.v13.app.FragmentPagerAdapter;
 import android.os.Bundle;
+import android.support.v13.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
 import android.view.View;
 
-import com.google.android.gms.maps.GoogleMapOptions;
+import java.util.ArrayDeque;
+import java.util.Locale;
 
 import fi.lbd.mobile.events.BusHandler;
 import fi.lbd.mobile.events.SelectMapObjectEvent;
 import fi.lbd.mobile.fragments.GoogleMapFragment;
 import fi.lbd.mobile.fragments.InboxFragment;
-import fi.lbd.mobile.fragments.ListClickListener;
 import fi.lbd.mobile.fragments.ObjectListFragment;
 import fi.lbd.mobile.mapobjects.MapObject;
-import fi.lbd.mobile.repository.MapObjectRepositoryService;
+import fi.lbd.mobile.backendhandler.BackendHandlerService;
 
 
 public class ListActivity extends Activity {
@@ -57,7 +49,7 @@ public class ListActivity extends Activity {
         setContentView(R.layout.activity_list);
 
         // Start the object repository service. // TODO: Missä käynnistys?
-        startService(new Intent(this, MapObjectRepositoryService.class));
+        startService(new Intent(this, BackendHandlerService.class));
 
         pageStack = new ArrayDeque<Integer>();
         pageStack.push(START_TAB);
@@ -138,7 +130,7 @@ public class ListActivity extends Activity {
 
     protected void onDestroy() {
         super.onDestroy();
-        stopService(new Intent(this, MapObjectRepositoryService.class)); // TODO: Missä pysäytys?
+        stopService(new Intent(this, BackendHandlerService.class)); // TODO: Missä pysäytys?
         BusHandler.getBus().unregister(this);
     }
 

@@ -49,7 +49,7 @@
         <!-- </activity> -->
 
         <service
-            android:name=".repository.MapObjectRepositoryService"
+            android:name=".backendhandler.BackendHandlerService"
             android:label="@string/service_name" />
 
         <meta-data

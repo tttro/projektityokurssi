@@ -1,11 +1,6 @@
 package fi.lbd.mobile.mapobjects;
 
-import android.location.Location;
-import android.util.Log;
-
 import java.io.Serializable;
-
-import fi.lbd.mobile.repository.MapObjectParser;
 
 
 /**

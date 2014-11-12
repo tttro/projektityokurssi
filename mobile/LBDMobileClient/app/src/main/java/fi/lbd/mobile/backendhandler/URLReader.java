@@ -1,4 +1,4 @@
-package fi.lbd.mobile.repository;
+package fi.lbd.mobile.backendhandler;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -11,6 +11,7 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 
 // TODO: KESKEN!
+// TODO: Loginit?
 public class URLReader {
 	// http://api-lbdserver.rhcloud.com/locationdata/api/Streetlights/near/?latitude=23.795199257764725&longitude=61.503697166613755
 
@@ -20,7 +21,9 @@ public class URLReader {
 		String resultContent = "";
 	    try {
 	        DefaultHttpClient httpClient = new DefaultHttpClient();
-			HttpResponse response = httpClient.execute(new HttpGet(url));
+            HttpGet getObj = new HttpGet(url);
+            getObj.addHeader("LBD_LOGIN_HEADER", "SimoSahkari");
+			HttpResponse response = httpClient.execute(getObj);
 			
 			InputStream contentStream = response.getEntity().getContent();
 			if (contentStream != null) {
