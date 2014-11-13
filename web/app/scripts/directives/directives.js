@@ -5,12 +5,12 @@ appDirectives.directive('tabinner', function($window) {
         restrict: "A",
         link: function(scope, element, attributes){
 
-            var searchformHeight = document.getElementById('itemSearch').offsetWidth;
-            var tabsHeight = document.getElementById('tabs').offsetWidth;
-            var listHeight = $window.outerHeight - (searchformHeight);
-            //console.log($window.outerHeight +" / " + tabsHeight+" / " + searchformHeight);
+          /*  var searchformHeight = document.getElementById('itemSearch').offsetHeight;
+            var tabsHeight = document.getElementById('tabs').offsetHeight;
+            var listHeight = $window.innerHeight - (searchformHeight + tabsHeight + 50);
+            console.log($window.innerHeight +" / " + tabsHeight+" / " + searchformHeight);
 
-            element.css('height', listHeight + 'px');
+            element.css('height', listHeight + 'px');*/
         }
     }
 });

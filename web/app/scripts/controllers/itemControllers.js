@@ -1,12 +1,15 @@
 'use strict';
 var itemControllers = angular.module('itemControllers', []);
 
-itemControllers.controller('itemController', function($scope, $http, $rootScope, StreetlightTest){
+itemControllers.controller('itemController', function($scope, $http, $rootScope, $timeout, Data){
 
-        $scope.loading = true;
-        StreetlightTest.fetchData(function(results) {
-            $scope.items = results;
-            $rootScope.$broadcast('dataIsLoaded');
+
+        /*** Event from service, data is ready
+         *  Add markers when all data fetched from server
+         * ***/
+        $scope.$on('dataIsLoaded', function(e) {
+            $scope.loading = true;
+            $scope.items = Data.get();
             $scope.loading = false;
         });
 

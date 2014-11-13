@@ -1,5 +1,6 @@
 var dataServices = angular.module('dataServices', ['ngResource']);
 var baseUrl = 'http://lbdbackend.ignorelist.com/locationdata/api/';
+var dataSet = null;
 dataServices.factory('StreetlightNear', function($http){
     return {
         get: function(lat, lng, callback){
@@ -18,7 +19,7 @@ dataServices.factory('StreetlightNear', function($http){
 dataServices.factory('StreetlightInarea', function($http){
     return {
         get: function(bounds, callback){
-            var retData = null;
+           var retData = null;
             var ne = bounds.getNorthEast();
             var sw = bounds.getSouthWest();
             //console.log('Streetlights/inarea/?xbottomleft='+sw.lng()+'&ybottomleft='+sw.lat()+'&ytopright='+ne.lat()+'&xtopright='+ne.lng());
@@ -35,32 +36,43 @@ dataServices.factory('StreetlightInarea', function($http){
         }
     };
 });
-dataServices.factory('StreetlightTest', ['$http','$rootScope', function($http, $rootScope){
-    //$http.defaults.headers.common['LBD_LOGIN_HEADER'] = 'SimoSahkari';
-    var dataStorage;
-    var config = {
-        headers:  {'LBD_LOGIN_HEADER' : 'SimoSahkari'},
-        withCredentials: false
-    };
 
+dataServices.factory('StreetlightTest', ['$http','$rootScope', function($http, $rootScope){
+
+    var dataStorage;
     return {
 
         fetchData: function(callback) {
 
-            dataStorage =
-                $http.get(baseUrl + 'Streetlights/inarea/?xbottomleft=23.63&ybottomleft=61.51&ytopright=61.52&xtopright=23.65',config)
+
+                $http({
+                    method: 'GET',
+                    url: baseUrl + 'Streetlights/inarea/?xbottomleft=23.63&ybottomleft=61.51&ytopright=61.52&xtopright=23.65',
+                    //url: 'data/demo.json',
+                    headers: {
+                        "LBD_LOGIN_HEADER" : "SimoSahkari"
+                    }
+                })
                 .success(function(data){
-                    dataStorage = data;
                     callback(data);
                 })
                 .error(function(data,status,header,config){
                     console.log("error:streetlight " + data);
                     console.log("error:streetlight " + status);
-                    console.log("error:streetlight " + header);
+                    console.log("error:streetlight " + header('LBD_LOGIN_HEADER'));
                     console.log("error:streetlight " + config);
                 });
-
-            return dataStorage;
         }
     };
 }]);
+
+dataServices.factory('Data', function($rootScope){
+    return {
+        get: function() {
+            return dataSet;
+        },
+        set: function(newDataSet){
+            dataSet = newDataSet;
+        }
+    }
+});
