@@ -36,21 +36,19 @@ dataServices.factory('StreetlightInarea', function($http){
     };
 });
 dataServices.factory('StreetlightTest', ['$http','$rootScope', function($http, $rootScope){
-    $http.defaults.headers.common['LBD_LOGIN_HEADER'] = 'SimoSahkari';
+    //$http.defaults.headers.common['LBD_LOGIN_HEADER'] = 'SimoSahkari';
     var dataStorage;
     var config = {
-        withCredentials:false,
-        cache:true,
-        headers:  {'LBD_LOGIN_HEADER' : 'SimoSahkari'}
+        headers:  {'LBD_LOGIN_HEADER' : 'SimoSahkari'},
+        withCredentials: false
     };
 
     return {
 
         fetchData: function(callback) {
-            //$http.defaults.headers.common['LBD_LOGIN_HEADER'] = 'SimoSahkari';
-            http://lbdbackend.ignorelist.com/locationdata/api/Streetlights/WFS_KATUVALO.405172
+
             dataStorage =
-                $http.get(baseUrl + 'Streetlights/inarea/?xbottomleft=23.63&ybottomleft=61.51&ytopright=61.52&xtopright=23.65')
+                $http.get(baseUrl + 'Streetlights/inarea/?xbottomleft=23.63&ybottomleft=61.51&ytopright=61.52&xtopright=23.65',config)
                 .success(function(data){
                     dataStorage = data;
                     callback(data);
