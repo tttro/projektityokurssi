@@ -6,7 +6,10 @@ var app = angular.module('app',[
     'dataServices',
     'itemControllers',
     'mapControllers',
-    'messageControllers'
+    'messageControllers',
+    'appDirectives'
 ]);
 
-
+app.config(function($logProvider){
+    $logProvider.debugEnabled(true);
+});

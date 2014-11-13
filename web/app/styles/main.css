@@ -35,7 +35,7 @@ html, body{
 }
 .w20p {
     width: 20%;
-    overflow-y: scroll;
+
 }
 .w80p {
     width: 80%;
@@ -44,7 +44,7 @@ html, body{
 #panel {
     position: absolute;
     top: 5px;
-    left: 80%;
+    right: 200px;
     z-index: 5;
 
     direction: ltr;
@@ -80,18 +80,18 @@ header {
     height: 70px;
     margin: 0;
     padding: 0;
+    border-bottom: 1px solid #ccc;
 }
 header .logo {
-    margin: 0;
-    margin-left: 20px;
+    margin: 5px 0 0 20px;
 }
 .logo h4 {
-    margin-top: 25px;
+    margin-top: 20px;
     margin-left: 10px;
 }
 
 header .user {
-    margin-top: 20px;
+    margin-top: 25px;
 }
 
 header a {
@@ -108,6 +108,9 @@ header a {
 /* Tabs and sidebar */
 .sidebar {
     background: #2f3a41;
+}
+.tab-content-inner {
+    overflow-y:scroll
 }
 #tabs ul,
 .tab-content ul{
@@ -157,6 +160,7 @@ header a {
     color: #fff;
     padding: 20%;
     display: block;
+    font-size: 18px;
 }
 
 #tabs ul li.active {
@@ -239,4 +243,12 @@ header a {
     font-family: Roboto;
     font-size: 13px;
     font-weight: 300;
+}
+
+.btn,.form-control {
+    border-radius: 0;
+}
+
+.list-item {
+    margin-bottom: 10px;
 }

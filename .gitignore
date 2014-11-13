@@ -11,3 +11,4 @@ backend/manage.py
 *.zargo~
 *.directory
 __pycache__
+Login-test

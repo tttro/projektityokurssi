@@ -5,6 +5,8 @@ mapControllers.controller('mapController', function($scope, $window, Streetlight
     var defaultPoint = new google.maps.LatLng(61.51241, 23.634931); // Tampere
     $scope.userLocationMarker = null;
     $scope.btnGeolocation = true;
+    var markerClusterer = null;
+    var markers = [];
 
     // Init map
     var mapOptions = {
@@ -31,26 +33,40 @@ mapControllers.controller('mapController', function($scope, $window, Streetlight
     var geoButton = document.getElementById('btnGeolocation');
     var input = /** @type {HTMLInputElement} */(
         document.getElementById('pac-input'));
+    var searchBox = new google.maps.places.SearchBox(
+        /** @type {HTMLInputElement} */(input));
+    // [START region_getplaces]
+    // Listen for the event fired when the user selects an item from the
+    // pick list.
+    google.maps.event.addListener(searchBox, 'places_changed', function() {
+        var places = searchBox.getPlaces();
+
+        if (places.length == 0) {
+            return;
+        }
+
+        var bounds = new google.maps.LatLngBounds();
+
+        for (var i = 0, place; place = places[i]; i++) {
+            bounds.extend(place.geometry.location);
+
+        }
+
+        $scope.map.fitBounds(bounds);
+    });
     $scope.map.controls[google.maps.ControlPosition.TOP_LEFT].push(btnGeolocation);
     $scope.map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
 
     google.maps.event.addDomListener(geoButton, 'click', function(){
 
-        if(navigator.geolocation)
+       if(navigator.geolocation)
         {
 
             navigator.geolocation.getCurrentPosition(function(position){
                 $scope.loading = true;
                 console.log(position.coords.latitude+", " +position.coords.longitude);
                 var currentPosition =  new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-                /*StreetlightNear.get(position.coords.latitude, position.coords.longitude,function(results) {
-                    $scope.items = results;
-                    $rootScope.$broadcast('dataIsLoaded');
 
-                    loadMarkers(results);
-                    $scope.loading = false;
-
-                });*/
                 createGeoMarker(currentPosition);
 
                 $scope.map.setCenter(currentPosition);
@@ -66,11 +82,33 @@ mapControllers.controller('mapController', function($scope, $window, Streetlight
 
     google.maps.event.addListener($scope.map, 'idle', function(){
         $scope.loading = false;
+        var bounds = $scope.map.getBounds();
+        var zoomLevel = $scope.map.getZoom();
+        //console.log("bounds:"+bounds+" zoom:"+zoomLevel);
+        if(zoomLevel > 16)
+        {
+            /*var dummyMarkerCount = 200;
+            var dummyMarkersByBound = [];
+            for(var i = 0; i<dummyMarkerCount; i++)
+            {
+                dummyMarkersByBound[i] = getRandom_marker(bounds);
+            }*/
+
+            markers = [];
+            StreetlightInarea.get(bounds,function(results) {
+                markers  = results;
+
+                loadMarkers(markers);
+
+            });
+
+
+        }
     });
 
     createGeoMarker(defaultPoint);
 
-    var markers = [];
+
 
 
     /*** StreetView ***/
@@ -132,14 +170,17 @@ mapControllers.controller('mapController', function($scope, $window, Streetlight
     }
 
     var loadMarkers =  function (data) {
-
+        markers = [];
+        if (markerClusterer) {
+            markerClusterer.clearMarkers();
+        }
         angular.forEach(data.features, function(value,key){
-            //console.log(value.id + " / " + value.geometry.coordinates[1]);
             createMarker(value);
         });
-        var markerCluster = new MarkerClusterer($scope.map, markers); // Create clusterers
+        markerClusterer = new MarkerClusterer($scope.map, markers); // Create clusterers
 
     }
+
     var openedMarkerWindow = null;
     var createMarker = function (item) {
 
@@ -205,5 +246,56 @@ mapControllers.controller('mapController', function($scope, $window, Streetlight
         });
         $scope.userLocationMarker = marker;
     }
+    function clearMarkers(markers){
+        for (var i in markers) {
+            markers[i].setMap(null);
+            console.log(markers[i]);
+        }
+        markerClusterer.clearMarkers();
+    }
 
+    function getRandom_marker(bounds) {
+        var lat_min = bounds.getSouthWest().lat(),
+            lat_range = bounds.getNorthEast().lat() - lat_min,
+            lng_min = bounds.getSouthWest().lng(),
+            lng_range = bounds.getNorthEast().lng() - lng_min;
+
+        var marker = new google.maps.Marker({
+            map: $scope.map,
+            position: new google.maps.LatLng(lat_min + (Math.random() * lat_range),
+                lng_min + (Math.random() * lng_range)),
+            title: 'Item',
+            icon: {
+                path: google.maps.SymbolPath.CIRCLE,
+                fillColor: 'red',
+                fillOpacity: 0.6,
+                scale: 5,
+                strokeColor: 'black',
+                strokeWeight: 1
+            }
+        });
+        marker.content = "testmarker";
+        google.maps.event.addListener(marker, 'click', function() {
+
+            $scope.map.setCenter(marker.getPosition());
+            panorama.setPosition(marker.getPosition());
+
+            if(openedMarkerWindow != null)// Close a previous window
+            {
+                openedMarkerWindow.close();
+            }
+            if ($scope.map.getStreetView().getVisible()) {
+                infoWindow.setContent(marker.content);
+                infoWindow.open($scope.map.getStreetView(), this);
+            } else {
+                infoWindow.setContent(marker.content);
+                infoWindow.open($scope.map, this);
+            }
+
+            openedMarkerWindow = infoWindow;
+
+        });
+
+        return marker;
+    }
 });
