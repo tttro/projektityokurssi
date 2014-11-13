@@ -57,6 +57,8 @@ def this_is_a_login_wrapper_dummy(func):
                  "TiinaTeekkari",
                  "HeliHumanisti",
                  "TeePannu"]
+        for i in request.META:
+            print i
         if "HTTP_LBD_LOGIN_HEADER" in request.META:
             if request.META["HTTP_LBD_LOGIN_HEADER"] in users:
                 kwargs["lbduser"] = request.META["HTTP_LBD_LOGIN_HEADER"]
