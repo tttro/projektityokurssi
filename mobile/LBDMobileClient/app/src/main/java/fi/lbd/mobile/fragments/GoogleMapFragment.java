@@ -50,6 +50,7 @@ public class GoogleMapFragment extends MapFragment implements OnInfoWindowClickL
     private LocationClient mLocationClient;
     private MapTableModel<Marker> tableModel;
     private BiMap<Marker, MapObject> markerObjectMap; // TODO: Saisko suoraan markeriin liitettyä?
+    private Marker activeMarker;
 
     public static GoogleMapFragment newInstance(){
         return new GoogleMapFragment();
@@ -60,6 +61,7 @@ public class GoogleMapFragment extends MapFragment implements OnInfoWindowClickL
 		View view = inflater.inflate(R.layout.googlemap_fragment, container, false);
 		this.mapView = (MapView)view.findViewById(R.id.mapview);
         this.mapView.onCreate(savedInstanceState);
+        this.activeMarker = null;
 
         this.map = this.mapView.getMap();
         this.map.getUiSettings().setMyLocationButtonEnabled(true);
@@ -187,10 +189,12 @@ public class GoogleMapFragment extends MapFragment implements OnInfoWindowClickL
                 BitmapDescriptor icon = markerIcon;
                 LatLng location = new LatLng(mapObject.getPointLocation().getLatitude(),
                         mapObject.getPointLocation().getLongitude());
+
+                /*
                 if (SelectionManager.get().getSelectedObject() != null &&
                         mapObject.getId().equals(SelectionManager.get().getSelectedObject().getId())) {
                     icon = markerSelectedIcon;
-                }
+                }*/
 
 //                }
 //                StringBuilder snippet = new StringBuilder();
@@ -216,6 +220,7 @@ public class GoogleMapFragment extends MapFragment implements OnInfoWindowClickL
 
                 if(SelectionManager.get().getSelectedObject() != null &&
                         mapObject.getId().equals(SelectionManager.get().getSelectedObject().getId())){
+                    setActiveMarker(marker);
                     marker.showInfoWindow();
                 }
 
@@ -237,49 +242,56 @@ public class GoogleMapFragment extends MapFragment implements OnInfoWindowClickL
     public void onEvent(SelectMapObjectEvent event){
 //        MapsInitializer.initialize(this.getActivity());
         MapObject o = SelectionManager.get().getSelectedObject();
-        PointLocation location = o.getPointLocation();
-        CameraUpdate cameraLocation = CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), 18);
-        this.map.moveCamera(cameraLocation);
 
         if(o != null){
             Marker m = findMarker(o);
             if (m != null) {
-//                onMarkerClick(m);
-                deselectOldMapObjects();
-                SelectionManager.get().setSelection(o);
-                m.setIcon(BitmapDescriptorFactory.fromResource(android.R.drawable.presence_online));
-
-                // For some reason infowindow doesn't show if this isn't called again
+                clearActiveMarker();
+                setActiveMarker(m);
+                PointLocation location = o.getPointLocation();
+                CameraUpdate cameraLocation = CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), 18);
+                this.map.moveCamera(cameraLocation);
                 m.showInfoWindow();
+                SelectionManager.get().setSelection(o);
             }
         }
         // TODO: Käytä käyttäjän sijaintia, täytyy hakea LocationClientilla
         else {
-            cameraLocation = CameraUpdateFactory.newLatLngZoom(new LatLng(61.5, 23.795), 16);
+            CameraUpdate cameraLocation = CameraUpdateFactory.newLatLngZoom(new LatLng(61.5, 23.795), 16);
             this.map.moveCamera(cameraLocation);
         }
     }
 
     @Override
     public boolean onMarkerClick(Marker marker){
-        deselectOldMapObjects();
-        marker.setIcon(BitmapDescriptorFactory.fromResource(android.R.drawable.presence_online));
+        clearActiveMarker();
+        setActiveMarker(marker);
+
         MapObject mapObject = findMapObject(marker);
         SelectionManager.get().setSelection(mapObject);
         // False for default behavior (center camera and open infowindow)
         return false;
     }
 
-    private void deselectOldMapObjects() {
-        Marker activeMarker = findMarker(SelectionManager.get().getSelectedObject());
+    /* TODO: bugi havaittu kun tarkastellaan kohdetta tietyssä paikassa, siirretään kartta
+       jonnekin kauas ja avataan uusi kohde.
+       http://stackoverflow.com/questions/21523202/released-unknown-bitmap-reference-setting-marker-in-android
+    */
+    private void clearActiveMarker() {
         if(activeMarker != null){
             activeMarker.setIcon(BitmapDescriptorFactory.fromResource(android.R.drawable.presence_invisible));
+            activeMarker = null;
         }
+    }
+
+    public void setActiveMarker(Marker activeMarker) {
+        this.activeMarker = activeMarker;
+        activeMarker.setIcon(BitmapDescriptorFactory.fromResource(android.R.drawable.presence_online));
     }
 
     @Override
     public void onMapClick(LatLng point){
-        deselectOldMapObjects();
+        clearActiveMarker();
     }
 
     public Marker findMarker(MapObject object){
