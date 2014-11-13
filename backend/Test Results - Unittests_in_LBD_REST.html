@@ -572,8 +572,8 @@ jQuery.cookie = function(name, value, options) {
 <body>
 <div id="container">
 <div id="header">
-<div class="time">215 ms</div>
-<h1>Unittests in LBD_REST: <strong><span class="total">66 total, </span><span class="failed">5 failed, </span><span class="passed">61 passed</span></strong>
+<div class="time">11.99 s</div>
+<h1>Unittests in LBD_REST: <strong><span class="total">70 total, </span><span class="failed">5 failed, </span><span class="passed">65 passed</span></strong>
 </h1>
 <div id="treecontrol">
 <ul>
@@ -1035,46 +1035,46 @@ jQuery.cookie = function(name, value, options) {
 </li>
 <li class="level top open">
 <span><em class="time">
-<div class="time">17 ms</div>
+<div class="time">1.24 s</div>
 </em>test_single_resource.TestSingleResourceDelete</span>
 <ul>
 <li class="level test">
 <span><em class="time">
-<div class="time">4 ms</div>
+<div class="time">312 ms</div>
 </em><em class="status">passed</em>test_delete_invalid_collection</span>
 <ul>
 <li class="text">
-<span class="stdout">Preparing system for new test...<br/>System prepared!<br/>Running test: valid data, invalid collection<br/>(DELETE) Response status code: 404<br/>Test passed!<br/></span>
+<span class="stdout">Preparing system for new test...<br/>Reinitializing connection...<br/>System prepared!<br/>Running test: valid data, invalid collection<br/>(DELETE) Response status code: 404<br/>Test passed!<br/></span>
 </li>
 </ul>
 </li>
 <li class="level test">
 <span><em class="time">
-<div class="time">4 ms</div>
+<div class="time">225 ms</div>
 </em><em class="status">passed</em>test_delete_invalid_resource</span>
 <ul>
 <li class="text">
-<span class="stdout">Preparing system for new test...<br/>System prepared!<br/>Running test: valid data, invalid resource<br/>(DELETE) Response status code: 404<br/>Test passed!<br/></span>
+<span class="stdout">Preparing system for new test...<br/>Reinitializing connection...<br/>System prepared!<br/>Running test: valid data, invalid resource<br/>(DELETE) Response status code: 404<br/>Test passed!<br/></span>
 </li>
 </ul>
 </li>
 <li class="level test">
 <span><em class="time">
-<div class="time">4 ms</div>
+<div class="time">389 ms</div>
 </em><em class="status">passed</em>test_delete_twice</span>
 <ul>
 <li class="text">
-<span class="stdout">Preparing system for new test...<br/>System prepared!<br/>Running test: deleting item twice<br/>(DELETE) Second response status code: 404<br/>(DELETE) Second response status code: 404<br/>Test passed!<br/></span>
+<span class="stdout">Preparing system for new test...<br/>Reinitializing connection...<br/>System prepared!<br/>Running test: deleting item twice<br/>(DELETE) Second response status code: 404<br/>(DELETE) Second response status code: 404<br/>Test passed!<br/></span>
 </li>
 </ul>
 </li>
 <li class="level test">
 <span><em class="time">
-<div class="time">5 ms</div>
+<div class="time">316 ms</div>
 </em><em class="status">passed</em>test_delete_valid</span>
 <ul>
 <li class="text">
-<span class="stdout">Preparing system for new test...<br/>System prepared!<br/>Running test: valid data, contradiction in resource id<br/>(DELETE) Response status code: 200<br/>(GET) Response status code: 200<br/>Test passed!<br/></span>
+<span class="stdout">Preparing system for new test...<br/>Reinitializing connection...<br/>System prepared!<br/>Running test: valid data, contradiction in resource id<br/>(DELETE) Response status code: 200<br/>(GET) Response status code: 200<br/>Test passed!<br/></span>
 </li>
 </ul>
 </li>
@@ -1082,12 +1082,12 @@ jQuery.cookie = function(name, value, options) {
 </li>
 <li class="level top open">
 <span><em class="time">
-<div class="time">5 ms</div>
+<div class="time">663 ms</div>
 </em>test_single_resource.TestSingleResourceGet</span>
 <ul>
 <li class="level test">
 <span><em class="time">
-<div class="time">0 ms</div>
+<div class="time">132 ms</div>
 </em><em class="status">passed</em>test_get_collection_does_not_exist</span>
 <ul>
 <li class="text">
@@ -1097,7 +1097,7 @@ jQuery.cookie = function(name, value, options) {
 </li>
 <li class="level test">
 <span><em class="time">
-<div class="time">1 ms</div>
+<div class="time">115 ms</div>
 </em><em class="status">passed</em>test_get_no_login_header</span>
 <ul>
 <li class="text">
@@ -1107,7 +1107,7 @@ jQuery.cookie = function(name, value, options) {
 </li>
 <li class="level test">
 <span><em class="time">
-<div class="time">1 ms</div>
+<div class="time">102 ms</div>
 </em><em class="status">passed</em>test_get_resource_does_not_exist</span>
 <ul>
 <li class="text">
@@ -1117,27 +1117,27 @@ jQuery.cookie = function(name, value, options) {
 </li>
 <li class="level test">
 <span><em class="time">
-<div class="time">1 ms</div>
+<div class="time">107 ms</div>
 </em><em class="status">passed</em>test_get_valid_request</span>
 <ul>
 <li class="text">
-<span class="stdout">Running test: valid get request<br/>Response status code: 200<br/>Response content: {&quot;geometry&quot;: {&quot;type&quot;: &quot;Point&quot;, &quot;coordinates&quot;: [23.643239226767022, 61.519112683582854]}, &quot;id&quot;: &quot;WFS_KATUVALO.405171&quot;, &quot;type&quot;: &quot;Feature&quot;, &quot;properties&quot;: {&quot;NIMI&quot;: &quot;XPWR_6769211&quot;, &quot;TYYPPI_KOODI&quot;: &quot;105007&quot;, &quot;KATUVALO_ID&quot;: 405171, &quot;LAMPPU_TYYPPI&quot;: &quot;ST 100 (SIEMENS)&quot;, &quot;LAMPPU_TYYPPI_KOODI&quot;: &quot;100340&quot;}, &quot;geometry_name&quot;: &quot;GEOLOC&quot;}<br/>Test passed!<br/></span>
+<span class="stdout">Running test: valid get request<br/>Response status code: 200<br/>Response content: {&quot;geometry&quot;: {&quot;type&quot;: &quot;Point&quot;, &quot;coordinates&quot;: [23.643239226767022, 61.519112683582854]}, &quot;id&quot;: &quot;WFS_KATUVALO.405171&quot;, &quot;type&quot;: &quot;Feature&quot;, &quot;properties&quot;: {&quot;NIMI&quot;: &quot;XPWR_6769211&quot;, &quot;LAMPPU_TYYPPI_KOODI&quot;: &quot;100340&quot;, &quot;TYYPPI_KOODI&quot;: &quot;105007&quot;, &quot;KATUVALO_ID&quot;: 405171, &quot;LAMPPU_TYYPPI&quot;: &quot;ST 100 (SIEMENS)&quot;, &quot;metadata&quot;: {&quot;status&quot;: &quot;SNAFU&quot;, &quot;modifier&quot;: &quot;Seppo S\u00e4hk\u00e4ri&quot;, &quot;modified&quot;: 1414665004}}, &quot;geometry_name&quot;: &quot;GEOLOC&quot;}<br/>Test passed!<br/></span>
 </li>
 </ul>
 </li>
 <li class="level test">
 <span><em class="time">
-<div class="time">1 ms</div>
+<div class="time">103 ms</div>
 </em><em class="status">passed</em>test_get_valid_request_content_check_no_meta</span>
 <ul>
 <li class="text">
-<span class="stdout">Running test: Check that content is valid GeoJSON, no metadata<br/>Response status code: 200<br/>Response content: {&quot;geometry&quot;: {&quot;type&quot;: &quot;Point&quot;, &quot;coordinates&quot;: [23.643239226767022, 61.519112683582854]}, &quot;id&quot;: &quot;WFS_KATUVALO.405171&quot;, &quot;type&quot;: &quot;Feature&quot;, &quot;properties&quot;: {&quot;NIMI&quot;: &quot;XPWR_6769211&quot;, &quot;TYYPPI_KOODI&quot;: &quot;105007&quot;, &quot;KATUVALO_ID&quot;: 405171, &quot;LAMPPU_TYYPPI&quot;: &quot;ST 100 (SIEMENS)&quot;, &quot;LAMPPU_TYYPPI_KOODI&quot;: &quot;100340&quot;}, &quot;geometry_name&quot;: &quot;GEOLOC&quot;}<br/>Test passed!<br/></span>
+<span class="stdout">Running test: Check that content is valid GeoJSON, no metadata<br/>Response status code: 200<br/>Response content: {&quot;geometry&quot;: {&quot;type&quot;: &quot;Point&quot;, &quot;coordinates&quot;: [23.643239226767022, 61.519112683582854]}, &quot;id&quot;: &quot;WFS_KATUVALO.405171&quot;, &quot;type&quot;: &quot;Feature&quot;, &quot;properties&quot;: {&quot;NIMI&quot;: &quot;XPWR_6769211&quot;, &quot;LAMPPU_TYYPPI_KOODI&quot;: &quot;100340&quot;, &quot;TYYPPI_KOODI&quot;: &quot;105007&quot;, &quot;KATUVALO_ID&quot;: 405171, &quot;LAMPPU_TYYPPI&quot;: &quot;ST 100 (SIEMENS)&quot;, &quot;metadata&quot;: {&quot;status&quot;: &quot;SNAFU&quot;, &quot;modifier&quot;: &quot;Seppo S\u00e4hk\u00e4ri&quot;, &quot;modified&quot;: 1414665004}}, &quot;geometry_name&quot;: &quot;GEOLOC&quot;}<br/>Test passed!<br/></span>
 </li>
 </ul>
 </li>
 <li class="level test">
 <span><em class="time">
-<div class="time">1 ms</div>
+<div class="time">104 ms</div>
 </em><em class="status">passed</em>test_get_valid_request_content_check_with_meta</span>
 <ul>
 <li class="text">
@@ -1149,25 +1149,65 @@ jQuery.cookie = function(name, value, options) {
 </li>
 <li class="level top failed open">
 <span><em class="time">
-<div class="time">193 ms</div>
+<div class="time">309 ms</div>
+</em>test_single_resource.TestSingleResourcePost</span>
+<ul>
+<li class="level test">
+<span><em class="time">
+<div class="time">105 ms</div>
+</em><em class="status">passed</em>test_post_method</span>
+<ul>
+<li class="text">
+<span class="stdout">Running test: test POST method, valid collection and resource<br/>(POST) Response status code: 405<br/>Test passed!<br/></span>
+</li>
+</ul>
+</li>
+<li class="level test failed open">
+<span><em class="time">
+<div class="time">103 ms</div>
+</em><em class="status">failed</em>test_post_method_invalid_collection</span>
+<ul>
+<li class="text">
+<span class="stdout">Running test: test POST method, valid collection, invalid resource<br/>POST Response status code: 404<br/></span>
+</li>
+<li class="text">
+<span class="stderr">Failure<br/>Traceback (most recent call last):<br/>  File &quot;/home/xc-/Documents/Projektikurssi/projektityokurssi/backend/lbd_backend/LBD_REST_locationdata/tests/test_single_resource.py&quot;, line 491, in test_post_method_invalid_collection<br/>    self.assertEqual(response.status, 405)<br/>AssertionError: 404 != 405<br/></span>
+</li>
+</ul>
+</li>
+<li class="level test">
+<span><em class="time">
+<div class="time">101 ms</div>
+</em><em class="status">passed</em>test_post_method_invalid_resource</span>
+<ul>
+<li class="text">
+<span class="stdout">Running test: test POST method, valid collection, invalid resource<br/>POST Response status code: 405<br/>Test passed!<br/></span>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="level top failed open">
+<span><em class="time">
+<div class="time">1.56 s</div>
 </em>test_single_resource.TestSingleResourcePut</span>
 <ul>
 <li class="level test failed open">
 <span><em class="time">
-<div class="time">83 ms</div>
+<div class="time">173 ms</div>
 </em><em class="status">failed</em>test_no_content</span>
 <ul>
 <li class="text">
 <span class="stdout">Running test: empty json<br/>(PUT) Response status code: 500<br/></span>
 </li>
 <li class="text">
-<span class="stderr">Failure<br/>Traceback (most recent call last):<br/>  File &quot;/home/xc-/Documents/Projektikurssi/projektityokurssi/backend/lbd_backend/LBD_REST_locationdata/tests/test_single_resource.py&quot;, line 290, in test_no_content<br/>    self.assertEqual(response.status, 400)<br/>AssertionError: 500 != 400<br/></span>
+<span class="stderr">Failure<br/>Traceback (most recent call last):<br/>  File &quot;/home/xc-/Documents/Projektikurssi/projektityokurssi/backend/lbd_backend/LBD_REST_locationdata/tests/test_single_resource.py&quot;, line 291, in test_no_content<br/>    self.assertEqual(response.status, 400)<br/>AssertionError: 500 != 400<br/></span>
 </li>
 </ul>
 </li>
 <li class="level test">
 <span><em class="time">
-<div class="time">1 ms</div>
+<div class="time">104 ms</div>
 </em><em class="status">passed</em>test_put_empty_json</span>
 <ul>
 <li class="text">
@@ -1177,20 +1217,20 @@ jQuery.cookie = function(name, value, options) {
 </li>
 <li class="level test failed open">
 <span><em class="time">
-<div class="time">90 ms</div>
+<div class="time">165 ms</div>
 </em><em class="status">failed</em>test_put_empty_json_string</span>
 <ul>
 <li class="text">
 <span class="stdout">Running test: empty json<br/>(PUT) Response status code: 500<br/></span>
 </li>
 <li class="text">
-<span class="stderr">Failure<br/>Traceback (most recent call last):<br/>  File &quot;/home/xc-/Documents/Projektikurssi/projektityokurssi/backend/lbd_backend/LBD_REST_locationdata/tests/test_single_resource.py&quot;, line 276, in test_put_empty_json_string<br/>    self.assertEqual(response.status, 400)<br/>AssertionError: 500 != 400<br/></span>
+<span class="stderr">Failure<br/>Traceback (most recent call last):<br/>  File &quot;/home/xc-/Documents/Projektikurssi/projektityokurssi/backend/lbd_backend/LBD_REST_locationdata/tests/test_single_resource.py&quot;, line 277, in test_put_empty_json_string<br/>    self.assertEqual(response.status, 400)<br/>AssertionError: 500 != 400<br/></span>
 </li>
 </ul>
 </li>
 <li class="level test">
 <span><em class="time">
-<div class="time">4 ms</div>
+<div class="time">255 ms</div>
 </em><em class="status">passed</em>test_put_missing_id_field_check_changes</span>
 <ul>
 <li class="text">
@@ -1200,7 +1240,7 @@ jQuery.cookie = function(name, value, options) {
 </li>
 <li class="level test">
 <span><em class="time">
-<div class="time">1 ms</div>
+<div class="time">102 ms</div>
 </em><em class="status">passed</em>test_put_missing_id_field_check_response</span>
 <ul>
 <li class="text">
@@ -1210,7 +1250,7 @@ jQuery.cookie = function(name, value, options) {
 </li>
 <li class="level test">
 <span><em class="time">
-<div class="time">1 ms</div>
+<div class="time">128 ms</div>
 </em><em class="status">passed</em>test_put_missing_status_field_check_response</span>
 <ul>
 <li class="text">
@@ -1220,7 +1260,7 @@ jQuery.cookie = function(name, value, options) {
 </li>
 <li class="level test">
 <span><em class="time">
-<div class="time">2 ms</div>
+<div class="time">104 ms</div>
 </em><em class="status">passed</em>test_put_valid_data_id_contradiction</span>
 <ul>
 <li class="text">
@@ -1230,7 +1270,7 @@ jQuery.cookie = function(name, value, options) {
 </li>
 <li class="level test">
 <span><em class="time">
-<div class="time">3 ms</div>
+<div class="time">103 ms</div>
 </em><em class="status">passed</em>test_put_valid_data_invalid_resource</span>
 <ul>
 <li class="text">
@@ -1240,21 +1280,21 @@ jQuery.cookie = function(name, value, options) {
 </li>
 <li class="level test">
 <span><em class="time">
-<div class="time">4 ms</div>
+<div class="time">211 ms</div>
 </em><em class="status">passed</em>test_put_valid_request_change_status</span>
 <ul>
 <li class="text">
-<span class="stdout">Running test: valid put request, change status<br/>User: HeliHumanisti<br/>Status: FOOBAAAAAAR!!!<br/>(PUT) Response status code: 200<br/>(GET) Response status code: 200<br/>(GET) Response content: {&quot;geometry&quot;: {&quot;type&quot;: &quot;Point&quot;, &quot;coordinates&quot;: [23.643239226767022, 61.519112683582854]}, &quot;id&quot;: &quot;WFS_KATUVALO.405172&quot;, &quot;type&quot;: &quot;Feature&quot;, &quot;properties&quot;: {&quot;NIMI&quot;: &quot;XPWR_6769212&quot;, &quot;LAMPPU_TYYPPI_KOODI&quot;: &quot;100340&quot;, &quot;TYYPPI_KOODI&quot;: &quot;105007&quot;, &quot;KATUVALO_ID&quot;: 405172, &quot;LAMPPU_TYYPPI&quot;: &quot;ST 100 (SIEMENS)&quot;, &quot;metadata&quot;: {&quot;status&quot;: &quot;FOOBAAAAAAR!!!&quot;, &quot;modifier&quot;: &quot;HeliHumanisti&quot;, &quot;modified&quot;: 1415784676}}, &quot;geometry_name&quot;: &quot;GEOLOC&quot;}<br/>Test passed!<br/></span>
+<span class="stdout">Running test: valid put request, change status<br/>User: HeliHumanisti<br/>Status: FOOBAAAAAAR!!!<br/>(PUT) Response status code: 200<br/>(GET) Response status code: 200<br/>(GET) Response content: {&quot;geometry&quot;: {&quot;type&quot;: &quot;Point&quot;, &quot;coordinates&quot;: [23.643239226767022, 61.519112683582854]}, &quot;id&quot;: &quot;WFS_KATUVALO.405172&quot;, &quot;type&quot;: &quot;Feature&quot;, &quot;properties&quot;: {&quot;NIMI&quot;: &quot;XPWR_6769212&quot;, &quot;LAMPPU_TYYPPI_KOODI&quot;: &quot;100340&quot;, &quot;TYYPPI_KOODI&quot;: &quot;105007&quot;, &quot;KATUVALO_ID&quot;: 405172, &quot;LAMPPU_TYYPPI&quot;: &quot;ST 100 (SIEMENS)&quot;, &quot;metadata&quot;: {&quot;status&quot;: &quot;FOOBAAAAAAR!!!&quot;, &quot;modifier&quot;: &quot;HeliHumanisti&quot;, &quot;modified&quot;: 1415830350}}, &quot;geometry_name&quot;: &quot;GEOLOC&quot;}<br/>Test passed!<br/></span>
 </li>
 </ul>
 </li>
 <li class="level test">
 <span><em class="time">
-<div class="time">4 ms</div>
+<div class="time">212 ms</div>
 </em><em class="status">passed</em>test_put_valid_request_change_user</span>
 <ul>
 <li class="text">
-<span class="stdout">Running test: valid put request, change user<br/>User: SimoSahkari<br/>(PUT) Response status code: 200<br/>(GET) Response status code: 200<br/>(GET) Response content: {&quot;geometry&quot;: {&quot;type&quot;: &quot;Point&quot;, &quot;coordinates&quot;: [23.643239226767022, 61.519112683582854]}, &quot;id&quot;: &quot;WFS_KATUVALO.405172&quot;, &quot;type&quot;: &quot;Feature&quot;, &quot;properties&quot;: {&quot;NIMI&quot;: &quot;XPWR_6769212&quot;, &quot;LAMPPU_TYYPPI_KOODI&quot;: &quot;100340&quot;, &quot;TYYPPI_KOODI&quot;: &quot;105007&quot;, &quot;KATUVALO_ID&quot;: 405172, &quot;LAMPPU_TYYPPI&quot;: &quot;ST 100 (SIEMENS)&quot;, &quot;metadata&quot;: {&quot;status&quot;: &quot;teststatus&quot;, &quot;modifier&quot;: &quot;SimoSahkari&quot;, &quot;modified&quot;: 1415784676}}, &quot;geometry_name&quot;: &quot;GEOLOC&quot;}<br/>Test passed!<br/></span>
+<span class="stdout">Running test: valid put request, change user<br/>User: SimoSahkari<br/>(PUT) Response status code: 200<br/>(GET) Response status code: 200<br/>(GET) Response content: {&quot;geometry&quot;: {&quot;type&quot;: &quot;Point&quot;, &quot;coordinates&quot;: [23.643239226767022, 61.519112683582854]}, &quot;id&quot;: &quot;WFS_KATUVALO.405172&quot;, &quot;type&quot;: &quot;Feature&quot;, &quot;properties&quot;: {&quot;NIMI&quot;: &quot;XPWR_6769212&quot;, &quot;LAMPPU_TYYPPI_KOODI&quot;: &quot;100340&quot;, &quot;TYYPPI_KOODI&quot;: &quot;105007&quot;, &quot;KATUVALO_ID&quot;: 405172, &quot;LAMPPU_TYYPPI&quot;: &quot;ST 100 (SIEMENS)&quot;, &quot;metadata&quot;: {&quot;status&quot;: &quot;teststatus&quot;, &quot;modifier&quot;: &quot;SimoSahkari&quot;, &quot;modified&quot;: 1415830350}}, &quot;geometry_name&quot;: &quot;GEOLOC&quot;}<br/>Test passed!<br/></span>
 </li>
 </ul>
 </li>
@@ -1294,18 +1334,28 @@ jQuery.cookie = function(name, value, options) {
 </li>
 </ul>
 </li>
-<li class="level top failed open">
+<li class="level top open">
 <span><em class="time">
-<div class="time">0 ms</div>
-</em>test_collection.TestCollection</span>
+<div class="time">8.22 s</div>
+</em>test_collection.TestCollectionGet</span>
 <ul>
-<li class="level test failed open">
+<li class="level test">
 <span><em class="time">
-<div class="time">0 ms</div>
-</em><em class="status">failed</em>test_collection</span>
+<div class="time">102 ms</div>
+</em><em class="status">passed</em>test_get_invalid_collection</span>
 <ul>
 <li class="text">
-<span class="stderr">Failure<br/>Traceback (most recent call last):<br/>  File &quot;/home/xc-/Documents/Projektikurssi/projektityokurssi/backend/lbd_backend/LBD_REST_locationdata/tests/test_collection.py&quot;, line 17, in test_collection<br/>    self.fail()<br/>AssertionError: None<br/></span>
+<span class="stdout">Running test: nonexistent collection<br/>Response status code: 404<br/>Test passed!<br/></span>
+</li>
+</ul>
+</li>
+<li class="level test">
+<span><em class="time">
+<div class="time">8.12 s</div>
+</em><em class="status">passed</em>test_get_valid_request</span>
+<ul>
+<li class="text">
+<span class="stdout">Running test: valid get request<br/>Response status code: 200<br/>Test passed!<br/></span>
 </li>
 </ul>
 </li>
@@ -1315,7 +1365,7 @@ jQuery.cookie = function(name, value, options) {
 </div>
 </div>
 <div id="footer">
-<p>Generated by PyCharm on 12.11.2014 11:31</p>
+<p>Generated by PyCharm on 13.11.2014 0:13</p>
 </div>
 </body>
 </html>
