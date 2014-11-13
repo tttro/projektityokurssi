@@ -15,11 +15,11 @@
     <div ng-switch="tab">
         <!-- Items -->
         <div ng-switch-default='items' ng-controller="itemController">
-            <ng-include src="'views/item.partial.html'"/>
+            <ng-include src="'views/item.partial.html'"></ng-include>
         </div>
         <!-- Messages -->
         <div ng-switch-when='messages' ng-controller="messageController">
-            <ng-include src="'views/message.partial.html'"/>
+            <ng-include src="'views/message.partial.html'"></ng-include>
         </div>
     </div>
 </div>
