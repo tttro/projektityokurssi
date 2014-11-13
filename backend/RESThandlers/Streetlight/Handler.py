@@ -1,14 +1,19 @@
-import time
-import mongoengine
-from RESThandlers.HandlerInterface.Exceptions import GenericDBError
+# -*- coding: utf-8 -*-
+"""
+.. module:: Handlers.Streetlight.handler
+    :platform: Unix, Windows
+.. moduleauthor:: Aki Mäkinen <aki.makinen@outlook.com>
 
-__author__ = 'xc-'
+"""
+__author__ = 'Aki Mäkinen'
+
+from RESThandlers.HandlerInterface.Exceptions import GenericDBError
 
 import urllib
 import json
 
 from RESThandlers.HandlerInterface.HandlerBaseClass import HandlerBase
-from RESThandlers.Streetlight.models import Streetlights, Geometry, Properties
+from RESThandlers.Streetlight.models import Streetlights
 
 
 class StreetlightHandler(HandlerBase):
@@ -127,17 +132,20 @@ class StreetlightHandler(HandlerBase):
                                                                  }
                                                             },
                                                             {'$project': doc_structure}
-                                                            ])
+        ])
         if int(raw["ok"]) != 1:
             raise GenericDBError("Database query failed. Status: " + str(raw["ok"]))
         else:
             f_count = self.modelobject.objects(geometry__geo_within_box=
                                                [(xbottom_left, ybottom_left), (xtop_right, ytop_right)]).count()
-            featurecollection = self._featurecollection
-            featurecollection["totalFeatures"] = f_count
-            featurecollection["features"] = raw["result"]
+            if f_count > 0:
+                featurecollection = self._featurecollection
+                featurecollection["totalFeatures"] = f_count
+                featurecollection["features"] = raw["result"]
 
-            return featurecollection
+                return featurecollection
+            else:
+                return None
 
     def get_all(self, mini=True):
         if mini:
@@ -149,11 +157,15 @@ class StreetlightHandler(HandlerBase):
         if int(raw["ok"]) != 1:
             raise GenericDBError("Database query failed. Status: " + str(raw["ok"]))
         else:
-            featurecollection = self._featurecollection
-            featurecollection["totalFeatures"] = self.modelobject.objects().count()
-            featurecollection["features"] = raw["result"]
+            res_count = len(raw["result"])
+            if res_count > 0:
+                featurecollection = self._featurecollection
+                featurecollection["totalFeatures"] = res_count
+                featurecollection["features"] = raw["result"]
 
-            return featurecollection
+                return featurecollection
+            else:
+                return None
 
     # Return values:
     # Boolean: True if all were deleted, False if objects remain in db after deletion
@@ -177,21 +189,6 @@ class StreetlightHandler(HandlerBase):
             return True
         else:
             return False
-
-    # Function delete_item
-    # Parameters:
-    # jsonitem: a Python json object (returned by json.loads())
-    # def delete_item_by_handler_json(self, jsonitem):
-    #     self.modelobject.objects().get(feature_id=jsonitem["feature_id"]).delete()
-    #
-    # def delete_item_by_handler_id(self, iid):
-    #     self.modelobject.objects().get(feature_id=iid).delete()
-
-    # Function delete_item_by_id
-    # Parameters:
-    # iid: a MongoDB id
-    def delete_item_by_id(self, iid):
-        result = self.modelobject.objects().get(id=iid).delete()
 
     # Function get_item_count
     # Return values:

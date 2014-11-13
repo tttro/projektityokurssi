@@ -5,9 +5,9 @@
 *.py~
 *.pyc
 *.pyc~
-*settings.py
+#*settings.py
 backend/manage.py
 *.settings
 *.zargo~
-
+*.directory
 __pycache__

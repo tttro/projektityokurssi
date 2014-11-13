@@ -8,14 +8,14 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 
 import fi.lbd.mobile.R;
+import fi.lbd.mobile.adapters.ListMapObjectAdapter;
 import fi.lbd.mobile.events.BusHandler;
 
 
 public class InboxFragment extends ListFragment {
     private ListMapObjectAdapter adapter;
 
-    public static InboxFragment newInstance() {
-        return new InboxFragment();
+    public static InboxFragment newInstance() { return new InboxFragment();
     }
 
     @Override

@@ -1,4 +1,4 @@
-package fi.lbd.mobile.fragments;
+package fi.lbd.mobile.adapters;
 
 import android.app.Activity;
 import android.content.Context;

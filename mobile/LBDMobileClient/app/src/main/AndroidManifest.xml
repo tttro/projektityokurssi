@@ -34,7 +34,8 @@
         <activity
             android:name=".ListActivity"
             android:label="@string/app_name"
-            android:screenOrientation="portrait" >
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Holo.Light.NoActionBar" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -48,7 +49,7 @@
         <!-- </activity> -->
 
         <service
-            android:name=".repository.MapObjectRepositoryService"
+            android:name=".backendhandler.BackendHandlerService"
             android:label="@string/service_name" />
 
         <meta-data
@@ -58,11 +59,11 @@
             android:name="com.google.android.maps.v2.API_KEY"
             android:value="@string/GoogleMapsApiKey" />
 
-        <!--android:theme="@android:style/Theme.Holo.Light.NoActionBar"-->
+        <!-- android:theme="@android:style/Theme.Holo.Light.NoActionBar" -->
         <activity
-            android:name=".MapActivity"
-            android:theme="@android:style/Theme.Holo.Light.NoActionBar"
-            android:label="@string/title_activity_map" >
+            android:name=".DetailsActivity"
+            android:label="@string/title_activity_details"
+            android:theme="@android:style/Theme.Holo.Light.NoActionBar" >
         </activity>
     </application>
 

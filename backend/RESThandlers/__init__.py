@@ -1,1 +1,2 @@
-__author__ = 'xc-'
+# -*- coding: utf-8 -*-
+__author__ = 'Aki Mäkinen'

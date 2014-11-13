@@ -1,20 +1,16 @@
-#!/usr/bin/env python
 # -*- coding: utf-8 -*-
+__author__ = 'Aki Mäkinen'
+
 import json
 import urllib
-
-__author__ = 'xc-'
-
 from lbd_backend.LBD_REST_locationdata.models import *
 from RESThandlers.Streetlight import models as SL
 import time
-import datetime
 import mongoengine
 
 req = urllib.urlopen(
             'http://tampere.navici.com/tampere_wfs_geoserver/opendata/ows?service=WFS&version=1.0.0&request=GetFeature'
-            '&typeName=opendata:WFS_KATUVALO&outputFormat=json&srsName=EPSG:4326',
-            proxies={})
+            '&typeName=opendata:WFS_KATUVALO&outputFormat=json&srsName=EPSG:4326', proxies={})
 jsonitem = json.loads(req.read())
 itemsinserted = 0
 itemlist = list()

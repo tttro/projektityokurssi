@@ -3,4 +3,17 @@
     android:id="@+id/pager"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="fi.lbd.mobile.ListActivity" />
+    tools:context="fi.lbd.mobile.ListActivity">
+
+    <android.support.v4.view.PagerTabStrip
+        android:id="@+id/pager_header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top"
+        android:background="#fff"
+        android:paddingBottom="10dp"
+        android:paddingTop="10dp"
+        android:textColor="#000"
+        />
+
+</android.support.v4.view.ViewPager>
