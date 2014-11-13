@@ -1,15 +1,12 @@
 # -*- coding: UTF-8 -*-
 import json
-#from time import sleep
 from unittest import TestCase
-#from django.test import Client
-#import urllib2
 import httplib
 from lbd_backend.utils import geo_json_scheme_validation
+from lbd_backend.LBD_REST_locationdata.tests.test_settings import url, port, lbdheader
 
 __author__ = 'Aki Mäkinen'
 
-httpconn = httplib.HTTPConnection("localhost", 8000)
 
 class TestSingleResourceGet(TestCase):
     """
@@ -19,9 +16,9 @@ class TestSingleResourceGet(TestCase):
     The first one is expected not to have meta data attached to it while the latter one
     is expected to have meta data.
     """
-    def __init__(self, *args, **kwargs):
-        self.con = httpconn
-        super(TestSingleResourceGet, self).__init__(*args, **kwargs)
+
+    def setUp(self):
+        self.con = httplib.HTTPConnection(url, port)
 
     def test_get_valid_request(self):
         print "Running test: valid get request"
@@ -99,9 +96,8 @@ class TestSingleResourcePut(TestCase):
     test_put_valid_request_* tests are the most important ones. They test that the REST handles a valid request correctly.
 
     """
-    def __init__(self, *args, **kwargs):
-        self.con = httpconn
-        super(TestSingleResourcePut, self).__init__(*args, **kwargs)
+    def setUp(self):
+        self.con = httplib.HTTPConnection(url, port)
 
     def test_put_valid_request_change_user(self):
         """
@@ -126,10 +122,12 @@ class TestSingleResourcePut(TestCase):
         print "(PUT) Response status code: "+str(response.status)
         self.assertEqual(response.status, 200)
 
+        self.con = httplib.HTTPConnection(url, port)
         self.con.request("GET", "/locationdata/api/Streetlights/WFS_KATUVALO.405172",
                          headers={"LBD_LOGIN_HEADER": user})
         response = self.con.getresponse()
         response_text = response.read()
+
         print "(GET) Response status code: "+str(response.status)
         print "(GET) Response content: "+response_text
         contentjson = json.loads(response_text)
@@ -164,6 +162,7 @@ class TestSingleResourcePut(TestCase):
         print "(PUT) Response status code: "+str(response.status)
         self.assertEqual(response.status, 200)
 
+        self.con = httplib.HTTPConnection(url, port)
         self.con.request("GET", "/locationdata/api/Streetlights/WFS_KATUVALO.405172",
                          headers={"LBD_LOGIN_HEADER": user})
         response = self.con.getresponse()
@@ -196,6 +195,7 @@ class TestSingleResourcePut(TestCase):
 
         print "(PUT) Response status code: "+str(response.status)
 
+        self.con = httplib.HTTPConnection(url, port)
         self.con.request("GET", "/locationdata/api/Streetlights/WFS_KATUVALO.405172",
                          headers={"LBD_LOGIN_HEADER": user})
         response = self.con.getresponse()
@@ -339,11 +339,9 @@ class TestSingleResourceDelete(TestCase):
 
     Tests assume that basic PUT method works.
     """
-    def __init__(self, *args, **kwargs):
-        self.con = httpconn
-        super(TestSingleResourceDelete, self).__init__(*args, **kwargs)
 
     def setUp(self):
+        self.con = httplib.HTTPConnection(url, port)
         print "Preparing system for new test..."
         user = "TiinaTeekkari"
 
@@ -358,10 +356,14 @@ class TestSingleResourceDelete(TestCase):
                                   "Content-type": "application/json"})
         response = self.con.getresponse()
         self.assertEqual(response.status, 200, "Prepare failed...")
+
+        print "Reinitializing connection..."
+        self.con = httplib.HTTPConnection(url, port)
+
         print "System prepared!"
 
     def test_delete_valid(self):
-        print "Running test: valid data, contradiction in resource id"
+        print "Running test: valid data"
         user = "TiinaTeekkari"
 
         self.con.request("DELETE", "/locationdata/api/Streetlights/WFS_KATUVALO.405172",
@@ -371,11 +373,15 @@ class TestSingleResourceDelete(TestCase):
         print "(DELETE) Response status code: "+str(response.status)
         self.assertEqual(response.status, 200)
 
+        self.con = httplib.HTTPConnection(url, port)
         self.con.request("GET", "/locationdata/api/Streetlights/WFS_KATUVALO.405172",
                          headers={"LBD_LOGIN_HEADER": user})
         response = self.con.getresponse()
+
         print "(GET) Response status code: "+str(response.status)
+
         self.assertEqual(response.status, 200)
+
         responsejson = json.loads(response.read())
         with self.assertRaises(KeyError):
             print responsejson["properties"]["metadata"]
@@ -418,11 +424,69 @@ class TestSingleResourceDelete(TestCase):
         print "(DELETE) Second response status code: "+str(response.status)
         self.assertEqual(response.status, 404)
 
+        self.con = httplib.HTTPConnection(url, port)
         self.con.request("DELETE", "/locationdata/api/FOOBARISTA/WFS_KATUVALO.405172",
                          headers={"LBD_LOGIN_HEADER": user})
         response = self.con.getresponse()
 
         print "(DELETE) Second response status code: "+str(response.status)
         self.assertEqual(response.status, 404)
+
+        print "Test passed!"
+
+
+class TestSingleResourcePost(TestCase):
+    def setUp(self):
+        self.con = httplib.HTTPConnection(url, port)
+        self.headers = lbdheader
+
+    def test_post_method(self):
+        print "Running test: test POST method, valid collection and resource"
+        jsonstring ='{"geometry": {"type": "Point", "coordinates": [23.643239226767022, 61.519112683582854]}, "id": ' \
+                    '"WFS_KATUVALO.405172", "type": "Feature", "properties": {"NIMI": "XPWR_6769212", ' \
+                    '"LAMPPU_TYYPPI_KOODI": "100340", "TYYPPI_KOODI": "105007", "KATUVALO_ID": 405172, ' \
+                    '"LAMPPU_TYYPPI": "ST 100 (SIEMENS)", "metadata": {"status": "teststatus", "modifier": ' \
+                    '"HeliHumanisti", "modified": 1415705418}}, "geometry_name": "GEOLOC"}'
+
+        self.con.request("POST", "/locationdata/api/Streetlights/WFS_KATUVALO.405172", jsonstring,
+                         headers=self.headers)
+        response = self.con.getresponse()
+
+        print "(POST) Response status code: "+str(response.status)
+        self.assertEqual(response.status, 405)
+
+        print "Test passed!"
+
+    def test_post_method_invalid_resource(self):
+        print "Running test: test POST method, valid collection, invalid resource"
+        jsonstring ='{"geometry": {"type": "Point", "coordinates": [23.643239226767022, 61.519112683582854]}, "id": ' \
+                    '"WFS_KATUVALO.405172", "type": "Feature", "properties": {"NIMI": "XPWR_6769212", ' \
+                    '"LAMPPU_TYYPPI_KOODI": "100340", "TYYPPI_KOODI": "105007", "KATUVALO_ID": 405172, ' \
+                    '"LAMPPU_TYYPPI": "ST 100 (SIEMENS)", "metadata": {"status": "teststatus", "modifier": ' \
+                    '"HeliHumanisti", "modified": 1415705418}}, "geometry_name": "GEOLOC"}'
+
+        self.con.request("POST", "/locationdata/api/Streetlights/WFS_KATUVALO.999999", jsonstring,
+                         headers=self.headers)
+        response = self.con.getresponse()
+
+        print "POST Response status code: "+str(response.status)
+        self.assertEqual(response.status, 405)
+
+        print "Test passed!"
+
+    def test_post_method_invalid_collection(self):
+        print "Running test: test POST method, valid collection, invalid resource"
+        jsonstring ='{"geometry": {"type": "Point", "coordinates": [23.643239226767022, 61.519112683582854]}, "id": ' \
+                    '"WFS_KATUVALO.405172", "type": "Feature", "properties": {"NIMI": "XPWR_6769212", ' \
+                    '"LAMPPU_TYYPPI_KOODI": "100340", "TYYPPI_KOODI": "105007", "KATUVALO_ID": 405172, ' \
+                    '"LAMPPU_TYYPPI": "ST 100 (SIEMENS)", "metadata": {"status": "teststatus", "modifier": ' \
+                    '"HeliHumanisti", "modified": 1415705418}}, "geometry_name": "GEOLOC"}'
+
+        self.con.request("POST", "/locationdata/api/FOOBARISTA/WFS_KATUVALO.405172", jsonstring,
+                         headers=self.headers)
+        response = self.con.getresponse()
+
+        print "POST Response status code: "+str(response.status)
+        self.assertEqual(response.status, 405)
 
         print "Test passed!"
