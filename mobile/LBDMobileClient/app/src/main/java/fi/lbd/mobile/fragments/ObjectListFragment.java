@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ExpandableListView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
@@ -19,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 import android.widget.ExpandableListAdapter;
 
+import fi.lbd.mobile.LBDApplication;
 import fi.lbd.mobile.adapters.ListExpandableAdapter;
 import fi.lbd.mobile.adapters.ListMapObjectAdapter;
 import fi.lbd.mobile.events.BusHandler;
@@ -75,6 +77,14 @@ public class ObjectListFragment extends ListFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.listview_search_fragment, container, false);
         expview = (ExpandableListView) view.findViewById(android.R.id.list);
+
+        // TODO: Search-toiminnallisuus
+        view.findViewById(R.id.searchButton).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                hideKeyBoard();
+            }
+        });
         return view;
     }
 
@@ -129,5 +139,11 @@ public class ObjectListFragment extends ListFragment {
         for(ListClickListener<MapObject> listener : this.listClickListeners) {
             listener.onClick(object);
         }
+    }
+
+    public void hideKeyBoard() {
+        InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(
+                getActivity().INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(getView().findViewById(R.id.editText1).getWindowToken(), 0);
     }
 } 

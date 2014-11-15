@@ -1,12 +1,17 @@
 package fi.lbd.mobile.fragments;
 
 import android.content.Intent;
+import android.location.Geocoder;
+import android.location.Address;
 import android.os.Bundle;
 import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.google.android.gms.location.LocationClient;
@@ -29,6 +34,7 @@ import com.squareup.otto.Subscribe;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import fi.lbd.mobile.DetailsActivity;
 import fi.lbd.mobile.R;
@@ -51,6 +57,7 @@ public class GoogleMapFragment extends MapFragment implements OnInfoWindowClickL
     private MapTableModel<Marker> tableModel;
     private BiMap<Marker, MapObject> markerObjectMap; // TODO: Saisko suoraan markeriin liitettyä?
     private Marker activeMarker;
+    private Geocoder geocoder;
 
     public static GoogleMapFragment newInstance(){
         return new GoogleMapFragment();
@@ -62,6 +69,8 @@ public class GoogleMapFragment extends MapFragment implements OnInfoWindowClickL
 		this.mapView = (MapView)view.findViewById(R.id.mapview);
         this.mapView.onCreate(savedInstanceState);
         this.activeMarker = null;
+
+        this.geocoder = new Geocoder(getActivity(), Locale.getDefault());
 
         this.map = this.mapView.getMap();
         this.map.getUiSettings().setMyLocationButtonEnabled(true);
@@ -94,6 +103,36 @@ public class GoogleMapFragment extends MapFragment implements OnInfoWindowClickL
                 return v;
             }
         });
+
+        // Search a location by address
+        final Button searchButton = (Button)view.findViewById(R.id.searchButton);
+        if (searchButton != null){
+            searchButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    hideKeyBoard();
+                    View searchText = ((View)view.getParent()).findViewById(R.id.searchText);
+                    if (searchText != null){
+                        String address = ((EditText)searchText).getText().toString();
+
+                        // TODO: Handle incorrect searches
+                        try {
+                            List<Address> addresses = geocoder.getFromLocationName(address, 1);
+                            if (addresses.size() > 0) {
+                                Double lat = (double) (addresses.get(0).getLatitude());
+                                Double lon = (double) (addresses.get(0).getLongitude());
+                                final LatLng location = new LatLng(lat, lon);
+
+                                CameraUpdate cameraLocation = CameraUpdateFactory.newLatLngZoom(location, 16);
+                                map.moveCamera(cameraLocation);
+                            }
+                        } catch (java.io.IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            });
+        }
 
         this.markerObjectMap = HashBiMap.create();
         this.tableModel = new MapTableModel<>(0.0025, 0.005);
@@ -301,4 +340,11 @@ public class GoogleMapFragment extends MapFragment implements OnInfoWindowClickL
     public MapObject findMapObject(Marker marker){
         return (marker == null) ? null : this.markerObjectMap.get(marker);
     }
+
+    public void hideKeyBoard() {
+        InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(
+                getActivity().INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(getView().findViewById(R.id.searchText).getWindowToken(), 0);
+    }
+
 }
