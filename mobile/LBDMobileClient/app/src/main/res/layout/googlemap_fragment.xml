@@ -15,6 +15,12 @@
         android:orientation="horizontal"
         android:background="#2F3A41">
 
+        <!-- Dummy item to prevent EditText view from receiving focus -->
+        <LinearLayout
+            android:focusable="true" android:focusableInTouchMode="true"
+            android:layout_width="0px" android:layout_height="0px"/>
+
+
         <EditText
             android:id="@+id/searchText"
             android:layout_width="0dp"

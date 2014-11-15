@@ -6,6 +6,7 @@ import android.location.Address;
 import android.os.Bundle;
 import android.text.Html;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -53,6 +54,7 @@ import fi.lbd.mobile.mapobjects.PointLocation;
 public class GoogleMapFragment extends MapFragment implements OnInfoWindowClickListener, GoogleMap.OnMarkerClickListener, GoogleMap.OnMapClickListener {
 	private MapView mapView;
 	private GoogleMap map;
+    private EditText searchText;
     private LocationClient mLocationClient;
     private MapTableModel<Marker> tableModel;
     private BiMap<Marker, MapObject> markerObjectMap; // TODO: Saisko suoraan markeriin liitettyä?
@@ -69,8 +71,27 @@ public class GoogleMapFragment extends MapFragment implements OnInfoWindowClickL
 		this.mapView = (MapView)view.findViewById(R.id.mapview);
         this.mapView.onCreate(savedInstanceState);
         this.activeMarker = null;
-
         this.geocoder = new Geocoder(getActivity(), Locale.getDefault());
+
+        this.searchText = (EditText)view.findViewById(R.id.searchText);
+        // Hide keyboard and blinking cursor when "enter" or "back" key is pressed on soft keyboard
+        this.searchText.setOnKeyListener(new View.OnKeyListener() {
+            public boolean onKey(View view, int keyCode, KeyEvent event) {
+                if (keyCode == KeyEvent.KEYCODE_ENTER) {
+                    hideKeyBoard();
+                    hideCursor();
+                    return true;
+                }
+                else if(keyCode == KeyEvent.KEYCODE_BACK) {
+                    hideKeyBoard();
+                    hideCursor();
+                    return true;
+                }
+                else {
+                    return false;
+                }
+            }
+        });
 
         this.map = this.mapView.getMap();
         this.map.getUiSettings().setMyLocationButtonEnabled(true);
@@ -111,9 +132,10 @@ public class GoogleMapFragment extends MapFragment implements OnInfoWindowClickL
                 @Override
                 public void onClick(View view) {
                     hideKeyBoard();
-                    View searchText = ((View)view.getParent()).findViewById(R.id.searchText);
+                    hideCursor();
+
                     if (searchText != null){
-                        String address = ((EditText)searchText).getText().toString();
+                        String address = (searchText).getText().toString();
 
                         // TODO: Handle incorrect searches
                         try {
@@ -123,7 +145,7 @@ public class GoogleMapFragment extends MapFragment implements OnInfoWindowClickL
                                 Double lon = (double) (addresses.get(0).getLongitude());
                                 final LatLng location = new LatLng(lat, lon);
 
-                                CameraUpdate cameraLocation = CameraUpdateFactory.newLatLngZoom(location, 16);
+                                CameraUpdate cameraLocation = CameraUpdateFactory.newLatLngZoom(location, 18);
                                 map.moveCamera(cameraLocation);
                             }
                         } catch (java.io.IOException e) {
@@ -342,9 +364,17 @@ public class GoogleMapFragment extends MapFragment implements OnInfoWindowClickL
     }
 
     public void hideKeyBoard() {
-        InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(
-                getActivity().INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(getView().findViewById(R.id.searchText).getWindowToken(), 0);
+        if (this.searchText != null) {
+            InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(
+                    getActivity().INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(this.searchText.getWindowToken(), 0);
+        }
     }
 
+    public void hideCursor(){
+        if(this.searchText != null) {
+            this.searchText.setFocusable(false);
+            this.searchText.setFocusableInTouchMode(true);
+        }
+    }
 }
