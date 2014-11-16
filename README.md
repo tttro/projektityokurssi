@@ -1,7 +1,7 @@
 LBD
 =================
 This projects is a part of Tampere University of Technology course Project Work on
-Pervasive Systems and whole application is licenced under the MIT License (MIT).
+Pervasive Systems and whole application is licenced under X License?.
 
 * Mobile-client: Android (Java)
 * Web-client: HTML, CSS, JS, Angular.js
