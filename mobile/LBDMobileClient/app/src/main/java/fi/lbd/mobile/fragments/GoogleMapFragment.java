@@ -307,7 +307,8 @@ public class GoogleMapFragment extends MapFragment implements OnInfoWindowClickL
         if(o != null){
             Marker m = findMarker(o);
             if (m != null) {
-                clearActiveMarker();
+                // TODO: fix bug and remove comment signs
+                // clearActiveMarker();
                 setActiveMarker(m);
                 PointLocation location = o.getPointLocation();
                 CameraUpdate cameraLocation = CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), 18);
@@ -325,7 +326,8 @@ public class GoogleMapFragment extends MapFragment implements OnInfoWindowClickL
 
     @Override
     public boolean onMarkerClick(Marker marker){
-        clearActiveMarker();
+        // TODO: fix bug and remove comment signs
+        // clearActiveMarker();
         setActiveMarker(marker);
 
         MapObject mapObject = findMapObject(marker);
