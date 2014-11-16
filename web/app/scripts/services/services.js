@@ -1,6 +1,9 @@
+// Global settings
 var dataServices = angular.module('dataServices', ['ngResource']);
 var baseUrl = 'http://lbdbackend.ignorelist.com/locationdata/api/';
 var dataSet = null;
+
+// Get Streetlight-data from near
 dataServices.factory('StreetlightNear', function($http){
     return {
         get: function(lat, lng, callback){
@@ -16,6 +19,8 @@ dataServices.factory('StreetlightNear', function($http){
         }
     };
 });
+
+// Get Streetlight data from Inarea
 dataServices.factory('StreetlightInarea', function($http){
     return {
         get: function(bounds, callback){
@@ -37,13 +42,11 @@ dataServices.factory('StreetlightInarea', function($http){
     };
 });
 
-dataServices.factory('StreetlightTest', ['$http','$rootScope', function($http, $rootScope){
-
-    var dataStorage;
+// Get TEST data
+dataServices.factory('StreetlightTest', ['$http', function($http){
     return {
 
         fetchData: function(callback) {
-
 
                 $http({
                     method: 'GET',
@@ -57,6 +60,7 @@ dataServices.factory('StreetlightTest', ['$http','$rootScope', function($http, $
                     callback(data);
                 })
                 .error(function(data,status,header,config){
+                    alert("Sorry, Data Load Failure :(")
                     console.log("error:streetlight " + data);
                     console.log("error:streetlight " + status);
                     console.log("error:streetlight " + header('LBD_LOGIN_HEADER'));
@@ -66,7 +70,8 @@ dataServices.factory('StreetlightTest', ['$http','$rootScope', function($http, $
     };
 }]);
 
-dataServices.factory('Data', function($rootScope){
+// A local data storage (model) which controllers uses
+dataServices.factory('Data', function(){
     return {
         get: function() {
             return dataSet;

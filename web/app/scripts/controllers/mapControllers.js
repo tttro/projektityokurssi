@@ -1,13 +1,17 @@
+/* MapController - a map and points functions */
+
 var mapControllers = angular.module('mapControllers', []);
 
 mapControllers.controller('mapController', function($scope, $window,$rootScope, StreetlightTest, StreetlightInarea, Data){
 
+    // Init
     var defaultPoint = new google.maps.LatLng(61.51241, 23.634931); // Tampere
     $scope.userLocationMarker = null;
     $scope.btnGeolocation = true;
     var markerClusterer = null;
     var markers = [];
     var currentBounds = null;
+    var infoWindow = new google.maps.InfoWindow();
     $scope.loading = true;
 
     // Init map
@@ -27,16 +31,18 @@ mapControllers.controller('mapController', function($scope, $window,$rootScope, 
 
     }
 
+    // Set map
     $scope.map = new google.maps.Map(document.getElementById('map'), mapOptions);
-    var infoWindow = new google.maps.InfoWindow();
 
     /*** Init google maps events ***/
 
     var geoButton = document.getElementById('btnGeolocation');
+    // Init Search-box
     var input = /** @type {HTMLInputElement} */(
         document.getElementById('pac-input'));
     var searchBox = new google.maps.places.SearchBox(
         /** @type {HTMLInputElement} */(input));
+
     // [START region_getplaces]
     // Listen for the event fired when the user selects an item from the
     // pick list.
@@ -56,9 +62,12 @@ mapControllers.controller('mapController', function($scope, $window,$rootScope, 
 
         $scope.map.fitBounds(bounds);
     });
+
+    // Add tool-buttons on map
     $scope.map.controls[google.maps.ControlPosition.TOP_LEFT].push(btnGeolocation);
     $scope.map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
 
+    // Geolocation button event-handler
     google.maps.event.addDomListener(geoButton, 'click', function(){
 
        if(navigator.geolocation)
@@ -82,6 +91,7 @@ mapControllers.controller('mapController', function($scope, $window,$rootScope, 
         }
     });
 
+    // Event handler when Maps is loaded and ready
     google.maps.event.addListener($scope.map, 'idle', function(){
         $scope.loading = false;
         var bounds = $scope.map.getBounds();
@@ -103,6 +113,7 @@ mapControllers.controller('mapController', function($scope, $window,$rootScope, 
         }
     });
 
+    // Add default blue point
     createGeoMarker(defaultPoint);
 
 
@@ -135,11 +146,11 @@ mapControllers.controller('mapController', function($scope, $window,$rootScope, 
 
     }
 
+    // Event handler for item-list click
     $scope.$on('showMarker',function(event, data){
         var markerId = data;
         var marker = markers[markerId];
         google.maps.event.trigger(marker, 'click');
-        //panorama.setPosition(marker.getPosition());
     });
 
 
@@ -241,7 +252,7 @@ mapControllers.controller('mapController', function($scope, $window,$rootScope, 
         });
         $scope.userLocationMarker = marker;
     }
-    function clearMarkers(markers){
+    var clearMarkers = function(markers){
         for (var i in markers) {
             markers[i].setMap(null);
             console.log(markers[i]);

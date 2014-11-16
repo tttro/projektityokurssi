@@ -1,5 +1,7 @@
 var appDirectives = angular.module('appDirectives', []);
 
+// Place for custom directives
+// Not used anymore
 appDirectives.directive('tabinner', function($window) {
     return {
         restrict: "A",

@@ -1,4 +1,6 @@
-'use strict';
+/* ItemController - items functions */
+
+
 var itemControllers = angular.module('itemControllers', []);
 
 itemControllers.controller('itemController', function($scope, $http, $rootScope, $timeout, Data){

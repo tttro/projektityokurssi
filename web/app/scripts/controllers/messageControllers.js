@@ -1,3 +1,5 @@
+/* MessageController - message functions */
+
 var messageControllers = angular.module('messageControllers', []);
 
 messageControllers.controller('messageController', function($scope){
