@@ -137,7 +137,7 @@ public class GoogleMapFragment extends MapFragment implements OnInfoWindowClickL
                     if (searchText != null){
                         String address = (searchText).getText().toString();
 
-                        // TODO: Handle incorrect searches
+                        // TODO: Should we limit results within Finland?
                         try {
                             List<Address> addresses = geocoder.getFromLocationName(address, 1);
                             if (addresses.size() > 0) {

@@ -79,6 +79,9 @@ public class ObjectListFragment extends ListFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.listview_search_fragment, container, false);
+
+        // TODO: siirrä expandable-nuoli oikealle puolelle ettei mene tekstin päälle:
+        // http://stackoverflow.com/questions/5800426/expandable-list-view-move-group-icon-indicator-to-right
         this.expview = (ExpandableListView) view.findViewById(android.R.id.list);
         this.searchText = (EditText)view.findViewById(R.id.searchText);
 
