@@ -15,5 +15,8 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_my">MyActivity</string>
     <string name="title_activity_finder">FinderActivity</string>
+    <string name="button_details">DETAILS</string>
+    <string name="button_map">MAP</string>
+    <string name="address_hint">Search address..</string>
 
 </resources>

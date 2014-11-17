@@ -28,7 +28,7 @@
             android:ems="5"
             android:lines="1"
             android:maxLines="1"
-            android:hint="Hämeenkatu, Tampere"
+            android:hint="@string/address_hint"
             android:inputType="textPostalAddress"
             android:textColor="#FFF">
         </EditText>

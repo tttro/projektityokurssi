@@ -10,8 +10,6 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
 import java.util.Map;
 
 import fi.lbd.mobile.R;
@@ -74,7 +72,7 @@ public class ListDetailsAdapter extends BaseAdapter {
     public View getView(int i, View view, ViewGroup viewGroup) {
         if(view == null){
             LayoutInflater inflater = ((Activity) this.context).getLayoutInflater();
-            view = inflater.inflate(R.layout.listview_row, viewGroup, false);
+            view = inflater.inflate(R.layout.listview_double_row, viewGroup, false);
         }
         if (i == 0) {
             TextView textViewId = (TextView) view.findViewById(R.id.textViewObjectId);

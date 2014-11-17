@@ -1,32 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal" android:layout_width="match_parent"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="10dp">
+    android:padding="10dp"
+    android:background="@color/exp_background">
 
     <Button
-        style="?android:attr/buttonStyleSmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Show details"
+        android:text="@string/button_details"
         android:id="@+id/detailsButton"
-        android:background="#fff"
         android:layout_marginLeft="20dp"
         android:layout_gravity="top"
-        android:padding="5dp"
+        android:paddingEnd="30dp"
+        android:paddingStart="30dp"
+        android:paddingTop="5dp"
+        android:background="@color/button_background"
+        android:paddingBottom="5dp"
+        android:textSize="6pt"
+        android:textColor="@color/white"
         android:onClick="onDetailsClick"/>
 
     <Button
-        style="?android:attr/buttonStyleSmall"
-        android:layout_width="100dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Show on map"
-        android:background="#fff"
+        android:text="@string/button_map"
+        android:background="@color/button_background"
         android:id="@+id/mapButton"
         android:layout_marginLeft="20dp"
         android:layout_gravity="top"
-        android:padding="5dp"
-        android:onClick="onMapClick"/>
+        android:paddingEnd="30dp"
+        android:paddingStart="30dp"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:textSize="6pt"
+        android:onClick="onMapClick"
+        android:textColor="@color/white"/>
 
 </LinearLayout>

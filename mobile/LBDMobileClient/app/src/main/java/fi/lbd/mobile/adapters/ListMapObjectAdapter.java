@@ -61,7 +61,7 @@ public class ListMapObjectAdapter extends BaseAdapter {
     public View getView(int i, View view, ViewGroup viewGroup) {
         if(view == null){
             LayoutInflater inflater = ((Activity) this.context).getLayoutInflater();
-            view = inflater.inflate(R.layout.listview_row, viewGroup, false);
+            view = inflater.inflate(R.layout.listview_double_row, viewGroup, false);
         }
         MapObject obj = this.objects.get(i);
 
