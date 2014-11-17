@@ -260,10 +260,8 @@ def collection(request, *args, **kwargs):
                             except mongoengine.NotUniqueError:
                                 pass
                 except KeyError:
-                    print "KEYERROR"
                     return HttpResponse(status=s_codes["BAD"])
             else:
-                print "SOMETHING ELSE"
                 return HttpResponse(status=s_codes["BAD"])
             return HttpResponse(status=s_codes["OK"])
         else:
