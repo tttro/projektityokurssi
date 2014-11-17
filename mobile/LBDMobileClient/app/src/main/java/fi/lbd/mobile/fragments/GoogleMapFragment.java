@@ -1,12 +1,18 @@
 package fi.lbd.mobile.fragments;
 
 import android.content.Intent;
+import android.location.Geocoder;
+import android.location.Address;
 import android.os.Bundle;
 import android.text.Html;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.google.android.gms.location.LocationClient;
@@ -29,6 +35,7 @@ import com.squareup.otto.Subscribe;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import fi.lbd.mobile.DetailsActivity;
 import fi.lbd.mobile.R;
@@ -47,10 +54,12 @@ import fi.lbd.mobile.mapobjects.PointLocation;
 public class GoogleMapFragment extends MapFragment implements OnInfoWindowClickListener, GoogleMap.OnMarkerClickListener, GoogleMap.OnMapClickListener {
 	private MapView mapView;
 	private GoogleMap map;
+    private EditText searchText;
     private LocationClient mLocationClient;
     private MapTableModel<Marker> tableModel;
     private BiMap<Marker, MapObject> markerObjectMap; // TODO: Saisko suoraan markeriin liitettyä?
     private Marker activeMarker;
+    private Geocoder geocoder;
 
     public static GoogleMapFragment newInstance(){
         return new GoogleMapFragment();
@@ -62,6 +71,27 @@ public class GoogleMapFragment extends MapFragment implements OnInfoWindowClickL
 		this.mapView = (MapView)view.findViewById(R.id.mapview);
         this.mapView.onCreate(savedInstanceState);
         this.activeMarker = null;
+        this.geocoder = new Geocoder(getActivity(), Locale.getDefault());
+
+        this.searchText = (EditText)view.findViewById(R.id.searchText);
+        // Hide keyboard and blinking cursor when "enter" or "back" key is pressed on soft keyboard
+        this.searchText.setOnKeyListener(new View.OnKeyListener() {
+            public boolean onKey(View view, int keyCode, KeyEvent event) {
+                if (keyCode == KeyEvent.KEYCODE_ENTER) {
+                    hideKeyBoard();
+                    hideCursor();
+                    return true;
+                }
+                else if(keyCode == KeyEvent.KEYCODE_BACK) {
+                    hideKeyBoard();
+                    hideCursor();
+                    return true;
+                }
+                else {
+                    return false;
+                }
+            }
+        });
 
         this.map = this.mapView.getMap();
         this.map.getUiSettings().setMyLocationButtonEnabled(true);
@@ -94,6 +124,37 @@ public class GoogleMapFragment extends MapFragment implements OnInfoWindowClickL
                 return v;
             }
         });
+
+        // Search a location by address
+        final Button searchButton = (Button)view.findViewById(R.id.searchButton);
+        if (searchButton != null){
+            searchButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    hideKeyBoard();
+                    hideCursor();
+
+                    if (searchText != null){
+                        String address = (searchText).getText().toString();
+
+                        // TODO: Should we limit results within Finland?
+                        try {
+                            List<Address> addresses = geocoder.getFromLocationName(address, 1);
+                            if (addresses.size() > 0) {
+                                Double lat = (double) (addresses.get(0).getLatitude());
+                                Double lon = (double) (addresses.get(0).getLongitude());
+                                final LatLng location = new LatLng(lat, lon);
+
+                                CameraUpdate cameraLocation = CameraUpdateFactory.newLatLngZoom(location, 18);
+                                map.moveCamera(cameraLocation);
+                            }
+                        } catch (java.io.IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            });
+        }
 
         this.markerObjectMap = HashBiMap.create();
         this.tableModel = new MapTableModel<>(0.0025, 0.005);
@@ -246,7 +307,8 @@ public class GoogleMapFragment extends MapFragment implements OnInfoWindowClickL
         if(o != null){
             Marker m = findMarker(o);
             if (m != null) {
-                clearActiveMarker();
+                // TODO: fix bug and remove comment signs
+                // clearActiveMarker();
                 setActiveMarker(m);
                 PointLocation location = o.getPointLocation();
                 CameraUpdate cameraLocation = CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), 18);
@@ -264,7 +326,8 @@ public class GoogleMapFragment extends MapFragment implements OnInfoWindowClickL
 
     @Override
     public boolean onMarkerClick(Marker marker){
-        clearActiveMarker();
+        // TODO: fix bug and remove comment signs
+        // clearActiveMarker();
         setActiveMarker(marker);
 
         MapObject mapObject = findMapObject(marker);
@@ -300,5 +363,20 @@ public class GoogleMapFragment extends MapFragment implements OnInfoWindowClickL
 
     public MapObject findMapObject(Marker marker){
         return (marker == null) ? null : this.markerObjectMap.get(marker);
+    }
+
+    public void hideKeyBoard() {
+        if (this.searchText != null) {
+            InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(
+                    getActivity().INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(this.searchText.getWindowToken(), 0);
+        }
+    }
+
+    public void hideCursor(){
+        if(this.searchText != null) {
+            this.searchText.setFocusable(false);
+            this.searchText.setFocusableInTouchMode(true);
+        }
     }
 }
