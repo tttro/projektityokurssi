@@ -2,7 +2,7 @@
 Project:	LBD
 Descr:		Web-client custom styles
 Version:	0.1
-Licence:	MIT License
+Licence:	MIT License?
 -------------------------------------------------------------------*/
 
 html, body{
@@ -124,9 +124,10 @@ header a {
     border-bottom: 1px solid #222e36;
     color: #fff;
     padding: 20px 10px;
+
 }
 .tab-content .accord-title {
-
+    cursor: pointer;
 }
 .tab-content .accord-content {
 

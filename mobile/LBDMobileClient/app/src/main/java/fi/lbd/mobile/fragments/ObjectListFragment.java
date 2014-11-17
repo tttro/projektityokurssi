@@ -6,9 +6,12 @@ import android.app.FragmentTransaction;
 import android.app.ListFragment;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
 import android.widget.ExpandableListView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
@@ -19,6 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 import android.widget.ExpandableListAdapter;
 
+import fi.lbd.mobile.LBDApplication;
 import fi.lbd.mobile.adapters.ListExpandableAdapter;
 import fi.lbd.mobile.adapters.ListMapObjectAdapter;
 import fi.lbd.mobile.events.BusHandler;
@@ -39,6 +43,7 @@ public class ObjectListFragment extends ListFragment {
     private ListExpandableAdapter adapter;
     private List<ListClickListener<MapObject>> listClickListeners = new ArrayList<>();
     private ExpandableListView expview;
+    private EditText searchText;
     public static ObjectListFragment newInstance() {
         return new ObjectListFragment();
     }
@@ -66,7 +71,7 @@ public class ObjectListFragment extends ListFragment {
             }
             @Override
             protected void onPostExecute(Void result) {
-                BusHandler.getBus().post(new RequestNearObjectsEvent(new ImmutablePointLocation(23.795199257764725, 61.503697166613755), 0.001)); // TODO: Actual location
+                BusHandler.getBus().post(new RequestNearObjectsEvent(new ImmutablePointLocation(61.510988, 23.777366), 0.001)); // TODO: Actual location
             }
         }.execute();
     }
@@ -74,14 +79,47 @@ public class ObjectListFragment extends ListFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.listview_search_fragment, container, false);
-        expview = (ExpandableListView) view.findViewById(android.R.id.list);
+
+        // TODO: siirrä expandable-nuoli oikealle puolelle ettei mene tekstin päälle:
+        // http://stackoverflow.com/questions/5800426/expandable-list-view-move-group-icon-indicator-to-right
+        this.expview = (ExpandableListView) view.findViewById(android.R.id.list);
+        this.searchText = (EditText)view.findViewById(R.id.searchText);
+
+        // TODO: Search-toiminnallisuus
+        view.findViewById(R.id.searchButton).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                hideKeyBoard();
+                hideCursor();
+            }
+        });
+
+        // Hide keyboard and blinking cursor when "enter" or "back" key is pressed on soft keyboard
+        this.searchText.setOnKeyListener(new View.OnKeyListener() {
+            public boolean onKey(View view, int keyCode, KeyEvent event) {
+                if (keyCode == KeyEvent.KEYCODE_ENTER) {
+                    hideKeyBoard();
+                    hideCursor();
+                    return true;
+                }
+                else if(keyCode == KeyEvent.KEYCODE_BACK) {
+                    hideKeyBoard();
+                    hideCursor();
+                    return true;
+                }
+                else {
+                    return false;
+                }
+            }
+        });
+
         return view;
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        expview.setAdapter(this.adapter);
+        this.expview.setAdapter(this.adapter);
 
         BusHandler.getBus().register(this);
 
@@ -89,7 +127,7 @@ public class ObjectListFragment extends ListFragment {
             if (groupExpandedArray.get(i) == true)
                 expview.expandGroup(i);
         }
-        expview.setSelection(firstVisiblePosition );
+        this.expview.setSelection(firstVisiblePosition );
     }
 
     @Override
@@ -99,11 +137,11 @@ public class ObjectListFragment extends ListFragment {
 
         int numberOfGroups = adapter.getGroupCount();
 
-        groupExpandedArray.clear();
+        this.groupExpandedArray.clear();
         for (int i=0;i<numberOfGroups;i++){
-            groupExpandedArray.add(expview.isGroupExpanded(i));
+            this.groupExpandedArray.add(this.expview.isGroupExpanded(i));
         }
-        firstVisiblePosition = expview.getFirstVisiblePosition();
+        this.firstVisiblePosition = this.expview.getFirstVisiblePosition();
     }
 
 	@Override
@@ -128,6 +166,21 @@ public class ObjectListFragment extends ListFragment {
     private void notifyClickListeners(MapObject object) {
         for(ListClickListener<MapObject> listener : this.listClickListeners) {
             listener.onClick(object);
+        }
+    }
+
+    public void hideKeyBoard() {
+        if (this.searchText != null) {
+            InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(
+                    getActivity().INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(this.searchText.getWindowToken(), 0);
+        }
+    }
+
+    public void hideCursor(){
+        if(this.searchText != null) {
+            this.searchText.setFocusable(false);
+            this.searchText.setFocusableInTouchMode(true);
         }
     }
 } 

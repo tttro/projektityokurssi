@@ -108,7 +108,7 @@ public class ListExpandableAdapter extends BaseExpandableListAdapter {
             view = inflater.inflate(R.layout.listview_expanded_row, parent, false);
         }
         // Tag links the expanded item to its location object
-        parent.setTag(getGroup(groupPosition));
+        view.setTag(getGroup(groupPosition));
         Log.d("TAG SET--------------------", ((MapObject)getGroup(groupPosition)).getId());
 
         /*

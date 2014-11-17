@@ -1,6 +1,7 @@
+/* Main application which start up the app */
 'use strict';
 
-// Init main application
+// Init main application and modules
 var app = angular.module('app',[
     'ngRoute',
     'dataServices',
