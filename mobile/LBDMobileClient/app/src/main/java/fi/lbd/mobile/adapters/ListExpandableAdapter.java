@@ -6,14 +6,13 @@ import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.BaseExpandableListAdapter;
+import android.widget.ExpandableListView;
 import android.widget.TextView;
 import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 import fi.lbd.mobile.R;
 import fi.lbd.mobile.mapobjects.MapObject;
@@ -83,7 +82,15 @@ public class ListExpandableAdapter extends BaseExpandableListAdapter {
 
         if (view == null) {
                 LayoutInflater inflater = ((Activity) this.context).getLayoutInflater();
-                view = inflater.inflate(R.layout.listview_row, parent, false);
+                view = inflater.inflate(R.layout.listview_single_row, parent, false);
+        }
+
+        // Color the background
+        if (isExpanded){
+            view.setBackgroundColor(context.getResources().getColor(R.color.exp_background));
+        }
+        else {
+            view.setBackgroundColor(Color.WHITE);
         }
 
         // Get the group item
@@ -92,10 +99,6 @@ public class ListExpandableAdapter extends BaseExpandableListAdapter {
         TextView textViewId = (TextView) view.findViewById(R.id.textViewObjectId);
         textViewId.setText(obj.getId());
         textViewId.setTag(obj.getId());
-
-        TextView textViewLocation = (TextView) view.findViewById(R.id.textViewObjectLocation);
-        textViewLocation.setText(obj.getPointLocation().toString());
-        textViewLocation.setTag(obj.getId());
 
         return view;
     }
@@ -111,14 +114,6 @@ public class ListExpandableAdapter extends BaseExpandableListAdapter {
         view.setTag(getGroup(groupPosition));
         Log.d("TAG SET--------------------", ((MapObject)getGroup(groupPosition)).getId());
 
-        /*
-        view.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                v.setBackgroundColor(Color.BLUE);
-            }
-        });*/
-
         return view;
     }
 
@@ -126,4 +121,5 @@ public class ListExpandableAdapter extends BaseExpandableListAdapter {
     public boolean isChildSelectable(int groupPosition, int childPosition) {
         return true;
     }
+
 }

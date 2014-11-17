@@ -58,7 +58,7 @@ public class GoogleMapFragment extends MapFragment implements OnInfoWindowClickL
     private LocationClient mLocationClient;
     private MapTableModel<Marker> tableModel;
     private BiMap<Marker, MapObject> markerObjectMap; // TODO: Saisko suoraan markeriin liitettyä?
-    private Marker activeMarker;
+    private MapObject activeMarker;
     private Geocoder geocoder;
 
     public static GoogleMapFragment newInstance(){
@@ -116,11 +116,6 @@ public class GoogleMapFragment extends MapFragment implements OnInfoWindowClickL
                 TextView objectIdField = (TextView) v.findViewById(R.id.objectid);
                 objectIdField.setText(marker.getTitle());
 
-                TextView coordinatesField = (TextView) v.findViewById(R.id.coordinates);
-                coordinatesField.setText("[" + marker.getPosition().latitude + ", " + marker.getPosition().longitude + "]");
-
-                TextView infoField = (TextView) v.findViewById(R.id.info);
-                infoField.setText(Html.fromHtml(marker.getSnippet()));
                 return v;
             }
         });
@@ -272,8 +267,6 @@ public class GoogleMapFragment extends MapFragment implements OnInfoWindowClickL
                         new MarkerOptions()
                                 .position(location)
                                 .title(mapObject.getId())
-//                                .snippet(snippet.toString())
-                                .snippet("<br><b><font color=\"blue\">Click for detailed info.</font></b><br>")
                                 .icon(icon));
 
                 markers.add(marker);
@@ -305,16 +298,15 @@ public class GoogleMapFragment extends MapFragment implements OnInfoWindowClickL
         MapObject o = SelectionManager.get().getSelectedObject();
 
         if(o != null){
+            PointLocation location = o.getPointLocation();
+            CameraUpdate cameraLocation = CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), 18);
+            this.map.moveCamera(cameraLocation);
+
             Marker m = findMarker(o);
             if (m != null) {
-                // TODO: fix bug and remove comment signs
-                // clearActiveMarker();
+                clearActiveMarker();
                 setActiveMarker(m);
-                PointLocation location = o.getPointLocation();
-                CameraUpdate cameraLocation = CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), 18);
-                this.map.moveCamera(cameraLocation);
                 m.showInfoWindow();
-                SelectionManager.get().setSelection(o);
             }
         }
         // TODO: Käytä käyttäjän sijaintia, täytyy hakea LocationClientilla
@@ -326,8 +318,7 @@ public class GoogleMapFragment extends MapFragment implements OnInfoWindowClickL
 
     @Override
     public boolean onMarkerClick(Marker marker){
-        // TODO: fix bug and remove comment signs
-        // clearActiveMarker();
+        clearActiveMarker();
         setActiveMarker(marker);
 
         MapObject mapObject = findMapObject(marker);
@@ -342,14 +333,16 @@ public class GoogleMapFragment extends MapFragment implements OnInfoWindowClickL
     */
     private void clearActiveMarker() {
         if(activeMarker != null){
-            activeMarker.setIcon(BitmapDescriptorFactory.fromResource(android.R.drawable.presence_invisible));
-            activeMarker = null;
+            Marker marker = this.findMarker(this.activeMarker);
+            if(marker != null) {
+                marker.setIcon(BitmapDescriptorFactory.fromResource(android.R.drawable.presence_invisible));
+            }
         }
     }
 
-    public void setActiveMarker(Marker activeMarker) {
-        this.activeMarker = activeMarker;
-        activeMarker.setIcon(BitmapDescriptorFactory.fromResource(android.R.drawable.presence_online));
+    public void setActiveMarker(Marker marker) {
+        this.activeMarker = findMapObject(marker);
+        marker.setIcon(BitmapDescriptorFactory.fromResource(android.R.drawable.presence_online));
     }
 
     @Override

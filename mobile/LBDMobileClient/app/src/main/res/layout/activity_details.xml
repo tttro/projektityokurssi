@@ -36,12 +36,10 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Find object"
         android:id="@+id/detailsButton"
-        android:background="#1B2831"
+        android:background="#2F3A41"
         android:layout_centerHorizontal="true"
         android:padding="10dip"
-        android:onClick="onFinderClick"
         android:textColor="#FFF"/>
 
         <!--android:textAppearance="?android:attr/textAppearanceLarge"-->
