@@ -41,7 +41,7 @@ public class MapBoxFragment extends MapFragment {
 		//View view = inflater.inflate(R.layout.mapbox_fragment, container, false);
 
         mapView = new MapView(inflater.getContext());
-        mapView.setTileSource(new MapboxTileLayer(getString(R.string.MapBoxApiKey)));
+      //  mapView.setTileSource(new MapboxTileLayer(getString(R.string.MapBoxApiKey)));
 //
 //        final LatLng location = new LatLng(getArguments().getDouble("latitude"), getArguments().getDouble("longitude"));
 

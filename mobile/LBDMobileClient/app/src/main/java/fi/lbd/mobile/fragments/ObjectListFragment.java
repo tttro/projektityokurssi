@@ -1,9 +1,7 @@
 package fi.lbd.mobile.fragments;
 
-import android.app.Fragment;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.app.ListFragment;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.KeyEvent;
@@ -13,18 +11,14 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ExpandableListView;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 
 import com.squareup.otto.Subscribe;
 
 import java.util.ArrayList;
 import java.util.List;
-import android.widget.ExpandableListAdapter;
 
-import fi.lbd.mobile.LBDApplication;
 import fi.lbd.mobile.adapters.ListExpandableAdapter;
-import fi.lbd.mobile.adapters.ListMapObjectAdapter;
 import fi.lbd.mobile.events.BusHandler;
 import fi.lbd.mobile.R;
 import fi.lbd.mobile.events.RequestNearObjectsEvent;
@@ -42,7 +36,8 @@ import fi.lbd.mobile.mapobjects.MapObject;
 public class ObjectListFragment extends ListFragment {
     private ListExpandableAdapter adapter;
     private List<ListClickListener<MapObject>> listClickListeners = new ArrayList<>();
-    private ExpandableListView expview;
+    private ExpandableListView expandableListView;
+    private int lastExpanded;
     private EditText searchText;
     public static ObjectListFragment newInstance() {
         return new ObjectListFragment();
@@ -82,7 +77,10 @@ public class ObjectListFragment extends ListFragment {
 
         // TODO: siirrä expandable-nuoli oikealle puolelle ettei mene tekstin päälle:
         // http://stackoverflow.com/questions/5800426/expandable-list-view-move-group-icon-indicator-to-right
-        this.expview = (ExpandableListView) view.findViewById(android.R.id.list);
+        this.expandableListView = (ExpandableListView) view.findViewById(android.R.id.list);
+        this.expandableListView.setOnGroupExpandListener(new ExpandListener());
+        this.expandableListView.setOnGroupCollapseListener(new CollapseListener());
+        this.lastExpanded = -1;
         this.searchText = (EditText)view.findViewById(R.id.searchText);
 
         // TODO: Search-toiminnallisuus
@@ -119,15 +117,15 @@ public class ObjectListFragment extends ListFragment {
     @Override
     public void onResume() {
         super.onResume();
-        this.expview.setAdapter(this.adapter);
+        this.expandableListView.setAdapter(this.adapter);
 
         BusHandler.getBus().register(this);
 
         for (int i=0; i<groupExpandedArray.size() ;i++){
             if (groupExpandedArray.get(i) == true)
-                expview.expandGroup(i);
+                expandableListView.expandGroup(i);
         }
-        this.expview.setSelection(firstVisiblePosition );
+        this.expandableListView.setSelection(firstVisiblePosition);
     }
 
     @Override
@@ -139,9 +137,9 @@ public class ObjectListFragment extends ListFragment {
 
         this.groupExpandedArray.clear();
         for (int i=0;i<numberOfGroups;i++){
-            this.groupExpandedArray.add(this.expview.isGroupExpanded(i));
+            this.groupExpandedArray.add(this.expandableListView.isGroupExpanded(i));
         }
-        this.firstVisiblePosition = this.expview.getFirstVisiblePosition();
+        this.firstVisiblePosition = this.expandableListView.getFirstVisiblePosition();
     }
 
 	@Override
@@ -183,4 +181,28 @@ public class ObjectListFragment extends ListFragment {
             this.searchText.setFocusableInTouchMode(true);
         }
     }
-} 
+
+    public class ExpandListener implements ExpandableListView.OnGroupExpandListener {
+
+        // Collapse old expanded group and scroll to correct position
+        @Override
+        public void onGroupExpand(int groupPosition) {
+                if (lastExpanded >= 0 && lastExpanded != groupPosition){
+                    expandableListView.collapseGroup(lastExpanded);
+                }
+              lastExpanded = groupPosition;
+              expandableListView.smoothScrollToPositionFromTop(groupPosition, 0);
+            }
+        }
+
+    public class CollapseListener implements ExpandableListView.OnGroupCollapseListener {
+        @Override
+        public void onGroupCollapse(int groupPosition) {
+            if(lastExpanded == groupPosition){
+                lastExpanded = -1;
+            }
+        }
+    }
+ }
+
+

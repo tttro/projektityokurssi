@@ -96,10 +96,11 @@ public class ListExpandableAdapter extends BaseExpandableListAdapter {
         // Get the group item
         MapObject obj = this.objects.get(groupPosition);
 
-        TextView textViewId = (TextView) view.findViewById(R.id.textViewObjectId);
-        textViewId.setText(obj.getId());
-        textViewId.setTag(obj.getId());
-
+        if(obj != null) {
+            TextView textViewId = (TextView) view.findViewById(R.id.textViewObjectId);
+            textViewId.setText(obj.getId());
+            textViewId.setTag(obj.getId());
+        }
         return view;
     }
 
