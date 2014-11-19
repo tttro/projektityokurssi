@@ -2,7 +2,7 @@
 
 var mapControllers = angular.module('mapControllers', []);
 
-mapControllers.controller('mapController', function($scope, $window,$rootScope, StreetlightTest, StreetlightInarea, Data){
+mapControllers.controller('mapController', function($scope, $window,$rootScope, ItemDataService, Data){
 
     // Init
     var defaultPoint = new google.maps.LatLng(61.51241, 23.634931); // Tampere
@@ -84,7 +84,8 @@ mapControllers.controller('mapController', function($scope, $window,$rootScope, 
 
                 $scope.loading = false;
 
-            }, function() {
+
+                    }, function() {
                 handleNoGeolocation(true);
             });
 
@@ -93,19 +94,21 @@ mapControllers.controller('mapController', function($scope, $window,$rootScope, 
 
     // Event handler when Maps is loaded and ready
     google.maps.event.addListener($scope.map, 'idle', function(){
-        $scope.loading = false;
+
         var bounds = $scope.map.getBounds();
         var zoomLevel = $scope.map.getZoom();
-        //console.log("bounds:"+bounds+" zoom:"+zoomLevel);
+
         if(zoomLevel > 16 && compareBounds(currentBounds,bounds))
         {
+            $scope.loading = true;
             currentBounds = bounds;
             mapCenter = $scope.map.getCenter();
             markers = [];
-            StreetlightInarea.get(bounds,function(results) {
+            ItemDataService.getInarea(bounds,function(results) {
                 Data.set(results);
                 loadMarkers(results);
                 $rootScope.$broadcast('dataIsLoaded');
+                $scope.loading = false;
 
             });
 
@@ -156,7 +159,7 @@ mapControllers.controller('mapController', function($scope, $window,$rootScope, 
 
     /* LoadData */
 
-    StreetlightTest.fetchData(function(results) {
+    ItemDataService.getTestData(function(results) {
 
         Data.set(results);
         loadMarkers(results);
@@ -269,11 +272,9 @@ mapControllers.controller('mapController', function($scope, $window,$rootScope, 
         var newNe = newBounds.getNorthEast();
         var curSw = curBounds.getSouthWest();
         var newSw = newBounds.getSouthWest();
-        console.log(curSw.lng()+ " < " +newSw.lng() +" / "+ curSw.lat() +" > " + newSw.lat());
-        console.log(curNe.lng()+ " > " +newNe.lng() +" / "+ curNe.lat() +" < " + newNe.lat());
-        //console.log(newNe +" "+ newSw);
-        if(curSw.lng() < newSw.lng() && curSw.lat() > newSw.lat() &&
-            curNe.lng() > newNe.lng() && curNe.lat() < newNe.lat()){
+
+        if(curSw.lng() < newSw.lng() && curSw.lat() < newSw.lat() &&
+            curNe.lng() > newNe.lng() && curNe.lat() > newNe.lat()){
             return false;
         }
         return true;

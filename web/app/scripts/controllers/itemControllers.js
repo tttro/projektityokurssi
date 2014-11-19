@@ -3,8 +3,11 @@
 
 var itemControllers = angular.module('itemControllers', []);
 
-itemControllers.controller('itemController', function($scope, $http, $rootScope, $timeout, Data){
+itemControllers.controller('itemController', function($scope, $http, $rootScope, $filter, Data){
 
+        $scope.searchQuery = '';
+        $scope.items = Data.get();
+        var orginalItemList = [];
 
         /*** Event from service, data is ready
          *  Add markers when all data fetched from server
@@ -12,11 +15,21 @@ itemControllers.controller('itemController', function($scope, $http, $rootScope,
         $scope.$on('dataIsLoaded', function(e) {
             $scope.loading = true;
             $scope.items = Data.get();
+            orginalItemList = Data.get();
             $scope.loading = false;
         });
+
+        $scope.itemSearch = function(searchQuery){
+            console.log(searchQuery);
+            if(searchQuery != "" ) {
+                $scope.items.features = $filter('filter')($scope.items.features,{$:searchQuery}, false);
+            }
+            else {
+                $scope.items = orginalItemList;
+            }
+        }
 
         $scope.showMarker = function(markerId){
             $rootScope.$broadcast('showMarker', markerId); // delegate marker id to map
         }
-
 });

@@ -2,7 +2,7 @@
 
 var messageControllers = angular.module('messageControllers', []);
 
-messageControllers.controller('messageController', function($scope){
+messageControllers.controller('messageController', function($scope, MessageDataService){
 
     var dummyData = [
         {
