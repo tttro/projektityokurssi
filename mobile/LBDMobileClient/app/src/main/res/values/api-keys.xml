@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="GoogleMapsApiKey">AIzaSyBhOAsHPyjRpD_ofO7XBw9mUHJ9KMJuG-Y</string>
-    <string name="MapBoxApiKey">k0rppu.k04g6n31</string>
+    <string name="GoogleMapsApiKey">xxxxx-Y</string>
 </resources>
