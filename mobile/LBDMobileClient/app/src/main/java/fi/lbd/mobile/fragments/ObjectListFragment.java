@@ -18,6 +18,7 @@ import com.squareup.otto.Subscribe;
 import java.util.ArrayList;
 import java.util.List;
 
+import fi.lbd.mobile.adapters.ListBriefDetailsAdapter;
 import fi.lbd.mobile.adapters.ListExpandableAdapter;
 import fi.lbd.mobile.events.BusHandler;
 import fi.lbd.mobile.R;
@@ -66,7 +67,7 @@ public class ObjectListFragment extends ListFragment {
             }
             @Override
             protected void onPostExecute(Void result) {
-                BusHandler.getBus().post(new RequestNearObjectsEvent(new ImmutablePointLocation(61.510988, 23.777366), 0.001)); // TODO: Actual location
+                BusHandler.getBus().post(new RequestNearObjectsEvent(new ImmutablePointLocation(61.510988, 23.777366), 0.001, false)); // TODO: Actual location
             }
         }.execute();
     }
@@ -200,6 +201,7 @@ public class ObjectListFragment extends ListFragment {
         public void onGroupCollapse(int groupPosition) {
             if(lastExpanded == groupPosition){
                 lastExpanded = -1;
+                //((ListBriefDetailsAdapter)((ListView)(((View)expandableListView.getItemAtPosition(groupPosition)).findViewById(android.R.id.list))).getAdapter()).toggleVisibleDetails(false);
             }
         }
     }

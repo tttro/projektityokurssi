@@ -145,15 +145,15 @@ public class ListActivity extends Activity {
         }
         if (object != null) {
             SelectionManager.get().setSelection(object);
-            Intent intent = new Intent(this, DetailsActivity.class);
-            startActivity(intent);
-        }
+        Intent intent = new Intent(this, DetailsActivity.class);
+        startActivity(intent);
+    }
     }
     public void onMapClick(View view){
         // Retrieve object for which the Map-button was pressed
         MapObject object = null;
         try {
-            object = (MapObject)((View)(view.getParent())).getTag();
+            object = (MapObject)((View)(view.getParent().getParent())).getTag();
         } catch (Exception e){
             e.printStackTrace();
             Log.d("NO OBJECT TAG RECEIVED", "-----ON MAP CLICK");

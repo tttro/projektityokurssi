@@ -8,13 +8,19 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.ExpandableListView;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.util.Log;
+
+import com.squareup.otto.Subscribe;
 
 import java.util.ArrayList;
 import java.util.Collection;
 
 import fi.lbd.mobile.R;
+import fi.lbd.mobile.SelectionManager;
+import fi.lbd.mobile.events.RequestMapObjectEvent;
+import fi.lbd.mobile.events.ReturnMapObjectEvent;
 import fi.lbd.mobile.mapobjects.MapObject;
 
 /**
@@ -94,12 +100,12 @@ public class ListExpandableAdapter extends BaseExpandableListAdapter {
         }
 
         // Get the group item
-        MapObject obj = this.objects.get(groupPosition);
+        MapObject object = this.objects.get(groupPosition);
 
-        if(obj != null) {
+        if(object != null) {
             TextView textViewId = (TextView) view.findViewById(R.id.textViewObjectId);
-            textViewId.setText(obj.getId());
-            textViewId.setTag(obj.getId());
+            textViewId.setText(object.getId());
+            textViewId.setTag(object.getId());
         }
         return view;
     }
@@ -111,9 +117,15 @@ public class ListExpandableAdapter extends BaseExpandableListAdapter {
             LayoutInflater inflater = ((Activity) this.context).getLayoutInflater();
             view = inflater.inflate(R.layout.listview_expanded_row, parent, false);
         }
+
         // Tag links the expanded item to its location object
         view.setTag(getGroup(groupPosition));
         Log.d("TAG SET--------------------", ((MapObject)getGroup(groupPosition)).getId());
+
+        if (getGroup(groupPosition) != null){
+            ((ListView)view.findViewById(android.R.id.list)).setAdapter(new ListBriefDetailsAdapter(
+                    this.context, (MapObject)getGroup(groupPosition)));
+        }
 
         return view;
     }
@@ -122,5 +134,4 @@ public class ListExpandableAdapter extends BaseExpandableListAdapter {
     public boolean isChildSelectable(int groupPosition, int childPosition) {
         return true;
     }
-
 }

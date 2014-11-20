@@ -302,6 +302,7 @@ public class GoogleMapFragment extends MapFragment implements OnInfoWindowClickL
             CameraUpdate cameraLocation = CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), 18);
             this.map.moveCamera(cameraLocation);
 
+            // TODO: bugs
             Marker m = findMarker(o);
             if (m != null) {
                 clearActiveMarker();

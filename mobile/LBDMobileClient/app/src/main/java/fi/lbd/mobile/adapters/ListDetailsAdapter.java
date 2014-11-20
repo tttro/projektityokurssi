@@ -17,32 +17,31 @@ import fi.lbd.mobile.SelectionManager;
 import fi.lbd.mobile.mapobjects.MapObject;
 
 /**
- * Created by tommi on 20.10.2014.
+ * Created by Ossi on 20.10.2014.
  */
 
-// TODO: http://www.codeofaninja.com/2013/09/android-viewholder-pattern-example.html
 public class ListDetailsAdapter extends BaseAdapter {
     private MapObject object;
-
-    // TODO: tee järkevämmin additional propertyt?
     private ArrayList<Map.Entry<String,String>> additionalProperties;
     private Context context;
 
-    public void setObject(MapObject obj){
-        this.object = obj;
-        Log.d(obj.getId(), "_________");
+    public void setObject(MapObject mapObject){
+        this.object = mapObject;
+        if(mapObject != null) {
+            Log.d(mapObject.getId(), "_________");
 
-        for (Map.Entry <String,String> entry : object.getAdditionalProperties().entrySet()) {
-            Log.d("1. " + entry.getKey(), "_________");
-            Log.d("2. " + entry.getValue(), "_________");
-            additionalProperties.add(entry);
+            for (Map.Entry<String, String> entry : object.getAdditionalProperties().entrySet()) {
+                Log.d("1. " + entry.getKey(), "_________");
+                Log.d("2. " + entry.getValue(), "_________");
+                additionalProperties.add(entry);
+            }
         }
     }
 
-    public ListDetailsAdapter(Context context) {
+    public ListDetailsAdapter(Context context, MapObject mapObject) {
         this.context = context;
         additionalProperties = new ArrayList<Map.Entry<String,String>>();
-        object = SelectionManager.get().getSelectedObject();
+        setObject(mapObject);
     }
 
     @Override
@@ -82,7 +81,6 @@ public class ListDetailsAdapter extends BaseAdapter {
             TextView textViewLocation = (TextView) view.findViewById(R.id.textViewObjectLocation);
             textViewLocation.setText(object.getPointLocation().toString());
             textViewLocation.setTag(object.getId());
-            Log.d("Kutsuttu if", "_______");
         }
         else if (i > 0){
             TextView textViewId = (TextView) view.findViewById(R.id.textViewObjectId);
@@ -90,7 +88,6 @@ public class ListDetailsAdapter extends BaseAdapter {
 
             TextView textViewLocation = (TextView) view.findViewById(R.id.textViewObjectLocation);
             textViewLocation.setText(additionalProperties.get(i-1).getValue());
-            Log.d("Kutsuttu else if", "________");
         }
         return view;
     }
