@@ -19,5 +19,6 @@
     <string name="button_map">MAP</string>
     <string name="address_hint">Search address..</string>
     <string name="lisätietoja">LISÄTIETOJA</string>
+    <string name="piilota">PILOTA</string>
 
 </resources>
