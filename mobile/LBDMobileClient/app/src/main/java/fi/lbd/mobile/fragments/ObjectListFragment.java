@@ -18,6 +18,7 @@ import com.squareup.otto.Subscribe;
 import java.util.ArrayList;
 import java.util.List;
 
+import fi.lbd.mobile.SelectionManager;
 import fi.lbd.mobile.adapters.ListBriefDetailsAdapter;
 import fi.lbd.mobile.adapters.ListExpandableAdapter;
 import fi.lbd.mobile.events.BusHandler;
@@ -145,7 +146,7 @@ public class ObjectListFragment extends ListFragment {
 
 	@Override
     public void onListItemClick(ListView l, View v, int position, long id) {
-        //SelectionManager.get().setSelection(this.adapter.get(position));
+      //  SelectionManager.get().setSelection((MapObject)this.adapter.getGroup(position));
         notifyClickListeners((MapObject)this.adapter.getGroup(position));
 	}
 
