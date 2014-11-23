@@ -6,10 +6,12 @@ import fi.lbd.mobile.mapobjects.MapObject;
 import fi.lbd.mobile.mapobjects.PointLocation;
 
 /**
- * Created by tommi on 10.11.2014.
+ * Interface which defines the functions of the backend handlers.
+ *
+ * Created by Tommi.
  */
 public interface BackendHandler {
-    List<MapObject> getObjectsNearLocation(PointLocation location, double range, boolean mini);
-    List<MapObject> getObjectsInArea(PointLocation southWest, PointLocation northEast, boolean mini);
-    MapObject getMapObject(String id);
+    HandlerResponse getObjectsNearLocation(PointLocation location, double range, boolean mini);
+    HandlerResponse getObjectsInArea(PointLocation southWest, PointLocation northEast, boolean mini);
+    HandlerResponse getMapObject(String id);
 }

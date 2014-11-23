@@ -1,5 +1,7 @@
 package fi.lbd.mobile.fragments;
 
+import android.util.Log;
+
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Table;
 
@@ -58,42 +60,9 @@ public class MapTableModel<T> {
         }
     }
 
-//    private class OutsideRegionPredicate implements Predicate<TableElement> {
-//        int screenStartLat;
-//        int screenStartLon;
-//        int screenEndLat;
-//        int screenEndLon;
-//
-//        public OutsideRegionPredicate() {}
-//
-//        public void setCurrentRegion(int screenStartLat, int screenStartLon,
-//                                     int screenEndLat, int screenEndLon) {
-//            this.screenStartLat = screenStartLat;
-//            this.screenStartLon = screenStartLon;
-//            this.screenEndLat = screenEndLat;
-//            this.screenEndLon = screenEndLon;
-//        }
-//
-//        @Override
-//        public boolean apply(TableElement tableElement) {
-//            if (this.screenEndLat < tableElement.getStartLat() ||
-//                    this.screenEndLon < tableElement.getStartLon()) {
-//                return true;
-//            }
-//            if (this.screenStartLat > tableElement.getEndLat() ||
-//                    this.screenStartLon > tableElement.getEndLon()) {
-//                return true;
-//            }
-//            return false;
-//        }
-//
-//        @Override
-//        public boolean equals(Object o) {
-//            return o.equals(this);
-//        }
-//    }
+    private static final double CACHE_MULTIPLIER_LAT = 0.4;
+    private static final double CACHE_MULTIPLIER_LON = 0.4;
 
-//    private final OutsideRegionPredicate outsideScreenPredicate;
     private Table<Integer, Integer, TableElement> objectTable = HashBasedTable.create();
     private List<MapTableModelListener<T>> listeners = new ArrayList<>();
     private int latMultiplier;
@@ -117,7 +86,6 @@ public class MapTableModel<T> {
         this.lonPrecision = precisionLon;
         this.latMultiplier = (int)(1 / this.latPrecision);
         this.lonMultiplier = (int)(1 / this.lonPrecision);
-//        this.outsideScreenPredicate = new OutsideRegionPredicate();
     }
 
     public void addListener(MapTableModelListener<T> listener) {
@@ -143,6 +111,7 @@ public class MapTableModel<T> {
     }
 
     public void updateTable(double startLat, double startLon, double endLat, double endLon) {
+//        Log.d(this.getClass().getSimpleName(), "Update map table model: Start: "+ startLat +", "+ startLon +" End:"+ endLat +", "+ endLon );
         int screenStartLat = transformToGridCoordinateLat(startLat);
         int screenStartLon = transformToGridCoordinateLon(startLon);
         int screenEndLat = transformToGridCoordinateLat(endLat);
@@ -185,14 +154,13 @@ public class MapTableModel<T> {
     private void checkForCaching(double startLat, double startLon, double endLat, double endLon,
             int screenStartLat, int screenStartLon, int screenEndLat, int screenEndLon) {
 
-        double latThreshold = this.latPrecision*0.4;
-        double lonThreshold = this.lonPrecision*0.4;
+        double latThreshold = this.latPrecision*CACHE_MULTIPLIER_LAT;
+        double lonThreshold = this.lonPrecision*CACHE_MULTIPLIER_LON;
         boolean cacheLeft = false;
         boolean cacheRight = false;
         boolean cacheUp = false;
         boolean cacheDown = false;
 
-        // http://www.latlong.net/
         if (transformToGridCoordinateLon(startLon - lonThreshold) < this.screenCurrentStartLon
                 && this.lastCachedStartLon != this.screenCurrentStartLon-1) {
             cacheLeft = true;
@@ -266,48 +234,11 @@ public class MapTableModel<T> {
         return (int)(val * this.latMultiplier);
     }
 
-
     private int transformToGridCoordinateLon(double val) {
         return (int)(val * this.lonMultiplier);
     }
 
-//    public void updateTableOld(double startLat, double startLon, double endLat, double endLon) {
-//        // Transform actual coordinates into integers which presents the coordinates in the grid
-//        int screenStartLat = (int)(startLat * this.multiplier) - 1;
-//        int screenStartLon = (int)(startLon * this.multiplier) - 1;
-//        int screenEndLat = (int)(endLat * this.multiplier) + 1;
-//        int screenEndLon = (int)(endLon * this.multiplier) + 1;
-//
-//        checkForCellsOutsideBounds(screenStartLat, screenStartLon, screenEndLat, screenEndLon);
-//
-//        // Loop through the grid cells in the area covered by the screen
-//        for (int lat = screenStartLat; lat <= screenEndLat; lat++) {
-//            for (int lon = screenStartLon; lon <= screenEndLon; lon++) {
-//                double latGridStart = ((double)lat)/((double)this.multiplier);
-//                double lonGridStart = ((double)lon)/((double)this.multiplier);
-//                double latGridEnd = ((double)(lat+1))/((double)this.multiplier);
-//                double lonGridEnd = ((double)(lon+1))/((double)this.multiplier);
-//
-//                if (lat == screenStartLat || lat == screenEndLat || lon == screenStartLon || lon == screenEndLon) {
-////                    Log.e("GoogleMapFragment", "Cache area: " + lat + ", " + lon + " grid: " + latGridStart + ", " + lonGridStart);
-//                    notifyRequestCache(latGridStart, lonGridStart, latGridEnd, lonGridEnd);
-//                } else {
-//                    if (this.objectTable.get(lat, lon) == null) {
-//                        this.objectTable.put(lat, lon, new TableElement(screenStartLat, screenStartLon, screenEndLat, screenEndLon));
-//
-////                        Log.e("GoogleMapFragment", "Get from area: " + lat + ", " + lon + " grid: " + latGridStart + ", " + lonGridStart);
-//                        notifyRequestObjects(latGridStart, lonGridStart, latGridEnd, lonGridEnd);
-//                    }
-//                }
-//
-//            }
-//        }
-//    }
-
     private void checkForCellsOutsideBounds(int screenStartLat, int screenStartLon, int screenEndLat, int screenEndLon) {
-//        this.outsideScreenPredicate.setCurrentRegion(screenStartLat, screenStartLon, screenEndLat, screenEndLon);
-//        Iterators.removeIf(this.objectTable.values().iterator(), this.outsideScreenPredicate);
-
         Iterator<TableElement> iter = this.objectTable.values().iterator();
         while (iter.hasNext()) {
             TableElement mapElement = iter.next();
@@ -341,12 +272,6 @@ public class MapTableModel<T> {
             tableElement.addAll(objects);
         }
     }
-
-//    public boolean contains(double gridStartLat, double gridStartLon) {
-//        int gridElementStartLat = this.transformToGridCoordinateLat(gridStartLat);
-//        int gridElementStartLon = this.transformToGridCoordinateLon(gridStartLon);
-//        return this.objectTable.contains(gridElementStartLat, gridElementStartLon);
-//    }
 
     public boolean isEmpty(double gridStartLat, double gridStartLon) {
         int gridElementStartLat = this.transformToGridCoordinateLat(gridStartLat);
