@@ -19,6 +19,7 @@ public class ImmutableMapObject implements MapObject {
     private final String id;
     private final ImmutablePointLocation location; // TODO: Muita tapoja esittää??
     private final ImmutableMap<String, String> additionalProperties;
+    private final ImmutableMap<String, String> metadataProperties;
     private final boolean minimized;
 
     //private final String strGeometryType;
@@ -27,9 +28,11 @@ public class ImmutableMapObject implements MapObject {
     //private final String strElemType;
    // private final String strGeometryName;
 
-    public ImmutableMapObject(boolean minimized, @NonNull String id, @NonNull ImmutablePointLocation location, @NonNull Map<String, String> additionalProperties) {
+    public ImmutableMapObject(boolean minimized, @NonNull String id, @NonNull ImmutablePointLocation location,
+                              @NonNull Map<String, String> additionalProperties, @NonNull Map<String, String> metadataProperties) {
         this.minimized = minimized;
         this.additionalProperties = ImmutableMap.copyOf(additionalProperties);
+        this.metadataProperties = ImmutableMap.copyOf(metadataProperties);
         this.id = id;
         this.location = location;
     }
@@ -52,6 +55,10 @@ public class ImmutableMapObject implements MapObject {
     @Override
     public Map<String, String> getAdditionalProperties() {
         return this.additionalProperties;
+    }
+    @Override
+    public Map<String, String> getMetadataProperties() {
+        return this.metadataProperties;
     }
 
     // Generated equals and hash:
