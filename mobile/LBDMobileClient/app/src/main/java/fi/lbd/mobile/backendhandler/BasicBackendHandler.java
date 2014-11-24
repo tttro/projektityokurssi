@@ -2,9 +2,6 @@ package fi.lbd.mobile.backendhandler;
 
 import android.util.Log;
 
-import com.fasterxml.jackson.core.JsonParseException;
-import com.google.common.collect.ImmutableList;
-
 import org.json.JSONException;
 
 import java.io.IOException;
@@ -12,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import fi.lbd.mobile.mapobjects.MapObject;
-import fi.lbd.mobile.mapobjects.PointLocation;
+import fi.lbd.mobile.location.PointLocation;
 
 /**
  * Handles the map objects. Fetches the requested objects from backend service.
@@ -24,6 +21,12 @@ public class BasicBackendHandler implements BackendHandler {
     private final String baseUrl;
     private final String dataSource;
 
+    /**
+     * Handles the map objects. Fetches the requested objects from backend service.
+     *
+     * @param baseUrl   Base url for the REST api.
+     * @param dataSource    Data source which should be loaded. For example "Streetlights/"
+     */
     public BasicBackendHandler(String baseUrl, String dataSource) {
         this.baseUrl = baseUrl;
         this.dataSource = dataSource;

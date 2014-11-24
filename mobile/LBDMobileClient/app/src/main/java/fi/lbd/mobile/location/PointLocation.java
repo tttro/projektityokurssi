@@ -1,12 +1,12 @@
-package fi.lbd.mobile.mapobjects;
+package fi.lbd.mobile.location;
 
 import java.io.Serializable;
 
 
 /**
- * Unified simple location.
+ * Interface for simple point location.
  *
- * Created by tommi on 19.10.2014.
+ * Created by Tommi.
  */
 public interface PointLocation extends Serializable {
     double getLatitude();

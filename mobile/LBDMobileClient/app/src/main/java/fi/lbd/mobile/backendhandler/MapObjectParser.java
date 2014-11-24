@@ -2,7 +2,6 @@ package fi.lbd.mobile.backendhandler;
 
 import android.util.Log;
 
-import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -16,7 +15,7 @@ import java.util.List;
 import java.util.Map;
 
 import fi.lbd.mobile.mapobjects.ImmutableMapObject;
-import fi.lbd.mobile.mapobjects.ImmutablePointLocation;
+import fi.lbd.mobile.location.ImmutablePointLocation;
 import fi.lbd.mobile.mapobjects.MapObject;
 
 

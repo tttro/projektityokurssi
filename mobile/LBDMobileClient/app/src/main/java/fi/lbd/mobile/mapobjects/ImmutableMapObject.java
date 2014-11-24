@@ -2,18 +2,17 @@ package fi.lbd.mobile.mapobjects;
 
 import android.support.annotation.NonNull;
 
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
+
+import fi.lbd.mobile.location.ImmutablePointLocation;
+import fi.lbd.mobile.location.PointLocation;
 
 /**
  * MapObject which cannot be modified.
  *
- * Created by tommi on 22.10.2014.
+ * Created by Tommi.
  */
 public class ImmutableMapObject implements MapObject {
     private final String id;
@@ -28,8 +27,19 @@ public class ImmutableMapObject implements MapObject {
     //private final String strElemType;
    // private final String strGeometryName;
 
-    public ImmutableMapObject(boolean minimized, @NonNull String id, @NonNull ImmutablePointLocation location,
-                              @NonNull Map<String, String> additionalProperties, @NonNull Map<String, String> metadataProperties) {
+    /**
+     * MapObject which cannot be modified.
+     *
+     * @param minimized Does the object contain all its information.
+     * @param id    Objects id.
+     * @param location  Objects location.
+     * @param additionalProperties  Additional properties.
+     * @param metadataProperties    Metadata properties.
+     */
+    public ImmutableMapObject(boolean minimized, @NonNull String id,
+                              @NonNull ImmutablePointLocation location,
+                              @NonNull Map<String, String> additionalProperties,
+                              @NonNull Map<String, String> metadataProperties) {
         this.minimized = minimized;
         this.additionalProperties = ImmutableMap.copyOf(additionalProperties);
         this.metadataProperties = ImmutableMap.copyOf(metadataProperties);
@@ -61,7 +71,7 @@ public class ImmutableMapObject implements MapObject {
         return this.metadataProperties;
     }
 
-    // Generated equals and hash:
+    // Generated equals and hash: // TODO: Miten equals ja hashcode tulisi toimia jos haetaan loputkin tiedot?
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

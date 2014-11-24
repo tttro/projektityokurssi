@@ -2,8 +2,6 @@ package fi.lbd.mobile.events;
 
 import android.support.annotation.NonNull;
 
-import fi.lbd.mobile.mapobjects.PointLocation;
-
 public class RequestMapObjectEvent extends AbstractEvent {
     private final String id;
 

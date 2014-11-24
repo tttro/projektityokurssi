@@ -22,7 +22,7 @@ import fi.lbd.mobile.events.BusHandler;
 import fi.lbd.mobile.R;
 import fi.lbd.mobile.events.RequestNearObjectsEvent;
 import fi.lbd.mobile.events.ReturnNearObjectsEvent;
-import fi.lbd.mobile.mapobjects.ImmutablePointLocation;
+import fi.lbd.mobile.location.ImmutablePointLocation;
 import fi.lbd.mobile.mapobjects.MapObject;
 
 
@@ -34,7 +34,6 @@ import fi.lbd.mobile.mapobjects.MapObject;
  */
 public class ObjectListFragment extends ListFragment {
     private ListExpandableAdapter adapter;
-    private List<ListClickListener<MapObject>> listClickListeners = new ArrayList<>();
     private ExpandableListView expandableListView;
     private int lastExpanded;
     private EditText searchText;

@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
 import fi.lbd.mobile.mapobjects.MapObject;
-import fi.lbd.mobile.mapobjects.PointLocation;
+import fi.lbd.mobile.location.PointLocation;
 
 /**
  * Caches the method invocations so that we don't need to fetch new data from the backend if the
