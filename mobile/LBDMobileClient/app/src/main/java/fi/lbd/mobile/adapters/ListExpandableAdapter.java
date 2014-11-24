@@ -27,14 +27,15 @@ import fi.lbd.mobile.events.ReturnMapObjectEvent;
 import fi.lbd.mobile.mapobjects.MapObject;
 
 /**
- * Created by tommi on 20.10.2014.
+ * Created by Ossi on 20.10.2014.
  */
 
 // TODO: http://www.codeofaninja.com/2013/09/android-viewholder-pattern-example.html
 public class ListExpandableAdapter extends BaseExpandableListAdapter {
     private ArrayList<MapObject> objects;
     private Context context;
-    private final int MIN_BRIEF_DETAILS = 3;
+    private final static int MIN_BRIEF_DETAILS = 3;
+    private final static int ADDITIONAL_PADDING = 20;
 
     public ListExpandableAdapter(Context context) {
         this.context = context;
@@ -127,7 +128,6 @@ public class ListExpandableAdapter extends BaseExpandableListAdapter {
         Log.d("TAG SET--------------------", ((MapObject)getGroup(groupPosition)).getId());
 
         if (getGroup(groupPosition) != null){
-
            final MapObject object = (MapObject)getGroup(groupPosition);
            final ListBriefDetailsAdapter adapter = new ListBriefDetailsAdapter(
                    this.context, object, MIN_BRIEF_DETAILS);
@@ -135,7 +135,9 @@ public class ListExpandableAdapter extends BaseExpandableListAdapter {
             ((ListView)view.findViewById(android.R.id.list)).setAdapter(adapter);
             adjustListHeight((ListView)view.findViewById(android.R.id.list));
 
-            ((Button)(view.findViewById(R.id.moreButton))).setText(context.getString(R.string.lisätietoja));
+            // Listener for "More info"/"Lisätietoja" button
+            ((Button)(view.findViewById(R.id.moreButton))).setText(context
+                    .getString(R.string.lisätietoja));
             (view.findViewById(R.id.moreButton)).setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
@@ -143,12 +145,14 @@ public class ListExpandableAdapter extends BaseExpandableListAdapter {
                                     .findViewById(android.R.id.list);
                             Button button = (Button)view;
 
+                            // Show all details in the expanded list
                             if(button.getText().equals(context.getString(R.string.lisätietoja))) {
                                 ((ListBriefDetailsAdapter)list.getAdapter())
                                      .setMaxBriefDetails(object.getAdditionalProperties().size() + 1);
                                 ((ListBriefDetailsAdapter)list.getAdapter()).notifyDataSetChanged();
                                 button.setText(context.getString(R.string.piilota));
                             }
+                            // Show the minimum amount of details in the expanded list
                             else if (button.getText().equals(context.getString(R.string.piilota))){
                                 ((ListBriefDetailsAdapter)list.getAdapter())
                                      .setMaxBriefDetails(MIN_BRIEF_DETAILS);
@@ -159,7 +163,6 @@ public class ListExpandableAdapter extends BaseExpandableListAdapter {
                         }
                     });
         }
-
         return view;
     }
 
@@ -168,6 +171,7 @@ public class ListExpandableAdapter extends BaseExpandableListAdapter {
         return true;
     }
 
+    // Function to adjust the height of a listview according to its children
     public void adjustListHeight(ListView listView){
         int newHeight = 0;
         Adapter adapter = listView.getAdapter();
@@ -179,7 +183,7 @@ public class ListExpandableAdapter extends BaseExpandableListAdapter {
         ViewGroup.LayoutParams params = listView.getLayoutParams();
         params.height = newHeight + (listView.getDividerHeight() * (adapter.getCount() - 1)
         + listView.getPaddingRight() + listView.getPaddingLeft()
-        + listView.getPaddingBottom() + listView.getPaddingTop() + 20);
+        + listView.getPaddingBottom() + listView.getPaddingTop() + ADDITIONAL_PADDING);
         listView.setLayoutParams(params);
         listView.requestLayout();
     }

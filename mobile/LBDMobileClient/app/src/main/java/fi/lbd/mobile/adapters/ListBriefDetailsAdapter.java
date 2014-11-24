@@ -20,10 +20,12 @@ import fi.lbd.mobile.mapobjects.MapObject;
  */
 
 public class ListBriefDetailsAdapter extends BaseAdapter {
-    private final String METADATA = "metadata";
-    private final String TYHJA = "Tyhjä";
-    private final String LISATIETOJA = "LISÄTIETOJA";
-    private final String SIJAINTI = "SIJAINTI";
+    private final static String METADATA = "metadata";
+    private final static String TYHJA = "Tyhjä";
+    private final static String LISATIETOJA = "LISÄTIETOJA";
+    private final static String SIJAINTI = "SIJAINTI";
+
+    // How many details are shown when a list object is expanded
     private int maxBriefDetails;
     private MapObject object;
     private ArrayList<Map.Entry<String,String>> additionalProperties;
@@ -39,7 +41,6 @@ public class ListBriefDetailsAdapter extends BaseAdapter {
                     this.additionalProperties.add(entry);
                 }
             }
-          // this.additionalProperties.add(object.getAdditionalProperties();
         }
     }
 
@@ -88,7 +89,7 @@ public class ListBriefDetailsAdapter extends BaseAdapter {
         }
         else if (i > 0 && i < getCount()){
             String key = additionalProperties.get(i-1).getKey();
-            if (key == METADATA){
+            if (key.equals(METADATA)){
                 key = LISATIETOJA;
             }
             TextView textViewId = (TextView) view.findViewById(R.id.textViewObjectId);

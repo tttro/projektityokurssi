@@ -1,7 +1,6 @@
 package fi.lbd.mobile.fragments;
 
 import android.app.ListFragment;
-import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.KeyEvent;
@@ -11,7 +10,6 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ExpandableListView;
-import android.widget.ListView;
 
 import com.squareup.otto.Subscribe;
 
@@ -19,7 +17,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import fi.lbd.mobile.SelectionManager;
-import fi.lbd.mobile.adapters.ListBriefDetailsAdapter;
 import fi.lbd.mobile.adapters.ListExpandableAdapter;
 import fi.lbd.mobile.events.BusHandler;
 import fi.lbd.mobile.R;
@@ -124,7 +121,7 @@ public class ObjectListFragment extends ListFragment {
         BusHandler.getBus().register(this);
 
         for (int i=0; i<groupExpandedArray.size() ;i++){
-            if (groupExpandedArray.get(i) == true)
+            if (groupExpandedArray.get(i))
                 expandableListView.expandGroup(i);
         }
         this.expandableListView.setSelection(firstVisiblePosition);
@@ -144,12 +141,6 @@ public class ObjectListFragment extends ListFragment {
         this.firstVisiblePosition = this.expandableListView.getFirstVisiblePosition();
     }
 
-	@Override
-    public void onListItemClick(ListView l, View v, int position, long id) {
-      //  SelectionManager.get().setSelection((MapObject)this.adapter.getGroup(position));
-        notifyClickListeners((MapObject)this.adapter.getGroup(position));
-	}
-
     @Subscribe
     public void onEvent(ReturnNearObjectsEvent event) {
         this.adapter.clear();
@@ -157,16 +148,6 @@ public class ObjectListFragment extends ListFragment {
             this.adapter.addAll(event.getMapObjects());
         }
         this.getListView().requestLayout();
-    }
-
-    public void addListClickListener(ListClickListener<MapObject> listener) {
-        this.listClickListeners.add(listener);
-    }
-
-    private void notifyClickListeners(MapObject object) {
-        for(ListClickListener<MapObject> listener : this.listClickListeners) {
-            listener.onClick(object);
-        }
     }
 
     public void hideKeyBoard() {
@@ -184,9 +165,8 @@ public class ObjectListFragment extends ListFragment {
         }
     }
 
+    // Collapse old expanded group and scroll to correct position
     public class ExpandListener implements ExpandableListView.OnGroupExpandListener {
-
-        // Collapse old expanded group and scroll to correct position
         @Override
         public void onGroupExpand(int groupPosition) {
                 if (lastExpanded >= 0 && lastExpanded != groupPosition){
@@ -202,7 +182,6 @@ public class ObjectListFragment extends ListFragment {
         public void onGroupCollapse(int groupPosition) {
             if(lastExpanded == groupPosition){
                 lastExpanded = -1;
-                //((ListBriefDetailsAdapter)((ListView)(((View)expandableListView.getItemAtPosition(groupPosition)).findViewById(android.R.id.list))).getAdapter()).toggleVisibleDetails(false);
             }
         }
     }
