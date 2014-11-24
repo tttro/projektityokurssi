@@ -1,16 +1,24 @@
-package fi.lbd.mobile.mapobjects;
+package fi.lbd.mobile.location;
 
 import android.util.Log;
 
 import fi.lbd.mobile.backendhandler.MapObjectParser;
 
 /**
- * Created by tommi on 22.10.2014.
+ * Point location which cannot be modified.
+ *
+ * Created by Tommi.
  */
 public class ImmutablePointLocation implements PointLocation {
     private final double latitude;
     private final double longitude;
 
+    /**
+     * Point location which cannot be modified.
+     *
+     * @param latitude
+     * @param longitude
+     */
     public ImmutablePointLocation(double latitude, double longitude) {
         this.latitude = latitude;
         this.longitude = longitude;

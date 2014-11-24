@@ -46,9 +46,13 @@ import fi.lbd.mobile.events.CacheObjectsInAreaEvent;
 import fi.lbd.mobile.events.RequestObjectsInAreaEvent;
 import fi.lbd.mobile.events.ReturnObjectsInAreaEvent;
 import fi.lbd.mobile.events.SelectMapObjectEvent;
-import fi.lbd.mobile.mapobjects.ImmutablePointLocation;
+import fi.lbd.mobile.location.ImmutablePointLocation;
+import fi.lbd.mobile.location.LocationHandler;
+import fi.lbd.mobile.location.LocationUtils;
 import fi.lbd.mobile.mapobjects.MapObject;
-import fi.lbd.mobile.mapobjects.PointLocation;
+import fi.lbd.mobile.location.PointLocation;
+import fi.lbd.mobile.mapobjects.MapTableModel;
+import fi.lbd.mobile.mapobjects.MapTableModelListener;
 
 
 /**
@@ -68,6 +72,7 @@ public class GoogleMapFragment extends MapFragment implements OnInfoWindowClickL
     private EditText searchLocationField;
     private Geocoder geocoder;
     private MapModelController modelController;
+    private LocationHandler locationHandler;
 
 
     /**
@@ -106,15 +111,15 @@ public class GoogleMapFragment extends MapFragment implements OnInfoWindowClickL
             }
         });
 
+        this.locationHandler = new LocationHandler(this.getActivity());
+
         this.map = this.mapView.getMap();
         this.map.getUiSettings().setMyLocationButtonEnabled(true);
         this.map.setMyLocationEnabled(true);
         this.map.setOnInfoWindowClickListener(this);
         this.map.setOnMarkerClickListener(this);
         this.map.setOnMapClickListener(this);
-        this.map.setInfoWindowAdapter(new CustomInfoWindow(inflater));
-
-//LocationServices.FusedLocationApi.
+        this.map.setInfoWindowAdapter(new CustomInfoWindow(inflater, this.locationHandler));
 
         MapsInitializer.initialize(this.getActivity());
         GoogleMapFragment.iconSelected = BitmapDescriptorFactory.fromResource(android.R.drawable.presence_online);
@@ -155,6 +160,7 @@ public class GoogleMapFragment extends MapFragment implements OnInfoWindowClickL
                 }
             });
         }
+
 
         setMapLocationToSelectedObject();
 		return view;
@@ -214,6 +220,19 @@ public class GoogleMapFragment extends MapFragment implements OnInfoWindowClickL
     public void onMapClick(LatLng point){
         this.modelController.clearActiveMarker();
         SelectionManager.get().setSelection(null);
+
+        // TODO: eikö sijainnista osoite tarttekkaan api avainta?? Kohtuu hidas, pitäis tehdä async taskissa.
+//        try {
+//            List <Address> addresses = this.geocoder.getFromLocation(point.latitude, point.longitude, 1);
+//            if (addresses.size() > 0) {
+//                Log.e(this.getClass().getSimpleName(), "Click location: "+ addresses.get(0) );
+//            } else {
+//                Log.e(this.getClass().getSimpleName(), "NO LOCATION" );
+//            }
+//        } catch (IOException e1) {
+//            Log.e(this.getClass().getSimpleName(), "IO Exception in getFromLocation()");
+//        }
+
     }
 
     public void hideKeyBoard() {
@@ -237,6 +256,7 @@ public class GoogleMapFragment extends MapFragment implements OnInfoWindowClickL
         super.onResume();
         BusHandler.getBus().register(this);
         BusHandler.getBus().register(this.modelController);
+        this.locationHandler.start();
     }
 
     @Override
@@ -245,6 +265,7 @@ public class GoogleMapFragment extends MapFragment implements OnInfoWindowClickL
         super.onPause();
         BusHandler.getBus().unregister(this);
         BusHandler.getBus().unregister(this.modelController);
+        this.locationHandler.stop();
     }
 
     @Override
@@ -447,16 +468,19 @@ public class GoogleMapFragment extends MapFragment implements OnInfoWindowClickL
      */
     private static class CustomInfoWindow implements GoogleMap.InfoWindowAdapter {
         private LayoutInflater inflater;
+        private LocationHandler locationHandler;
 
         /**
          * Custom info window for the markers which are displayed on the map.
          *
          * @param inflater
          */
-        public CustomInfoWindow(LayoutInflater inflater) {
+        public CustomInfoWindow(LayoutInflater inflater, LocationHandler locationHandler) {
             this.inflater = inflater;
+            this.locationHandler = locationHandler;
         }
 
+        // http://stackoverflow.com/questions/16144341/android-googlemap-2-update-information-dynamically-in-infowindow-with-imageview
         // Use default InfoWindow frame
         @Override
         public View getInfoWindow(Marker marker) {
@@ -472,6 +496,17 @@ public class GoogleMapFragment extends MapFragment implements OnInfoWindowClickL
 
             TextView objectIdField = (TextView) v.findViewById(R.id.objectid);
             objectIdField.setText(marker.getTitle());
+
+            TextView distanceField = (TextView) v.findViewById(R.id.distance);
+            PointLocation location = this.locationHandler.getLastLocation();
+            if (location != null) {
+                int distance = ((int) LocationUtils.distanceBetween(
+                        marker.getPosition().latitude, marker.getPosition().longitude,
+                        location.getLatitude(), location.getLongitude()));
+                distanceField.setText("Distance: "+ distance +"m");
+            } else {
+                distanceField.setText("");
+            }
             return v;
         }
     };

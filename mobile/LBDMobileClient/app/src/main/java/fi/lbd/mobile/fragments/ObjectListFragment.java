@@ -1,7 +1,6 @@
 package fi.lbd.mobile.fragments;
 
 import android.app.ListFragment;
-import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.KeyEvent;
@@ -23,7 +22,7 @@ import fi.lbd.mobile.events.BusHandler;
 import fi.lbd.mobile.R;
 import fi.lbd.mobile.events.RequestNearObjectsEvent;
 import fi.lbd.mobile.events.ReturnNearObjectsEvent;
-import fi.lbd.mobile.mapobjects.ImmutablePointLocation;
+import fi.lbd.mobile.location.ImmutablePointLocation;
 import fi.lbd.mobile.mapobjects.MapObject;
 
 

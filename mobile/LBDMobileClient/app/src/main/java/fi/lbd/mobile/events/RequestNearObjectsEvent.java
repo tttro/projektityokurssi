@@ -2,7 +2,7 @@ package fi.lbd.mobile.events;
 
 import android.support.annotation.NonNull;
 
-import fi.lbd.mobile.mapobjects.PointLocation;
+import fi.lbd.mobile.location.PointLocation;
 
 /**
  * Event for OTTO-bus. Requests nearby objects from object repository service.

@@ -1,8 +1,6 @@
 package fi.lbd.mobile.events;
 
-import com.google.android.gms.maps.model.LatLngBounds;
-
-import fi.lbd.mobile.mapobjects.ImmutablePointLocation;
+import fi.lbd.mobile.location.ImmutablePointLocation;
 
 public class RequestObjectsInAreaEvent extends AbstractEvent {
     private final ImmutablePointLocation southWest;
