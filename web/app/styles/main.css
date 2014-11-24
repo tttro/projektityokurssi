@@ -180,7 +180,8 @@ position: relative;
     width: 100%;
 }
 .accord-title {
-    margin: 0 5px;
+  
+    padding: 10px;
 }
 
 .header-toolbar {
@@ -259,4 +260,13 @@ position: relative;
 
 .list-item {
     margin-bottom: 10px;
+}
+.item-row {
+    margin-bottom: 10px;
+    border-bottom: 1px solid #ccc;
+}
+
+.open .accord-title, .open .accord-content {
+    background: #eaeaea;
+    color: #555;
 }

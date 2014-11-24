@@ -9,17 +9,28 @@
 </div>
 <div ng-show="loading" class="loading"><img src="img/ajax-loader.gif" alt="loading"></div>
 <div tabinner class="tab-content-inner">
-    <ul>
+    <ul ng-init="open=false">
         <!-- Details -->
-        <li ng-repeat="item in items.features">
-            <div class="accord-title" is-open="m.open" ng-click="m.open = !m.open">
+        <li ng-repeat="item in items.features" ng-class="{'open': open}">
+            <div class="accord-title" is-open="open" ng-click="open = !open">
                 {{item.id}}
                 <img class="fright" src="img/info.png" >
             </div>
-            <div class="accord-content" ng-show="m.open" >
+            <div class="accord-content" ng-show="open" >
                 <div class="list-item">
-                    <div ng-repeat="(key, val) in item.properties"><strong>{{key}}</strong> <br>{{val}}
+                    <div ng-repeat="(key, val) in item.properties">
 
+                        <div ng-if="key == 'metadata'">
+                            <div ng-repeat="(key2,val2) in val" class="item-row">
+                                <strong>{{key2}}</strong> <br>{{val2}}
+                            </div>
+                        </div>
+
+                        <div ng-if="key != 'metadata'">
+                            <div class="item-row">
+                                <strong>{{key}}</strong> <br>{{val}}
+                            </div>
+                        </div>
                 </div>
                 <button class="btn btn-primary" ng-click="showMarker(item.id)">Show on map</button>
             </div>

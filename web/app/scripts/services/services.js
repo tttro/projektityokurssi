@@ -1,6 +1,5 @@
 // Global settings
 var dataServices = angular.module('dataServices', ['ngResource']);
-var baseUrl = 'http://lbdbackend.ignorelist.com/locationdata/api/';
 var dataSet = null;
 
 dataServices.factory('ItemDataService', function($http, appConfig){
