@@ -13,14 +13,20 @@ import java.util.ArrayList;
 import java.util.Map;
 
 import fi.lbd.mobile.R;
-import fi.lbd.mobile.SelectionManager;
 import fi.lbd.mobile.mapobjects.MapObject;
 
 /**
- * Created by Ossi on 20.10.2014.
+ * Created by Ossi on 19.11.2014.
  */
 
-public class ListDetailsAdapter extends BaseAdapter {
+public class ListBriefDetailsAdapter extends BaseAdapter {
+    private final static String METADATA = "metadata";
+    private final static String TYHJA = "Tyhjä";
+    private final static String LISATIETOJA = "LISÄTIETOJA";
+    private final static String SIJAINTI = "SIJAINTI";
+
+    // How many details are shown when a list object is expanded
+    private int maxBriefDetails;
     private MapObject object;
     private ArrayList<Map.Entry<String,String>> additionalProperties;
     private Context context;
@@ -28,27 +34,28 @@ public class ListDetailsAdapter extends BaseAdapter {
     public void setObject(MapObject mapObject){
         this.object = mapObject;
         if(mapObject != null) {
-            Log.d(mapObject.getId(), "_________");
-
+            Log.d(" number of additional properties _________", ((Integer)object.getAdditionalProperties().size()).toString());
+            int i = 1;
             for (Map.Entry<String, String> entry : object.getAdditionalProperties().entrySet()) {
-                Log.d("1. " + entry.getKey(), "_________");
-                Log.d("2. " + entry.getValue(), "_________");
-                additionalProperties.add(entry);
+                if (i < maxBriefDetails) {
+                    this.additionalProperties.add(entry);
+                }
             }
         }
     }
 
-    public ListDetailsAdapter(Context context, MapObject mapObject) {
+    public ListBriefDetailsAdapter(Context context, MapObject mapObject, int maxDetails) {
         this.context = context;
-        additionalProperties = new ArrayList<Map.Entry<String,String>>();
+        this.additionalProperties = new ArrayList<Map.Entry<String,String>>();
+        maxBriefDetails = maxDetails;
         setObject(mapObject);
     }
 
     @Override
     public int getCount() {
-        // ID, Location, additional properties
-        Log.d(Integer.toString(this.object.getAdditionalProperties().size() + 1), "_________");
-        return (this.object.getAdditionalProperties()).size() + 1;
+        // Location, additional properties
+        //return (this.object.getAdditionalProperties()).size() + 1;
+        return maxBriefDetails;
     }
 
     @Override
@@ -75,21 +82,30 @@ public class ListDetailsAdapter extends BaseAdapter {
         }
         if (i == 0) {
             TextView textViewId = (TextView) view.findViewById(R.id.textViewObjectId);
-            textViewId.setText(object.getId());
-            textViewId.setTag(object.getId());
+            textViewId.setText(SIJAINTI);
 
             TextView textViewLocation = (TextView) view.findViewById(R.id.textViewObjectLocation);
             textViewLocation.setText(object.getPointLocation().toString());
-            textViewLocation.setTag(object.getId());
         }
-        else if (i > 0){
+        else if (i > 0 && i < getCount()){
+            String key = additionalProperties.get(i-1).getKey();
+            if (key.equals(METADATA)){
+                key = LISATIETOJA;
+            }
             TextView textViewId = (TextView) view.findViewById(R.id.textViewObjectId);
-            textViewId.setText(additionalProperties.get(i-1).getKey());
+            textViewId.setText(key);
 
+            String value = additionalProperties.get(i-1).getValue();
+            if (value == null || value.isEmpty()){
+                value = TYHJA;
+            }
             TextView textViewLocation = (TextView) view.findViewById(R.id.textViewObjectLocation);
-            textViewLocation.setText(additionalProperties.get(i-1).getValue());
+            textViewLocation.setText(value);
         }
         return view;
     }
-}
 
+    public void setMaxBriefDetails(int maxDetails){
+        this.maxBriefDetails = maxDetails;
+    }
+}

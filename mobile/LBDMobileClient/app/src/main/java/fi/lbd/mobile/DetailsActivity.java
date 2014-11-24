@@ -1,20 +1,16 @@
 package fi.lbd.mobile;
 
 import android.app.Activity;
-import android.app.Fragment;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import com.squareup.otto.Subscribe;
 
+import fi.lbd.mobile.adapters.ListBriefDetailsAdapter;
 import fi.lbd.mobile.adapters.ListDetailsAdapter;
 import fi.lbd.mobile.events.BusHandler;
 import fi.lbd.mobile.events.RequestMapObjectEvent;
@@ -73,8 +69,8 @@ public class DetailsActivity extends Activity {
     public void onEvent (ReturnMapObjectEvent event){
             MapObject obj = event.getMapObject();
             if (obj != null){
-                this.adapter = new ListDetailsAdapter(this);
-                adapter.setObject(obj);
+                this.adapter = new ListDetailsAdapter(this, obj);
+                //adapter.setObject(obj);
                 setContentView(R.layout.activity_details);
                 ListView list = (ListView)findViewById(android.R.id.list);
                 list.setAdapter(this.adapter);
