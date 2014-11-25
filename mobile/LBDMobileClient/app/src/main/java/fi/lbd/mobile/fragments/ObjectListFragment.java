@@ -1,15 +1,19 @@
 package fi.lbd.mobile.fragments;
 
 import android.app.ListFragment;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ExpandableListView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.squareup.otto.Subscribe;
 
@@ -23,6 +27,7 @@ import fi.lbd.mobile.R;
 import fi.lbd.mobile.events.RequestNearObjectsEvent;
 import fi.lbd.mobile.events.ReturnNearObjectsEvent;
 import fi.lbd.mobile.location.ImmutablePointLocation;
+import fi.lbd.mobile.location.LocationHandler;
 import fi.lbd.mobile.mapobjects.MapObject;
 
 
@@ -37,9 +42,13 @@ public class ObjectListFragment extends ListFragment {
     private ExpandableListView expandableListView;
     private int lastExpanded;
     private EditText searchText;
+    private LinearLayout dummyView;
+    private TextView statusText;
+
     public static ObjectListFragment newInstance() {
         return new ObjectListFragment();
     }
+    private LocationHandler locationHandler;
 
     private int firstVisiblePosition;
     private ArrayList<Boolean> groupExpandedArray;
@@ -80,11 +89,28 @@ public class ObjectListFragment extends ListFragment {
         this.expandableListView.setOnGroupCollapseListener(new CollapseListener());
         this.lastExpanded = -1;
         this.searchText = (EditText)view.findViewById(R.id.searchText);
+        this.dummyView = (LinearLayout)view.findViewById(R.id.dummyView);
+        this.statusText = (TextView)view.findViewById(R.id.view_status_text);
+        this.locationHandler = new LocationHandler(this.getActivity());
 
-        // TODO: Search-toiminnallisuus
-        view.findViewById(R.id.searchButton).setOnClickListener(new View.OnClickListener() {
+        // Listen to keyboard search button press
+        searchText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            public boolean onEditorAction(TextView v, int actionId,
+                                          KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                    performSearch();
+                    hideKeyBoard();
+                    hideCursor();
+                    return true;
+                }
+                return false;
+            }
+        });
+
+        view.findViewById(R.id.locationButton).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                showNearestObjects();
                 hideKeyBoard();
                 hideCursor();
             }
@@ -99,8 +125,8 @@ public class ObjectListFragment extends ListFragment {
                     return true;
                 }
                 else if(keyCode == KeyEvent.KEYCODE_BACK) {
-                    hideKeyBoard();
                     hideCursor();
+                    hideKeyBoard();
                     return true;
                 }
                 else {
@@ -116,7 +142,7 @@ public class ObjectListFragment extends ListFragment {
     public void onResume() {
         super.onResume();
         this.expandableListView.setAdapter(this.adapter);
-
+        this.locationHandler.start();
         BusHandler.getBus().register(this);
 
         for (int i=0; i<groupExpandedArray.size() ;i++){
@@ -129,8 +155,8 @@ public class ObjectListFragment extends ListFragment {
     @Override
     public void onPause() {
         super.onPause();
+        this.locationHandler.stop();
         BusHandler.getBus().unregister(this);
-
         int numberOfGroups = adapter.getGroupCount();
 
         this.groupExpandedArray.clear();
@@ -138,6 +164,8 @@ public class ObjectListFragment extends ListFragment {
             this.groupExpandedArray.add(this.expandableListView.isGroupExpanded(i));
         }
         this.firstVisiblePosition = this.expandableListView.getFirstVisiblePosition();
+        hideCursor();
+        hideKeyBoard();
     }
 
     @Subscribe
@@ -159,6 +187,9 @@ public class ObjectListFragment extends ListFragment {
 
     public void hideCursor(){
         if(this.searchText != null) {
+            this.dummyView.setFocusable(true);
+            this.dummyView.setFocusableInTouchMode(true);
+            this.dummyView.requestFocus();
             this.searchText.setFocusable(false);
             this.searchText.setFocusableInTouchMode(true);
         }
@@ -183,6 +214,20 @@ public class ObjectListFragment extends ListFragment {
                 lastExpanded = -1;
             }
         }
+    }
+
+    // TODO: search functionality
+    public void performSearch(){
+        statusText.setText(R.string.showing_results);
+        statusText.setBackgroundColor(getActivity().getResources().
+                getColor(R.color.search_results_background));
+    }
+
+    // TODO: User location functionality
+    public void showNearestObjects(){
+        statusText.setText(R.string.showing_nearest);
+        statusText.setBackgroundColor(getActivity().getResources().
+                getColor(R.color.near_objects_background));
     }
  }
 

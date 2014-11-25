@@ -10,10 +10,13 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.google.android.gms.maps.CameraUpdate;
@@ -70,6 +73,7 @@ public class GoogleMapFragment extends MapFragment implements OnInfoWindowClickL
 	private MapView mapView;
 	private GoogleMap map;
     private EditText searchLocationField;
+    private LinearLayout dummyView;
     private Geocoder geocoder;
     private MapModelController modelController;
     private LocationHandler locationHandler;
@@ -92,6 +96,7 @@ public class GoogleMapFragment extends MapFragment implements OnInfoWindowClickL
         this.geocoder = new Geocoder(getActivity(), Locale.getDefault());
 
         this.searchLocationField = (EditText)view.findViewById(R.id.searchText);
+        this.dummyView = (LinearLayout)view.findViewById(R.id.dummyView);
 
         // Hide keyboard and blinking cursor when "enter" or "back" key is pressed on soft keyboard
         this.searchLocationField.setOnKeyListener(new View.OnKeyListener() {
@@ -105,9 +110,22 @@ public class GoogleMapFragment extends MapFragment implements OnInfoWindowClickL
                     hideKeyBoard();
                     hideCursor();
                     return true;
-                } else {
-                    return false;
                 }
+                return false;
+            }
+        });
+
+        // Listen to keyboard search button press
+        this.searchLocationField.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            public boolean onEditorAction(TextView v, int actionId,
+                                          KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                    performSearch();
+                    hideKeyBoard();
+                    hideCursor();
+                    return true;
+                }
+                return false;
             }
         });
 
@@ -129,38 +147,6 @@ public class GoogleMapFragment extends MapFragment implements OnInfoWindowClickL
         int maxZoom = res.getInteger(R.integer.min_marker_zoom);
         final int defaultZoom =  res.getInteger(R.integer.default_zoom);
         this.modelController = new MapModelController(this.map, maxZoom);
-
-        // Search a location by address
-        final Button searchButton = (Button)view.findViewById(R.id.searchButton);
-        if (searchButton != null){
-            searchButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    hideKeyBoard();
-                    hideCursor();
-
-                    if (searchLocationField != null){
-                        String address = (searchLocationField).getText().toString();
-
-                        // TODO: Should we limit results within Finland?
-                        try {
-                            List<Address> addresses = geocoder.getFromLocationName(address, 1);
-                            if (addresses.size() > 0) {
-                                Double lat = addresses.get(0).getLatitude();
-                                Double lon = addresses.get(0).getLongitude();
-                                final LatLng location = new LatLng(lat, lon);
-
-                                CameraUpdate cameraLocation = CameraUpdateFactory.newLatLngZoom(location, defaultZoom);
-                                map.moveCamera(cameraLocation);
-                            }
-                        } catch (java.io.IOException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }
-            });
-        }
-
 
         setMapLocationToSelectedObject();
 		return view;
@@ -266,6 +252,8 @@ public class GoogleMapFragment extends MapFragment implements OnInfoWindowClickL
         BusHandler.getBus().unregister(this);
         BusHandler.getBus().unregister(this.modelController);
         this.locationHandler.stop();
+        hideCursor();
+        hideKeyBoard();
     }
 
     @Override
@@ -511,4 +499,32 @@ public class GoogleMapFragment extends MapFragment implements OnInfoWindowClickL
         }
     };
 
+    public void performSearch(){
+        hideKeyBoard();
+        hideCursor();
+
+        if (searchLocationField != null){
+            Resources res = getResources();
+            final int defaultZoom =  res.getInteger(R.integer.default_zoom);
+            String address = (searchLocationField).getText().toString();
+
+            // TODO: Should we limit results within Finland?
+            try {
+                List<Address> addresses = geocoder.getFromLocationName(address, 1);
+                if (addresses.size() > 0) {
+                    Double lat = addresses.get(0).getLatitude();
+                    Double lon = addresses.get(0).getLongitude();
+                    final LatLng location = new LatLng(lat, lon);
+
+                    CameraUpdate cameraLocation = CameraUpdateFactory.newLatLngZoom(location, defaultZoom);
+                    map.moveCamera(cameraLocation);
+                }
+            } catch (java.io.IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
 }
+
+

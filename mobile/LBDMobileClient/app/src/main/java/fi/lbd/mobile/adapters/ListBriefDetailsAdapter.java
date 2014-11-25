@@ -25,10 +25,14 @@ public class ListBriefDetailsAdapter extends BaseAdapter {
     private final static String LISATIETOJA = "LISÄTIETOJA";
     private final static String SIJAINTI = "SIJAINTI";
 
-    // How many details are shown when a list object is expanded
-    private int maxBriefDetails;
+    // Number of properties, metadata items and coordinate points contained in each object
+    private int amountOfAdditionalProperties = 0;
+    private int amountOfMetaDataProperties = 0;
+    private int amountOfCoordinates = 0;
+
     private MapObject object;
     private ArrayList<Map.Entry<String,String>> additionalProperties;
+    private ArrayList<Map.Entry<String,String>> metaDataProperties;
     private Context context;
 
     public void setObject(MapObject mapObject){
@@ -37,17 +41,25 @@ public class ListBriefDetailsAdapter extends BaseAdapter {
             Log.d(" number of additional properties _________", ((Integer)object.getAdditionalProperties().size()).toString());
             int i = 1;
             for (Map.Entry<String, String> entry : object.getAdditionalProperties().entrySet()) {
-                if (i < maxBriefDetails) {
+                if (i <= amountOfAdditionalProperties) {
                     this.additionalProperties.add(entry);
+                }
+            }
+            i = 1;
+            for (Map.Entry<String, String> entry : object.getMetadataProperties().entrySet()) {
+                if (i <= amountOfMetaDataProperties) {
+                        this.metaDataProperties.add(entry);
                 }
             }
         }
     }
 
-    public ListBriefDetailsAdapter(Context context, MapObject mapObject, int maxDetails) {
+    public ListBriefDetailsAdapter(Context context, MapObject mapObject, int additionalProperties,
+                                   int coordinates, int metaDataProperties) {
         this.context = context;
         this.additionalProperties = new ArrayList<Map.Entry<String,String>>();
-        maxBriefDetails = maxDetails;
+        this.metaDataProperties = new ArrayList<Map.Entry<String,String>>();
+        setAmountOfProperties(additionalProperties, coordinates, metaDataProperties);
         setObject(mapObject);
     }
 
@@ -55,7 +67,7 @@ public class ListBriefDetailsAdapter extends BaseAdapter {
     public int getCount() {
         // Location, additional properties
         //return (this.object.getAdditionalProperties()).size() + 1;
-        return maxBriefDetails;
+        return amountOfAdditionalProperties + amountOfMetaDataProperties + amountOfCoordinates;
     }
 
     @Override
@@ -80,32 +92,60 @@ public class ListBriefDetailsAdapter extends BaseAdapter {
             LayoutInflater inflater = ((Activity) this.context).getLayoutInflater();
             view = inflater.inflate(R.layout.listview_double_row, viewGroup, false);
         }
-        if (i == 0) {
-            TextView textViewId = (TextView) view.findViewById(R.id.textViewObjectId);
-            textViewId.setText(SIJAINTI);
 
-            TextView textViewLocation = (TextView) view.findViewById(R.id.textViewObjectLocation);
-            textViewLocation.setText(object.getPointLocation().toString());
-        }
-        else if (i > 0 && i < getCount()){
-            String key = additionalProperties.get(i-1).getKey();
-            if (key.equals(METADATA)){
-                key = LISATIETOJA;
+        if (i >= 0 && i < amountOfAdditionalProperties){
+            String key = additionalProperties.get(i).getKey();
+            if (key == null || key.isEmpty()){
+                key = TYHJA;
             }
             TextView textViewId = (TextView) view.findViewById(R.id.textViewObjectId);
             textViewId.setText(key);
 
-            String value = additionalProperties.get(i-1).getValue();
+            String value = additionalProperties.get(i).getValue();
             if (value == null || value.isEmpty()){
                 value = TYHJA;
             }
             TextView textViewLocation = (TextView) view.findViewById(R.id.textViewObjectLocation);
             textViewLocation.setText(value);
         }
+        else if (i == amountOfAdditionalProperties && amountOfCoordinates==1){
+            TextView textViewId = (TextView) view.findViewById(R.id.textViewObjectId);
+            textViewId.setText(SIJAINTI);
+
+            TextView textViewLocation = (TextView) view.findViewById(R.id.textViewObjectLocation);
+            textViewLocation.setText(object.getPointLocation().toString());
+        }
+        else if(i >= amountOfAdditionalProperties && i-amountOfAdditionalProperties
+                -amountOfCoordinates < amountOfMetaDataProperties){
+            int metaDataIndex = i-amountOfAdditionalProperties-amountOfCoordinates;
+
+            String key = metaDataProperties.get(metaDataIndex).getKey();
+            if (key == null || key.isEmpty()){
+                key = TYHJA;
+            }
+            TextView textViewId = (TextView) view.findViewById(R.id.textViewObjectId);
+            textViewId.setText(key);
+
+            String value = additionalProperties.get(metaDataIndex).getValue();
+            if (value == null || value.isEmpty()){
+                value = TYHJA;
+            }
+            TextView textViewLocation = (TextView) view.findViewById(R.id.textViewObjectLocation);
+            textViewLocation.setText(value);
+        }
+
         return view;
     }
 
-    public void setMaxBriefDetails(int maxDetails){
-        this.maxBriefDetails = maxDetails;
+    public void setAmountOfProperties(int additionalProperties, int coordinateObjects,
+                                      int metaDataProperties){
+        this.amountOfAdditionalProperties = additionalProperties;
+        this.amountOfMetaDataProperties = metaDataProperties;
+        if(coordinateObjects != 1){
+            this.amountOfCoordinates = 0;
+        }
+        else {
+            this.amountOfCoordinates = 1;
+        }
     }
 }

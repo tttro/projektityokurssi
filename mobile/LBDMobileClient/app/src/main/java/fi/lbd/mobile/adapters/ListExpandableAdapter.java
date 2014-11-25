@@ -9,21 +9,14 @@ import android.view.ViewGroup;
 import android.widget.Adapter;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.Button;
-import android.widget.ExpandableListView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.util.Log;
 
-import com.squareup.otto.Subscribe;
-
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 import fi.lbd.mobile.R;
-import fi.lbd.mobile.SelectionManager;
-import fi.lbd.mobile.events.RequestMapObjectEvent;
-import fi.lbd.mobile.events.ReturnMapObjectEvent;
 import fi.lbd.mobile.mapobjects.MapObject;
 
 /**
@@ -34,7 +27,12 @@ import fi.lbd.mobile.mapobjects.MapObject;
 public class ListExpandableAdapter extends BaseExpandableListAdapter {
     private ArrayList<MapObject> objects;
     private Context context;
-    private final static int MIN_BRIEF_DETAILS = 3;
+
+    // How many additional properties, coordinates and metadata properties are shown
+    // before "lisää"/"more" button is pressed
+    private final static int MIN_ADDITIONAL_PROPERTIES = 3;
+    private final static int MIN_COORDINATES = 0;
+    private final static int MIN_METADATA_PROPERTIES = 1;
     private final static int ADDITIONAL_PADDING = 20;
 
     public ListExpandableAdapter(Context context) {
@@ -130,7 +128,8 @@ public class ListExpandableAdapter extends BaseExpandableListAdapter {
         if (getGroup(groupPosition) != null){
            final MapObject object = (MapObject)getGroup(groupPosition);
            final ListBriefDetailsAdapter adapter = new ListBriefDetailsAdapter(
-                   this.context, object, MIN_BRIEF_DETAILS);
+                   this.context, object, MIN_ADDITIONAL_PROPERTIES, MIN_COORDINATES,
+                   MIN_METADATA_PROPERTIES);
 
             ((ListView)view.findViewById(android.R.id.list)).setAdapter(adapter);
             adjustListHeight((ListView)view.findViewById(android.R.id.list));
@@ -148,14 +147,16 @@ public class ListExpandableAdapter extends BaseExpandableListAdapter {
                             // Show all details in the expanded list
                             if(button.getText().equals(context.getString(R.string.lisätietoja))) {
                                 ((ListBriefDetailsAdapter)list.getAdapter())
-                                     .setMaxBriefDetails(object.getAdditionalProperties().size() + 1);
+                                     .setAmountOfProperties(object.getAdditionalProperties().size(),
+                                             1, object.getMetadataProperties().size());
                                 ((ListBriefDetailsAdapter)list.getAdapter()).notifyDataSetChanged();
                                 button.setText(context.getString(R.string.piilota));
                             }
                             // Show the minimum amount of details in the expanded list
                             else if (button.getText().equals(context.getString(R.string.piilota))){
                                 ((ListBriefDetailsAdapter)list.getAdapter())
-                                     .setMaxBriefDetails(MIN_BRIEF_DETAILS);
+                                     .setAmountOfProperties(MIN_ADDITIONAL_PROPERTIES,
+                                             MIN_COORDINATES, MIN_METADATA_PROPERTIES);
                                 ((ListBriefDetailsAdapter)list.getAdapter()).notifyDataSetChanged();
                                 button.setText(context.getString(R.string.lisätietoja));
                             }
@@ -177,7 +178,8 @@ public class ListExpandableAdapter extends BaseExpandableListAdapter {
         Adapter adapter = listView.getAdapter();
         for (int i = 0; i < adapter.getCount(); i++) {
             View listItem = adapter.getView(i, null, listView);
-            listItem.measure(0, 0);
+            listItem.measure(View.MeasureSpec.makeMeasureSpec(listView.getWidth(), View.MeasureSpec.UNSPECIFIED),
+            View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
             newHeight = newHeight + listItem.getMeasuredHeight();
         }
         ViewGroup.LayoutParams params = listView.getLayoutParams();

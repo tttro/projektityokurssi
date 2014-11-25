@@ -22,5 +22,16 @@
     <string name="source_type">Streetlights/</string>
     <string name="lisätietoja">LISÄTIETOJA</string>
     <string name="piilota">PIILOTA</string>
+    <string name="showing_nearest">Showing 10 nearest objects</string>
+    <string name="showing_results">Search resulted in 9 objects</string>
+    <string name="search_id">Search by object ID..</string>
+    <string name="search_address">Search by address..</string>
+
+
+
+
+
+    Showing 10 nearest objects
+
 
 </resources>

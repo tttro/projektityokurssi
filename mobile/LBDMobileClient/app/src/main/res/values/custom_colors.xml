@@ -2,4 +2,6 @@
 <resources>
     <color name="exp_background">#F0F0F0</color>
     <color name="button_background">#689f38</color>
+    <color name="search_results_background">#69BF97</color>
+    <color name="near_objects_background">#7391BA</color>
 </resources>

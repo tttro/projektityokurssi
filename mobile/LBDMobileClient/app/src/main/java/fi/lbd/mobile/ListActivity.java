@@ -3,6 +3,7 @@ package fi.lbd.mobile;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v13.app.FragmentPagerAdapter;
@@ -11,6 +12,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 
 import java.util.ArrayDeque;
 import java.util.Locale;
@@ -28,6 +30,7 @@ public class ListActivity extends Activity {
     // Keeps loaded fragments in memory
     private SectionsPagerAdapter sectionsPagerAdapter;
     private ViewPager viewPager;
+    private final Activity activity = this;
 
     // Declare constants for tab UI
     private static final int START_TAB = 1;
@@ -59,10 +62,20 @@ public class ListActivity extends Activity {
         this.viewPager.setAdapter(this.sectionsPagerAdapter);
         viewPager.setCurrentItem(START_TAB);
 
-        // http://stackoverflow.com/questions/13185476/how-to-handle-back-button-using-view-pager
         viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageSelected(int i) {
+                // Hide soft keyboard when user switches tab
+                final InputMethodManager imm = (InputMethodManager)getSystemService(
+                        Context.INPUT_METHOD_SERVICE);
+                View view = activity.getCurrentFocus();
+                // If no view has focus, create a new one
+                if(view == null) {
+                    view = new View(activity);
+                }
+                imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+
+                // http://stackoverflow.com/questions/13185476/how-to-handle-back-button-using-view-pager
                 pageStack.push(i);
             }
             @Override
