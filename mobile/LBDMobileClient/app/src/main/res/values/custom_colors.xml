@@ -4,4 +4,6 @@
     <color name="button_background">#689f38</color>
     <color name="search_results_background">#69BF97</color>
     <color name="near_objects_background">#7391BA</color>
+    <color name="locate_button_background">#1B2831</color>
+
 </resources>

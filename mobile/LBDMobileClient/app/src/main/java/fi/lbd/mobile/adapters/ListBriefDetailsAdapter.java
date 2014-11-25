@@ -38,7 +38,6 @@ public class ListBriefDetailsAdapter extends BaseAdapter {
     public void setObject(MapObject mapObject){
         this.object = mapObject;
         if(mapObject != null) {
-            Log.d(" number of additional properties _________", ((Integer)object.getAdditionalProperties().size()).toString());
             int i = 1;
             for (Map.Entry<String, String> entry : object.getAdditionalProperties().entrySet()) {
                 if (i <= amountOfAdditionalProperties) {
@@ -65,8 +64,6 @@ public class ListBriefDetailsAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        // Location, additional properties
-        //return (this.object.getAdditionalProperties()).size() + 1;
         return amountOfAdditionalProperties + amountOfMetaDataProperties + amountOfCoordinates;
     }
 
@@ -133,7 +130,6 @@ public class ListBriefDetailsAdapter extends BaseAdapter {
             TextView textViewLocation = (TextView) view.findViewById(R.id.textViewObjectLocation);
             textViewLocation.setText(value);
         }
-
         return view;
     }
 

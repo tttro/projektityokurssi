@@ -73,7 +73,6 @@ public class GoogleMapFragment extends MapFragment implements OnInfoWindowClickL
 	private MapView mapView;
 	private GoogleMap map;
     private EditText searchLocationField;
-    private LinearLayout dummyView;
     private Geocoder geocoder;
     private MapModelController modelController;
     private LocationHandler locationHandler;
@@ -96,7 +95,6 @@ public class GoogleMapFragment extends MapFragment implements OnInfoWindowClickL
         this.geocoder = new Geocoder(getActivity(), Locale.getDefault());
 
         this.searchLocationField = (EditText)view.findViewById(R.id.searchText);
-        this.dummyView = (LinearLayout)view.findViewById(R.id.dummyView);
 
         // Hide keyboard and blinking cursor when "enter" or "back" key is pressed on soft keyboard
         this.searchLocationField.setOnKeyListener(new View.OnKeyListener() {

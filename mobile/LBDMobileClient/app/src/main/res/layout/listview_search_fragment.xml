@@ -34,12 +34,12 @@
             android:id="@+id/locationButton"
             android:layout_width="60dp"
             android:layout_height="match_parent"
-            android:src="@drawable/perm_group_location_blue"
+            android:src="@drawable/perm_group_location"
             android:paddingLeft="15dip"
             android:paddingRight="15dip"
             android:paddingBottom="10dp"
             android:paddingTop="10dp"
-            android:background="#D1D1D1"/>
+            android:background="@color/locate_button_background"/>
 
         <!-- Dummy item to prevent EditText view from receiving focus -->
         <LinearLayout
