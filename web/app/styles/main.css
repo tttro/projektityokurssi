@@ -75,6 +75,16 @@ html, body{
     margin-left: 5px;
 }
 
+#loadingIcon {
+    position: absolute;
+    bottom: 100px;
+    right: 50px;
+    z-index: 9999;
+    width: 31px ;
+    height: 31px ;
+
+}
+
 header {
     background: #edeeef;
     height: 70px;
@@ -180,7 +190,7 @@ position: relative;
     width: 100%;
 }
 .accord-title {
-  
+
     padding: 10px;
 }
 
@@ -200,14 +210,7 @@ position: relative;
     z-index: 9999;
 }
 
-#loadingOverlay .loadingContent {
-    width: 50px;
-    height: 57px;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    margin: -28px 0 0 -25px;
-}
+
 
 /* map search */
 .controls {
@@ -266,7 +269,31 @@ position: relative;
     border-bottom: 1px solid #ccc;
 }
 
-.open .accord-title, .open .accord-content {
+.open .accord-title,
+.open .accord-content {
     background: #eaeaea;
     color: #555;
+}
+
+/* Infowindow */
+.markerDetails {
+    border-collapse: collapse;
+    margin: 0;
+    font-size: 11px;
+    border: 1px solid #eee;
+}
+.markerDetails th {
+    padding: 5px 10px;
+    white-space: nowrap;
+    border: 1px solid #eee;
+}
+
+.markerDetails td {
+    padding: 5px 10px;
+    border: 1px solid #eee;
+}
+
+.markerDetails tr:nth-child(even) th,
+.markerDetails tr:nth-child(even) td {
+    background-color: #f7f7f7;
 }

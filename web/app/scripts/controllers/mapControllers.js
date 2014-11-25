@@ -2,22 +2,29 @@
 
 var mapControllers = angular.module('mapControllers', []);
 
-mapControllers.controller('mapController', function($scope, $window,$rootScope, ItemDataService, Data){
+mapControllers.controller('mapController', function($scope, $window,$rootScope, $timeout, ItemDataService, Data, appConfig){
 
     // Init
-    var defaultPoint = new google.maps.LatLng(61.51241, 23.634931); // Tampere
-    $scope.userLocationMarker = null;
-    $scope.btnGeolocation = true;
+    var currentPosition = new google.maps.LatLng(appConfig.defaultPosition[0], appConfig.defaultPosition[1]); // Tampere
     var markerClusterer = null;
     var markers = [];
     var currentBounds = null;
     var infoWindow = new google.maps.InfoWindow();
-    $scope.loading = true;
+    var panorama = null;
+    var itemPreLoadArea = {
+        sw:null,
+        ne:null
+
+    }
+    var geoCoder = new google.maps.Geocoder();
+
+    $scope.userLocationMarker = null;
+    $scope.btnGeolocation = true;
 
     // Init map
     var mapOptions = {
-        zoom: 15,
-        center: defaultPoint,
+        zoom: 17,
+        center: currentPosition,
         streetViewControl: false,
         zoomControl: true,
         zoomControlOptions: {
@@ -37,6 +44,7 @@ mapControllers.controller('mapController', function($scope, $window,$rootScope, 
     /*** Init google maps events ***/
 
     var geoButton = document.getElementById('btnGeolocation');
+
     // Init Search-box
     var input = /** @type {HTMLInputElement} */(
         document.getElementById('pac-input'));
@@ -79,13 +87,12 @@ mapControllers.controller('mapController', function($scope, $window,$rootScope, 
                 var currentPosition =  new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
 
                 createGeoMarker(currentPosition);
-
+                $scope.map.setZoom(17);
                 $scope.map.setCenter(currentPosition);
 
                 $scope.loading = false;
 
-
-                    }, function() {
+                }, function() {
                 handleNoGeolocation(true);
             });
 
@@ -93,20 +100,44 @@ mapControllers.controller('mapController', function($scope, $window,$rootScope, 
     });
 
     // Event handler when Maps is loaded and ready
+    function calculateItemLoadArea(currentBounds) {
+        var curNe = currentBounds.getNorthEast(); // bottom left
+        var curSw = currentBounds.getSouthWest(); // top right
+
+        var viewportWidth = (curSw.lat() - curNe.lat()) * appConfig.inareaRange;
+        var viewportHeight = (curNe.lng() - curSw.lng()) * appConfig.inareaRange;
+
+        // Add points over viewport
+        var newSwLat = curSw.lat() + viewportWidth;
+        var newSwLng = curSw.lng() - viewportHeight;
+        var newNeLat = curNe.lat() - viewportWidth;
+        var newNeLng = curNe.lng() + viewportHeight;
+
+        itemPreLoadArea.sw =  new google.maps.LatLng(newSwLat, newSwLng);
+        itemPreLoadArea.ne = new google.maps.LatLng(newNeLat, newNeLng);
+
+    }
+
+
     google.maps.event.addListener($scope.map, 'idle', function(){
 
-        var bounds = $scope.map.getBounds();
+        var viewportBounds = $scope.map.getBounds();
         var zoomLevel = $scope.map.getZoom();
 
-        if(zoomLevel > 16 && compareBounds(currentBounds,bounds))
+        if(zoomLevel > 16 && compareBounds(itemPreLoadArea,viewportBounds) && !panorama.getVisible() && !$scope.loading)
         {
+
             $scope.loading = true;
-            currentBounds = bounds;
-            mapCenter = $scope.map.getCenter();
-            markers = [];
-            ItemDataService.getInarea(bounds,function(results) {
+
+            calculateItemLoadArea(viewportBounds);
+
+            ItemDataService.getInarea(itemPreLoadArea,function(results) {
                 Data.set(results);
-                loadMarkers(results);
+
+                $timeout(function() {
+                    loadMarkers(results);
+                }, 100)
+
                 $rootScope.$broadcast('dataIsLoaded');
                 $scope.loading = false;
 
@@ -116,17 +147,14 @@ mapControllers.controller('mapController', function($scope, $window,$rootScope, 
         }
     });
 
-    // Add default blue point
-    createGeoMarker(defaultPoint);
-
 
     /*** StreetView ***/
 
-    var panorama;
-    $scope.btnText = "Streetview";
+
+    $scope.btnText = "Go to StreetView";
 
     panorama = $scope.map.getStreetView();
-    panorama.setPosition(defaultPoint);
+    panorama.setPosition(currentPosition);
     panorama.setOptions({ enableCloseButton: false });
     panorama.setPov(/** @type {google.maps.StreetViewPov} */({
         heading: 50,
@@ -157,16 +185,6 @@ mapControllers.controller('mapController', function($scope, $window,$rootScope, 
     });
 
 
-    /* LoadData */
-
-    ItemDataService.getTestData(function(results) {
-
-        Data.set(results);
-        loadMarkers(results);
-        $scope.loading = false;
-        $rootScope.$broadcast('dataIsLoaded');
-    });
-
     /*** Helper functions ***/
     var handleNoGeolocation = function (error) {
         if(error) {
@@ -178,15 +196,18 @@ mapControllers.controller('mapController', function($scope, $window,$rootScope, 
     }
 
     var loadMarkers =  function (data) {
+        clearMarkers(markers);
         markers = [];
         if (markerClusterer) {
             markerClusterer.clearMarkers();
         }
         angular.forEach(data.features, function(value,key){
+
             createMarker(value);
+
         });
         var options = {gridSize: 50, maxZoom: 16};
-        markerClusterer = new MarkerClusterer($scope.map, markers,options); // Create clusterers
+        markerClusterer = new MarkerClusterer($scope.map, markers,options); // Create clusters
 
     }
 
@@ -209,10 +230,25 @@ mapControllers.controller('mapController', function($scope, $window,$rootScope, 
             }
         });
 
-        marker.content = "<div class='infowindow'><h3>"+item.id+"</h3><p>"+ item.properties.NIMI + "<br>" + item.properties.LAMPPU_TYYPPI_KOODI + "<br>" + item.properties.LAMPPU_TYYPPI+"</p></div>"; // TODO
+        var markerDetails = "<tr><th>ID</th><td>"+item.id+"</td></tr>";
+        var itemProperties = item.properties;
+
+        // Go through all item's properties and put them into table for an infowindow
+        for(key in itemProperties){
+
+            if(key != 'metadata'){
+                markerDetails += "<tr><th>"+key+"</th><td>"+itemProperties[key]+"</td></tr>";
+            }
+        }
+
+        marker.content = "<div class='infowindow'>" +
+        "<table class='markerDetails'>"+markerDetails+"</table></div>";
+
+
 
         // add click event for marker
         google.maps.event.addListener(marker, 'click', function() {
+
 
             $scope.map.setCenter(marker.getPosition());
             panorama.setPosition(marker.getPosition());
@@ -227,6 +263,7 @@ mapControllers.controller('mapController', function($scope, $window,$rootScope, 
             } else {
                 infoWindow.setContent(marker.content);
                 infoWindow.open($scope.map, this);
+                $scope.map.setZoom(17);
             }
 
             openedMarkerWindow = infoWindow;
@@ -258,26 +295,42 @@ mapControllers.controller('mapController', function($scope, $window,$rootScope, 
     var clearMarkers = function(markers){
         for (var i in markers) {
             markers[i].setMap(null);
-            console.log(markers[i]);
         }
-        markerClusterer.clearMarkers();
     }
 
-    var compareBounds = function(curBounds, newBounds){
+    /* Check is an user inside same map-rectangle */
+    var compareBounds = function(itemPreLoadArea, newBounds){
 
-        if(curBounds == null){
+        if(itemPreLoadArea.ne == null || itemPreLoadArea.sw == null){
             return true;
         }
-        var curNe = curBounds.getNorthEast();
+        var curNe = itemPreLoadArea.ne;
         var newNe = newBounds.getNorthEast();
-        var curSw = curBounds.getSouthWest();
+        var curSw = itemPreLoadArea.sw;
         var newSw = newBounds.getSouthWest();
 
         if(curSw.lng() < newSw.lng() && curSw.lat() < newSw.lat() &&
-            curNe.lng() > newNe.lng() && curNe.lat() > newNe.lat()){
+            curNe.lng() > newNe.lng() && curNe.lat() > newNe.lat()) {
             return false;
         }
         return true;
 
+    }
+
+    function getAddressByCoords(latlng){
+        geoCoder.geocode({'latLng': latlng}, function(results, status) {
+            if (status == google.maps.GeocoderStatus.OK) {
+
+                if (results[1]) {
+                   return results[0].formatted_address;
+
+                } else {
+                    alert('No results found');
+                    return "";
+                }
+            } else {
+                alert('Geocoder failed due to: ' + status);
+            }
+        });
     }
 });

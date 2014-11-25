@@ -3,7 +3,7 @@
 
 var itemControllers = angular.module('itemControllers', []);
 
-itemControllers.controller('itemController', function($scope, $http, $rootScope, $filter, Data){
+itemControllers.controller('itemController', function($scope, $http, $rootScope, $filter, $timeout, Data){
 
         $scope.searchQuery = '';
         $scope.items = Data.get();
@@ -13,10 +13,11 @@ itemControllers.controller('itemController', function($scope, $http, $rootScope,
          *  Add markers when all data fetched from server
          * ***/
         $scope.$on('dataIsLoaded', function(e) {
-            $scope.loading = true;
-            $scope.items = Data.get();
-            orginalItemList = Data.get();
-            $scope.loading = false;
+            $timeout(function() {
+                $scope.items = Data.get();
+                orginalItemList = Data.get();
+            }, 100)
+
         });
 
         $scope.itemSearch = function(searchQuery){

@@ -27,8 +27,8 @@ dataServices.factory('ItemDataService', function($http, appConfig){
         },
         getInarea: function(bounds, callback){
             var retData = null;
-            var ne = bounds.getNorthEast();
-            var sw = bounds.getSouthWest();
+            var ne = bounds.ne;
+            var sw = bounds.sw;
 
             $http({
                 method: 'GET',
