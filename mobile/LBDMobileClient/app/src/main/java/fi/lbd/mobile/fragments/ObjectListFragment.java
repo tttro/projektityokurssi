@@ -3,6 +3,7 @@ package fi.lbd.mobile.fragments;
 import android.app.ListFragment;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.Pair;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -19,7 +20,12 @@ import com.google.android.gms.common.GooglePlayServicesClient;
 import com.squareup.otto.Subscribe;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.TreeMap;
 
+import fi.lbd.mobile.ListActivity;
 import fi.lbd.mobile.SelectionManager;
 import fi.lbd.mobile.adapters.ListExpandableAdapter;
 import fi.lbd.mobile.events.BusHandler;
@@ -28,6 +34,8 @@ import fi.lbd.mobile.events.RequestNearObjectsEvent;
 import fi.lbd.mobile.events.ReturnNearObjectsEvent;
 import fi.lbd.mobile.location.ImmutablePointLocation;
 import fi.lbd.mobile.location.LocationHandler;
+import fi.lbd.mobile.location.LocationUtils;
+import fi.lbd.mobile.location.PointLocation;
 import fi.lbd.mobile.mapobjects.MapObject;
 
 
@@ -171,8 +179,10 @@ public class ObjectListFragment extends ListFragment {
     @Subscribe
     public void onEvent(ReturnNearObjectsEvent event) {
         this.adapter.clear();
+
         if (event.getMapObjects() != null) {
             this.adapter.addAll(event.getMapObjects());
+
             statusText.setText(String.format(getResources().getString(R.string.showing_nearest),
                     event.getMapObjects().size()));
         }

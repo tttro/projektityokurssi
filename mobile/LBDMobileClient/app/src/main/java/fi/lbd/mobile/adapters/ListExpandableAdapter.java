@@ -3,6 +3,7 @@ package fi.lbd.mobile.adapters;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +15,11 @@ import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.TreeMap;
 
 import fi.lbd.mobile.ListActivity;
 import fi.lbd.mobile.R;
@@ -27,11 +33,11 @@ import fi.lbd.mobile.mapobjects.MapObject;
 
 // TODO: http://www.codeofaninja.com/2013/09/android-viewholder-pattern-example.html
 public class ListExpandableAdapter extends BaseExpandableListAdapter {
-    private ArrayList<MapObject> objects;
+    private ArrayList<Pair<Integer, MapObject>> objects;
     private Context context;
 
-    // How many additional properties, coordinates and metadata properties are shown
-    // before "lisää"/"more" button is pressed
+    // Number of additional properties, coordinates and metadata properties that are shown in the
+    // expanded list
     private final static int MIN_ADDITIONAL_PROPERTIES = 3;
     private final static int MIN_COORDINATES = 0;
     private final static int MIN_METADATA_PROPERTIES = 1;
@@ -39,7 +45,7 @@ public class ListExpandableAdapter extends BaseExpandableListAdapter {
 
     public ListExpandableAdapter(Context context) {
         this.context = context;
-        this.objects = new ArrayList<MapObject>();
+        this.objects = new ArrayList<>();
     }
 
     @Override
@@ -81,11 +87,23 @@ public class ListExpandableAdapter extends BaseExpandableListAdapter {
         this.objects.clear();
     }
 
-    public void addAll(Collection<MapObject> objects) {
-        if(objects != null){
-            this.objects.addAll(objects);
+    // Adds all objects and sorts them by distance from nearest to furthest
+    public void addAll(Collection<MapObject> newObjects) {
+
+        if(newObjects != null && !newObjects.isEmpty()){
+            for (MapObject object : newObjects){
+                PointLocation location = ((ListActivity)this.context)
+                        .getLocationHandler().getCachedLocation();
+                int distance = -1;
+                if (location != null) {
+                    distance = ((int) LocationUtils.distanceBetween(
+                            object.getPointLocation().getLatitude(), object.getPointLocation().getLongitude(),
+                            location.getLatitude(), location.getLongitude()));
+                }
+                objects.add(new Pair<Integer, MapObject>(distance, object));
+            }
+            Collections.sort(objects, new DistanceComparator());
         }
-        else Log.d("ListExpandableAdapter", "No objects to add after ReturnObjectsInAreaEvent.");
     }
 
     @Override
@@ -102,21 +120,18 @@ public class ListExpandableAdapter extends BaseExpandableListAdapter {
             view.setBackgroundColor(Color.WHITE);
         }
 
-        MapObject object = this.objects.get(groupPosition);
+        int distance = this.objects.get(groupPosition).first;
+        MapObject object = this.objects.get(groupPosition).second;
+
         if(object != null) {
             TextView textViewId = (TextView) view.findViewById(R.id.textViewObjectId);
             textViewId.setText(object.getId());
 
-            // Use the last cached user location to calculate distance to object
             TextView textViewDistance = (TextView) view.findViewById(R.id.textViewDistance);
-            PointLocation location = ((ListActivity)this.context)
-                    .getLocationHandler().getCachedLocation();
-            if (location != null) {
-                int distance = ((int) LocationUtils.distanceBetween(
-                        object.getPointLocation().getLatitude(), object.getPointLocation().getLongitude(),
-                        location.getLatitude(), location.getLongitude()));
+            if(distance >= 0){
                 textViewDistance.setText(LocationUtils.formatDistance(distance));
-            } else {
+            }
+            else {
                 textViewDistance.setText(context.getResources().getString(R.string.unknown));
             }
         }
@@ -129,14 +144,14 @@ public class ListExpandableAdapter extends BaseExpandableListAdapter {
             LayoutInflater inflater = ((Activity) this.context).getLayoutInflater();
             view = inflater.inflate(R.layout.listview_expanded_row, parent, false);
         }
-        if (getGroup(groupPosition) != null){
+        if (getGroup(groupPosition) != null &&
+                ((Pair<Integer, MapObject>)getGroup(groupPosition)).second != null){
 
             // Tag links the expanded item to its location object
-            view.setTag(getGroup(groupPosition));
-            Log.d("TAG SET--------------------", ((MapObject)getGroup(groupPosition)).getId());
+            view.setTag(((Pair<Integer, MapObject>)getGroup(groupPosition)).second);
+            Log.d("TAG SET--------------------", (((Pair<Integer, MapObject>)getGroup(groupPosition)).second).getId());
 
-
-           final MapObject object = (MapObject)getGroup(groupPosition);
+           final MapObject object = ((Pair<Integer, MapObject>)getGroup(groupPosition)).second;
            final ListDetailsAdapter adapter = new ListDetailsAdapter(
                    this.context, object, MIN_ADDITIONAL_PROPERTIES, MIN_COORDINATES,
                    MIN_METADATA_PROPERTIES);
@@ -168,5 +183,12 @@ public class ListExpandableAdapter extends BaseExpandableListAdapter {
         + listView.getPaddingBottom() + listView.getPaddingTop() + ADDITIONAL_PADDING);
         listView.setLayoutParams(params);
         listView.requestLayout();
+    }
+
+    private class DistanceComparator implements Comparator<Pair<Integer, MapObject>> {
+        @Override
+        public int compare(Pair<Integer, MapObject> o1, Pair<Integer, MapObject> o2) {
+            return o1.first.compareTo(o2.first);
+        }
     }
 }
