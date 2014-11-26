@@ -56,7 +56,7 @@ public class LocationHandler implements GooglePlayServicesClient.ConnectionCallb
      * Starts the location client.
      */
     public void start() {
-        if (this.locationClient != null) {
+        if (this.locationClient != null && !this.locationClient.isConnected()) {
             this.locationClient.connect();
         }
     }
@@ -68,6 +68,24 @@ public class LocationHandler implements GooglePlayServicesClient.ConnectionCallb
         if (this.locationClient != null) {
             this.locationClient.disconnect();
         }
+    }
+
+    /**
+     * Registers a listener which listens for connection changes in the location client.
+     *
+     * @param listener
+     */
+    public void addListener(GooglePlayServicesClient.ConnectionCallbacks listener) {
+        this.locationClient.registerConnectionCallbacks(listener);
+    }
+
+    /**
+     * Removes a listener which listens for connection changes in the location client.
+     *
+     * @param listener
+     */
+    public void removeListener(GooglePlayServicesClient.ConnectionCallbacks listener) {
+        this.locationClient.unregisterConnectionCallbacks(listener);
     }
 
     /**

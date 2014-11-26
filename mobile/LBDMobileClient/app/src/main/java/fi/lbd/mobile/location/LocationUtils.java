@@ -2,6 +2,8 @@ package fi.lbd.mobile.location;
 
 import android.location.Location;
 
+import java.text.DecimalFormat;
+
 import fi.lbd.mobile.mapobjects.MapObject;
 
 /**
@@ -10,6 +12,7 @@ import fi.lbd.mobile.mapobjects.MapObject;
  * Created by Tommi.
  */
 public class LocationUtils {
+    private static DecimalFormat df = new DecimalFormat("#.00");
 
     /**
      * Returns distance between two points in meters.
@@ -60,5 +63,21 @@ public class LocationUtils {
      */
     public static double distanceBetween(MapObject obj1, MapObject obj2) {
         return LocationUtils.distanceBetween(obj1.getPointLocation(), obj2.getPointLocation());
+    }
+
+
+    /**
+     * Formats the given distance into string.
+     *
+     * @param distanceInMeters  For example 123m if distanceInMeters < 1000. For example 2.36km if
+     *                          distanceInMeters > 1000m.
+     * @return
+     */
+    public static String formatDistance(double distanceInMeters) {
+        if (distanceInMeters < 1000) {
+            return (int)distanceInMeters +"m";
+        } else {
+            return df.format(distanceInMeters/1000) +"km";
+        }
     }
 }

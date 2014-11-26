@@ -45,13 +45,20 @@ public class ObjectListFragment extends ListFragment {
     private LinearLayout dummyView;
     private TextView statusText;
 
-    public static ObjectListFragment newInstance() {
-        return new ObjectListFragment();
-    }
     private LocationHandler locationHandler;
 
     private int firstVisiblePosition;
     private ArrayList<Boolean> groupExpandedArray;
+
+    public static ObjectListFragment newInstance(LocationHandler locationHandler) {
+        ObjectListFragment fragment = new ObjectListFragment();
+        fragment.setLocationHandler(locationHandler);
+        return fragment; // Constructor should not have additional parameters!
+    }
+
+    public void setLocationHandler(LocationHandler locationHandler) {
+        this.locationHandler = locationHandler;
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -91,7 +98,6 @@ public class ObjectListFragment extends ListFragment {
         this.searchText = (EditText)view.findViewById(R.id.searchText);
         this.dummyView = (LinearLayout)view.findViewById(R.id.dummyView);
         this.statusText = (TextView)view.findViewById(R.id.view_status_text);
-        this.locationHandler = new LocationHandler(this.getActivity());
 
         // Listen to keyboard search button press
         searchText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -142,7 +148,6 @@ public class ObjectListFragment extends ListFragment {
     public void onResume() {
         super.onResume();
         this.expandableListView.setAdapter(this.adapter);
-        this.locationHandler.start();
         BusHandler.getBus().register(this);
 
         for (int i=0; i<groupExpandedArray.size() ;i++){
@@ -155,7 +160,6 @@ public class ObjectListFragment extends ListFragment {
     @Override
     public void onPause() {
         super.onPause();
-        this.locationHandler.stop();
         BusHandler.getBus().unregister(this);
         int numberOfGroups = adapter.getGroupCount();
 

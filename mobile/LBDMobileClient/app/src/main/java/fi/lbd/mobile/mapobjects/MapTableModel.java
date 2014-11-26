@@ -25,6 +25,7 @@ public class MapTableModel<T> {
         private int endLat;   // Grid cell end position
         private int endLon;   // Grid cell end position
         private List<T> objects = new ArrayList<T>();   // Grid cell objects
+        private boolean objectsAdded = false;
 
         public TableElement(int startLat, int startLon, int endLat, int endLon) {
             this.startLat = startLat;
@@ -35,6 +36,13 @@ public class MapTableModel<T> {
 
         public void addAll(List<T> objs) {
             this.objects.addAll(objs);
+            // Boolean beacause param list can be empty.
+            this.objectsAdded = true;
+        }
+
+
+        public boolean hasObjectsAdded() {
+            return this.objectsAdded;
         }
 
         public void clear() {
@@ -350,6 +358,21 @@ public class MapTableModel<T> {
         if ( tableElement != null ) {
             tableElement.addAll(objects);
         }
+    }
+
+    /**
+     * Does the model contain grid cells which have requested for objects but haven't received them
+     * yet.
+     *
+     * @return  True if there is a cell which is waiting for objects.
+     */
+    public boolean hasGridCellsWaitingForObjects() {
+        for (TableElement element : this.objectTable.values()) {
+            if (!element.hasObjectsAdded()) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**

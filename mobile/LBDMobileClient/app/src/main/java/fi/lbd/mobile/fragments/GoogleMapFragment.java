@@ -5,20 +5,17 @@ import android.content.res.Resources;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.inputmethod.EditorInfo;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
-import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.google.android.gms.common.GooglePlayServicesClient;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -27,17 +24,10 @@ import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
-import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
-import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.maps.model.VisibleRegion;
-import com.google.common.collect.BiMap;
-import com.google.common.collect.HashBiMap;
 import com.squareup.otto.Subscribe;
 
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 
@@ -45,17 +35,15 @@ import fi.lbd.mobile.DetailsActivity;
 import fi.lbd.mobile.R;
 import fi.lbd.mobile.SelectionManager;
 import fi.lbd.mobile.events.BusHandler;
-import fi.lbd.mobile.events.CacheObjectsInAreaEvent;
-import fi.lbd.mobile.events.RequestObjectsInAreaEvent;
 import fi.lbd.mobile.events.ReturnObjectsInAreaEvent;
 import fi.lbd.mobile.events.SelectMapObjectEvent;
 import fi.lbd.mobile.location.ImmutablePointLocation;
 import fi.lbd.mobile.location.LocationHandler;
 import fi.lbd.mobile.location.LocationUtils;
-import fi.lbd.mobile.mapobjects.MapObject;
 import fi.lbd.mobile.location.PointLocation;
-import fi.lbd.mobile.mapobjects.MapTableModel;
-import fi.lbd.mobile.mapobjects.MapTableModelListener;
+import fi.lbd.mobile.mapobjects.MapModelController;
+import fi.lbd.mobile.mapobjects.MapObject;
+import fi.lbd.mobile.mapobjects.ProgressListener;
 
 
 /**
@@ -66,11 +54,10 @@ import fi.lbd.mobile.mapobjects.MapTableModelListener;
 public class GoogleMapFragment extends MapFragment implements OnInfoWindowClickListener,
         GoogleMap.OnMarkerClickListener, GoogleMap.OnMapClickListener {
 
-    // Icons for the map markers
-    private static BitmapDescriptor iconSelected;
-    private static BitmapDescriptor iconDefault;
+    private LatLng defaultLocation;
 
 	private MapView mapView;
+    private ProgressBar progressBar;
 	private GoogleMap map;
     private EditText searchLocationField;
     private Geocoder geocoder;
@@ -82,14 +69,21 @@ public class GoogleMapFragment extends MapFragment implements OnInfoWindowClickL
      * Should be used to instantiate this class instead of new-statement.
      * @return  Returns a new instance of this class.
      */
-    public static GoogleMapFragment newInstance(){
-        return new GoogleMapFragment(); // Constructor should not have additional parameters!
+    public static GoogleMapFragment newInstance(LocationHandler locationHandler){
+        GoogleMapFragment fragment = new GoogleMapFragment();
+        fragment.setLocationHandler(locationHandler);
+        return fragment; // Constructor should not have additional parameters!
+    }
+
+    public void setLocationHandler(LocationHandler locationHandler) {
+        this.locationHandler = locationHandler;
     }
 
     @Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.googlemap_fragment, container, false);
 
+        this.progressBar = (ProgressBar)view.findViewById(R.id.mapProgressBar);
 		this.mapView = (MapView)view.findViewById(R.id.mapview);
         this.mapView.onCreate(savedInstanceState);
         this.geocoder = new Geocoder(getActivity(), Locale.getDefault());
@@ -118,7 +112,7 @@ public class GoogleMapFragment extends MapFragment implements OnInfoWindowClickL
             public boolean onEditorAction(TextView v, int actionId,
                                           KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                    performSearch();
+                    performLocationSearch();
                     hideKeyBoard();
                     hideCursor();
                     return true;
@@ -127,26 +121,52 @@ public class GoogleMapFragment extends MapFragment implements OnInfoWindowClickL
             }
         });
 
-        this.locationHandler = new LocationHandler(this.getActivity());
-
         this.map = this.mapView.getMap();
         this.map.getUiSettings().setMyLocationButtonEnabled(true);
         this.map.setMyLocationEnabled(true);
         this.map.setOnInfoWindowClickListener(this);
         this.map.setOnMarkerClickListener(this);
         this.map.setOnMapClickListener(this);
-        this.map.setInfoWindowAdapter(new CustomInfoWindow(inflater, this.locationHandler));
+        this.map.setInfoWindowAdapter(new CustomInfoWindow(getResources(), inflater, this.locationHandler));
 
         MapsInitializer.initialize(this.getActivity());
-        GoogleMapFragment.iconSelected = BitmapDescriptorFactory.fromResource(android.R.drawable.presence_online);
-        GoogleMapFragment.iconDefault = BitmapDescriptorFactory.fromResource(android.R.drawable.presence_invisible);
+
+        // Set location if users current location is not found.
+        this.defaultLocation = new LatLng(61.5, 23.795); // TODO: From resources as int?
 
         Resources res = getResources();
         int maxZoom = res.getInteger(R.integer.min_marker_zoom);
-        final int defaultZoom =  res.getInteger(R.integer.default_zoom);
-        this.modelController = new MapModelController(this.map, maxZoom);
+        this.modelController = new MapModelController(this.map,
+                BitmapDescriptorFactory.fromResource(android.R.drawable.presence_online),
+                BitmapDescriptorFactory.fromResource(android.R.drawable.presence_invisible),
+                maxZoom);
+        this.modelController.addProgressListener( new ProgressListener() {
+            @Override
+            public void startLoading() {
+                progressBar.setVisibility(View.VISIBLE);
+            }
+            @Override
+            public void finishLoading() {
+                progressBar.setVisibility(View.GONE);
+            }
+        });
 
-        setMapLocationToSelectedObject();
+        /**
+         * Set the camera location when the location handler succeeds to connect to the
+         * play services. Only used when the fragment is first displayed. Sets the maps default
+         * start location to the users current location.
+         */
+        this.locationHandler.addListener( new GooglePlayServicesClient.ConnectionCallbacks() {
+            @Override
+            public void onConnected(Bundle bundle) {
+                setMapLocationToSelectedObject();
+                locationHandler.removeListener(this);
+            }
+
+            @Override
+            public void onDisconnected() {}
+        });
+
 		return view;
 	}
 
@@ -155,7 +175,7 @@ public class GoogleMapFragment extends MapFragment implements OnInfoWindowClickL
         SelectionManager.get().setSelection(this.modelController.findMapObject(marker));
         Intent intent = new Intent(this.getActivity(), DetailsActivity.class);
         startActivity(intent);
-        this.getActivity().overridePendingTransition(0, 0);
+        this.getActivity().overridePendingTransition(0, 0); // Hides the transition animation
     }
 
     @Subscribe
@@ -164,10 +184,21 @@ public class GoogleMapFragment extends MapFragment implements OnInfoWindowClickL
     }
 
     /**
+     * Handles the response event with the map objects for a certain region.
+     *
+     * @param event Returned event.
+     */
+    @Subscribe
+    public void onEvent(ReturnObjectsInAreaEvent event) {
+        this.modelController.processObjects(event.getMapObjects(),
+                event.getSouthWest().getLatitude(), event.getSouthWest().getLongitude());
+    }
+
+    /**
      * Sets the maps location to the map object which is currently selected in selection manager.
      * If selection manager doesn't have any object selected, sets map view to users current location.
      */
-    private void setMapLocationToSelectedObject() {
+    protected void setMapLocationToSelectedObject() {
         Resources res = getResources();
         final int defaultZoom =  res.getInteger(R.integer.default_zoom);
 
@@ -182,11 +213,15 @@ public class GoogleMapFragment extends MapFragment implements OnInfoWindowClickL
                 this.modelController.setActiveMarker(marker);
                 marker.showInfoWindow();
             }
-        }
-        // TODO: Käytä käyttäjän sijaintia, täytyy hakea LocationClientilla
-        else {
-            CameraUpdate cameraLocation = CameraUpdateFactory.newLatLngZoom(new LatLng(61.5, 23.795), defaultZoom);
-            this.map.moveCamera(cameraLocation);
+        } else {
+            ImmutablePointLocation userLocation = this.locationHandler.getLastLocation();
+            if (userLocation != null) {
+                CameraUpdate cameraLocation = CameraUpdateFactory.newLatLngZoom(new LatLng(userLocation.getLatitude(), userLocation.getLongitude()), defaultZoom);
+                this.map.moveCamera(cameraLocation);
+            } else {
+                CameraUpdate cameraLocation = CameraUpdateFactory.newLatLngZoom(this.defaultLocation, defaultZoom);
+                this.map.moveCamera(cameraLocation);
+            }
         }
     }
 
@@ -204,22 +239,9 @@ public class GoogleMapFragment extends MapFragment implements OnInfoWindowClickL
     public void onMapClick(LatLng point){
         this.modelController.clearActiveMarker();
         SelectionManager.get().setSelection(null);
-
-        // TODO: eikö sijainnista osoite tarttekkaan api avainta?? Kohtuu hidas, pitäis tehdä async taskissa.
-//        try {
-//            List <Address> addresses = this.geocoder.getFromLocation(point.latitude, point.longitude, 1);
-//            if (addresses.size() > 0) {
-//                Log.e(this.getClass().getSimpleName(), "Click location: "+ addresses.get(0) );
-//            } else {
-//                Log.e(this.getClass().getSimpleName(), "NO LOCATION" );
-//            }
-//        } catch (IOException e1) {
-//            Log.e(this.getClass().getSimpleName(), "IO Exception in getFromLocation()");
-//        }
-
     }
 
-    public void hideKeyBoard() {
+    protected void hideKeyBoard() {
         if (this.searchLocationField != null) {
             InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(
                     getActivity().INPUT_METHOD_SERVICE);
@@ -227,10 +249,39 @@ public class GoogleMapFragment extends MapFragment implements OnInfoWindowClickL
         }
     }
 
-    public void hideCursor(){
+    protected void hideCursor(){
         if(this.searchLocationField != null) {
             this.searchLocationField.setFocusable(false);
             this.searchLocationField.setFocusableInTouchMode(true);
+        }
+    }
+
+    /**
+     * Searches the address defined in the search box and moves the camera to the found location.
+     */
+    protected void performLocationSearch(){
+        hideKeyBoard();
+        hideCursor();
+
+        if (this.searchLocationField != null){
+            Resources res = getResources();
+            final int defaultZoom =  res.getInteger(R.integer.default_zoom);
+            String address = (this.searchLocationField).getText().toString();
+
+            // TODO: Should we limit results within Finland?
+            try {
+                List<Address> addresses = this.geocoder.getFromLocationName(address, 1);
+                if (addresses.size() > 0) {
+                    Double lat = addresses.get(0).getLatitude();
+                    Double lon = addresses.get(0).getLongitude();
+                    final LatLng location = new LatLng(lat, lon);
+
+                    CameraUpdate cameraLocation = CameraUpdateFactory.newLatLngZoom(location, defaultZoom);
+                    this.map.moveCamera(cameraLocation);
+                }
+            } catch (java.io.IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -239,8 +290,6 @@ public class GoogleMapFragment extends MapFragment implements OnInfoWindowClickL
         this.mapView.onResume();
         super.onResume();
         BusHandler.getBus().register(this);
-        BusHandler.getBus().register(this.modelController);
-        this.locationHandler.start();
     }
 
     @Override
@@ -248,8 +297,6 @@ public class GoogleMapFragment extends MapFragment implements OnInfoWindowClickL
         this.mapView.onPause();
         super.onPause();
         BusHandler.getBus().unregister(this);
-        BusHandler.getBus().unregister(this.modelController);
-        this.locationHandler.stop();
         hideCursor();
         hideKeyBoard();
     }
@@ -267,206 +314,24 @@ public class GoogleMapFragment extends MapFragment implements OnInfoWindowClickL
     }
 
     /**
-     * Class which handles the dependencies between the map objects and markers. Class also updates
-     * the model and requests new map objects if they are required.
-     */
-    private static class MapModelController implements MapTableModelListener<Marker>, GoogleMap.OnCameraChangeListener {
-        private static final double DIVIDE_GRID_LAT = 0.0025;
-        private static final double DIVIDE_GRID_LON = 0.005;
-        private final int hideMarkersZoom;
-
-        private GoogleMap map;
-        private MapTableModel<Marker> tableModel;
-        private boolean isMarkersHidden = false;
-        private BiMap<Marker, MapObject> markerObjectMap;
-        private MapObject activeMarker;
-
-
-        /**
-         * Class which handles the dependencies between the map objects and markers. Class also updates
-         * the model and requests new map objects if they are required.
-         *
-         * @param map   GoogleMap which is monitored
-         */
-        public MapModelController(@NonNull GoogleMap map, int hideMarkersZoom) {
-            this.map = map;
-            this.tableModel = new MapTableModel<>(DIVIDE_GRID_LAT, DIVIDE_GRID_LON);
-            this.tableModel.addListener( this );
-            this.map.setOnCameraChangeListener( this );
-            this.markerObjectMap = HashBiMap.create();
-            this.activeMarker = null;
-            this.hideMarkersZoom = hideMarkersZoom;
-        }
-
-        /**
-         * Invoked when a map object is removed from the model.
-         *
-         * @param obj   Map object which is being removed.
-         */
-        @Override
-        public void objectRemoved(Marker obj) {
-            this.markerObjectMap.remove(obj);
-            obj.remove();
-        }
-
-        /**
-         * Model invokes this method if with the information about the grid which will most likely
-         * be loaded next.
-         *
-         * @param latGridStart  Grid cell start coordinate.
-         * @param lonGridStart  Grid cell start coordinate.
-         * @param latGridEnd    Grid cell end coordinate.
-         * @param lonGridEnd    Grid cell end coordinate.
-         */
-        @Override
-        public void requestCache(double latGridStart, double lonGridStart, double latGridEnd, double lonGridEnd) {
-//           Log.e("GoogleMapFragment", "Cache from area: grid: " + latGridStart + ", " + lonGridStart);
-            BusHandler.getBus().post(new CacheObjectsInAreaEvent(
-                    new ImmutablePointLocation(latGridStart, lonGridStart),
-                    new ImmutablePointLocation(latGridEnd, lonGridEnd)));
-        }
-
-        /**
-         * Model invokes this method for cells that needs to be loaded and added to the model. This
-         * method only sends an event to the background service which then responds with the objects.
-         * Respond is handled in another method and the returned objects are added to the model.
-         *
-         * @param latGridStart  Grid cell start coordinate.
-         * @param lonGridStart  Grid cell start coordinate.
-         * @param latGridEnd    Grid cell end coordinate.
-         * @param lonGridEnd    Grid cell end coordinate.
-         */
-        @Override
-        public void requestObjects(double latGridStart, double lonGridStart, double latGridEnd, double lonGridEnd) {
-//          Log.e("GoogleMapFragment", "Get from area: grid: " + latGridStart + ", " + lonGridStart);
-            BusHandler.getBus().post(new RequestObjectsInAreaEvent(
-                    new ImmutablePointLocation(latGridStart, lonGridStart),
-                    new ImmutablePointLocation(latGridEnd, lonGridEnd)));
-        }
-
-        /**
-         * Updates the model if the map camera has moved. Also checks if the map is zoomed too far
-         * away and hides the map objects if needed.
-         *
-         * @param cameraPosition    Current camera position.
-         */
-        @Override
-        public void onCameraChange(CameraPosition cameraPosition) {
-            Log.d(this.getClass().getSimpleName(), "Camera moved: " + map.getProjection().getVisibleRegion().latLngBounds + " Zoom: "+ cameraPosition.zoom);
-            if (cameraPosition.zoom <= this.hideMarkersZoom) {
-                if (!this.isMarkersHidden) {
-                    Iterator<Marker> iter = this.markerObjectMap.keySet().iterator();
-                    while (iter.hasNext()) {
-                        Marker marker = iter.next();
-                        marker.setVisible(false);
-                    }
-                    //Toast.makeText(getActivity(), "Zoom in to see markers.", Toast.LENGTH_SHORT);
-                    this.isMarkersHidden = true;
-                }
-            } else {
-                if (this.isMarkersHidden) {
-                    Iterator<Marker> iter = this.markerObjectMap.keySet().iterator();
-                    while (iter.hasNext()) {
-                        Marker marker = iter.next();
-                        marker.setVisible(true);
-                    }
-                    this.isMarkersHidden = false;
-                }
-                VisibleRegion region = this.map.getProjection().getVisibleRegion();
-                this.tableModel.updateTable(region.latLngBounds.southwest.latitude,
-                        region.latLngBounds.southwest.longitude,
-                        region.latLngBounds.northeast.latitude,
-                        region.latLngBounds.northeast.longitude);
-            }
-        }
-
-        /**
-         * Handles the response event with the map objects for a certain region. Map objects are
-         * used to create markers which are then added to the model in the correct grid cell.
-         *
-         * @param event Returned event.
-         */
-        @Subscribe
-        public void onEvent(ReturnObjectsInAreaEvent event) {
-            if (event.getMapObjects() != null
-                    && this.tableModel.isEmpty(event.getSouthWest().getLatitude(), event.getSouthWest().getLongitude())) {
-
-                List<Marker> markers = new ArrayList<>();
-                for (MapObject mapObject : event.getMapObjects()) {
-                    LatLng location = new LatLng(mapObject.getPointLocation().getLatitude(),
-                            mapObject.getPointLocation().getLongitude());
-
-                    Marker marker = this.map.addMarker(
-                            new MarkerOptions()
-                                    .position(location)
-                                    .title(mapObject.getId())
-                                    .icon(GoogleMapFragment.iconDefault));
-
-                    markers.add(marker);
-                    this.markerObjectMap.put(marker, mapObject);
-
-                    if(SelectionManager.get().getSelectedObject() != null &&
-                            mapObject.getId().equals(SelectionManager.get().getSelectedObject().getId())){
-                        setActiveMarker(marker);
-                        marker.showInfoWindow();
-                    }
-                }
-
-                this.tableModel.addObjects(event.getSouthWest().getLatitude(),
-                        event.getSouthWest().getLongitude(), markers);
-            }
-        }
-
-        /**
-         * Clears the currently selected active marker.
-         */
-        private void clearActiveMarker() {
-            if(this.activeMarker != null){
-                Marker marker = this.findMarker(this.activeMarker);
-                if(marker != null) {
-                    marker.setIcon(GoogleMapFragment.iconDefault);
-                }
-            }
-        }
-
-        /**
-         * Sets a current active marker.
-         *
-         * @param marker    Marker which will be set as active.
-         */
-        public void setActiveMarker(Marker marker) {
-            clearActiveMarker();
-            this.activeMarker = findMapObject(marker);
-            marker.setIcon(GoogleMapFragment.iconSelected);
-        }
-
-        public Marker findMarker(MapObject object){
-            return (object == null) ? null : this.markerObjectMap.inverse().get(object);
-        }
-
-        public MapObject findMapObject(Marker marker){
-            return (marker == null) ? null : this.markerObjectMap.get(marker);
-        }
-    }
-
-    /**
      * Custom info window for the markers which are displayed on the map.
      */
     private static class CustomInfoWindow implements GoogleMap.InfoWindowAdapter {
         private LayoutInflater inflater;
         private LocationHandler locationHandler;
+        private Resources res;
 
         /**
          * Custom info window for the markers which are displayed on the map.
          *
          * @param inflater
          */
-        public CustomInfoWindow(LayoutInflater inflater, LocationHandler locationHandler) {
+        public CustomInfoWindow(Resources res, LayoutInflater inflater, LocationHandler locationHandler) {
             this.inflater = inflater;
             this.locationHandler = locationHandler;
+            this.res = res;
         }
 
-        // http://stackoverflow.com/questions/16144341/android-googlemap-2-update-information-dynamically-in-infowindow-with-imageview
         // Use default InfoWindow frame
         @Override
         public View getInfoWindow(Marker marker) {
@@ -489,39 +354,13 @@ public class GoogleMapFragment extends MapFragment implements OnInfoWindowClickL
                 int distance = ((int) LocationUtils.distanceBetween(
                         marker.getPosition().latitude, marker.getPosition().longitude,
                         location.getLatitude(), location.getLongitude()));
-                distanceField.setText("Distance: "+ distance +"m");
+                distanceField.setText(res.getString(R.string.distance, LocationUtils.formatDistance(distance)));
             } else {
                 distanceField.setText("");
             }
             return v;
         }
     };
-
-    public void performSearch(){
-        hideKeyBoard();
-        hideCursor();
-
-        if (searchLocationField != null){
-            Resources res = getResources();
-            final int defaultZoom =  res.getInteger(R.integer.default_zoom);
-            String address = (searchLocationField).getText().toString();
-
-            // TODO: Should we limit results within Finland?
-            try {
-                List<Address> addresses = geocoder.getFromLocationName(address, 1);
-                if (addresses.size() > 0) {
-                    Double lat = addresses.get(0).getLatitude();
-                    Double lon = addresses.get(0).getLongitude();
-                    final LatLng location = new LatLng(lat, lon);
-
-                    CameraUpdate cameraLocation = CameraUpdateFactory.newLatLngZoom(location, defaultZoom);
-                    map.moveCamera(cameraLocation);
-                }
-            } catch (java.io.IOException e) {
-                e.printStackTrace();
-            }
-        }
-    }
 
 }
 

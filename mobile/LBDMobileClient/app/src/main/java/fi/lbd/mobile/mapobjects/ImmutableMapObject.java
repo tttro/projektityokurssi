@@ -78,21 +78,13 @@ public class ImmutableMapObject implements MapObject {
         if (o == null || getClass() != o.getClass()) return false;
 
         ImmutableMapObject that = (ImmutableMapObject) o;
-
-        if (minimized != that.minimized) return false;
-        if (!additionalProperties.equals(that.additionalProperties)) return false;
         if (!id.equals(that.id)) return false;
-        if (!location.equals(that.location)) return false;
 
         return true;
     }
 
     @Override
     public int hashCode() {
-        int result = id.hashCode();
-        result = 31 * result + location.hashCode();
-        result = 31 * result + additionalProperties.hashCode();
-        result = 31 * result + (minimized ? 1 : 0);
-        return result;
+        return id.hashCode();
     }
 }

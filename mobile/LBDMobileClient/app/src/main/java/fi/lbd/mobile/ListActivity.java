@@ -22,6 +22,7 @@ import fi.lbd.mobile.events.SelectMapObjectEvent;
 import fi.lbd.mobile.fragments.GoogleMapFragment;
 import fi.lbd.mobile.fragments.InboxFragment;
 import fi.lbd.mobile.fragments.ObjectListFragment;
+import fi.lbd.mobile.location.LocationHandler;
 import fi.lbd.mobile.mapobjects.MapObject;
 import fi.lbd.mobile.backendhandler.BackendHandlerService;
 
@@ -31,6 +32,7 @@ public class ListActivity extends Activity {
     private SectionsPagerAdapter sectionsPagerAdapter;
     private ViewPager viewPager;
     private final Activity activity = this;
+    private LocationHandler locationHandler;
 
     // Declare constants for tab UI
     private static final int START_TAB = 1;
@@ -57,7 +59,10 @@ public class ListActivity extends Activity {
         pageStack = new ArrayDeque<Integer>();
         pageStack.push(START_TAB);
 
-        this.sectionsPagerAdapter = new SectionsPagerAdapter(getFragmentManager());
+        this.locationHandler = new LocationHandler(this);
+        this.locationHandler.start();
+
+        this.sectionsPagerAdapter = new SectionsPagerAdapter(getFragmentManager(), this.locationHandler);
         this.viewPager = (ViewPager) findViewById(R.id.pager);
         this.viewPager.setAdapter(this.sectionsPagerAdapter);
         viewPager.setCurrentItem(START_TAB);
@@ -101,9 +106,11 @@ public class ListActivity extends Activity {
     }
 
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
+        private LocationHandler locationHandler;
 
-        public SectionsPagerAdapter(FragmentManager fm) {
+        public SectionsPagerAdapter(FragmentManager fm, LocationHandler locationHandler) {
             super(fm);
+            this.locationHandler = locationHandler;
         }
 
         @Override
@@ -112,10 +119,10 @@ public class ListActivity extends Activity {
                 InboxFragment frag = InboxFragment.newInstance();
                 return frag;
             } else if (position == OBJ_TAB) {
-                ObjectListFragment frag = ObjectListFragment.newInstance();
+                ObjectListFragment frag = ObjectListFragment.newInstance(this.locationHandler);
                 return frag;
             } else if (position == MAP_TAB){
-                GoogleMapFragment frag = GoogleMapFragment.newInstance();
+                GoogleMapFragment frag = GoogleMapFragment.newInstance(this.locationHandler);
                 return frag;
             }
             return null;
@@ -141,10 +148,23 @@ public class ListActivity extends Activity {
         }
     }
 
+    @Override
     protected void onDestroy() {
         super.onDestroy();
         stopService(new Intent(this, BackendHandlerService.class)); // TODO: Missä pysäytys?
         BusHandler.getBus().unregister(this);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        this.locationHandler.start();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        this.locationHandler.stop();
     }
 
     public void onDetailsClick(View view){
