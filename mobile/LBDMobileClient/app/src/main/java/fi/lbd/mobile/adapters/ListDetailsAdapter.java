@@ -19,11 +19,9 @@ import fi.lbd.mobile.mapobjects.MapObject;
  * Created by Ossi on 19.11.2014.
  */
 
-public class ListBriefDetailsAdapter extends BaseAdapter {
-    private final static String METADATA = "metadata";
-    private final static String TYHJA = "Tyhjä";
-    private final static String LISATIETOJA = "LISÄTIETOJA";
-    private final static String SIJAINTI = "SIJAINTI";
+public class ListDetailsAdapter extends BaseAdapter {
+    private final static String EMPTY = "Empty";
+    private final static String LOCATION = "LOCATION";
 
     // Number of properties, metadata items and coordinate points contained in each object
     private int amountOfAdditionalProperties = 0;
@@ -53,8 +51,8 @@ public class ListBriefDetailsAdapter extends BaseAdapter {
         }
     }
 
-    public ListBriefDetailsAdapter(Context context, MapObject mapObject, int additionalProperties,
-                                   int coordinates, int metaDataProperties) {
+    public ListDetailsAdapter(Context context, MapObject mapObject, int additionalProperties,
+                              int coordinates, int metaDataProperties) {
         this.context = context;
         this.additionalProperties = new ArrayList<Map.Entry<String,String>>();
         this.metaDataProperties = new ArrayList<Map.Entry<String,String>>();
@@ -93,21 +91,21 @@ public class ListBriefDetailsAdapter extends BaseAdapter {
         if (i >= 0 && i < amountOfAdditionalProperties){
             String key = additionalProperties.get(i).getKey();
             if (key == null || key.isEmpty()){
-                key = TYHJA;
+                key = EMPTY;
             }
             TextView textViewId = (TextView) view.findViewById(R.id.textViewObjectId);
             textViewId.setText(key);
 
             String value = additionalProperties.get(i).getValue();
             if (value == null || value.isEmpty()){
-                value = TYHJA;
+                value = EMPTY;
             }
             TextView textViewLocation = (TextView) view.findViewById(R.id.textViewObjectLocation);
             textViewLocation.setText(value);
         }
         else if (i == amountOfAdditionalProperties && amountOfCoordinates==1){
             TextView textViewId = (TextView) view.findViewById(R.id.textViewObjectId);
-            textViewId.setText(SIJAINTI);
+            textViewId.setText(LOCATION);
 
             TextView textViewLocation = (TextView) view.findViewById(R.id.textViewObjectLocation);
             textViewLocation.setText(object.getPointLocation().toString());
@@ -118,14 +116,14 @@ public class ListBriefDetailsAdapter extends BaseAdapter {
 
             String key = metaDataProperties.get(metaDataIndex).getKey();
             if (key == null || key.isEmpty()){
-                key = TYHJA;
+                key = EMPTY;
             }
             TextView textViewId = (TextView) view.findViewById(R.id.textViewObjectId);
             textViewId.setText(key);
 
             String value = additionalProperties.get(metaDataIndex).getValue();
             if (value == null || value.isEmpty()){
-                value = TYHJA;
+                value = EMPTY;
             }
             TextView textViewLocation = (TextView) view.findViewById(R.id.textViewObjectLocation);
             textViewLocation.setText(value);

@@ -222,6 +222,7 @@ public class ObjectListFragment extends ListFragment {
 
     // TODO: search functionality
     public void performSearch(){
+        this.locationHandler.updateCachedLocation();
         statusText.setText(R.string.showing_results);
         statusText.setBackgroundColor(getActivity().getResources().
                 getColor(R.color.search_results_background));
@@ -229,6 +230,7 @@ public class ObjectListFragment extends ListFragment {
 
     // TODO: User location functionality
     public void showNearestObjects(){
+        this.locationHandler.updateCachedLocation();
         statusText.setText(R.string.showing_nearest);
         statusText.setBackgroundColor(getActivity().getResources().
                 getColor(R.color.near_objects_background));

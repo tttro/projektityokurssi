@@ -8,7 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Adapter;
 import android.widget.BaseExpandableListAdapter;
-import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.util.Log;
@@ -16,7 +15,10 @@ import android.util.Log;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import fi.lbd.mobile.ListActivity;
 import fi.lbd.mobile.R;
+import fi.lbd.mobile.location.LocationUtils;
+import fi.lbd.mobile.location.PointLocation;
 import fi.lbd.mobile.mapobjects.MapObject;
 
 /**
@@ -88,12 +90,10 @@ public class ListExpandableAdapter extends BaseExpandableListAdapter {
 
     @Override
     public View getGroupView(int groupPosition, boolean isExpanded, View view, ViewGroup parent) {
-
         if (view == null) {
                 LayoutInflater inflater = ((Activity) this.context).getLayoutInflater();
                 view = inflater.inflate(R.layout.listview_single_row, parent, false);
         }
-
         // Color the background
         if (isExpanded){
             view.setBackgroundColor(context.getResources().getColor(R.color.exp_background));
@@ -102,67 +102,47 @@ public class ListExpandableAdapter extends BaseExpandableListAdapter {
             view.setBackgroundColor(Color.WHITE);
         }
 
-        // Get the group item
         MapObject object = this.objects.get(groupPosition);
-
         if(object != null) {
             TextView textViewId = (TextView) view.findViewById(R.id.textViewObjectId);
             textViewId.setText(object.getId());
-            textViewId.setTag(object.getId());
+
+            // Use the last cached user location to calculate distance to object
+            TextView textViewDistance = (TextView) view.findViewById(R.id.textViewDistance);
+            PointLocation location = ((ListActivity)this.context)
+                    .getLocationHandler().getCachedLocation();
+            if (location != null) {
+                int distance = ((int) LocationUtils.distanceBetween(
+                        object.getPointLocation().getLatitude(), object.getPointLocation().getLongitude(),
+                        location.getLatitude(), location.getLongitude()));
+                textViewDistance.setText(LocationUtils.formatDistance(distance));
+            } else {
+                textViewDistance.setText(context.getResources().getString(R.string.unknown));
+            }
         }
         return view;
     }
 
     @Override
     public View getChildView(final int groupPosition, int childPosition, boolean isLastChild, View view, ViewGroup parent) {
-
         if (view == null) {
             LayoutInflater inflater = ((Activity) this.context).getLayoutInflater();
             view = inflater.inflate(R.layout.listview_expanded_row, parent, false);
         }
-
-        // Tag links the expanded item to its location object
-        view.setTag(getGroup(groupPosition));
-        Log.d("TAG SET--------------------", ((MapObject)getGroup(groupPosition)).getId());
-
         if (getGroup(groupPosition) != null){
+
+            // Tag links the expanded item to its location object
+            view.setTag(getGroup(groupPosition));
+            Log.d("TAG SET--------------------", ((MapObject)getGroup(groupPosition)).getId());
+
+
            final MapObject object = (MapObject)getGroup(groupPosition);
-           final ListBriefDetailsAdapter adapter = new ListBriefDetailsAdapter(
+           final ListDetailsAdapter adapter = new ListDetailsAdapter(
                    this.context, object, MIN_ADDITIONAL_PROPERTIES, MIN_COORDINATES,
                    MIN_METADATA_PROPERTIES);
 
             ((ListView)view.findViewById(android.R.id.list)).setAdapter(adapter);
             adjustListHeight((ListView)view.findViewById(android.R.id.list));
-
-            // Listener for "More info"/"Lisätietoja" button
-            ((Button)(view.findViewById(R.id.moreButton))).setText(context
-                    .getString(R.string.lisätietoja));
-            (view.findViewById(R.id.moreButton)).setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            ListView list = (ListView)((View)(view.getParent()))
-                                    .findViewById(android.R.id.list);
-                            Button button = (Button)view;
-
-                            // Show all details in the expanded list
-                            if(button.getText().equals(context.getString(R.string.lisätietoja))) {
-                                ((ListBriefDetailsAdapter)list.getAdapter())
-                                     .setAmountOfProperties(object.getAdditionalProperties().size(),
-                                             1, object.getMetadataProperties().size());
-                                ((ListBriefDetailsAdapter)list.getAdapter()).notifyDataSetChanged();
-                                button.setText(context.getString(R.string.piilota));
-                            }
-                            // Show the minimum amount of details in the expanded list
-                            else if (button.getText().equals(context.getString(R.string.piilota))){
-                                ((ListBriefDetailsAdapter)list.getAdapter())
-                                     .setAmountOfProperties(MIN_ADDITIONAL_PROPERTIES,
-                                             MIN_COORDINATES, MIN_METADATA_PROPERTIES);
-                                ((ListBriefDetailsAdapter)list.getAdapter()).notifyDataSetChanged();
-                                button.setText(context.getString(R.string.lisätietoja));
-                            }
-                            adjustListHeight(list);
-                        }
-                    });
         }
         return view;
     }
@@ -173,7 +153,7 @@ public class ListExpandableAdapter extends BaseExpandableListAdapter {
     }
 
     // Function to adjust the height of a listview according to its children
-    public void adjustListHeight(ListView listView){
+    private static void adjustListHeight(ListView listView){
         int newHeight = 0;
         Adapter adapter = listView.getAdapter();
         for (int i = 0; i < adapter.getCount(); i++) {

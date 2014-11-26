@@ -21,6 +21,7 @@ public class LocationHandler implements GooglePlayServicesClient.ConnectionCallb
     private final static int CONNECTION_FAILURE_RESOLUTION_REQUEST = 9000;
     private Activity activity;
     private LocationClient locationClient;
+    private ImmutablePointLocation cachedLocation = null;
 
     /**
      * Checks if the google play services are available and if they are creates a location client.
@@ -101,8 +102,25 @@ public class LocationHandler implements GooglePlayServicesClient.ConnectionCallb
         return (location != null) ? new ImmutablePointLocation(location.getLatitude(), location.getLongitude()) : null;
     }
 
+    /**
+     * Updates the cached user location.
+     *
+     */
+    public void updateCachedLocation(){
+        if (this.locationClient != null) {
+            Location location = this.locationClient.getLastLocation();
+            this.cachedLocation = (location != null) ? new ImmutablePointLocation(location
+                    .getLatitude(), location.getLongitude()) : null;
+        }
+    }
+
+    public ImmutablePointLocation getCachedLocation(){
+        return this.cachedLocation;
+    }
+
     @Override
     public void onConnected(Bundle bundle) {
+        this.updateCachedLocation();
         Log.d(this.getClass().getSimpleName(), "Location client connected.");
     }
 

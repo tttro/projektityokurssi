@@ -65,11 +65,6 @@
             android:label="@string/title_activity_details"
             android:theme="@android:style/Theme.Holo.Light.NoActionBar" >
         </activity>
-        <activity
-            android:name=".FinderActivity"
-            android:label="@string/title_activity_finder"
-            android:theme="@android:style/Theme.Holo.Light.NoActionBar">
-        </activity>
     </application>
 
 </manifest>

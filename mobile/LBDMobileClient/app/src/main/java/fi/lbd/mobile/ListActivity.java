@@ -159,28 +159,33 @@ public class ListActivity extends Activity {
     protected void onResume() {
         super.onResume();
         this.locationHandler.start();
+        overridePendingTransition(R.anim.fadein, R.anim.fadeout);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
         this.locationHandler.stop();
+        overridePendingTransition(R.anim.fadein, R.anim.fadeout);
     }
 
     public void onDetailsClick(View view){
         // Retrieve object for which the Details-button was pressed
         MapObject object = null;
         try {
-            object = (MapObject)((View)(view.getParent())).getTag();
+            object = (MapObject)(((View)(view.getParent().getParent())).getTag());
         } catch (Exception e){
             e.printStackTrace();
             Log.d("NO OBJECT TAG RECEIVED", "-----ON DETAILS CLICK");
         }
         if (object != null) {
             SelectionManager.get().setSelection(object);
-        Intent intent = new Intent(this, DetailsActivity.class);
-        startActivity(intent);
-    }
+            Intent intent = new Intent(this, DetailsActivity.class);
+            startActivity(intent);
+        }
+        else {
+            Log.d("OBJECT WAS NULL", "-----ON DETAILS CLICK");
+        }
     }
     public void onMapClick(View view){
         // Retrieve object for which the Map-button was pressed
@@ -208,5 +213,9 @@ public class ListActivity extends Activity {
             pageStack.clear();
             super.onBackPressed(); // This will pop the Activity from the stack.
         }
+    }
+
+    public LocationHandler getLocationHandler(){
+        return this.locationHandler;
     }
 }
