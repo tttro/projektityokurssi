@@ -14,12 +14,13 @@ mapControllers.controller('mapController', function($scope, $window,$rootScope, 
     var itemPreLoadArea = {
         sw:null,
         ne:null
-
     }
+
     var geoCoder = new google.maps.Geocoder();
 
     $scope.userLocationMarker = null;
     $scope.btnGeolocation = true;
+
 
     // Init map
     var mapOptions = {
@@ -82,7 +83,7 @@ mapControllers.controller('mapController', function($scope, $window,$rootScope, 
         {
 
             navigator.geolocation.getCurrentPosition(function(position){
-                $scope.loading = true;
+                $scope.showLoadingIcon = true;
                 console.log(position.coords.latitude+", " +position.coords.longitude);
                 var currentPosition =  new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
 
@@ -90,7 +91,7 @@ mapControllers.controller('mapController', function($scope, $window,$rootScope, 
                 $scope.map.setZoom(17);
                 $scope.map.setCenter(currentPosition);
 
-                $scope.loading = false;
+                $scope.showLoadingIcon = false;
 
                 }, function() {
                 handleNoGeolocation(true);
@@ -124,26 +125,23 @@ mapControllers.controller('mapController', function($scope, $window,$rootScope, 
         var viewportBounds = $scope.map.getBounds();
         var zoomLevel = $scope.map.getZoom();
 
-        if(zoomLevel > 16 && compareBounds(itemPreLoadArea,viewportBounds) && !panorama.getVisible() && !$scope.loading)
+        if(zoomLevel > 16 && compareBounds(itemPreLoadArea,viewportBounds) && !panorama.getVisible() && !$scope.showLoadingIcon)
         {
 
-            $scope.loading = true;
+            $scope.showLoadingIcon = true;
 
             calculateItemLoadArea(viewportBounds);
 
             ItemDataService.getInarea(itemPreLoadArea,function(results) {
                 Data.set(results);
 
-                $timeout(function() {
-                    loadMarkers(results);
-                }, 100)
+                loadMarkers(results);
 
                 $rootScope.$broadcast('dataIsLoaded');
-                $scope.loading = false;
+                $scope.showLoadingIcon = false;
 
             });
-
-
+            
         }
     });
 
@@ -196,18 +194,17 @@ mapControllers.controller('mapController', function($scope, $window,$rootScope, 
     }
 
     var loadMarkers =  function (data) {
-        clearMarkers(markers);
+
         markers = [];
         if (markerClusterer) {
             markerClusterer.clearMarkers();
         }
         angular.forEach(data.features, function(value,key){
-
             createMarker(value);
-
         });
-        var options = {gridSize: 50, maxZoom: 16};
-        markerClusterer = new MarkerClusterer($scope.map, markers,options); // Create clusters
+
+        var markerClustererOptions = { gridSize: 50, maxZoom: 16 };
+        markerClusterer = new MarkerClusterer($scope.map, markers, markerClustererOptions); // Create clusters
 
     }
 

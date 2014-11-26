@@ -5,7 +5,7 @@
     <input id="pac-input" class="controls" type="text" placeholder="Search by address">
     <button ng-click="toggleStreetview()" id="panel">{{btnText}}</button>
     <button id="btnGeolocation" ng-show="btnGeolocation" class="controls"><img width="20" src="img/geo.png" ></button>
-    <div ng-show="loading" id="loadingIcon" class="loadingContent"><img src="img/ajax-loader_2.gif"></div>
+    <div ng-show="showLoadingIcon" id="loadingIcon" class="loadingContent"><img src="img/ajax-loader_2.gif"></div>
 
     <!-- Map main canvas -->
     <div id="map" class="map"></div>
