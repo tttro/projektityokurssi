@@ -1,11 +1,11 @@
 package fi.lbd.mobile.fragments;
 
 import android.app.ListFragment;
-import android.graphics.Color;
-import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
@@ -15,10 +15,10 @@ import android.widget.ExpandableListView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.google.android.gms.common.GooglePlayServicesClient;
 import com.squareup.otto.Subscribe;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import fi.lbd.mobile.SelectionManager;
 import fi.lbd.mobile.adapters.ListExpandableAdapter;
@@ -66,23 +66,6 @@ public class ObjectListFragment extends ListFragment {
         this.adapter = new ListExpandableAdapter(this.getActivity());
         this.groupExpandedArray = new ArrayList<Boolean>();
         this.firstVisiblePosition = 0;
-
-        // Requests the default map objects from the object repository through OTTO-bus. TODO: Parempi tapa tehdä?
-        AsyncTask task = new AsyncTask<Void,Void,Void>(){
-            @Override
-            protected Void doInBackground(Void... params) {
-                try {
-                    Thread.sleep(50);
-                } catch (InterruptedException e) {
-                    // TODO: Exception handling...
-                }
-                return null;
-            }
-            @Override
-            protected void onPostExecute(Void result) {
-                BusHandler.getBus().post(new RequestNearObjectsEvent(new ImmutablePointLocation(61.510988, 23.777366), 0.001, false)); // TODO: Actual location
-            }
-        }.execute();
     }
 
     @Override
@@ -141,6 +124,19 @@ public class ObjectListFragment extends ListFragment {
             }
         });
 
+        this.locationHandler.addListener( new GooglePlayServicesClient.ConnectionCallbacks() {
+            @Override
+            public void onConnected(Bundle bundle) {
+                BusHandler.getBus().post(new RequestNearObjectsEvent(new ImmutablePointLocation(
+                        locationHandler.getLastLocation().getLatitude(),
+                        locationHandler.getLastLocation().getLongitude()), 0.001, false));
+                locationHandler.removeListener(this);
+            }
+
+            @Override
+            public void onDisconnected() {}
+        });
+
         return view;
     }
 
@@ -177,8 +173,15 @@ public class ObjectListFragment extends ListFragment {
         this.adapter.clear();
         if (event.getMapObjects() != null) {
             this.adapter.addAll(event.getMapObjects());
+            statusText.setText(String.format(getResources().getString(R.string.showing_nearest),
+                    event.getMapObjects().size()));
+        }
+        else {
+            statusText.setText(getResources().getString(R.string.no_nearest_found));
         }
         this.getListView().requestLayout();
+        statusText.setBackgroundColor(getActivity().getResources().
+                getColor(R.color.near_objects_background));
     }
 
     public void hideKeyBoard() {
@@ -223,17 +226,18 @@ public class ObjectListFragment extends ListFragment {
     // TODO: search functionality
     public void performSearch(){
         this.locationHandler.updateCachedLocation();
-        statusText.setText(R.string.showing_results);
+        statusText.setText(String.format(getResources().getString(R.string.showing_results), 0));
         statusText.setBackgroundColor(getActivity().getResources().
                 getColor(R.color.search_results_background));
     }
 
-    // TODO: User location functionality
+    // TODO: Handle connection timeouts
     public void showNearestObjects(){
+        statusText.setText(getResources().getString(R.string.loading));
         this.locationHandler.updateCachedLocation();
-        statusText.setText(R.string.showing_nearest);
-        statusText.setBackgroundColor(getActivity().getResources().
-                getColor(R.color.near_objects_background));
+        BusHandler.getBus().post(new RequestNearObjectsEvent(new ImmutablePointLocation(
+                this.locationHandler.getCachedLocation().getLatitude(),
+                this.locationHandler.getCachedLocation().getLongitude()), 0.001, false));
     }
  }
 

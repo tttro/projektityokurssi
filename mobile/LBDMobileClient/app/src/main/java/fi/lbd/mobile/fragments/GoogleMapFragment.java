@@ -239,6 +239,8 @@ public class GoogleMapFragment extends MapFragment implements OnInfoWindowClickL
     public void onMapClick(LatLng point){
         this.modelController.clearActiveMarker();
         SelectionManager.get().setSelection(null);
+        hideCursor();
+        hideKeyBoard();
     }
 
     protected void hideKeyBoard() {

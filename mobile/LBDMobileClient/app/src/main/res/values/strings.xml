@@ -16,8 +16,10 @@
     <string name="source_base_url">http://lbdbackend.ignorelist.com/locationdata/api/</string>
     <string name="source_type">Streetlights/</string>
     <string name="distance">Distance %s</string>
-    <string name="showing_nearest">Showing 10 nearest objects</string>
-    <string name="showing_results">Search resulted in 9 objects</string>
+    <string name="loading">Loading objects...</string>
+    <string name="showing_nearest">Showing %d nearest objects</string>
+    <string name="no_nearest_found">No near objects found</string>
+    <string name="showing_results">Search resulted in %d objects</string>
     <string name="search_id">Search by object ID..</string>
     <string name="search_address">Search by address..</string>
     <string name="unknown">Unknown</string>
