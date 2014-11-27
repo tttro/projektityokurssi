@@ -48,7 +48,7 @@
             android:minHeight="30dp"
             android:textSize="6pt"
             android:onClick="onMapClick"
-            android:textColor="@color/white"/>
+            android:textColor="#ffffff"/>
 
     </LinearLayout>
 </LinearLayout>
