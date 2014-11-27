@@ -1,6 +1,6 @@
 package fi.lbd.mobile.events;
 
-import fi.lbd.mobile.mapobjects.ImmutablePointLocation;
+import fi.lbd.mobile.location.ImmutablePointLocation;
 
 public class CacheObjectsInAreaEvent extends AbstractEvent {
     private final ImmutablePointLocation southWest;

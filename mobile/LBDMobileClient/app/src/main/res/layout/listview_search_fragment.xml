@@ -1,23 +1,70 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/linearLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:clickable="true"
     android:focusable="true"
     android:focusableInTouchMode="true">
 
-    <EditText
+    <TextView
         android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:id="@+id/editText"
-        android:layout_gravity="center_horizontal"
-        android:text="Search..."
-        android:textColor="@android:color/darker_gray" />
+        android:id="@+id/view_status_text"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:background="@color/near_objects_background"
+        android:text="@string/loading"
+        android:gravity="center_horizontal"
+        android:paddingTop="2dp"
+        android:paddingBottom="2dp"/>
 
     <ExpandableListView
         android:id="@id/android:list"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:drawSelectorOnTop="false" >
+        android:layout_height="0dp"
+        android:drawSelectorOnTop="false"
+        android:layout_weight="1">
     </ExpandableListView>
 
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="47dp"
+        android:background="#2F3A41"
+        android:orientation="horizontal">
+
+        <ImageButton
+            android:id="@+id/locationButton"
+            android:layout_width="60dp"
+            android:layout_height="match_parent"
+            android:src="@drawable/perm_group_location"
+            android:paddingLeft="15dip"
+            android:paddingRight="15dip"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp"
+            android:background="@color/locate_button_background"/>
+
+        <!-- Dummy item to prevent EditText view from receiving focus -->
+        <LinearLayout
+            android:focusable="true" android:focusableInTouchMode="true"
+            android:layout_width="0px" android:layout_height="0px"
+            android:id="@+id/dummyView" android:orientation="horizontal"/>
+
+        <EditText
+            android:id="@+id/searchText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:ems="5"
+            android:lines="1"
+            android:maxLines="1"
+            android:ellipsize="start"
+            android:hint="@string/search_id"
+            android:imeOptions="actionSearch"
+            android:inputType="text"
+            android:textColor="#FFF"
+            android:layout_gravity="center"
+            android:drawableRight="@drawable/ic_search">
+        </EditText>
+
+    </LinearLayout>
 </LinearLayout>

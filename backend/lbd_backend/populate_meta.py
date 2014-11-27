@@ -12,28 +12,31 @@ req = urllib.urlopen(
             'http://tampere.navici.com/tampere_wfs_geoserver/opendata/ows?service=WFS&version=1.0.0&request=GetFeature'
             '&typeName=opendata:WFS_KATUVALO&outputFormat=json&srsName=EPSG:4326', proxies={})
 jsonitem = json.loads(req.read())
-itemsinserted = 0
-itemlist = list()
 SL.Streetlights.drop_collection()
+
+start = time.time()*1000
 for item in jsonitem["features"]:
-    fid = item.pop("id")
-    temp = SL.Streetlights.from_json(json.dumps(item))
-    temp.feature_id = fid
-    temp.save()
-    itemsinserted += 1
+    item["feature_id"] = item.pop("id")
+SL.Streetlights._get_collection().insert(jsonitem["features"])
+end = time.time()*1000
+print end-start
 
-o = SL.Streetlights.objects()
-MetaDocument.drop_collection()
+def populate_meta():
+    o = SL.Streetlights.objects()
+    MetaDocument.drop_collection()
+    i = 1
+    for item in o:
+        try:
+            temp = MetaDocument(
+                feature_id = item.feature_id,
+                collection = "Streetlights",
+                meta_data = MetaData(status="SNAFU", modified=int(time.time()), modifier="Seppo Sähkäri")
+            )
+            temp.save()
+        except mongoengine.NotUniqueError:
+            pass
+        if i % 1000 == 0:
+            print i
+        i += 1
 
-for item in o:
-    try:
-        temp = MetaDocument(
-            feature_id = item.feature_id,
-            collection = "Streetlights",
-            meta_data = MetaData(status="SNAFU", modified=int(time.time()), modifier="Seppo Sähkäri")
-        )
-        temp.save()
-    except mongoengine.NotUniqueError:
-        pass
-
-
+#populate_meta()

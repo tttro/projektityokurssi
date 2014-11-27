@@ -1,4 +1,4 @@
-package fi.lbd.mobile.fragments;
+package fi.lbd.mobile.mapobjects;
 
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Table;
@@ -8,16 +8,24 @@ import java.util.Iterator;
 import java.util.List;
 
 /**
- * Created by tommi on 10.11.2014.
+ * Model which handles the loading and removing of its objects according to a updated region.
+ * Splits the world into grid cells and informs the listeners about regions which should be
+ * loaded or cached.
+ *
+ * Created by Tommi.
  */
 public class MapTableModel<T> {
 
+    /**
+     * Element which is stored inside the model.
+     */
     private class TableElement {
-        private int startLat;
-        private int startLon;
-        private int endLat;
-        private int endLon;
-        private List<T> objects = new ArrayList<T>();
+        private int startLat;   // Grid cell start position
+        private int startLon;   // Grid cell start position
+        private int endLat;   // Grid cell end position
+        private int endLon;   // Grid cell end position
+        private List<T> objects = new ArrayList<T>();   // Grid cell objects
+        private boolean objectsAdded = false;
 
         public TableElement(int startLat, int startLon, int endLat, int endLon) {
             this.startLat = startLat;
@@ -28,6 +36,13 @@ public class MapTableModel<T> {
 
         public void addAll(List<T> objs) {
             this.objects.addAll(objs);
+            // Boolean beacause param list can be empty.
+            this.objectsAdded = true;
+        }
+
+
+        public boolean hasObjectsAdded() {
+            return this.objectsAdded;
         }
 
         public void clear() {
@@ -58,50 +73,21 @@ public class MapTableModel<T> {
         }
     }
 
-//    private class OutsideRegionPredicate implements Predicate<TableElement> {
-//        int screenStartLat;
-//        int screenStartLon;
-//        int screenEndLat;
-//        int screenEndLon;
-//
-//        public OutsideRegionPredicate() {}
-//
-//        public void setCurrentRegion(int screenStartLat, int screenStartLon,
-//                                     int screenEndLat, int screenEndLon) {
-//            this.screenStartLat = screenStartLat;
-//            this.screenStartLon = screenStartLon;
-//            this.screenEndLat = screenEndLat;
-//            this.screenEndLon = screenEndLon;
-//        }
-//
-//        @Override
-//        public boolean apply(TableElement tableElement) {
-//            if (this.screenEndLat < tableElement.getStartLat() ||
-//                    this.screenEndLon < tableElement.getStartLon()) {
-//                return true;
-//            }
-//            if (this.screenStartLat > tableElement.getEndLat() ||
-//                    this.screenStartLon > tableElement.getEndLon()) {
-//                return true;
-//            }
-//            return false;
-//        }
-//
-//        @Override
-//        public boolean equals(Object o) {
-//            return o.equals(this);
-//        }
-//    }
+    // Constants used in caching
+    private static final double CACHE_MULTIPLIER_LAT = 0.4;
+    private static final double CACHE_MULTIPLIER_LON = 0.4;
 
-//    private final OutsideRegionPredicate outsideScreenPredicate;
+    // Actual model which holds the elements in the grid
     private Table<Integer, Integer, TableElement> objectTable = HashBasedTable.create();
     private List<MapTableModelListener<T>> listeners = new ArrayList<>();
+
+    // Used in dividing the grid
+    private double latPrecision;
+    private double lonPrecision;
     private int latMultiplier;
     private int lonMultiplier;
 
-    private double latPrecision;
-    private double lonPrecision;
-
+    // Used while checking if caching is required
     private int lastCachedStartLat;
     private int lastCachedStartLon;
     private int lastCachedEndLat;
@@ -112,14 +98,26 @@ public class MapTableModel<T> {
     private int screenCurrentEndLat;
     private int screenCurrentEndLon;
 
+    /**
+     * Model which handles the loading and removing of its objects according to a updated region.
+     * Splits the world into grid cells and informs the listeners about regions which should be
+     * loaded or cached.
+     *
+     * @param precisionLat  Used while dividing latitude coordinates.
+     * @param precisionLon  Used while dividing longitude coordinates.
+     */
     public MapTableModel(double precisionLat, double precisionLon) {
         this.latPrecision = precisionLat;
         this.lonPrecision = precisionLon;
         this.latMultiplier = (int)(1 / this.latPrecision);
         this.lonMultiplier = (int)(1 / this.lonPrecision);
-//        this.outsideScreenPredicate = new OutsideRegionPredicate();
     }
 
+    /**
+     * Adds a listener for listening model changes and requests.
+     *
+     * @param listener  Listener.
+     */
     public void addListener(MapTableModelListener<T> listener) {
         this.listeners.add(listener);
     }
@@ -142,7 +140,16 @@ public class MapTableModel<T> {
         }
     }
 
+    /**
+     * Checks if the region has changed enough so that more grid cells should be loaded.
+     *
+     * @param startLat  Current start position.
+     * @param startLon  Current start position.
+     * @param endLat  Current end position.
+     * @param endLon  Current end position.
+     */
     public void updateTable(double startLat, double startLon, double endLat, double endLon) {
+//        Log.d(this.getClass().getSimpleName(), "Update map table model: Start: "+ startLat +", "+ startLon +" End:"+ endLat +", "+ endLon );
         int screenStartLat = transformToGridCoordinateLat(startLat);
         int screenStartLon = transformToGridCoordinateLon(startLon);
         int screenEndLat = transformToGridCoordinateLat(endLat);
@@ -179,20 +186,31 @@ public class MapTableModel<T> {
                 screenStartLat, screenStartLon, screenEndLat, screenEndLon);
     }
 
-
-    // TODO: Diagonals?
-    // TODO: Bug: Tries to cache the previous grid element?
+    /**
+     * Tries to check if certain grid region should be cached.
+     *
+     * TODO: Diagonals?
+     * TODO: Bug: Tries to cache the previous grid element?
+     *
+     * @param startLat  Current start position.
+     * @param startLon  Current start position.
+     * @param endLat  Current end position.
+     * @param endLon  Current end position.
+     * @param screenStartLat    Rounded start position.
+     * @param screenStartLon    Rounded start position.
+     * @param screenEndLat    Rounded end position.
+     * @param screenEndLon    Rounded end position.
+     */
     private void checkForCaching(double startLat, double startLon, double endLat, double endLon,
             int screenStartLat, int screenStartLon, int screenEndLat, int screenEndLon) {
 
-        double latThreshold = this.latPrecision*0.4;
-        double lonThreshold = this.lonPrecision*0.4;
+        double latThreshold = this.latPrecision*CACHE_MULTIPLIER_LAT;
+        double lonThreshold = this.lonPrecision*CACHE_MULTIPLIER_LON;
         boolean cacheLeft = false;
         boolean cacheRight = false;
         boolean cacheUp = false;
         boolean cacheDown = false;
 
-        // http://www.latlong.net/
         if (transformToGridCoordinateLon(startLon - lonThreshold) < this.screenCurrentStartLon
                 && this.lastCachedStartLon != this.screenCurrentStartLon-1) {
             cacheLeft = true;
@@ -255,59 +273,51 @@ public class MapTableModel<T> {
         }
     }
 
+    /**
+     * Transforms grid cell coordinate into real coordinate
+     * @param gridCoordinate
+     * @return
+     */
     private double transformToRealCoordinateLon(int gridCoordinate) {
         return ((double)gridCoordinate)/((double)this.lonMultiplier);
     }
+
+    /**
+     * Transforms grid cell coordinate into real coordinate
+     * @param gridCoordinate
+     * @return
+     */
     private double transformToRealCoordinateLat(int gridCoordinate) {
         return ((double)gridCoordinate)/((double)this.latMultiplier);
     }
 
+    /**
+     * Transforms a real coordinate to a grid cell coordinate.
+     * @param val
+     * @return
+     */
     private int transformToGridCoordinateLat(double val) {
         return (int)(val * this.latMultiplier);
     }
 
-
+    /**
+     * Transforms a real coordinate to a grid cell coordinate.
+     * @param val
+     * @return
+     */
     private int transformToGridCoordinateLon(double val) {
         return (int)(val * this.lonMultiplier);
     }
 
-//    public void updateTableOld(double startLat, double startLon, double endLat, double endLon) {
-//        // Transform actual coordinates into integers which presents the coordinates in the grid
-//        int screenStartLat = (int)(startLat * this.multiplier) - 1;
-//        int screenStartLon = (int)(startLon * this.multiplier) - 1;
-//        int screenEndLat = (int)(endLat * this.multiplier) + 1;
-//        int screenEndLon = (int)(endLon * this.multiplier) + 1;
-//
-//        checkForCellsOutsideBounds(screenStartLat, screenStartLon, screenEndLat, screenEndLon);
-//
-//        // Loop through the grid cells in the area covered by the screen
-//        for (int lat = screenStartLat; lat <= screenEndLat; lat++) {
-//            for (int lon = screenStartLon; lon <= screenEndLon; lon++) {
-//                double latGridStart = ((double)lat)/((double)this.multiplier);
-//                double lonGridStart = ((double)lon)/((double)this.multiplier);
-//                double latGridEnd = ((double)(lat+1))/((double)this.multiplier);
-//                double lonGridEnd = ((double)(lon+1))/((double)this.multiplier);
-//
-//                if (lat == screenStartLat || lat == screenEndLat || lon == screenStartLon || lon == screenEndLon) {
-////                    Log.e("GoogleMapFragment", "Cache area: " + lat + ", " + lon + " grid: " + latGridStart + ", " + lonGridStart);
-//                    notifyRequestCache(latGridStart, lonGridStart, latGridEnd, lonGridEnd);
-//                } else {
-//                    if (this.objectTable.get(lat, lon) == null) {
-//                        this.objectTable.put(lat, lon, new TableElement(screenStartLat, screenStartLon, screenEndLat, screenEndLon));
-//
-////                        Log.e("GoogleMapFragment", "Get from area: " + lat + ", " + lon + " grid: " + latGridStart + ", " + lonGridStart);
-//                        notifyRequestObjects(latGridStart, lonGridStart, latGridEnd, lonGridEnd);
-//                    }
-//                }
-//
-//            }
-//        }
-//    }
-
+    /**
+     * Checks if any region is outside the current bounds.
+     *
+     * @param screenStartLat    Current screen bounds.
+     * @param screenStartLon    Current screen bounds.
+     * @param screenEndLat    Current screen bounds.
+     * @param screenEndLon    Current screen bounds.
+     */
     private void checkForCellsOutsideBounds(int screenStartLat, int screenStartLon, int screenEndLat, int screenEndLon) {
-//        this.outsideScreenPredicate.setCurrentRegion(screenStartLat, screenStartLon, screenEndLat, screenEndLon);
-//        Iterators.removeIf(this.objectTable.values().iterator(), this.outsideScreenPredicate);
-
         Iterator<TableElement> iter = this.objectTable.values().iterator();
         while (iter.hasNext()) {
             TableElement mapElement = iter.next();
@@ -333,6 +343,14 @@ public class MapTableModel<T> {
         return false;
     }
 
+    /**
+     * Adds objects in the given coordinate to the corresponding grid cell. Coordinate can be any
+     * coordinate inside the cell.
+     *
+     * @param gridStartLat  Any coordinate inside the grid cell.
+     * @param gridStartLon  Any coordinate inside the grid cell.
+     * @param objects   Objects to add into the cell.
+     */
     public void addObjects(double gridStartLat, double gridStartLon, List<T> objects) {
         int gridElementStartLat = this.transformToGridCoordinateLat(gridStartLat);
         int gridElementStartLon = this.transformToGridCoordinateLon(gridStartLon);
@@ -342,12 +360,28 @@ public class MapTableModel<T> {
         }
     }
 
-//    public boolean contains(double gridStartLat, double gridStartLon) {
-//        int gridElementStartLat = this.transformToGridCoordinateLat(gridStartLat);
-//        int gridElementStartLon = this.transformToGridCoordinateLon(gridStartLon);
-//        return this.objectTable.contains(gridElementStartLat, gridElementStartLon);
-//    }
+    /**
+     * Does the model contain grid cells which have requested for objects but haven't received them
+     * yet.
+     *
+     * @return  True if there is a cell which is waiting for objects.
+     */
+    public boolean hasGridCellsWaitingForObjects() {
+        for (TableElement element : this.objectTable.values()) {
+            if (!element.hasObjectsAdded()) {
+                return true;
+            }
+        }
+        return false;
+    }
 
+    /**
+     * Is grid cell which contains the given position empty.
+     *
+     * @param gridStartLat  Any coordinate inside the grid cell.
+     * @param gridStartLon  Any coordinate inside the grid cell.
+     * @return  True if empty, false otherwise.
+     */
     public boolean isEmpty(double gridStartLat, double gridStartLon) {
         int gridElementStartLat = this.transformToGridCoordinateLat(gridStartLat);
         int gridElementStartLon = this.transformToGridCoordinateLon(gridStartLon);

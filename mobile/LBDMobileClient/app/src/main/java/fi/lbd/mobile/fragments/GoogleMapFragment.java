@@ -1,15 +1,21 @@
 package fi.lbd.mobile.fragments;
 
 import android.content.Intent;
+import android.content.res.Resources;
+import android.location.Address;
+import android.location.Geocoder;
 import android.os.Bundle;
-import android.text.Html;
-import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.google.android.gms.location.LocationClient;
+import com.google.android.gms.common.GooglePlayServicesClient;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -18,50 +24,102 @@ import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
-import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
-import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.maps.model.VisibleRegion;
-import com.google.common.collect.BiMap;
-import com.google.common.collect.HashBiMap;
 import com.squareup.otto.Subscribe;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import fi.lbd.mobile.DetailsActivity;
 import fi.lbd.mobile.R;
 import fi.lbd.mobile.SelectionManager;
 import fi.lbd.mobile.events.BusHandler;
-import fi.lbd.mobile.events.CacheObjectsInAreaEvent;
-import fi.lbd.mobile.events.RequestObjectsInAreaEvent;
 import fi.lbd.mobile.events.ReturnObjectsInAreaEvent;
 import fi.lbd.mobile.events.SelectMapObjectEvent;
-import fi.lbd.mobile.mapobjects.ImmutablePointLocation;
+import fi.lbd.mobile.location.ImmutablePointLocation;
+import fi.lbd.mobile.location.LocationHandler;
+import fi.lbd.mobile.location.LocationUtils;
+import fi.lbd.mobile.location.PointLocation;
+import fi.lbd.mobile.mapobjects.MapModelController;
 import fi.lbd.mobile.mapobjects.MapObject;
-import fi.lbd.mobile.mapobjects.PointLocation;
+import fi.lbd.mobile.mapobjects.ProgressListener;
 
 
-// TODO: Tartteeko markereita niputtaa?: https://github.com/mg6maciej/android-maps-extensions
-public class GoogleMapFragment extends MapFragment implements OnInfoWindowClickListener, GoogleMap.OnMarkerClickListener, GoogleMap.OnMapClickListener {
+/**
+ * Fragment which handles the google map view.
+ *
+ * Created by Tommi & Ossi
+ */
+public class GoogleMapFragment extends MapFragment implements OnInfoWindowClickListener,
+        GoogleMap.OnMarkerClickListener, GoogleMap.OnMapClickListener {
+
+    private LatLng defaultLocation;
+
 	private MapView mapView;
+    private ProgressBar progressBar;
 	private GoogleMap map;
-    private LocationClient mLocationClient;
-    private MapTableModel<Marker> tableModel;
-    private BiMap<Marker, MapObject> markerObjectMap; // TODO: Saisko suoraan markeriin liitettyä?
-    private Marker activeMarker;
+    private EditText searchLocationField;
+    private Geocoder geocoder;
+    private MapModelController modelController;
+    private LocationHandler locationHandler;
 
-    public static GoogleMapFragment newInstance(){
-        return new GoogleMapFragment();
+
+    /**
+     * Should be used to instantiate this class instead of new-statement.
+     * @return  Returns a new instance of this class.
+     */
+    public static GoogleMapFragment newInstance(LocationHandler locationHandler){
+        GoogleMapFragment fragment = new GoogleMapFragment();
+        fragment.setLocationHandler(locationHandler);
+        return fragment; // Constructor should not have additional parameters!
+    }
+
+    public void setLocationHandler(LocationHandler locationHandler) {
+        this.locationHandler = locationHandler;
     }
 
     @Override
-	public View onCreateView(final LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.googlemap_fragment, container, false);
+
+        this.progressBar = (ProgressBar)view.findViewById(R.id.mapProgressBar);
 		this.mapView = (MapView)view.findViewById(R.id.mapview);
         this.mapView.onCreate(savedInstanceState);
-        this.activeMarker = null;
+        this.geocoder = new Geocoder(getActivity(), Locale.getDefault());
+
+        this.searchLocationField = (EditText)view.findViewById(R.id.searchText);
+
+        // Hide keyboard and blinking cursor when "enter" or "back" key is pressed on soft keyboard
+        this.searchLocationField.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View view, int keyCode, KeyEvent event) {
+                if (keyCode == KeyEvent.KEYCODE_ENTER) {
+                    hideKeyBoard();
+                    hideCursor();
+                    return true;
+                } else if (keyCode == KeyEvent.KEYCODE_BACK) {
+                    hideKeyBoard();
+                    hideCursor();
+                    return true;
+                }
+                return false;
+            }
+        });
+
+        // Listen to keyboard search button press
+        this.searchLocationField.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            public boolean onEditorAction(TextView v, int actionId,
+                                          KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                    performLocationSearch();
+                    hideKeyBoard();
+                    hideCursor();
+                    return true;
+                }
+                return false;
+            }
+        });
 
         this.map = this.mapView.getMap();
         this.map.getUiSettings().setMyLocationButtonEnabled(true);
@@ -69,236 +127,243 @@ public class GoogleMapFragment extends MapFragment implements OnInfoWindowClickL
         this.map.setOnInfoWindowClickListener(this);
         this.map.setOnMarkerClickListener(this);
         this.map.setOnMapClickListener(this);
-        this.map.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
-            // Use default InfoWindow frame
-            @Override
-            public View getInfoWindow(Marker marker) {
-                return null;
-            }
-
-            // Defines the contents of the InfoWindow
-            @Override
-            public View getInfoContents(Marker marker) {
-
-                // Getting view from the layout file info_window_layout
-                View v = inflater.inflate(R.layout.map_info_view, null);
-
-                TextView objectIdField = (TextView) v.findViewById(R.id.objectid);
-                objectIdField.setText(marker.getTitle());
-
-                TextView coordinatesField = (TextView) v.findViewById(R.id.coordinates);
-                coordinatesField.setText("[" + marker.getPosition().latitude + ", " + marker.getPosition().longitude + "]");
-
-                TextView infoField = (TextView) v.findViewById(R.id.info);
-                infoField.setText(Html.fromHtml(marker.getSnippet()));
-                return v;
-            }
-        });
-
-        this.markerObjectMap = HashBiMap.create();
-        this.tableModel = new MapTableModel<>(0.0025, 0.005);
-        this.tableModel.addListener( new MapTableModelListener<Marker>() {
-            @Override
-            public void objectRemoved(Marker obj) {
-                markerObjectMap.remove(obj);
-                obj.remove();
-            }
-
-            @Override
-            public void requestCache(double latGridStart, double lonGridStart, double latGridEnd, double lonGridEnd) {
-//                Log.e("GoogleMapFragment", "Cache from area: grid: " + latGridStart + ", " + lonGridStart);
-                BusHandler.getBus().post(new CacheObjectsInAreaEvent(
-                        new ImmutablePointLocation(latGridStart, lonGridStart),
-                        new ImmutablePointLocation(latGridEnd, lonGridEnd)));
-            }
-
-            @Override
-            public void requestObjects(double latGridStart, double lonGridStart, double latGridEnd, double lonGridEnd) {
-//                Log.e("GoogleMapFragment", "Get from area: grid: " + latGridStart + ", " + lonGridStart);
-                BusHandler.getBus().post(new RequestObjectsInAreaEvent(
-                        new ImmutablePointLocation(latGridStart, lonGridStart),
-                        new ImmutablePointLocation(latGridEnd, lonGridEnd)));
-            }
-        });
-
-        this.map.setOnCameraChangeListener( new GoogleMap.OnCameraChangeListener() {
-            @Override
-            public void onCameraChange(CameraPosition cameraPosition) {
-//                Log.e("GoogleMapFragment", "Kamera liikkui: "+ map.getProjection().getVisibleRegion().latLngBounds);
-                VisibleRegion region = map.getProjection().getVisibleRegion();
-                tableModel.updateTable(region.latLngBounds.southwest.latitude,
-                        region.latLngBounds.southwest.longitude,
-                        region.latLngBounds.northeast.latitude,
-                        region.latLngBounds.northeast.longitude);
-            }
-        });
+        this.map.setInfoWindowAdapter(new CustomInfoWindow(getResources(), inflater, this.locationHandler));
 
         MapsInitializer.initialize(this.getActivity());
 
-        MapObject o = SelectionManager.get().getSelectedObject();
-        if(o != null){
-            PointLocation location = o.getPointLocation();
-            CameraUpdate cameraLocation = CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), 18);
-            this.map.moveCamera(cameraLocation);
-        }
-        // TODO: Käytä käyttäjän sijaintia, täytyy hakea LocationClientilla
-        else {
-            CameraUpdate cameraLocation = CameraUpdateFactory.newLatLngZoom(new LatLng(61.510990, 23.777361), 16);
-            this.map.moveCamera(cameraLocation);
-        }
+        // Set location if users current location is not found.
+        this.defaultLocation = new LatLng(61.5, 23.795); // TODO: From resources as int?
+
+        Resources res = getResources();
+        int maxZoom = res.getInteger(R.integer.min_marker_zoom);
+        this.modelController = new MapModelController(this.map,
+                BitmapDescriptorFactory.fromResource(android.R.drawable.presence_online),
+                BitmapDescriptorFactory.fromResource(android.R.drawable.presence_invisible),
+                maxZoom);
+        this.modelController.addProgressListener( new ProgressListener() {
+            @Override
+            public void startLoading() {
+                progressBar.setVisibility(View.VISIBLE);
+            }
+            @Override
+            public void finishLoading() {
+                progressBar.setVisibility(View.GONE);
+            }
+        });
+
+        /**
+         * Set the camera location when the location handler succeeds to connect to the
+         * play services. Only used when the fragment is first displayed. Sets the maps default
+         * start location to the users current location.
+         */
+        this.locationHandler.addListener( new GooglePlayServicesClient.ConnectionCallbacks() {
+            @Override
+            public void onConnected(Bundle bundle) {
+                setMapLocationToSelectedObject();
+                locationHandler.removeListener(this);
+            }
+
+            @Override
+            public void onDisconnected() {}
+        });
+
 		return view;
 	}
 
+    @Override
+    public void onInfoWindowClick(Marker marker) {
+        SelectionManager.get().setSelection(this.modelController.findMapObject(marker));
+        Intent intent = new Intent(this.getActivity(), DetailsActivity.class);
+        startActivity(intent);
+        this.getActivity().overridePendingTransition(0, 0); // Hides the transition animation
+    }
 
-	@Override
-	public void onResume() {
+    @Subscribe
+    public void onEvent(SelectMapObjectEvent event){
+        setMapLocationToSelectedObject();
+    }
+
+    /**
+     * Handles the response event with the map objects for a certain region.
+     *
+     * @param event Returned event.
+     */
+    @Subscribe
+    public void onEvent(ReturnObjectsInAreaEvent event) {
+        this.modelController.processObjects(event.getMapObjects(),
+                event.getSouthWest().getLatitude(), event.getSouthWest().getLongitude());
+    }
+
+    /**
+     * Sets the maps location to the map object which is currently selected in selection manager.
+     * If selection manager doesn't have any object selected, sets map view to users current location.
+     */
+    protected void setMapLocationToSelectedObject() {
+        Resources res = getResources();
+        final int defaultZoom =  res.getInteger(R.integer.default_zoom);
+
+        MapObject mapObject = SelectionManager.get().getSelectedObject();
+        if(mapObject != null){
+            PointLocation location = mapObject.getPointLocation();
+            CameraUpdate cameraLocation = CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), defaultZoom);
+            this.map.moveCamera(cameraLocation);
+
+            Marker marker = this.modelController.findMarker(mapObject);
+            if (marker != null) {
+                this.modelController.setActiveMarker(marker);
+                marker.showInfoWindow();
+            }
+        } else {
+            ImmutablePointLocation userLocation = this.locationHandler.getLastLocation();
+            if (userLocation != null) {
+                CameraUpdate cameraLocation = CameraUpdateFactory.newLatLngZoom(new LatLng(userLocation.getLatitude(), userLocation.getLongitude()), defaultZoom);
+                this.map.moveCamera(cameraLocation);
+            } else {
+                CameraUpdate cameraLocation = CameraUpdateFactory.newLatLngZoom(this.defaultLocation, defaultZoom);
+                this.map.moveCamera(cameraLocation);
+            }
+        }
+    }
+
+    @Override
+    public boolean onMarkerClick(Marker marker){
+        this.modelController.setActiveMarker(marker);
+
+        MapObject mapObject = this.modelController.findMapObject(marker);
+        SelectionManager.get().setSelection(mapObject);
+        // False for default behavior (center camera and open infowindow)
+        return false;
+    }
+
+    @Override
+    public void onMapClick(LatLng point){
+        this.modelController.clearActiveMarker();
+        SelectionManager.get().setSelection(null);
+        hideCursor();
+        hideKeyBoard();
+    }
+
+    protected void hideKeyBoard() {
+        if (this.searchLocationField != null) {
+            InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(
+                    getActivity().INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(this.searchLocationField.getWindowToken(), 0);
+        }
+    }
+
+    protected void hideCursor(){
+        if(this.searchLocationField != null) {
+            this.searchLocationField.setFocusable(false);
+            this.searchLocationField.setFocusableInTouchMode(true);
+        }
+    }
+
+    /**
+     * Searches the address defined in the search box and moves the camera to the found location.
+     */
+    protected void performLocationSearch(){
+        hideKeyBoard();
+        hideCursor();
+
+        if (this.searchLocationField != null){
+            Resources res = getResources();
+            final int defaultZoom =  res.getInteger(R.integer.default_zoom);
+            String address = (this.searchLocationField).getText().toString();
+
+            // TODO: Should we limit results within Finland?
+            try {
+                List<Address> addresses = this.geocoder.getFromLocationName(address, 1);
+                if (addresses.size() > 0) {
+                    Double lat = addresses.get(0).getLatitude();
+                    Double lon = addresses.get(0).getLongitude();
+                    final LatLng location = new LatLng(lat, lon);
+
+                    CameraUpdate cameraLocation = CameraUpdateFactory.newLatLngZoom(location, defaultZoom);
+                    this.map.moveCamera(cameraLocation);
+                }
+            } catch (java.io.IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    @Override
+    public void onResume() {
         this.mapView.onResume();
-		super.onResume();
+        super.onResume();
         BusHandler.getBus().register(this);
-	}
+    }
 
     @Override
     public void onPause() {
         this.mapView.onPause();
         super.onPause();
         BusHandler.getBus().unregister(this);
+        hideCursor();
+        hideKeyBoard();
     }
 
-	@Override
-	public void onDestroy() {
-		super.onDestroy();
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
         this.mapView.onDestroy();
-	}
+    }
 
-	@Override
-	public void onLowMemory() {
-		super.onLowMemory();
-		mapView.onLowMemory();
-	}
+    @Override
+    public void onLowMemory() {
+        super.onLowMemory();
+        mapView.onLowMemory();
+    }
 
+    /**
+     * Custom info window for the markers which are displayed on the map.
+     */
+    private static class CustomInfoWindow implements GoogleMap.InfoWindowAdapter {
+        private LayoutInflater inflater;
+        private LocationHandler locationHandler;
+        private Resources res;
 
-    @Subscribe
-    public void onEvent(ReturnObjectsInAreaEvent event) {
-        if (event.getMapObjects() != null
-                && this.tableModel.isEmpty(event.getSouthWest().getLatitude(),
-                                             event.getSouthWest().getLongitude())) {
-            BitmapDescriptor markerIcon = BitmapDescriptorFactory.fromResource(android.R.drawable.presence_invisible);
-            BitmapDescriptor markerSelectedIcon = BitmapDescriptorFactory.fromResource(android.R.drawable.presence_online);
-            List<Marker> markers = new ArrayList<>();
-            for (MapObject mapObject : event.getMapObjects()) {
-                BitmapDescriptor icon = markerIcon;
-                LatLng location = new LatLng(mapObject.getPointLocation().getLatitude(),
-                        mapObject.getPointLocation().getLongitude());
+        /**
+         * Custom info window for the markers which are displayed on the map.
+         *
+         * @param inflater
+         */
+        public CustomInfoWindow(Resources res, LayoutInflater inflater, LocationHandler locationHandler) {
+            this.inflater = inflater;
+            this.locationHandler = locationHandler;
+            this.res = res;
+        }
 
-                /*
-                if (SelectionManager.get().getSelectedObject() != null &&
-                        mapObject.getId().equals(SelectionManager.get().getSelectedObject().getId())) {
-                    icon = markerSelectedIcon;
-                }*/
+        // Use default InfoWindow frame
+        @Override
+        public View getInfoWindow(Marker marker) {
+            return null;
+        }
 
-//                }
-//                StringBuilder snippet = new StringBuilder();
-//                for (Map.Entry<String, String> entry : mapObject.getAdditionalProperties().entrySet()) {
-//                    snippet.append("<b>");
-//                    snippet.append(entry.getKey());
-//                    snippet.append(": ");
-//                    snippet.append("</b>");
-//                    snippet.append(entry.getValue());
-//                    snippet.append("<br>");
-//                }
-//                snippet.append("<br><b><font color=\"blue\">Click for detailed info.</font></b><br>");
-                Marker marker = map.addMarker(
-                        new MarkerOptions()
-                                .position(location)
-                                .title(mapObject.getId())
-//                                .snippet(snippet.toString())
-                                .snippet("<br><b><font color=\"blue\">Click for detailed info.</font></b><br>")
-                                .icon(icon));
+        // Defines the contents of the InfoWindow
+        @Override
+        public View getInfoContents(Marker marker) {
 
-                markers.add(marker);
-                this.markerObjectMap.put(marker, mapObject);
+            // Getting view from the layout file info_window_layout
+            View v = this.inflater.inflate(R.layout.map_info_view, null);
 
-                if(SelectionManager.get().getSelectedObject() != null &&
-                        mapObject.getId().equals(SelectionManager.get().getSelectedObject().getId())){
-                    setActiveMarker(marker);
-                    marker.showInfoWindow();
-                }
+            TextView objectIdField = (TextView) v.findViewById(R.id.objectid);
+            objectIdField.setText(marker.getTitle());
 
+            TextView distanceField = (TextView) v.findViewById(R.id.distance);
+            PointLocation location = this.locationHandler.getLastLocation();
+            if (location != null) {
+                int distance = ((int) LocationUtils.distanceBetween(
+                        marker.getPosition().latitude, marker.getPosition().longitude,
+                        location.getLatitude(), location.getLongitude()));
+                distanceField.setText(res.getString(R.string.distance, LocationUtils.formatDistance(distance)));
+            } else {
+                distanceField.setText("");
             }
-
-            this.tableModel.addObjects(event.getSouthWest().getLatitude(),
-                    event.getSouthWest().getLongitude(), markers);
+            return v;
         }
-    }
+    };
 
-    @Override
-    public void onInfoWindowClick(Marker marker) {
-        SelectionManager.get().setSelection(findMapObject(marker));
-        Intent intent = new Intent(this.getActivity(), DetailsActivity.class);
-        startActivity(intent);
-    }
-
-    @Subscribe
-    public void onEvent(SelectMapObjectEvent event){
-//        MapsInitializer.initialize(this.getActivity());
-        MapObject o = SelectionManager.get().getSelectedObject();
-
-        if(o != null){
-            Marker m = findMarker(o);
-            if (m != null) {
-                clearActiveMarker();
-                setActiveMarker(m);
-                PointLocation location = o.getPointLocation();
-                CameraUpdate cameraLocation = CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), 18);
-                this.map.moveCamera(cameraLocation);
-                m.showInfoWindow();
-                SelectionManager.get().setSelection(o);
-            }
-        }
-        // TODO: Käytä käyttäjän sijaintia, täytyy hakea LocationClientilla
-        else {
-            CameraUpdate cameraLocation = CameraUpdateFactory.newLatLngZoom(new LatLng(61.5, 23.795), 16);
-            this.map.moveCamera(cameraLocation);
-        }
-    }
-
-    @Override
-    public boolean onMarkerClick(Marker marker){
-        clearActiveMarker();
-        setActiveMarker(marker);
-
-        MapObject mapObject = findMapObject(marker);
-        SelectionManager.get().setSelection(mapObject);
-        // False for default behavior (center camera and open infowindow)
-        return false;
-    }
-
-    /* TODO: bugi havaittu kun tarkastellaan kohdetta tietyssä paikassa, siirretään kartta
-       jonnekin kauas ja avataan uusi kohde.
-       http://stackoverflow.com/questions/21523202/released-unknown-bitmap-reference-setting-marker-in-android
-    */
-    private void clearActiveMarker() {
-        if(activeMarker != null){
-            activeMarker.setIcon(BitmapDescriptorFactory.fromResource(android.R.drawable.presence_invisible));
-            activeMarker = null;
-        }
-    }
-
-    public void setActiveMarker(Marker activeMarker) {
-        this.activeMarker = activeMarker;
-        activeMarker.setIcon(BitmapDescriptorFactory.fromResource(android.R.drawable.presence_online));
-    }
-
-    @Override
-    public void onMapClick(LatLng point){
-        clearActiveMarker();
-    }
-
-    public Marker findMarker(MapObject object){
-        return (object == null) ? null : this.markerObjectMap.inverse().get(object);
-    }
-
-    public MapObject findMapObject(Marker marker){
-        return (marker == null) ? null : this.markerObjectMap.get(marker);
-    }
 }
+
+

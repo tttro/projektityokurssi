@@ -12,6 +12,7 @@ Model containing the metadata database structure
 
 import mongoengine
 
+
 class MetaData(mongoengine.DynamicEmbeddedDocument):
     """
     Fields:
