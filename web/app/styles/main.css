@@ -1,8 +1,9 @@
 /*------------------------------------------------------------------
 Project:	LBD
 Descr:		Web-client custom styles
+Author:     Tero Taipale
 Version:	0.1
-Licence:	MIT License?
+Licence:	?
 -------------------------------------------------------------------*/
 
 html, body{
@@ -89,13 +90,13 @@ html, body{
 
 header {
     background: #edeeef;
-    height: 70px;
     margin: 0;
     padding: 0;
     border-bottom: 1px solid #ccc;
+    height: 30px;
 }
 header .logo {
-    margin: 5px 0 0 20px;
+    padding: 10px;
 }
 .logo h4 {
     margin-top: 20px;
@@ -103,7 +104,7 @@ header .logo {
 }
 
 header .user {
-    margin-top: 25px;
+padding-top: 5px;
 }
 
 header a {
@@ -157,8 +158,14 @@ header a {
 }
 
 .accord-content {
-    padding: 10px;
+    padding: 10px 15px;
 }
+
+.accord-title {
+
+    padding: 10px 15px;
+}
+
 .search-form{
     margin: 25px 0;
     padding: 12px 14px;
@@ -191,10 +198,6 @@ header a {
 .loading {
     text-align: center;
     width: 100%;
-}
-.accord-title {
-
-    padding: 10px;
 }
 
 .header-toolbar {
@@ -272,12 +275,19 @@ header a {
     border-bottom: 1px solid #ccc;
 }
 
-.open .accord-title,
+
 .open .accord-content {
     background: #eaeaea;
     color: #555;
 }
-
+.open .accord-title {
+    background: #eaeaea;
+    color: #000000;
+}
+.accord-content .btn  {
+    width: 100%;
+    margin-top: 10px;
+}
 /* Infowindow */
 .markerDetails {
     border-collapse: collapse;

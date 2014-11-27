@@ -24,7 +24,7 @@ mapControllers.controller('mapController', function($scope, $window,$rootScope, 
 
     // Init map
     var mapOptions = {
-        zoom: 17,
+        zoom: appConfig.defaultZoom,
         center: currentPosition,
         streetViewControl: false,
         zoomControl: true,
@@ -88,7 +88,7 @@ mapControllers.controller('mapController', function($scope, $window,$rootScope, 
                 var currentPosition =  new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
 
                 createGeoMarker(currentPosition);
-                $scope.map.setZoom(17);
+                $scope.map.setZoom(appConfig.defaultZoom);
                 $scope.map.setCenter(currentPosition);
 
                 $scope.showLoadingIcon = false;
@@ -125,7 +125,8 @@ mapControllers.controller('mapController', function($scope, $window,$rootScope, 
         var viewportBounds = $scope.map.getBounds();
         var zoomLevel = $scope.map.getZoom();
 
-        if(zoomLevel > 16 && compareBounds(itemPreLoadArea,viewportBounds) && !panorama.getVisible() && !$scope.showLoadingIcon)
+        if(zoomLevel >= appConfig.defaultZoom && compareBounds(itemPreLoadArea,viewportBounds)
+            && !panorama.getVisible() && !$scope.showLoadingIcon && !infoWindow.isOpen())
         {
 
             $scope.showLoadingIcon = true;
@@ -141,7 +142,7 @@ mapControllers.controller('mapController', function($scope, $window,$rootScope, 
                 $scope.showLoadingIcon = false;
 
             });
-            
+
         }
     });
 
@@ -155,8 +156,8 @@ mapControllers.controller('mapController', function($scope, $window,$rootScope, 
     panorama.setPosition(currentPosition);
     panorama.setOptions({ enableCloseButton: false });
     panorama.setPov(/** @type {google.maps.StreetViewPov} */({
-        heading: 50,
-        pitch: 0,
+        heading: 40,
+        pitch: -5,
         zoom : 0
     }));
 
@@ -167,6 +168,7 @@ mapControllers.controller('mapController', function($scope, $window,$rootScope, 
             panorama.setVisible(true);
             $scope.btnText = "Go back to 2D map";
             $scope.btnGeolocation = false;
+            openedMarkerWindow.open(panorama);
         } else {
             panorama.setVisible(false);
             $scope.btnText = "Go to StreetView";
@@ -195,16 +197,11 @@ mapControllers.controller('mapController', function($scope, $window,$rootScope, 
 
     var loadMarkers =  function (data) {
 
-        markers = [];
-        if (markerClusterer) {
-            markerClusterer.clearMarkers();
-        }
+        clearMarkers(markers);
+
         angular.forEach(data.features, function(value,key){
             createMarker(value);
         });
-
-        var markerClustererOptions = { gridSize: 50, maxZoom: 16 };
-        markerClusterer = new MarkerClusterer($scope.map, markers, markerClustererOptions); // Create clusters
 
     }
 
@@ -227,7 +224,7 @@ mapControllers.controller('mapController', function($scope, $window,$rootScope, 
             }
         });
 
-        var markerDetails = "<tr><th>ID</th><td>"+item.id+"</td></tr>";
+        var markerDetails = "";
         var itemProperties = item.properties;
 
         // Go through all item's properties and put them into table for an infowindow
@@ -239,6 +236,7 @@ mapControllers.controller('mapController', function($scope, $window,$rootScope, 
         }
 
         marker.content = "<div class='infowindow'>" +
+            "<h4>"+item.id+"</h4>"+
         "<table class='markerDetails'>"+markerDetails+"</table></div>";
 
 
@@ -293,6 +291,7 @@ mapControllers.controller('mapController', function($scope, $window,$rootScope, 
         for (var i in markers) {
             markers[i].setMap(null);
         }
+        markers = [];
     }
 
     /* Check is an user inside same map-rectangle */
@@ -330,4 +329,10 @@ mapControllers.controller('mapController', function($scope, $window,$rootScope, 
             }
         });
     }
+
+    google.maps.InfoWindow.prototype.isOpen = function(){
+        var map = infoWindow.getMap();
+        return (map !== null && typeof map !== "undefined");
+    }
+
 });
