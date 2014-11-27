@@ -26,7 +26,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Fail.fail;
 import static org.mockito.Mockito.*;
 
-
+/**
+ * Created by Tommi.
+ */
 @RunWith(CustomRobolectricTestRunner.class)
 public class MapTableModelTest {
     @Before
@@ -38,7 +40,7 @@ public class MapTableModelTest {
     public void testModelBasic() throws Exception {
         final String testName = "testModelBasic";
         System.out.println("_____________________________________________________________________");
-        System.out.println("TESTING: testModelBasic");
+        System.out.println("TESTING: "+testName);
         System.out.println("---------------------------------------------------------------------");
 
         final List<MapObject> removedObjects = new ArrayList<>();
@@ -46,6 +48,7 @@ public class MapTableModelTest {
         final List<Area> requestedCacheAreas = new ArrayList<>();
         MapTableModel<MapObject> model = initModel(testName, removedObjects, requestedAreas, requestedCacheAreas);
 
+        System.out.println("FINISHED: "+testName);
         System.out.println("_____________________________________________________________________");
     }
 
