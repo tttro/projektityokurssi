@@ -22,6 +22,7 @@ public class LocationHandler implements GooglePlayServicesClient.ConnectionCallb
     private Activity activity;
     private LocationClient locationClient;
     private ImmutablePointLocation cachedLocation = null;
+    private boolean isConnected = false;
 
     /**
      * Checks if the google play services are available and if they are creates a location client.
@@ -118,14 +119,20 @@ public class LocationHandler implements GooglePlayServicesClient.ConnectionCallb
         return this.cachedLocation;
     }
 
+    public boolean isConnected(){
+        return this.isConnected;
+    }
+
     @Override
     public void onConnected(Bundle bundle) {
         this.updateCachedLocation();
+        this.isConnected = locationClient.isConnected();
         Log.d(this.getClass().getSimpleName(), "Location client connected.");
     }
 
     @Override
     public void onDisconnected() {
+        this.isConnected = locationClient.isConnected();
         Log.d(this.getClass().getSimpleName(), "Location client disconnected.");
     }
 
