@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
     <string name="app_name">LBDMobileClient</string>
     <string name="service_name">LBDBackendHandlerService</string>
     <string name="action_settings">Settings</string>
@@ -25,5 +24,4 @@
     <string name="search_address">Search by address..</string>
     <string name="unknown">Unknown</string>
     <string name="item">ITEM</string>
-
 </resources>
