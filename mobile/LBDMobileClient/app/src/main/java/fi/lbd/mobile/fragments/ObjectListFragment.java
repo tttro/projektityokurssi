@@ -58,8 +58,9 @@ public class ObjectListFragment extends ListFragment {
     private LocationHandler locationHandler;
     // Lock and boolean variables used to prevent users from creating more than 1 locationtask
     // at a time, even if they tap the location button repeatedly.
-    private final static Object LOCK = new Object();
-    private static boolean locationInProgress = false;
+    private static final Object LOCK = new Object();
+    private static Boolean locationInProgress = new Boolean(false);
+    LocationTask activeTask = null;
 
     private int firstVisiblePosition;
     private ArrayList<Boolean> groupExpandedArray;
@@ -141,11 +142,14 @@ public class ObjectListFragment extends ListFragment {
         this.locationHandler.addListener( new GooglePlayServicesClient.ConnectionCallbacks() {
             @Override
             public void onConnected(Bundle bundle) {
-                LocationTask task = new LocationTask();
-                task.execute();
+                synchronized (LOCK) {
+                    if (!locationInProgress) {
+                        activeTask = new LocationTask();
+                        activeTask.execute();
+                    }
+                }
                 locationHandler.removeListener(this);
             }
-
             @Override
             public void onDisconnected() {}
         });
@@ -156,6 +160,7 @@ public class ObjectListFragment extends ListFragment {
     @Override
     public void onResume() {
         super.onResume();
+        this.locationHandler.start();
         this.expandableListView.setAdapter(this.adapter);
         BusHandler.getBus().register(this);
 
@@ -170,8 +175,15 @@ public class ObjectListFragment extends ListFragment {
     public void onPause() {
         super.onPause();
         BusHandler.getBus().unregister(this);
-        int numberOfGroups = adapter.getGroupCount();
+        this.locationHandler.stop();
 
+        synchronized (LOCK){
+            locationInProgress = false;
+            activeTask = null;
+        }
+        statusText.setText("");
+
+        int numberOfGroups = adapter.getGroupCount();
         this.groupExpandedArray.clear();
         for (int i=0;i<numberOfGroups;i++){
             this.groupExpandedArray.add(this.expandableListView.isGroupExpanded(i));
@@ -198,7 +210,9 @@ public class ObjectListFragment extends ListFragment {
         statusText.setBackgroundColor(getActivity().getResources().
                 getColor(R.color.near_objects_background));
 
+
         synchronized (LOCK){
+            this.activeTask = null;
             locationInProgress = false;
         }
     }
@@ -244,7 +258,7 @@ public class ObjectListFragment extends ListFragment {
 
     // TODO: search functionality
     public void performSearch(){
-        if (this.locationHandler != null && this.locationHandler.isConnected()) {
+        if (this.locationHandler != null && this.locationHandler.getLocationClient().isConnected()) {
             this.locationHandler.updateCachedLocation();
             statusText.setText(String.format(getResources().getString(R.string.showing_results), 0));
             statusText.setBackgroundColor(getActivity().getResources().
@@ -253,25 +267,28 @@ public class ObjectListFragment extends ListFragment {
     }
 
     public void showNearestObjects() {
-        if(!locationInProgress) {
-            LocationTask task = new LocationTask();
-            task.execute();
-            Log.d("******", "New locationtask started.");
+
+        synchronized (LOCK){
+            if(!locationInProgress) {
+                this.activeTask = new LocationTask();
+                activeTask.execute();
+            }
         }
     }
 
     private class LocationTask extends AsyncTask<Void, Void, Boolean>{
         @Override
         protected void onPreExecute(){
-            statusText.setText(getResources().getString(R.string.loading));
+
             synchronized (LOCK){
                 locationInProgress = true;
             }
+            statusText.setText(getResources().getString(R.string.loading));
         }
         @Override
         protected Boolean doInBackground(Void... params) {
             for (int i = 1; i < 5; ++i) {
-                if (locationHandler != null && locationHandler.isConnected()) {
+                if (locationHandler != null && locationHandler.getLocationClient().isConnected()) {
                     locationHandler.updateCachedLocation();
                     if (locationHandler.getCachedLocation() != null) {
                         BusHandler.getBus().post(new RequestNearObjectsEvent(new ImmutablePointLocation(
@@ -283,7 +300,13 @@ public class ObjectListFragment extends ListFragment {
                 try{
                     Thread.sleep(1000);
                 } catch (InterruptedException exception){
-                    exception.printStackTrace();
+                    Log.d("*****", "Cancelled location task in interruptException.");
+                    synchronized (LOCK){
+                        locationInProgress = false;
+                        activeTask = null;
+                        statusText.setText(getResources().getString(R.string.location_failed));
+                    }
+                    return false;
                 }
             }
             return false;
@@ -291,10 +314,11 @@ public class ObjectListFragment extends ListFragment {
         @Override
         protected void onPostExecute(Boolean result) {
             if(!result) {
-                statusText.setText(getResources().getString(R.string.location_failed));
                 synchronized (LOCK){
                     locationInProgress = false;
+                    activeTask = null;
                 }
+                statusText.setText(getResources().getString(R.string.location_failed));
             }
         }
     }

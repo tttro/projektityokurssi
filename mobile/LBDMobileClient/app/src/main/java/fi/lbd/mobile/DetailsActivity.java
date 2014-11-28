@@ -24,7 +24,6 @@ public class DetailsActivity extends Activity {
 
         BusHandler.getBus().register(this);
         BusHandler.getBus().post(new RequestMapObjectEvent(SelectionManager.get().getSelectedObject().getId()));
-      //  overridePendingTransition(R.anim.fadein, R.anim.fadeout);
     }
 
     @Override
@@ -42,7 +41,6 @@ public class DetailsActivity extends Activity {
     public void onPause() {
         super.onPause();
         BusHandler.getBus().unregister(this);
-       // overridePendingTransition(R.anim.fadein, R.anim.fadeout);
     }
 
     @Override
