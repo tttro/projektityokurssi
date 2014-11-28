@@ -20,7 +20,7 @@ import java.util.Locale;
 import fi.lbd.mobile.events.BusHandler;
 import fi.lbd.mobile.events.SelectMapObjectEvent;
 import fi.lbd.mobile.fragments.GoogleMapFragment;
-import fi.lbd.mobile.fragments.InboxFragment;
+import fi.lbd.mobile.fragments.MessageFragment;
 import fi.lbd.mobile.fragments.ObjectListFragment;
 import fi.lbd.mobile.location.LocationHandler;
 import fi.lbd.mobile.mapobjects.MapObject;
@@ -62,7 +62,8 @@ public class ListActivity extends Activity {
         this.locationHandler = new LocationHandler(this);
         this.locationHandler.start();
 
-        this.sectionsPagerAdapter = new SectionsPagerAdapter(getFragmentManager(), this.locationHandler);
+        this.sectionsPagerAdapter = new SectionsPagerAdapter(getFragmentManager(),
+                this.locationHandler);
         this.viewPager = (ViewPager) findViewById(R.id.pager);
         this.viewPager.setAdapter(this.sectionsPagerAdapter);
         viewPager.setCurrentItem(START_TAB);
@@ -116,7 +117,7 @@ public class ListActivity extends Activity {
         @Override
         public Fragment getItem(int position) {
             if (position == MSG_TAB) {
-                InboxFragment frag = InboxFragment.newInstance();
+                MessageFragment frag = MessageFragment.newInstance();
                 return frag;
             } else if (position == OBJ_TAB) {
                 ObjectListFragment frag = ObjectListFragment.newInstance(this.locationHandler);

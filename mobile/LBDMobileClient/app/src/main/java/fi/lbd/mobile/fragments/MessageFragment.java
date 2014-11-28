@@ -12,10 +12,10 @@ import fi.lbd.mobile.adapters.ListMapObjectAdapter;
 import fi.lbd.mobile.events.BusHandler;
 
 
-public class InboxFragment extends ListFragment {
+public class MessageFragment extends ListFragment {
     private ListMapObjectAdapter adapter;
 
-    public static InboxFragment newInstance() { return new InboxFragment();
+    public static MessageFragment newInstance() { return new MessageFragment();
     }
 
     @Override
@@ -27,7 +27,7 @@ public class InboxFragment extends ListFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.listview_fragment, container, false);
+        View view = inflater.inflate(R.layout.listview_message_fragment, container, false);
         return view;
     }
 
