@@ -21,10 +21,13 @@ import com.google.android.gms.common.GooglePlayServicesClient.OnConnectionFailed
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.plus.Plus;
+import com.google.android.gms.plus.model.people.Person;
 
 import android.content.Intent;
 import android.view.View;
 import android.widget.TextView;
+
+import org.json.JSONObject;
 
 import java.io.IOException;
 
@@ -52,6 +55,8 @@ public class MainActivity extends Activity implements View.OnClickListener,
      * resolve them when the user clicks sign-in.
      */
     private ConnectionResult mConnectionResult;
+
+    private String url = "http://130.230.153.75:8000/locationdata/api/Streetlights/WFS_KATUVALO.405171";
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -86,6 +91,8 @@ public class MainActivity extends Activity implements View.OnClickListener,
                     Plus.AccountApi.clearDefaultAccount(mGoogleApiClient);
                     mGoogleApiClient.disconnect();
                     mGoogleApiClient.connect();
+                    status.setText("Signed out");
+                    findViewById(R.id.sign_in_button).setVisibility(View.VISIBLE);
                 }
 
                 status.setText("Not Connected");
@@ -103,6 +110,7 @@ public class MainActivity extends Activity implements View.OnClickListener,
 
                             });
                     status.setText("Not Connected");
+                    findViewById(R.id.sign_in_button).setVisibility(View.VISIBLE);
                 }
 
                 break;
@@ -113,12 +121,10 @@ public class MainActivity extends Activity implements View.OnClickListener,
     protected void onStart() {
         super.onStart();
         mGoogleApiClient.connect();
-        Log.d("onStart", "hip");
     }
 
     protected void onStop() {
         super.onStop();
-        Log.d("onStop", "hip");
         if (mGoogleApiClient.isConnected()) {
             mGoogleApiClient.disconnect();
         }
@@ -126,7 +132,6 @@ public class MainActivity extends Activity implements View.OnClickListener,
 
 
     public void onConnectionFailed(ConnectionResult result) {
-        Log.d("onFailed", "hip");
         if (!mIntentInProgress) {
             // Store the ConnectionResult so that we can use it later when the user clicks
             // 'sign-in'.
@@ -142,16 +147,12 @@ public class MainActivity extends Activity implements View.OnClickListener,
 
     @Override
     public void onConnected(Bundle connectionHint) {
-        Log.d("onConnected", "hip");
         mSignInClicked = false;
         TextView status = (TextView) findViewById(R.id.status);
-        status.setText("Connected");
+        status.setText("Signed In");
+        findViewById(R.id.sign_in_button).setVisibility(View.INVISIBLE);
         getAndUseAuthTokenInAsyncTask();
 
-        /*while(result == "") {
-            android.os.SystemClock.sleep(1000);
-            result = settings.getString("token", "");
-        }*/
     }
 
     protected void onActivityResult(int requestCode, int responseCode, Intent intent) {
@@ -189,42 +190,85 @@ public class MainActivity extends Activity implements View.OnClickListener,
     }
 
     void getAndUseAuthTokenInAsyncTask() {
-        class PostTask extends AsyncTask<String, Integer, String> {
+        class PostTask extends AsyncTask<String, Integer, String[]> {
             @Override
-            protected String doInBackground(String... params) {
+            protected String[] doInBackground(String... params) {
                 String accessToken = null;
                 try {
-                    mGoogleApiClient.connect();
                     accessToken = GoogleAuthUtil.getToken(getApplicationContext(),
                             Plus.AccountApi.getAccountName(mGoogleApiClient),
                             "oauth2:"+Scopes.PLUS_ME);
-                    return accessToken;
+                    //Return google id and the access token
+                    String[] result = {accessToken,
+                            Plus.PeopleApi.getCurrentPerson(mGoogleApiClient).getId()};
+                    return result;
                 } catch (IOException transientEx) {
                     // network or server error, the call is expected to succeed if you try again later.
                     // Don't attempt to call again immediately - the request is likely to
                     // fail, you'll hit quotas or back-off.
                     //TODO:
-                    return "IOException";
+                    String[] ex = {"IOException"};
+                    return ex;
                 } catch (UserRecoverableAuthException e) {
                     // Recover
-                    return "UserRecoverableAuthException";
+                    String[] ex = {"UserRecoverableAuthException"};
+                    return ex;
                 } catch (GoogleAuthException authEx) {
                     // Failure. The call is not expected to ever succeed so it should not be
                     // retried.
-                    return "GoogleAuthException";
+                    String[] ex = {"GoogleAuthException"};
+                    return ex;
                 } catch (Exception e) {
                     throw new RuntimeException(e);
                 }
             }
             @Override
-            protected void onPostExecute(String result) {
+            protected void onPostExecute(String[] result) {
                 super.onPostExecute(result);
                 TextView token = (TextView) findViewById(R.id.token);
-                token.setText(result);
+                token.setText(result[0] + ", " + result[1]);
+                sendAccessToken(result);
             }
         };
 
         new PostTask().execute((String)null);
     }
-}
 
+    /*
+    SendAccessToken
+    Google+ Sign In Access Token and google id has been fetched and is sent to be validated with
+    the backend. Token and id are sent with an async task using Rest class.
+    Class requires parameters:
+    access token
+    google id
+    backend url
+    */
+    private void sendAccessToken(String[] access)
+    {
+
+        class RestAsyncTask extends AsyncTask<String,Void,JSONObject> {
+
+            @Override
+            protected JSONObject doInBackground(String... params) {
+                return Rest.doPut(params);
+            }
+
+            @Override
+            protected void onPostExecute(JSONObject jsonObject) {
+                TextView tv = (TextView) findViewById(R.id.rest_result);
+                if(jsonObject == null) {
+                    tv.setText("Nullia sataa");
+                }
+                else {
+                    tv.setText(jsonObject.toString());
+                }
+            }
+        }
+        String[] params = {"", "", ""};
+        //Access var has two parts: access token and google id
+        params[0] = access[0];
+        params[1] = access[1];
+        params[2] = url;
+        new RestAsyncTask().execute((String[])params);
+    }
+}

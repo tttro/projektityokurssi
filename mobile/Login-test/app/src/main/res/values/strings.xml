@@ -8,5 +8,6 @@
     <string name="action_settings">Settings</string>
     <string name="revoke">Revoke access</string>
     <string name="sign_out">Sign out</string>
+    <string name="rest">Rest result</string>
 
 </resources>
