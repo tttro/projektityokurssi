@@ -59,12 +59,14 @@ public class BasicBackendHandler implements BackendHandler {
                 objects = MapObjectParser.parseCollection(response.getContents(), mini);
             } catch (JSONException e) {
                 Log.e(this.getClass().getSimpleName(), "Failed to parse map objects from JSON! {}", e);
+                return new HandlerResponse(null, HandlerResponse.Status.Failed);
             } catch (IOException e) {
                 Log.e(this.getClass().getSimpleName(), "Failed to parse map objects from JSON! {}", e);
+                return new HandlerResponse(null, HandlerResponse.Status.Failed);
             }
             return new HandlerResponse(objects, HandlerResponse.Status.Succeeded);
         }
-        Log.e(BasicBackendHandler.class.getSimpleName(), "Failed to get objects in area, response: "+ response);
+        Log.e(BasicBackendHandler.class.getSimpleName(), "Failed to get objects near location, response: "+ response);
         return new HandlerResponse(null, HandlerResponse.Status.Failed);
 	}
 
@@ -95,8 +97,10 @@ public class BasicBackendHandler implements BackendHandler {
                 objects = MapObjectParser.parseCollection(response.getContents(), mini);
             } catch (JSONException e) {
                 Log.e(this.getClass().getSimpleName(), "Failed to parse map objects from JSON! {}", e);
+                return new HandlerResponse(null, HandlerResponse.Status.Failed);
             } catch (IOException e) {
                 Log.e(this.getClass().getSimpleName(), "Failed to parse map objects from JSON! {}", e);
+                return new HandlerResponse(null, HandlerResponse.Status.Failed);
             }
             return new HandlerResponse(objects, HandlerResponse.Status.Succeeded);
         }
@@ -121,14 +125,16 @@ public class BasicBackendHandler implements BackendHandler {
                 mapObject = MapObjectParser.parse(response.getContents());
             } catch (JSONException e){
                 Log.e(this.getClass().getSimpleName(), "Failed to parse map objects from JSON! {}", e);
+                return new HandlerResponse(null, HandlerResponse.Status.Failed);
             } catch (IOException e){
                 Log.e(this.getClass().getSimpleName(), "Failed to parse map objects from JSON! {}", e);
+                return new HandlerResponse(null, HandlerResponse.Status.Failed);
             }
             List<MapObject> list = new ArrayList<>();
             list.add(mapObject);
             return new HandlerResponse(list, HandlerResponse.Status.Succeeded);
         }
-        Log.e(BasicBackendHandler.class.getSimpleName(), "Failed to get objects in area, response: "+ response);
+        Log.e(BasicBackendHandler.class.getSimpleName(), "Failed to get object, response: "+ response);
         return new HandlerResponse(null, HandlerResponse.Status.Failed);
     }
 
