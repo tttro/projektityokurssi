@@ -2,8 +2,6 @@ package fi.lbd.mobile.backendhandler;
 
 import android.util.Log;
 
-import com.squareup.okhttp.internal.http.Response;
-
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.HttpGet;
@@ -13,7 +11,6 @@ import org.apache.http.conn.params.ConnPerRoute;
 import org.apache.http.conn.params.ConnPerRouteBean;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.impl.conn.tsccm.ThreadSafeClientConnManager;
-import org.apache.http.params.CoreConnectionPNames;
 import org.apache.http.params.HttpParams;
 
 import java.io.BufferedReader;

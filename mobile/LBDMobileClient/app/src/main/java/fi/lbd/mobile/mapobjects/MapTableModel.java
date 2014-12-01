@@ -1,5 +1,8 @@
 package fi.lbd.mobile.mapobjects;
 
+import android.support.annotation.NonNull;
+import android.util.Log;
+
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Table;
 
@@ -88,15 +91,20 @@ public class MapTableModel<T> {
     private int lonMultiplier;
 
     // Used while checking if caching is required
-    private int lastCachedStartLat;
-    private int lastCachedStartLon;
-    private int lastCachedEndLat;
-    private int lastCachedEndLon;
+    private int lastCachedStartLat = -9999999;
+    private int lastCachedStartLon = -9999999;
+    private int lastCachedEndLat = -9999999;
+    private int lastCachedEndLon = -9999999;
 
     private int screenCurrentStartLat;
     private int screenCurrentStartLon;
     private int screenCurrentEndLat;
     private int screenCurrentEndLon;
+
+    private double lastStartLat;
+    private double lastStartLon;
+    private double lastEndLat;
+    private double lastEndLon;
 
     /**
      * Model which handles the loading and removing of its objects according to a updated region.
@@ -182,15 +190,23 @@ public class MapTableModel<T> {
             this.screenCurrentEndLon = screenEndLon;
         }
 
+        boolean movingLeft = (startLon - this.lastStartLon < 0);
+        boolean movingRight = (endLon - this.lastEndLon > 0);
+        boolean movingUp = (startLat - this.lastStartLat > 0);
+        boolean movingDown = (endLat - this.lastEndLat < 0);
+
         checkForCaching(startLat, startLon, endLat, endLon,
-                screenStartLat, screenStartLon, screenEndLat, screenEndLon);
+                movingLeft, movingRight, movingUp, movingDown);
+        this.lastStartLat = startLat;
+        this.lastStartLon = startLon;
+        this.lastEndLat = endLat;
+        this.lastEndLon = endLon;
     }
 
     /**
      * Tries to check if certain grid region should be cached.
      *
      * TODO: Diagonals?
-     * TODO: Bug: Tries to cache the previous grid element?
      *
      * @param startLat  Current start position.
      * @param startLon  Current start position.
@@ -201,8 +217,28 @@ public class MapTableModel<T> {
      * @param screenEndLat    Rounded end position.
      * @param screenEndLon    Rounded end position.
      */
+
+    /**
+     * Tries to check if certain grid region should be cached.
+     * TODO: Diagonals?
+     *
+     * @param startLat  Current start position.
+     * @param startLon  Current start position.
+     * @param endLat  Current end position.
+     * @param endLon  Current end position.
+     * @param movingLeft    Is the view region moving left.
+     * @param movingRight    Is the view region moving right.
+     * @param movingUp    Is the view region moving up.
+     * @param movingDown    Is the view region moving down.
+     */
     private void checkForCaching(double startLat, double startLon, double endLat, double endLon,
-            int screenStartLat, int screenStartLon, int screenEndLat, int screenEndLon) {
+                                 boolean movingLeft, boolean movingRight,
+                                 boolean movingUp, boolean movingDown) {
+
+        int screenStartLat = transformToGridCoordinateLat(startLat);
+        int screenStartLon = transformToGridCoordinateLon(startLon);
+        int screenEndLat = transformToGridCoordinateLat(endLat);
+        int screenEndLon = transformToGridCoordinateLon(endLon);
 
         double latThreshold = this.latPrecision*CACHE_MULTIPLIER_LAT;
         double lonThreshold = this.lonPrecision*CACHE_MULTIPLIER_LON;
@@ -211,25 +247,25 @@ public class MapTableModel<T> {
         boolean cacheUp = false;
         boolean cacheDown = false;
 
-        if (transformToGridCoordinateLon(startLon - lonThreshold) < this.screenCurrentStartLon
+        if (movingLeft && (transformToGridCoordinateLon(startLon - lonThreshold) < this.screenCurrentStartLon)
                 && this.lastCachedStartLon != this.screenCurrentStartLon-1) {
             cacheLeft = true;
             this.lastCachedStartLon = this.screenCurrentStartLon-1;
         }
 
-        if (transformToGridCoordinateLon(endLon + lonThreshold) > this.screenCurrentEndLon
+        if (movingRight && (transformToGridCoordinateLon(endLon + lonThreshold) > this.screenCurrentEndLon)
                 && this.lastCachedEndLon != this.screenCurrentEndLon+1) {
             cacheRight = true;
             this.lastCachedEndLon = this.screenCurrentEndLon+1;
         }
 
-        if (transformToGridCoordinateLat(startLat - latThreshold) < this.screenCurrentStartLat
+        if (movingDown && (transformToGridCoordinateLat(startLat - latThreshold) < this.screenCurrentStartLat)
                 && this.lastCachedStartLat != this.screenCurrentStartLat-1) {
             cacheDown = true;
             this.lastCachedStartLat = this.screenCurrentStartLat-1;
         }
 
-        if (transformToGridCoordinateLat(endLat + latThreshold) > this.screenCurrentEndLat
+        if (movingUp && (transformToGridCoordinateLat(endLat + latThreshold) > this.screenCurrentEndLat)
                 && this.lastCachedEndLat != this.screenCurrentEndLat+1) {
             cacheUp = true;
             this.lastCachedEndLat = this.screenCurrentEndLat+1;
@@ -351,12 +387,18 @@ public class MapTableModel<T> {
      * @param gridStartLon  Any coordinate inside the grid cell.
      * @param objects   Objects to add into the cell.
      */
-    public void addObjects(double gridStartLat, double gridStartLon, List<T> objects) {
+    public void addObjects(double gridStartLat, double gridStartLon, @NonNull List<T> objects) {
         int gridElementStartLat = this.transformToGridCoordinateLat(gridStartLat);
         int gridElementStartLon = this.transformToGridCoordinateLon(gridStartLon);
         TableElement tableElement = this.objectTable.get(gridElementStartLat, gridElementStartLon);
         if ( tableElement != null ) {
+            if (tableElement.hasObjectsAdded()) {
+                Log.w(this.getClass().getSimpleName(), "Table element already had objects added! Table grid ("+
+                        gridElementStartLat+","+gridElementStartLon+")");
+            }
             tableElement.addAll(objects);
+        } else {
+            throw new NullPointerException("Invalid cell location!");
         }
     }
 
