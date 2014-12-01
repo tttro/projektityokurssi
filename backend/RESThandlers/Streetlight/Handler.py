@@ -5,6 +5,8 @@
 .. moduleauthor:: Aki Mäkinen <aki.makinen@outlook.com>
 
 """
+import re
+
 __author__ = 'Aki Mäkinen'
 
 from RESThandlers.HandlerInterface.Exceptions import GenericDBError
@@ -67,18 +69,35 @@ class StreetlightHandler(HandlerBase):
             '&typeName=opendata:WFS_KATUVALO&outputFormat=json&srsName=EPSG:4326',
             proxies={})
         jsonitem = json.loads(req.read())
+        current_result = self.modelobject._get_collection().aggregate([
+            {"$project": {"feature_id": 1,
+                          "_id": 0}}
+        ])
+        if current_result["ok"] == 1 and len(current_result["result"]):
+            current_items = []
+            for item in current_result["result"]:
+                current_items.append(item["feature_id"])
+        else:
+            current_items = []
         itemsinserted = 0
-        itemlist = list()
-        self.modelobject.drop_collection()
+        to_add = list()
+        loop = 0
         for item in jsonitem["features"]:
+            loop += 1
             fid = item.pop("id")
-            temp = self.modelobject.from_json(json.dumps(item))
-            temp.feature_id = fid
-            itemlist.append(temp)
-            itemsinserted += 1
-        self.modelobject.objects().insert(itemlist)
+            if fid not in current_items:
+                temp = item
+                temp["feature_id"] = fid
+                to_add.append(temp)
+                itemsinserted += 1
+            else:
+                current_items.remove(fid)
+        if len(to_add) > 0:
+            self.modelobject._get_collection().insert(to_add)
+        if len(current_items) > 0:
+            self.modelobject._get_collection().remove({"feature_id": {"$in": current_items}})
 
-        return itemsinserted
+        return itemsinserted, len(current_items)
 
     def get_by_id(self, iid):
         result = self.modelobject._get_collection().aggregate([
@@ -195,3 +214,35 @@ class StreetlightHandler(HandlerBase):
     #       Integer: number of items in table
     def get_item_count(self):
         return self.modelobject.objects().count()
+
+
+    def search(self, regex, limit, field=None):
+        if field is None:
+            raise NotImplementedError # TODO: Search from all fields... some day
+        elif field == "id":
+            print regex
+            reg = re.compile(regex, re.IGNORECASE)
+            raw = self.modelobject._get_collection().aggregate([{'$match': {
+                                                                     "feature_id": {
+                                                                         "$regex": reg
+                                                                     }
+                                                                 }
+                                                            }, {
+                                                                '$project': self._doc_structure
+                                                            }])
+            print raw
+            if int(raw["ok"]) == 1:
+                results = raw["result"]
+            else:
+                results = []
+
+            totalresults = len(results)
+            if totalresults > limit:
+                results = results[:limit]
+            featurecollection = self._featurecollection
+            featurecollection["totalFeatures"] = len(results)
+            featurecollection["features"] = results
+
+            return totalresults, featurecollection
+        else:
+            raise NotImplementedError

@@ -470,6 +470,41 @@ def collection_inarea(request, *args, **kwargs):
             return HttpResponse(staus=s_codes["NOTFOUND"])
 
 
+@location_collection
+@this_is_a_login_wrapper_dummy
+@require_http_methods(["POST"])
+def search_from_rest(request, *args, **kwargs):
+    try:
+        contentjson = json.loads(request.body)
+    except ValueError:
+        return HttpResponse(status=400)
+
+    if ("from" or "search" or "limit") not in contentjson:
+        return HttpResponse(status=400)
+    try:
+        limit = int(contentjson["limit"])
+    except ValueError:
+        return HttpResponse(status=400)
+
+    original_search_phrase = contentjson["search"]
+    allowed_chars = "[A-Za-z0-9\\.\\@]"
+    search_regex = contentjson["search"].replace("?", allowed_chars).replace("*", allowed_chars+"*")
+
+    handlerinterface = kwargs["handlerinterface"]
+
+    try:
+        totalresults, results = handlerinterface.search(search_regex, limit, contentjson["from"])
+    except NotImplementedError:
+        return HttpResponse(status=400)
+
+    resultjson = contentjson
+    resultjson["totalResults"] = totalresults
+    resultjson["results"] = results
+
+
+
+    return HttpResponse(json.dumps(resultjson))
+
 def _addmeta(items, coll):
     metaitems = MetaDocument._get_collection().aggregate([
         {"$match":
@@ -497,3 +532,37 @@ def _addmeta(items, coll):
                 item["properties"]["metadata"] = tempdict[item["id"]]
 
     return items
+
+
+######################################### FOR TESTING ONLY #########################################
+
+def testing_view_popmeta(request):
+    if "HTTP_LBD_LOGIN_HEADER" not in request.META or request.META["HTTP_LBD_LOGIN_HEADER"] != "VakaVanhaVainamoinen":
+        return HttpResponse(status=403)
+
+
+    from RESThandlers.Streetlight import models as SL
+    o = SL.Streetlights.objects()
+    MetaDocument.drop_collection()
+    templist = []
+    i = 0
+    for item in o:
+        temp = MetaDocument(
+            feature_id = item.feature_id,
+            collection = "Streetlights",
+            meta_data = MetaData(status="SNAFU", modified=int(time.time()), modifier="Seppo Sähkäri")
+        )
+        templist.append(temp)
+    MetaDocument.objects.insert(templist)
+    return HttpResponse(status=200)
+
+
+def testing_view_dropmeta(request):
+    if "HTTP_LBD_LOGIN_HEADER" not in request.META or request.META["HTTP_LBD_LOGIN_HEADER"] != "VakaVanhaVainamoinen":
+        return HttpResponse(status=403)
+
+    MetaDocument.drop_collection()
+    if MetaDocument.objects.count() > 0:
+        return HttpResponse(status=500)
+    else:
+        return HttpResponse(status=200)

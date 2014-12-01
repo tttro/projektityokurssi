@@ -95,5 +95,5 @@ class HandlerBase(object):
     def get_by_id(self, iid):
         raise NotImplementedError("Not Implemented")
 
-    def search_from_rest(self, phrase):
+    def search(self, phrase, field):
         raise NotImplementedError("Search from REST not Implemented")
