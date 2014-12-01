@@ -220,7 +220,6 @@ class StreetlightHandler(HandlerBase):
         if field is None:
             raise NotImplementedError # TODO: Search from all fields... some day
         elif field == "id":
-            print regex
             reg = re.compile(regex, re.IGNORECASE)
             raw = self.modelobject._get_collection().aggregate([{'$match': {
                                                                      "feature_id": {
@@ -230,7 +229,6 @@ class StreetlightHandler(HandlerBase):
                                                             }, {
                                                                 '$project': self._doc_structure
                                                             }])
-            print raw
             if int(raw["ok"]) == 1:
                 results = raw["result"]
             else:
