@@ -4,7 +4,7 @@ import android.support.annotation.Nullable;
 
 import java.util.List;
 
-import fi.lbd.mobile.mapobjects.ImmutablePointLocation;
+import fi.lbd.mobile.location.ImmutablePointLocation;
 import fi.lbd.mobile.mapobjects.MapObject;
 
 /**

@@ -1,32 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal" android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="10dp">
+    android:padding="10dp"
+    android:background="@color/exp_background">
 
-    <Button
-        style="?android:attr/buttonStyleSmall"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Show details"
-        android:id="@+id/detailsButton"
-        android:background="#fff"
-        android:layout_marginLeft="20dp"
-        android:layout_gravity="top"
-        android:padding="5dp"
-        android:onClick="onDetailsClick"/>
+    <ListView
+        android:listSelector="@android:color/transparent"
+        android:cacheColorHint="@android:color/transparent"
+        android:id="@id/android:list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:drawSelectorOnTop="false"
+        android:paddingBottom="5dp">
+    </ListView>
 
-    <Button
-        style="?android:attr/buttonStyleSmall"
-        android:layout_width="100dp"
-        android:layout_height="wrap_content"
-        android:text="Show on map"
-        android:background="#fff"
-        android:id="@+id/mapButton"
-        android:layout_marginLeft="20dp"
-        android:layout_gravity="top"
-        android:padding="5dp"
-        android:onClick="onMapClick"/>
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="20dp"
+        android:background="@color/exp_background"
+        android:gravity="center">
 
+        <Button
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="20dp"
+            android:text="@string/button_details"
+            android:background="@color/button_background"
+            android:id="@+id/detailsButton"
+            android:paddingEnd="30dp"
+            android:paddingStart="30dp"
+            android:minHeight="30dp"
+            android:textSize="6pt"
+            android:onClick="onDetailsClick"
+            android:textColor="@color/white"
+            android:layout_gravity="center_horizontal"/>
+
+        <Button
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:text="@string/button_map"
+            android:background="@color/button_background"
+            android:id="@+id/mapButton"
+            android:paddingEnd="30dp"
+            android:paddingStart="30dp"
+            android:minHeight="30dp"
+            android:textSize="6pt"
+            android:onClick="onMapClick"
+            android:textColor="#ffffff"/>
+
+    </LinearLayout>
 </LinearLayout>

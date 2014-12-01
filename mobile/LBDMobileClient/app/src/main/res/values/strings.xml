@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
-    <string name="mapbox">Mapbox</string>
     <string name="app_name">LBDMobileClient</string>
     <string name="service_name">LBDBackendHandlerService</string>
     <string name="action_settings">Settings</string>
@@ -9,11 +7,21 @@
     <string name="title_tab_objects">Objects</string>
     <string name="title_tab_messages">Messages</string>
     <string name="title_tab_map">Map</string>
-    <string name="hello_world">Hello world!</string>
     <string name="title_activity_map">MapActivity</string>
     <string name="title_activity_details">DetailsActivity</string>
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="title_activity_my">MyActivity</string>
-    <string name="title_activity_finder">FinderActivity</string>
-
+    <string name="button_details">DETAILS</string>
+    <string name="button_map">MAP</string>
+    <string name="address_hint">Search address..</string>
+    <string name="source_base_url">http://lbdbackend.ignorelist.com/locationdata/api/</string>
+    <string name="source_type">Streetlights/</string>
+    <string name="distance">Distance %s</string>
+    <string name="loading">Loading objects...</string>
+    <string name="location_failed">Location failed, please try again</string>
+    <string name="showing_nearest">Showing %d nearest objects</string>
+    <string name="no_nearest_found">No near objects found</string>
+    <string name="showing_results">Search resulted in %d objects</string>
+    <string name="search_id">Search by object ID..</string>
+    <string name="search_address">Search by address..</string>
+    <string name="unknown">Unknown</string>
+    <string name="item">ITEM</string>
 </resources>

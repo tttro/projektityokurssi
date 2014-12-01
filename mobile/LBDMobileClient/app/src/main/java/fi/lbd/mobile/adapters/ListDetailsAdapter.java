@@ -10,48 +10,59 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
 import java.util.Map;
 
 import fi.lbd.mobile.R;
-import fi.lbd.mobile.SelectionManager;
 import fi.lbd.mobile.mapobjects.MapObject;
 
 /**
- * Created by tommi on 20.10.2014.
+ * Created by Ossi on 19.11.2014.
  */
 
-// TODO: http://www.codeofaninja.com/2013/09/android-viewholder-pattern-example.html
 public class ListDetailsAdapter extends BaseAdapter {
-    private MapObject object;
+    private final static String EMPTY = "Empty";
+    private final static String LOCATION = "LOCATION";
 
-    // TODO: tee järkevämmin additional propertyt?
+    // Number of properties, metadata items and coordinate points contained in each object
+    private int amountOfAdditionalProperties = 0;
+    private int amountOfMetaDataProperties = 0;
+    private int amountOfCoordinates = 0;
+
+    private MapObject object;
     private ArrayList<Map.Entry<String,String>> additionalProperties;
+    private ArrayList<Map.Entry<String,String>> metaDataProperties;
     private Context context;
 
-    public void setObject(MapObject obj){
-        this.object = obj;
-        Log.d(obj.getId(), "_________");
-
-        for (Map.Entry <String,String> entry : object.getAdditionalProperties().entrySet()) {
-            Log.d("1. " + entry.getKey(), "_________");
-            Log.d("2. " + entry.getValue(), "_________");
-            additionalProperties.add(entry);
+    public void setObject(MapObject mapObject){
+        this.object = mapObject;
+        if(mapObject != null) {
+            int i = 1;
+            for (Map.Entry<String, String> entry : object.getAdditionalProperties().entrySet()) {
+                if (i <= amountOfAdditionalProperties) {
+                    this.additionalProperties.add(entry);
+                }
+            }
+            i = 1;
+            for (Map.Entry<String, String> entry : object.getMetadataProperties().entrySet()) {
+                if (i <= amountOfMetaDataProperties) {
+                        this.metaDataProperties.add(entry);
+                }
+            }
         }
     }
 
-    public ListDetailsAdapter(Context context) {
+    public ListDetailsAdapter(Context context, MapObject mapObject, int additionalProperties,
+                              int coordinates, int metaDataProperties) {
         this.context = context;
-        additionalProperties = new ArrayList<Map.Entry<String,String>>();
-        object = SelectionManager.get().getSelectedObject();
+        this.additionalProperties = new ArrayList<Map.Entry<String,String>>();
+        this.metaDataProperties = new ArrayList<Map.Entry<String,String>>();
+        setAmountOfProperties(additionalProperties, coordinates, metaDataProperties);
+        setObject(mapObject);
     }
 
     @Override
     public int getCount() {
-        // ID, Location, additional properties
-        Log.d(Integer.toString(this.object.getAdditionalProperties().size() + 1), "_________");
-        return (this.object.getAdditionalProperties()).size() + 1;
+        return amountOfAdditionalProperties + amountOfMetaDataProperties + amountOfCoordinates;
     }
 
     @Override
@@ -74,27 +85,61 @@ public class ListDetailsAdapter extends BaseAdapter {
     public View getView(int i, View view, ViewGroup viewGroup) {
         if(view == null){
             LayoutInflater inflater = ((Activity) this.context).getLayoutInflater();
-            view = inflater.inflate(R.layout.listview_row, viewGroup, false);
+            view = inflater.inflate(R.layout.listview_double_row, viewGroup, false);
         }
-        if (i == 0) {
+
+        if (i >= 0 && i < amountOfAdditionalProperties){
+            String key = additionalProperties.get(i).getKey();
+            if (key == null || key.isEmpty()){
+                key = EMPTY;
+            }
             TextView textViewId = (TextView) view.findViewById(R.id.textViewObjectId);
-            textViewId.setText(object.getId());
-            textViewId.setTag(object.getId());
+            textViewId.setText(key);
+
+            String value = additionalProperties.get(i).getValue();
+            if (value == null || value.isEmpty()){
+                value = EMPTY;
+            }
+            TextView textViewLocation = (TextView) view.findViewById(R.id.textViewObjectLocation);
+            textViewLocation.setText(value);
+        }
+        else if (i == amountOfAdditionalProperties && amountOfCoordinates==1){
+            TextView textViewId = (TextView) view.findViewById(R.id.textViewObjectId);
+            textViewId.setText(LOCATION);
 
             TextView textViewLocation = (TextView) view.findViewById(R.id.textViewObjectLocation);
             textViewLocation.setText(object.getPointLocation().toString());
-            textViewLocation.setTag(object.getId());
-            Log.d("Kutsuttu if", "_______");
         }
-        else if (i > 0){
-            TextView textViewId = (TextView) view.findViewById(R.id.textViewObjectId);
-            textViewId.setText(additionalProperties.get(i-1).getKey());
+        else if(i >= amountOfAdditionalProperties && i-amountOfAdditionalProperties
+                -amountOfCoordinates < amountOfMetaDataProperties){
+            int metaDataIndex = i-amountOfAdditionalProperties-amountOfCoordinates;
 
+            String key = metaDataProperties.get(metaDataIndex).getKey();
+            if (key == null || key.isEmpty()){
+                key = EMPTY;
+            }
+            TextView textViewId = (TextView) view.findViewById(R.id.textViewObjectId);
+            textViewId.setText(key);
+
+            String value = additionalProperties.get(metaDataIndex).getValue();
+            if (value == null || value.isEmpty()){
+                value = EMPTY;
+            }
             TextView textViewLocation = (TextView) view.findViewById(R.id.textViewObjectLocation);
-            textViewLocation.setText(additionalProperties.get(i-1).getValue());
-            Log.d("Kutsuttu else if", "________");
+            textViewLocation.setText(value);
         }
         return view;
     }
-}
 
+    public void setAmountOfProperties(int additionalProperties, int coordinateObjects,
+                                      int metaDataProperties){
+        this.amountOfAdditionalProperties = additionalProperties;
+        this.amountOfMetaDataProperties = metaDataProperties;
+        if(coordinateObjects != 1){
+            this.amountOfCoordinates = 0;
+        }
+        else {
+            this.amountOfCoordinates = 1;
+        }
+    }
+}
