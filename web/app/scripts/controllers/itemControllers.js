@@ -6,6 +6,7 @@ var itemControllers = angular.module('itemControllers', []);
 itemControllers.controller('itemController', function($scope, $http, $rootScope, $filter, $timeout, ObjectsLocal){
 
         $scope.searchQuery = '';
+        $scope.selectedItem = null;
 
         var orginalItemList = [];
         $scope.items = ObjectsLocal.get();
@@ -30,6 +31,25 @@ itemControllers.controller('itemController', function($scope, $http, $rootScope,
 
         $scope.showMarker = function(markerId){
             $rootScope.$broadcast('showMarker', markerId); // delegate marker id to map
+        }
+
+
+        /* Accordion */
+        $scope.click = function(item){
+
+            // If
+            if($scope.selectedItem === item){
+                $scope.selectedItem = null;
+            }
+            else {
+                $scope.selectedItem = item;
+            }
+
+        }
+
+        $scope.isSelected = function(item){
+
+            return $scope.selectedItem === item;
         }
 
 });

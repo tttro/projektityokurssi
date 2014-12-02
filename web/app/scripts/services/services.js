@@ -45,21 +45,8 @@ dataServices.factory('ObjectsService', function($http, appConfig){
 
             return retData;
         },
-
-        getTestData: function(callback) {
-
-            $http({
-                method: 'GET',
-                url: appConfig.baseApiUrl + appConfig.dataTypeUrl + '/inarea/?xbottomleft=23.63&ybottomleft=61.51&ytopright=61.52&xtopright=23.65',
-                //url: 'data/demo.json',
-                headers: appConfig.headerLogin
-            })
-            .success(function(data){
-                callback(data);
-            })
-            .error(function(data,status,header,config){
-                errorHandler(data,status,header,config,appConfig.dataTypeUrl);
-            });
+        search: function(searchQuery){
+            return retData;
         }
     };
 });

@@ -6,13 +6,29 @@ mapControllers.controller('mapController', function($scope, $window,$rootScope, 
 
     // Init
     var currentPosition = new google.maps.LatLng(appConfig.defaultPosition[0], appConfig.defaultPosition[1]); // Tampere
-    var markerClusterer = null;
+    var currentMarker = null;
     var markers = [];
     var currentBounds = null;
     var infoWindow = new google.maps.InfoWindow();
     var panorama = null;
     var itemPreLoadArea = { sw: null, ne: null }
     var geoCoder = new google.maps.Geocoder();
+    var markerIcon = {
+        path: google.maps.SymbolPath.CIRCLE,
+        fillColor: 'red',
+        fillOpacity: 0.6,
+        scale: 5,
+        strokeColor: 'black',
+        strokeWeight: 1
+    }
+    var markerIconHighlight = {
+        path: google.maps.SymbolPath.CIRCLE,
+        fillColor: 'green',
+        fillOpacity: 0.6,
+        scale: 5,
+        strokeColor: 'black',
+        strokeWeight: 1
+    }
 
     $scope.userLocationMarker = null;
     $scope.btnGeolocation = true;
@@ -63,7 +79,7 @@ mapControllers.controller('mapController', function($scope, $window,$rootScope, 
                 for(var i in results.features){
                     itemCount++;
                 }
-                console.log('items loaded:'+itemCount);
+                console.log('Count of items:'+itemCount);
 
                 if(itemCount > 300 ) {
                     if(confirm('Items are more than 300, do you want to load them anyway? '))
@@ -158,6 +174,7 @@ mapControllers.controller('mapController', function($scope, $window,$rootScope, 
         // Custom property for infowindow which tell is that window open or not
         google.maps.InfoWindow.prototype.isOpen = function(){
             var map = infoWindow.getMap();
+            infoWindow.getMarkers
             return (map !== null && typeof map !== "undefined");
         }
     }
@@ -217,6 +234,18 @@ mapControllers.controller('mapController', function($scope, $window,$rootScope, 
                 });
 
             }
+        });
+
+        // Infowindow close-click
+        google.maps.event.addListener(infoWindow,'closeclick',function(){
+            currentMarker.setIcon({
+                path: google.maps.SymbolPath.CIRCLE,
+                fillColor: 'red',
+                fillOpacity: 0.6,
+                scale: 5,
+                strokeColor: 'black',
+                strokeWeight: 1
+            })
         });
 
     }
@@ -292,6 +321,8 @@ mapControllers.controller('mapController', function($scope, $window,$rootScope, 
             $scope.map.setCenter(marker.getPosition());
             panorama.setPosition(marker.getPosition());
 
+            highlightMarker(marker);
+
             if(openedMarkerWindow != null)// Close a previous window
             {
                 openedMarkerWindow.close();
@@ -309,7 +340,19 @@ mapControllers.controller('mapController', function($scope, $window,$rootScope, 
 
         });
 
+        currentMarker = marker;
         markers[item.id] = marker; // Add marker into list
+    }
+
+    function highlightMarker(marker){
+
+        // Set all to default state
+        for(var i in markers){
+            markers[i].setIcon(markerIcon);
+        }
+
+        marker.setIcon(markerIconHighlight); // Highlight clicked icon
+
     }
 
     function createGeoMarker(gPoint){
@@ -373,7 +416,6 @@ mapControllers.controller('mapController', function($scope, $window,$rootScope, 
             }
         });
     }
-
 
 
 });

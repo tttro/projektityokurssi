@@ -1,7 +1,7 @@
 <!-- message.partial.html -->
 <div class="search-form">
     <div class="input-group">
-        <input type="text" class="form-control" ng-model="searchQuery" >
+        <input type="text" class="form-control" ng-model="searchQuery" placeholder="search messages..." >
       <span class="input-group-btn">
         <button class="btn btn-default" type="button"><span class="glyphicon glyphicon-search" aria-hidden="false"></span></button>
       </span>
@@ -19,10 +19,10 @@
         </div>
         <button class="btn btn-primary">Send</button>
     </div>
-    <ul ng-init="open=false">
+    <ul>
         <!-- Details -->
-        <li ng-repeat="message in messageList" ng-class="{'open': open}">
-            <div class="accord-title" is-open="open" ng-click="open = !open">
+        <li ng-repeat="message in messageList" ng-class="{'open': isSelected(message)}">
+            <div class="accord-title" is-open="open" ng-click="click(message)">
                 <div class="fleft">{{message.date}} {{message.title}}</div>
                 <div class="fright">
                     <span ng-if="!open" class="glyphicon glyphicon-chevron-down"></span>

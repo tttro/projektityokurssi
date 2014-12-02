@@ -128,7 +128,7 @@ header a {
 }
 .tab-content-inner {
 
-    top: 138px;
+    top: 165px;
     bottom: 0;
     left: 0;
     right: 0;
@@ -152,16 +152,6 @@ header a {
 .tab-content .accord-title {
     cursor: pointer;
 }
-.tab-content .accord-content {
-
-}
-.tab-content ul {
-
-}
-
-.accord-content {
-
-}
 
 .accord-title {
 
@@ -170,7 +160,7 @@ header a {
 }
 .accord-title .fleft,
 .accord-title .fright{
-
+    overflow: hidden;
 }
 
 .search-form{
@@ -317,6 +307,10 @@ header a {
     -moz-transition:all 0.1s ease-in;
     -o-transition:all 0.1s ease-in;
     transition:all 0.1s ease-in;
+}
+
+#itemSearch .radio {
+    color:#eee;
 }
 
 /* Infowindow */
