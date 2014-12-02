@@ -56,7 +56,7 @@ public class ListDetailsAdapter extends BaseAdapter {
         this.context = context;
         this.additionalProperties = new ArrayList<Map.Entry<String,String>>();
         this.metaDataProperties = new ArrayList<Map.Entry<String,String>>();
-        setAmountOfProperties(additionalProperties, coordinates, metaDataProperties);
+        setAmountOfProperties(mapObject, additionalProperties, coordinates, metaDataProperties);
         setObject(mapObject);
     }
 
@@ -131,10 +131,20 @@ public class ListDetailsAdapter extends BaseAdapter {
         return view;
     }
 
-    public void setAmountOfProperties(int additionalProperties, int coordinateObjects,
-                                      int metaDataProperties){
-        this.amountOfAdditionalProperties = additionalProperties;
-        this.amountOfMetaDataProperties = metaDataProperties;
+    public void setAmountOfProperties(MapObject object, int additionalProperties,
+                                      int coordinateObjects, int metaDataProperties){
+        if(object.getAdditionalProperties().size() >= additionalProperties) {
+            this.amountOfAdditionalProperties = additionalProperties;
+        }
+        else {
+            this.amountOfAdditionalProperties = object.getAdditionalProperties().size();
+        }
+        if(object.getMetadataProperties().size() >= metaDataProperties){
+            this.amountOfMetaDataProperties = metaDataProperties;
+        }
+        else {
+            this.amountOfMetaDataProperties = object.getMetadataProperties().size();
+        }
         if(coordinateObjects != 1){
             this.amountOfCoordinates = 0;
         }

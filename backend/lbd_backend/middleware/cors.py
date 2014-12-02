@@ -11,7 +11,7 @@ _cors_dict = {
 class CorsMiddleware(object):
 
     def process_request(self, request):
-        if request.method == "OPTIONS" and "HTTP_ACCESS_CONTROL_REQUEST_METHOD in request.META":
+        if request.method == "OPTIONS" and "HTTP_ACCESS_CONTROL_REQUEST_METHOD" in request.META:
             return HttpResponse()
         else:
             return None

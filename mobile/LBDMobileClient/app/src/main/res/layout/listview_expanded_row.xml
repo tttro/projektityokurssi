@@ -8,6 +8,8 @@
     android:background="@color/exp_background">
 
     <ListView
+        android:listSelector="@android:color/transparent"
+        android:cacheColorHint="@android:color/transparent"
         android:id="@id/android:list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -35,7 +37,7 @@
             android:minHeight="30dp"
             android:textSize="6pt"
             android:onClick="onDetailsClick"
-            android:textColor="@color/white"
+            android:textColor="@color/white_text"
             android:layout_gravity="center_horizontal"/>
 
         <Button
@@ -49,7 +51,7 @@
             android:minHeight="30dp"
             android:textSize="6pt"
             android:onClick="onMapClick"
-            android:textColor="@color/white"/>
+            android:textColor="#ffffff"/>
 
     </LinearLayout>
 </LinearLayout>

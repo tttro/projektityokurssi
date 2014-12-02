@@ -3,11 +3,8 @@ package fi.lbd.mobile.fragments;
 import android.app.ListFragment;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
-import android.util.Pair;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
@@ -21,45 +18,54 @@ import com.google.android.gms.common.GooglePlayServicesClient;
 import com.squareup.otto.Subscribe;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.TimerTask;
-import java.util.TreeMap;
 
-import fi.lbd.mobile.ListActivity;
-import fi.lbd.mobile.SelectionManager;
 import fi.lbd.mobile.adapters.ListExpandableAdapter;
 import fi.lbd.mobile.events.BusHandler;
 import fi.lbd.mobile.R;
 import fi.lbd.mobile.events.RequestNearObjectsEvent;
 import fi.lbd.mobile.events.ReturnNearObjectsEvent;
+import fi.lbd.mobile.events.ReturnNearObjectsFailedEvent;
 import fi.lbd.mobile.location.ImmutablePointLocation;
 import fi.lbd.mobile.location.LocationHandler;
-import fi.lbd.mobile.location.LocationUtils;
-import fi.lbd.mobile.location.PointLocation;
-import fi.lbd.mobile.mapobjects.MapObject;
-
 
 /**
- * The map object list view. On click causes view change event to OTTO-bus.
- * Receives MapObjects from ObjectRepositoryService via OTTO-bus.
+ * Fragment that shows objects using an expandable list view.
  *
- * Created by tommi on 19.10.2014.
+ * Receives MapObjects from ObjectRepositoryService via OTTO-bus.
+ * Uses LocationHandler to get user location.
+ *
+ * Created by Tommi & Ossi
  */
 public class ObjectListFragment extends ListFragment {
+    // Declare strings used in the status bar.
+    // Defined in onCreateView(), since strings.xml cannot be accessed here.
+    private final String EMPTY = "";
+    private String LOADING;
+    private String LOCATION_FAILED;
+    private String SHOWING_NEAREST;
+    private String NO_NEAREST;
+    private String SEARCH_RESULTS;
+
+    // Declare background colors used in the status bar.
+    // Defined in onCreateView(), since colors.xml cannot be accessed here.
+    private int LOCATION_BACKGROUND;
+    private int SEARCH_BACKGROUND;
+
     private ListExpandableAdapter adapter;
     private ExpandableListView expandableListView;
     private int lastExpanded;
     private EditText searchText;
     private LinearLayout dummyView;
     private TextView statusText;
+    private String lastStatusText = EMPTY;
+    private int lastStatusBackground = 0;
 
     private LocationHandler locationHandler;
-    // Lock and boolean variables used to prevent users from creating more than 1 locationtask
+    // Lock and boolean variables used to prevent users from creating more than one LocationTask
     // at a time, even if they tap the location button repeatedly.
-    private final static Object LOCK = new Object();
-    private static boolean locationInProgress = false;
+    private static final Object LOCK = new Object();
+    private static Boolean locationInProgress = false;
+    LocationTask activeTask = null;
 
     private int firstVisiblePosition;
     private ArrayList<Boolean> groupExpandedArray;
@@ -86,8 +92,17 @@ public class ObjectListFragment extends ListFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.listview_search_fragment, container, false);
 
-        // TODO: siirrä expandable-nuoli oikealle puolelle ettei mene tekstin päälle:
-        // http://stackoverflow.com/questions/5800426/expandable-list-view-move-group-icon-indicator-to-right
+        LOADING = getActivity().getString(R.string.loading);
+        LOCATION_FAILED = getActivity().getString(R.string.location_failed);
+        SHOWING_NEAREST = getActivity().getString(R.string.showing_nearest);
+        NO_NEAREST = getActivity().getString(R.string.no_nearest_found);
+        SEARCH_RESULTS = getActivity().getString(R.string.showing_results);
+        LOCATION_BACKGROUND = getActivity().getResources().getColor(R.color
+                .near_objects_background);
+        SEARCH_BACKGROUND = getActivity().getResources().getColor(R.color
+                .search_results_background);
+        lastStatusBackground = LOCATION_BACKGROUND;
+
         this.expandableListView = (ExpandableListView) view.findViewById(android.R.id.list);
         this.expandableListView.setOnGroupExpandListener(new ExpandListener());
         this.expandableListView.setOnGroupCollapseListener(new CollapseListener());
@@ -110,6 +125,7 @@ public class ObjectListFragment extends ListFragment {
             }
         });
 
+        // Listen to location button press
         view.findViewById(R.id.locationButton).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -138,14 +154,18 @@ public class ObjectListFragment extends ListFragment {
             }
         });
 
+        // Listen to onConnected callback on LocationHandler
         this.locationHandler.addListener( new GooglePlayServicesClient.ConnectionCallbacks() {
             @Override
             public void onConnected(Bundle bundle) {
-                LocationTask task = new LocationTask();
-                task.execute();
+                synchronized (LOCK) {
+                    if (!locationInProgress) {
+                        activeTask = new LocationTask();
+                        activeTask.execute();
+                    }
+                }
                 locationHandler.removeListener(this);
             }
-
             @Override
             public void onDisconnected() {}
         });
@@ -156,22 +176,39 @@ public class ObjectListFragment extends ListFragment {
     @Override
     public void onResume() {
         super.onResume();
+        this.locationHandler.start();
         this.expandableListView.setAdapter(this.adapter);
         BusHandler.getBus().register(this);
 
-        for (int i=0; i<groupExpandedArray.size() ;i++){
+        // Return states of the expanded list elements as they were
+        for (int i = 0; i < groupExpandedArray.size(); ++i){
             if (groupExpandedArray.get(i))
                 expandableListView.expandGroup(i);
         }
         this.expandableListView.setSelection(firstVisiblePosition);
+
+        // Return text and background of the status bar as they were
+        if(statusText.getText().equals(EMPTY)){
+            statusText.setText(lastStatusText);
+            statusText.setBackgroundColor(lastStatusBackground);
+        }
     }
 
     @Override
     public void onPause() {
         super.onPause();
         BusHandler.getBus().unregister(this);
-        int numberOfGroups = adapter.getGroupCount();
+        this.locationHandler.stop();
 
+        // Set active location task as finished, clear the status bar text
+        synchronized (LOCK){
+            locationInProgress = false;
+            activeTask = null;
+        }
+        statusText.setText(EMPTY);
+
+        // Save expandable list view item states
+        int numberOfGroups = adapter.getGroupCount();
         this.groupExpandedArray.clear();
         for (int i=0;i<numberOfGroups;i++){
             this.groupExpandedArray.add(this.expandableListView.isGroupExpanded(i));
@@ -181,24 +218,47 @@ public class ObjectListFragment extends ListFragment {
         hideKeyBoard();
     }
 
+    /**
+     *  Receive nearest objects from BackendHandler by OTTO bus.
+     *  Updates the list view and status bar accordingly.
+     */
     @Subscribe
     public void onEvent(ReturnNearObjectsEvent event) {
         this.adapter.clear();
 
+        statusText.setBackgroundColor(LOCATION_BACKGROUND);
+        lastStatusBackground = LOCATION_BACKGROUND;
         if (event.getMapObjects() != null) {
             this.adapter.addAll(event.getMapObjects());
-
-            statusText.setText(String.format(getResources().getString(R.string.showing_nearest),
-                    event.getMapObjects().size()));
+            statusText.setText(String.format(SHOWING_NEAREST, event.getMapObjects().size()));
+            lastStatusText = String.format(SHOWING_NEAREST, event.getMapObjects().size());
         }
         else {
-            statusText.setText(getResources().getString(R.string.no_nearest_found));
+            statusText.setText(NO_NEAREST);
+            lastStatusText = NO_NEAREST;
         }
         this.getListView().requestLayout();
-        statusText.setBackgroundColor(getActivity().getResources().
-                getColor(R.color.near_objects_background));
 
         synchronized (LOCK){
+            this.activeTask = null;
+            locationInProgress = false;
+        }
+    }
+
+    /**
+     *  If BackendService was unable to fetch new objects from the backend,
+     *  update status text and release lock from "Locate" button.
+     */
+    @Subscribe
+    public void onEvent(ReturnNearObjectsFailedEvent event) {
+
+        statusText.setBackgroundColor(lastStatusBackground);
+        statusText.setText(LOCATION_FAILED);
+        lastStatusText = LOCATION_FAILED;
+        this.getListView().requestLayout();
+
+        synchronized (LOCK){
+            this.activeTask = null;
             locationInProgress = false;
         }
     }
@@ -221,7 +281,7 @@ public class ObjectListFragment extends ListFragment {
         }
     }
 
-    // Collapse old expanded group and scroll to correct position
+    // When expanding a list element: collapse old expanded element and scroll to correct position
     public class ExpandListener implements ExpandableListView.OnGroupExpandListener {
         @Override
         public void onGroupExpand(int groupPosition) {
@@ -244,34 +304,47 @@ public class ObjectListFragment extends ListFragment {
 
     // TODO: search functionality
     public void performSearch(){
-        if (this.locationHandler != null && this.locationHandler.isConnected()) {
+        if (this.locationHandler != null && this.locationHandler.getLocationClient().isConnected()) {
             this.locationHandler.updateCachedLocation();
-            statusText.setText(String.format(getResources().getString(R.string.showing_results), 0));
-            statusText.setBackgroundColor(getActivity().getResources().
-                    getColor(R.color.search_results_background));
+            statusText.setText(String.format(SEARCH_RESULTS, 0));
+            lastStatusText = String.format(SEARCH_RESULTS, 0);
+            statusText.setBackgroundColor(SEARCH_BACKGROUND);
+            lastStatusBackground = SEARCH_BACKGROUND;
         }
     }
 
     public void showNearestObjects() {
-        if(!locationInProgress) {
-            LocationTask task = new LocationTask();
-            task.execute();
-            Log.d("******", "New locationtask started.");
+        synchronized (LOCK){
+            if(!locationInProgress) {
+                this.activeTask = new LocationTask();
+                activeTask.execute();
+            }
         }
     }
 
+    /**
+     *  AsyncTask that is created when user presses the location button.
+     *
+     *  Updates the user location by LocationHandler, then asks for a new set of
+     *  near objects from BackendHandler using an OTTO bus event.
+     *
+     *  @return Returns true if user location was successful and OTTO event was successfully sent.
+     *  @return Returns false if user location was unsuccessful during a 5s timeout, or if the task
+     *  is cancelled.
+     */
     private class LocationTask extends AsyncTask<Void, Void, Boolean>{
         @Override
         protected void onPreExecute(){
-            statusText.setText(getResources().getString(R.string.loading));
             synchronized (LOCK){
                 locationInProgress = true;
             }
+            statusText.setText(LOADING);
+            statusText.setBackgroundColor(LOCATION_BACKGROUND);
         }
         @Override
         protected Boolean doInBackground(Void... params) {
             for (int i = 1; i < 5; ++i) {
-                if (locationHandler != null && locationHandler.isConnected()) {
+                if (locationHandler != null && locationHandler.getLocationClient().isConnected()) {
                     locationHandler.updateCachedLocation();
                     if (locationHandler.getCachedLocation() != null) {
                         BusHandler.getBus().post(new RequestNearObjectsEvent(new ImmutablePointLocation(
@@ -283,7 +356,7 @@ public class ObjectListFragment extends ListFragment {
                 try{
                     Thread.sleep(1000);
                 } catch (InterruptedException exception){
-                    exception.printStackTrace();
+                    return false;
                 }
             }
             return false;
@@ -291,14 +364,16 @@ public class ObjectListFragment extends ListFragment {
         @Override
         protected void onPostExecute(Boolean result) {
             if(!result) {
-                statusText.setText(getResources().getString(R.string.location_failed));
                 synchronized (LOCK){
                     locationInProgress = false;
+                    activeTask = null;
                 }
+                statusText.setText(LOCATION_FAILED);
+                lastStatusText = LOCATION_FAILED;
+                lastStatusBackground = LOCATION_BACKGROUND;
             }
         }
     }
-
  }
 
 
