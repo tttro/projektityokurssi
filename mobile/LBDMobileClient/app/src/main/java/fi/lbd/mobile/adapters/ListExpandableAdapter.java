@@ -38,7 +38,7 @@ public class ListExpandableAdapter extends BaseExpandableListAdapter {
 
     // Number of additional properties, coordinates and metadata properties that are shown in the
     // expanded list
-    private final static int MIN_ADDITIONAL_PROPERTIES = 3;
+    private final static int MIN_ADDITIONAL_PROPERTIES = 2;
     private final static int MIN_COORDINATES = 0;
     private final static int MIN_METADATA_PROPERTIES = 1;
     private final static int ADDITIONAL_PADDING = 20;

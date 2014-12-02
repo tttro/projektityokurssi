@@ -2,7 +2,7 @@
 var dataServices = angular.module('dataServices', ['ngResource']);
 var dataSet = null;
 
-dataServices.factory('ItemDataService', function($http, appConfig){
+dataServices.factory('ObjectsService', function($http, appConfig){
     return {
 
         getSingle : function(itemId, callback){
@@ -45,27 +45,14 @@ dataServices.factory('ItemDataService', function($http, appConfig){
 
             return retData;
         },
-
-        getTestData: function(callback) {
-
-            $http({
-                method: 'GET',
-                url: appConfig.baseApiUrl + appConfig.dataTypeUrl + '/inarea/?xbottomleft=23.63&ybottomleft=61.51&ytopright=61.52&xtopright=23.65',
-                //url: 'data/demo.json',
-                headers: appConfig.headerLogin
-            })
-            .success(function(data){
-                callback(data);
-            })
-            .error(function(data,status,header,config){
-                errorHandler(data,status,header,config,appConfig.dataTypeUrl);
-            });
+        search: function(searchQuery){
+            return retData;
         }
     };
 });
 
 // A local data storage (model) which controllers uses
-dataServices.factory('Data', function(){
+dataServices.factory('ObjectsLocal', function(){
     return {
         get: function() {
             return dataSet;

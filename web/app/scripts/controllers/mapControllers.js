@@ -2,103 +2,42 @@
 
 var mapControllers = angular.module('mapControllers', []);
 
-mapControllers.controller('mapController', function($scope, $window,$rootScope, $timeout, ItemDataService, Data, appConfig){
+mapControllers.controller('mapController', function($scope, $window,$rootScope, $timeout, ObjectsService, ObjectsLocal, appConfig){
 
     // Init
     var currentPosition = new google.maps.LatLng(appConfig.defaultPosition[0], appConfig.defaultPosition[1]); // Tampere
-    var markerClusterer = null;
+    var currentMarker = null;
     var markers = [];
-    var currentBounds = null;
     var infoWindow = new google.maps.InfoWindow();
     var panorama = null;
-    var itemPreLoadArea = {
-        sw:null,
-        ne:null
+    var itemPreLoadArea = { sw: null, ne: null }
+    var markerIcon = {
+        path: google.maps.SymbolPath.CIRCLE,
+        fillColor: 'red',
+        fillOpacity: 0.6,
+        scale: 5,
+        strokeColor: 'black',
+        strokeWeight: 1
     }
-
-    var geoCoder = new google.maps.Geocoder();
+    var markerIconHighlight = {
+        path: google.maps.SymbolPath.CIRCLE,
+        fillColor: 'green',
+        fillOpacity: 0.6,
+        scale: 5,
+        strokeColor: 'black',
+        strokeWeight: 1
+    }
 
     $scope.userLocationMarker = null;
     $scope.btnGeolocation = true;
 
 
-    // Init map
-    var mapOptions = {
-        zoom: appConfig.defaultZoom,
-        center: currentPosition,
-        streetViewControl: false,
-        zoomControl: true,
-        zoomControlOptions: {
-            style: google.maps.ZoomControlStyle.LARGE,
-            position: google.maps.ControlPosition.TOP_RIGHT
-        },
-        panControl: true,
-        panControlOptions: {
-            position: google.maps.ControlPosition.TOP_RIGHT
-        }
+    initializeMap(currentPosition);
 
-    }
 
-    // Set map
-    $scope.map = new google.maps.Map(document.getElementById('map'), mapOptions);
+    initializeMapButtons();
 
-    /*** Init google maps events ***/
 
-    var geoButton = document.getElementById('btnGeolocation');
-
-    // Init Search-box
-    var input = /** @type {HTMLInputElement} */(
-        document.getElementById('pac-input'));
-    var searchBox = new google.maps.places.SearchBox(
-        /** @type {HTMLInputElement} */(input));
-
-    // [START region_getplaces]
-    // Listen for the event fired when the user selects an item from the
-    // pick list.
-    google.maps.event.addListener(searchBox, 'places_changed', function() {
-        var places = searchBox.getPlaces();
-
-        if (places.length == 0) {
-            return;
-        }
-
-        var bounds = new google.maps.LatLngBounds();
-
-        for (var i = 0, place; place = places[i]; i++) {
-            bounds.extend(place.geometry.location);
-
-        }
-
-        $scope.map.fitBounds(bounds);
-    });
-
-    // Add tool-buttons on map
-    $scope.map.controls[google.maps.ControlPosition.TOP_LEFT].push(btnGeolocation);
-    $scope.map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
-
-    // Geolocation button event-handler
-    google.maps.event.addDomListener(geoButton, 'click', function(){
-
-       if(navigator.geolocation)
-        {
-
-            navigator.geolocation.getCurrentPosition(function(position){
-                $scope.showLoadingIcon = true;
-                console.log(position.coords.latitude+", " +position.coords.longitude);
-                var currentPosition =  new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-
-                createGeoMarker(currentPosition);
-                $scope.map.setZoom(appConfig.defaultZoom);
-                $scope.map.setCenter(currentPosition);
-
-                $scope.showLoadingIcon = false;
-
-                }, function() {
-                handleNoGeolocation(true);
-            });
-
-        }
-    });
 
     // Event handler when Maps is loaded and ready
     function calculateItemLoadArea(currentBounds) {
@@ -133,12 +72,33 @@ mapControllers.controller('mapController', function($scope, $window,$rootScope, 
 
             calculateItemLoadArea(viewportBounds);
 
-            ItemDataService.getInarea(itemPreLoadArea,function(results) {
-                Data.set(results);
+            ObjectsService.getInarea(itemPreLoadArea,function(results) {
+                var itemCount = 0;
+                for(var i in results.features){
+                    itemCount++;
+                }
+                console.log('Count of items:'+itemCount);
 
-                loadMarkers(results);
+                if(itemCount > 300 ) {
+                    if(confirm('Items are more than 300, do you want to load them anyway? '))
+                    {
+                        ObjectsLocal.set(results);
 
-                $rootScope.$broadcast('dataIsLoaded');
+                        loadMarkers(results);
+
+                        $rootScope.$broadcast('dataIsLoaded');
+                    }
+                }
+                else
+                {
+                    ObjectsLocal.set(results);
+
+                    loadMarkers(results);
+
+                    $rootScope.$broadcast('dataIsLoaded');
+                }
+
+
                 $scope.showLoadingIcon = false;
 
             });
@@ -186,6 +146,109 @@ mapControllers.controller('mapController', function($scope, $window,$rootScope, 
 
 
     /*** Helper functions ***/
+
+    function initializeMap(currentPosition) {
+
+        // Initialize google maps
+        var mapOptions = {
+            zoom: appConfig.defaultZoom,
+            center: currentPosition,
+            streetViewControl: false,
+            zoomControl: true,
+            zoomControlOptions: {
+                style: google.maps.ZoomControlStyle.LARGE,
+                position: google.maps.ControlPosition.TOP_RIGHT
+            },
+            panControl: true,
+            panControlOptions: {
+                position: google.maps.ControlPosition.TOP_RIGHT
+            }
+
+        }
+
+        // Set map
+        $scope.map = new google.maps.Map(document.getElementById('map'), mapOptions);
+
+        // Custom property for infowindow which tell is that window open or not
+        google.maps.InfoWindow.prototype.isOpen = function(){
+            var map = infoWindow.getMap();
+            infoWindow.getMarkers
+            return (map !== null && typeof map !== "undefined");
+        }
+    }
+
+    function initializeMapButtons() {
+        /*** Init google maps events ***/
+
+        var geoButton = document.getElementById('btnGeolocation');
+
+        // Init Search-box
+        var input = (document.getElementById('pac-input'));
+        var searchBox = new google.maps.places.SearchBox((input));
+
+        // Address search
+        // Listen for the event fired when the user selects an item from the
+        // pick list.
+        google.maps.event.addListener(searchBox, 'places_changed', function() {
+            var places = searchBox.getPlaces();
+
+            if (places.length == 0) {
+                return;
+            }
+
+            var bounds = new google.maps.LatLngBounds();
+
+            for (var i = 0, place; place = places[i]; i++) {
+                bounds.extend(place.geometry.location);
+
+            }
+
+            $scope.map.fitBounds(bounds);
+        });
+
+        // Add tool-buttons on map
+        $scope.map.controls[google.maps.ControlPosition.TOP_LEFT].push(btnGeolocation);
+        $scope.map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
+
+        // Geolocation button event-handler
+        google.maps.event.addDomListener(geoButton, 'click', function(){
+
+            if(navigator.geolocation)
+            {
+
+                navigator.geolocation.getCurrentPosition(function(position){
+                    $scope.showLoadingIcon = true;
+                    console.log(position.coords.latitude+", " +position.coords.longitude);
+                    var currentPosition =  new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+
+                    createGeoMarker(currentPosition);
+                    $scope.map.setZoom(appConfig.defaultZoom);
+                    $scope.map.setCenter(currentPosition);
+
+                    $scope.showLoadingIcon = false;
+
+                }, function() {
+                    handleNoGeolocation(true);
+                });
+
+            }
+        });
+
+        // Infowindow close-click
+        google.maps.event.addListener(infoWindow,'closeclick',function(){
+            currentMarker.setIcon({
+                path: google.maps.SymbolPath.CIRCLE,
+                fillColor: 'red',
+                fillOpacity: 0.6,
+                scale: 5,
+                strokeColor: 'black',
+                strokeWeight: 1
+            })
+        });
+
+    }
+
+    // An error handler for user's geolocation button
     var handleNoGeolocation = function (error) {
         if(error) {
             alert("Geolocation service failed.");
@@ -197,11 +260,14 @@ mapControllers.controller('mapController', function($scope, $window,$rootScope, 
 
     var loadMarkers =  function (data) {
 
-        clearMarkers(markers);
+        var objectsFeatures = data.features; // Select features from data
 
-        angular.forEach(data.features, function(value,key){
-            createMarker(value);
-        });
+        clearMarkers(markers); // Clear markers from the map
+
+        // Loop through each objects and make it a marker
+        for(var i in objectsFeatures){
+            createMarker(objectsFeatures[i]);
+        }
 
     }
 
@@ -227,17 +293,22 @@ mapControllers.controller('mapController', function($scope, $window,$rootScope, 
         var markerDetails = "";
         var itemProperties = item.properties;
 
-        // Go through all item's properties and put them into table for an infowindow
+        // Go through all item's properties and put them into table and show on an infowindow
         for(key in itemProperties){
 
             if(key != 'metadata'){
-                markerDetails += "<tr><th>"+key+"</th><td>"+itemProperties[key]+"</td></tr>";
+                markerDetails += "<tr>" +
+                "<th>"+key+"</th>" +
+                "<td>"+itemProperties[key]+"</td>" +
+                "</tr>";
             }
         }
 
-        marker.content = "<div class='infowindow'>" +
-            "<h4>"+item.id+"</h4>"+
-        "<table class='markerDetails'>"+markerDetails+"</table></div>";
+        marker.content =
+            "<div class='infowindow'>" +
+            "<h4>" + item.id + "</h4>"+
+            "<table class='markerDetails'>" + markerDetails + "</table>" +
+            "</div>";
 
 
 
@@ -247,6 +318,8 @@ mapControllers.controller('mapController', function($scope, $window,$rootScope, 
 
             $scope.map.setCenter(marker.getPosition());
             panorama.setPosition(marker.getPosition());
+
+            highlightMarker(marker);
 
             if(openedMarkerWindow != null)// Close a previous window
             {
@@ -265,7 +338,19 @@ mapControllers.controller('mapController', function($scope, $window,$rootScope, 
 
         });
 
+        currentMarker = marker;
         markers[item.id] = marker; // Add marker into list
+    }
+
+    function highlightMarker(marker){
+
+        // Set all to default state
+        for(var i in markers){
+            markers[i].setIcon(markerIcon);
+        }
+
+        marker.setIcon(markerIconHighlight); // Highlight clicked icon
+
     }
 
     function createGeoMarker(gPoint){
@@ -311,28 +396,6 @@ mapControllers.controller('mapController', function($scope, $window,$rootScope, 
         }
         return true;
 
-    }
-
-    function getAddressByCoords(latlng){
-        geoCoder.geocode({'latLng': latlng}, function(results, status) {
-            if (status == google.maps.GeocoderStatus.OK) {
-
-                if (results[1]) {
-                   return results[0].formatted_address;
-
-                } else {
-                    alert('No results found');
-                    return "";
-                }
-            } else {
-                alert('Geocoder failed due to: ' + status);
-            }
-        });
-    }
-
-    google.maps.InfoWindow.prototype.isOpen = function(){
-        var map = infoWindow.getMap();
-        return (map !== null && typeof map !== "undefined");
     }
 
 });

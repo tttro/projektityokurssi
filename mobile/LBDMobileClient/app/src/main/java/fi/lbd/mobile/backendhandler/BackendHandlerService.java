@@ -25,6 +25,7 @@ import fi.lbd.mobile.events.RequestNearObjectsEvent;
 import fi.lbd.mobile.events.RequestObjectsInAreaEvent;
 import fi.lbd.mobile.events.ReturnMapObjectEvent;
 import fi.lbd.mobile.events.ReturnNearObjectsEvent;
+import fi.lbd.mobile.events.ReturnNearObjectsFailedEvent;
 import fi.lbd.mobile.events.ReturnObjectsInAreaEvent;
 import fi.lbd.mobile.mapobjects.MapObject;
 
@@ -105,7 +106,8 @@ public class BackendHandlerService extends Service {
                 if (response.isOk()) {
                     BusHandler.getBus().post(new ReturnNearObjectsEvent(response.getObjects()));
                 } else {
-                    // TODO: Jos suoritus ei onnistunut edes uudelleenyrittämällä
+                    // Jos suoritus ei onnistunut edes uudelleenyrittämällä
+                    BusHandler.getBus().post(new ReturnNearObjectsFailedEvent());
                 }
             }
         });

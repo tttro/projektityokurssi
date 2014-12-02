@@ -122,9 +122,13 @@ header a {
 .sidebar {
     background: #2f3a41;
 }
+.sendmsg-form {
+   border-top: 1px solid #222e36;
+   padding: 12px 14px;
+}
 .tab-content-inner {
 
-    top: 200px;
+    top: 165px;
     bottom: 0;
     left: 0;
     right: 0;
@@ -144,31 +148,24 @@ header a {
 .tab-content ul li {
     border-bottom: 1px solid #222e36;
     color: #fff;
-
-
 }
 .tab-content .accord-title {
     cursor: pointer;
-}
-.tab-content .accord-content {
-
-}
-.tab-content ul {
-
-}
-
-.accord-content {
-    padding: 10px 15px;
 }
 
 .accord-title {
 
     padding: 10px 15px;
+    height: 40px;
+}
+.accord-title .fleft,
+.accord-title .fright{
+    overflow: hidden;
 }
 
 .search-form{
-    margin: 25px 0;
-    padding: 12px 14px;
+    margin: 14px 0;
+    padding: 0px 14px;
 }
 
 #tabs,
@@ -186,7 +183,7 @@ header a {
 }
 #tabs ul li a{
     color: #fff;
-    padding: 20%;
+    padding: 10px 0;
     display: block;
     font-size: 18px;
 }
@@ -279,15 +276,43 @@ header a {
 .open .accord-content {
     background: #eaeaea;
     color: #555;
+    padding: 10px 15px;
+    opacity: 1;
+    height: auto;
+    display: block;
+    -webkit-transition: opacity 0.1s ease-out;
+    -moz-transition:opacity 0.1s ease-out;
+    -o-transition:opacity 0.1s ease-out;
+    transition:opacity 0.1s ease-out;
 }
 .open .accord-title {
     background: #eaeaea;
     color: #000000;
 }
-.accord-content .btn  {
+
+.accord-content .btn,
+.sendmsg-form .btn
+{
     width: 100%;
     margin-top: 10px;
 }
+/* Accordion animation */
+
+.accord-content{
+
+    opacity: 0;
+    height: 0;
+    overflow: hidden;
+    -webkit-transition: all 0.1s ease-in;
+    -moz-transition:all 0.1s ease-in;
+    -o-transition:all 0.1s ease-in;
+    transition:all 0.1s ease-in;
+}
+
+#itemSearch .radio {
+    color:#eee;
+}
+
 /* Infowindow */
 .markerDetails {
     border-collapse: collapse;
@@ -309,4 +334,10 @@ header a {
 .markerDetails tr:nth-child(even) th,
 .markerDetails tr:nth-child(even) td {
     background-color: #f7f7f7;
+}
+
+.address {
+    font-style: italic;
+    margin-bottom: 10px;
+    border-bottom: 1px solid #ccc;
 }

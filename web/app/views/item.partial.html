@@ -1,21 +1,34 @@
 <!-- item.partial.html -->
 <div id="itemSearch" class="search-form">
     <div class="input-group">
-        <input type="text" class="form-control" ng-model="searchQuery" >
+        <input type="text" class="form-control" ng-model="searchQuery" placeholder="search items..." >
       <span class="input-group-btn">
         <button class="btn btn-default" ng-click="itemSearch(searchQuery)" type="button"><span class="glyphicon glyphicon-search" aria-hidden="false"></span></button>
       </span>
     </div>
+    <div class="input-group radio">
+        <label class="radio-inline">
+            <input type="radio" name="inlineRadioOptions" id="inlineRadio1" checked="checked" value="1"> Map
+        </label>
+        <label class="radio-inline">
+            <input type="radio" name="inlineRadioOptions" id="inlineRadio2" value="2"> All
+        </label>
+    </div>
 </div>
 
 <div class="tab-content-inner">
-    <ul ng-init="open=false">
+    <ul>
         <!-- Details -->
-        <li ng-repeat="item in items.features" ng-class="{'open': open}">
-            <div class="accord-title" is-open="open" ng-click="open = !open">
-                {{item.id}}
+        <li ng-repeat="item in items.features" ng-class="{'open': isSelected(item)}">
+            <div class="accord-title" is-open="open" ng-click="click(item) ">
+                <div class="fleft">{{item.id}}</div>
+                <div class="fright">
+                    <span ng-if="!open" class="glyphicon glyphicon-chevron-down"></span>
+                    <span ng-if="open" class="glyphicon glyphicon-chevron-up"></span>
+                </div>
             </div>
-            <div class="accord-content" ng-show="open" >
+            <div class="accord-content" style="clear: both">
+                <div class="address"><div ng-show="showLoadingIcon"><img src="img/ajax-loader_min.gif"></div>{{address}}</div>
                 <div class="list-item">
                     <div ng-repeat="(key, val) in item.properties">
 
@@ -30,8 +43,9 @@
                                 <strong>{{key}}</strong> <br>{{val}}
                             </div>
                         </div>
+                    </div>
+                    <button class="btn btn-primary" ng-click="showMarker(item.id)">Show on map</button>
                 </div>
-                <button class="btn btn-primary" ng-click="showMarker(item.id)">Show on map</button>
             </div>
         </li>
     </ul>

@@ -24,6 +24,7 @@ import fi.lbd.mobile.events.BusHandler;
 import fi.lbd.mobile.R;
 import fi.lbd.mobile.events.RequestNearObjectsEvent;
 import fi.lbd.mobile.events.ReturnNearObjectsEvent;
+import fi.lbd.mobile.events.ReturnNearObjectsFailedEvent;
 import fi.lbd.mobile.location.ImmutablePointLocation;
 import fi.lbd.mobile.location.LocationHandler;
 
@@ -236,6 +237,24 @@ public class ObjectListFragment extends ListFragment {
             statusText.setText(NO_NEAREST);
             lastStatusText = NO_NEAREST;
         }
+        this.getListView().requestLayout();
+
+        synchronized (LOCK){
+            this.activeTask = null;
+            locationInProgress = false;
+        }
+    }
+
+    /**
+     *  If BackendService was unable to fetch new objects from the backend,
+     *  update status text and release lock from "Locate" button.
+     */
+    @Subscribe
+    public void onEvent(ReturnNearObjectsFailedEvent event) {
+
+        statusText.setBackgroundColor(lastStatusBackground);
+        statusText.setText(LOCATION_FAILED);
+        lastStatusText = LOCATION_FAILED;
         this.getListView().requestLayout();
 
         synchronized (LOCK){
