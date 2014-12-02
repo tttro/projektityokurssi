@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import fi.lbd.mobile.adapters.ListExpandableAdapter;
 import fi.lbd.mobile.events.BusHandler;
 import fi.lbd.mobile.R;
+import fi.lbd.mobile.events.RequestFailedEvent;
 import fi.lbd.mobile.events.RequestNearObjectsEvent;
 import fi.lbd.mobile.events.ReturnNearObjectsEvent;
 import fi.lbd.mobile.events.ReturnNearObjectsFailedEvent;
@@ -250,17 +251,19 @@ public class ObjectListFragment extends ListFragment {
      *  update status text and release lock from "Locate" button.
      */
     @Subscribe
-    public void onEvent(ReturnNearObjectsFailedEvent event) {
+    public void onEvent(RequestFailedEvent event) {
+        if (event.getFailedEvent() instanceof RequestNearObjectsEvent) {
+            statusText.setBackgroundColor(lastStatusBackground);
+            statusText.setText(LOCATION_FAILED);
+            lastStatusText = LOCATION_FAILED;
+            this.getListView().requestLayout();
 
-        statusText.setBackgroundColor(lastStatusBackground);
-        statusText.setText(LOCATION_FAILED);
-        lastStatusText = LOCATION_FAILED;
-        this.getListView().requestLayout();
-
-        synchronized (LOCK){
-            this.activeTask = null;
-            locationInProgress = false;
+            synchronized (LOCK){
+                this.activeTask = null;
+                locationInProgress = false;
+            }
         }
+
     }
 
     public void hideKeyBoard() {
@@ -349,7 +352,7 @@ public class ObjectListFragment extends ListFragment {
                     if (locationHandler.getCachedLocation() != null) {
                         BusHandler.getBus().post(new RequestNearObjectsEvent(new ImmutablePointLocation(
                                 locationHandler.getCachedLocation().getLatitude(),
-                                locationHandler.getCachedLocation().getLongitude()), 0.001, false));
+                                locationHandler.getCachedLocation().getLongitude()), 0.002, false));
                         return true;
                     }
                 }

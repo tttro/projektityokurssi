@@ -2,6 +2,7 @@ package fi.lbd.mobile.events;
 
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 
 import com.squareup.otto.Bus;
 
@@ -15,6 +16,7 @@ public class WrappedEventBus {
     private final Handler handler = new Handler(Looper.getMainLooper());
 
     public void post(final AbstractEvent event) {
+        Log.v(this.getClass().getSimpleName(), "Bus("+this+") event: "+ event);
         if (Looper.myLooper() == Looper.getMainLooper()) {
             this.bus.post(event);
         } else {
@@ -28,10 +30,12 @@ public class WrappedEventBus {
     }
 
     public void register(Object object) {
+        Log.v(this.getClass().getSimpleName(), "Bus("+this+") register: "+ object);
         this.bus.register(object);
     }
 
     public void unregister(java.lang.Object object) {
+        Log.v(this.getClass().getSimpleName(), "Bus("+this+") unregister: "+ object);
         this.bus.unregister(object);
     }
 }

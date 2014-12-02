@@ -19,6 +19,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 
 /**
+ * Tests for ImmutableMapObject.
+ *
  * Created by Tommi.
  */
 @RunWith(CustomRobolectricTestRunner.class)

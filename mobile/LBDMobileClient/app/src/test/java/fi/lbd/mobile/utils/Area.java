@@ -6,6 +6,8 @@ import java.util.List;
 import fi.lbd.mobile.mapobjects.MapObject;
 
 /**
+ * Helper class used in tests.
+ *
  * Created by Tommi.
  */
 public class Area {

@@ -96,6 +96,8 @@ public final class URLReader {
             Log.e(URLReader.class.getSimpleName(), "Reading url encountered HTTP protocol error: "+ e.getMessage());
         } catch (IOException e) {
             Log.e(URLReader.class.getSimpleName(), "Reading url encountered I/O error: "+ e.getMessage());
+        } catch (IllegalArgumentException e) {
+            Log.e(URLReader.class.getSimpleName(), "Given url is not in valid format: "+ e.getMessage());
         } finally {
             if (bufferedReader != null) {
                 try {

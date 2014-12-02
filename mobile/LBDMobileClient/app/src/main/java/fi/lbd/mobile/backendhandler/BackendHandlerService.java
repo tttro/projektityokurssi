@@ -10,6 +10,7 @@ import com.squareup.otto.Subscribe;
 import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ScheduledExecutorService;
@@ -20,6 +21,7 @@ import fi.lbd.mobile.R;
 import fi.lbd.mobile.events.AbstractEvent;
 import fi.lbd.mobile.events.BusHandler;
 import fi.lbd.mobile.events.CacheObjectsInAreaEvent;
+import fi.lbd.mobile.events.RequestFailedEvent;
 import fi.lbd.mobile.events.RequestMapObjectEvent;
 import fi.lbd.mobile.events.RequestNearObjectsEvent;
 import fi.lbd.mobile.events.RequestObjectsInAreaEvent;
@@ -35,6 +37,7 @@ import fi.lbd.mobile.mapobjects.MapObject;
  * Created by Tommi.
  */
 public class BackendHandlerService extends Service {
+    private static final long MAX_CACHE_TIME = 1000 * 60 * 1; // 1 Min
 
     // Amount of threads in the executor pool
     private static final int EXECUTING_THREADS = 4;
@@ -46,7 +49,7 @@ public class BackendHandlerService extends Service {
     private static final TimeUnit INTERVAL_TIME_UNIT = TimeUnit.SECONDS;
 
     private final BlockingQueue<Runnable> workQueue = new LinkedBlockingQueue<Runnable>();
-    private final ThreadPoolExecutor executorPool = new ThreadPoolExecutor(
+    private ThreadPoolExecutor executorPool = new ThreadPoolExecutor(
             EXECUTING_THREADS,
             EXECUTING_THREADS,
             THREAD_TIMEOUT,
@@ -63,7 +66,7 @@ public class BackendHandlerService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        this.backendHandler = new CachingBackendHandler(getString(R.string.source_base_url), getString(R.string.source_type));
+        this.backendHandler = new CachingBackendHandler(getString(R.string.source_base_url), getString(R.string.source_type), MAX_CACHE_TIME);
 
         // Start the repeating check for outdated caches.
         this.scheduledExecutor.scheduleAtFixedRate(new Runnable() {
@@ -75,6 +78,20 @@ public class BackendHandlerService extends Service {
         // Recreate the service when there is enough memory, if the OS decides to destroy
         // the service because of low memory.
         return START_STICKY;
+    }
+
+    /**
+     * Required for unit testing.
+     */
+    public boolean awaitTermination() throws InterruptedException {
+        return this.executorPool.awaitTermination(2, TimeUnit.SECONDS);
+    }
+
+    /**
+     * Required for unit testing.
+     */
+    public void shutdown() {
+        this.executorPool.shutdown();
     }
 
     @Override
@@ -102,12 +119,14 @@ public class BackendHandlerService extends Service {
             @Override
             public void run() {
                 Log.d(this.getClass().getSimpleName(), "RequestNearObjectsEvent: "+ event.getLocation());
+
                 HandlerResponse response = backendHandler.getObjectsNearLocation(event.getLocation(), event.getRange(), event.isMinimized());
                 if (response.isOk()) {
                     BusHandler.getBus().post(new ReturnNearObjectsEvent(response.getObjects()));
+                    Log.d(this.getClass().getSimpleName(), "RequestNearObjectsEvent: Sent OK response.");
                 } else {
-                    // Jos suoritus ei onnistunut edes uudelleenyrittämällä
-                    BusHandler.getBus().post(new ReturnNearObjectsFailedEvent());
+                    BusHandler.getBus().post(new RequestFailedEvent(event, response.getStatus().toString())); // TODO: HandlerResponse reason.
+                    Log.d(this.getClass().getSimpleName(), "RequestNearObjectsEvent: Sent FAIL response.");
                 }
             }
         });
@@ -127,8 +146,10 @@ public class BackendHandlerService extends Service {
                 HandlerResponse response = backendHandler.getObjectsInArea(event.getSouthWest(), event.getNorthEast(), event.isMinimized());
                 if (response.isOk()) {
                     BusHandler.getBus().post(new ReturnObjectsInAreaEvent(event.getSouthWest(), event.getNorthEast(), response.getObjects()));
+                    Log.d(this.getClass().getSimpleName(), "RequestObjectsInAreaEvent: Sent OK response.");
                 } else {
-                    // TODO: Jos suoritus ei onnistunut edes uudelleenyrittämällä
+                    BusHandler.getBus().post(new RequestFailedEvent(event, response.getStatus().toString())); // TODO: HandlerResponse reason.
+                    Log.d(this.getClass().getSimpleName(), "RequestObjectsInAreaEvent: Sent FAIL response.");
                 }
 
             }
@@ -149,9 +170,10 @@ public class BackendHandlerService extends Service {
                     Log.d(this.getClass().getSimpleName(), "CacheObjectsInAreaEvent: "+ event.getSouthWest() + event.getNorthEast());
                     HandlerResponse response = backendHandler.getObjectsInArea(event.getSouthWest(), event.getNorthEast(), event.isMinimized());
                     if (response.isOk()) {
-                        // TODO: Ilmoitus että onnistui?
+                        Log.d(this.getClass().getSimpleName(), "CacheObjectsInAreaEvent: Sent OK response.");
                     } else {
-                        // TODO: Jos suoritus ei onnistunut edes uudelleenyrittämällä
+                        BusHandler.getBus().post(new RequestFailedEvent(event, response.getStatus().toString())); // TODO: HandlerResponse reason.
+                        Log.d(this.getClass().getSimpleName(), "CacheObjectsInAreaEvent: Sent FAIL response.");
                     }
                 }
             }
@@ -174,8 +196,10 @@ public class BackendHandlerService extends Service {
                 if (response.isOk()) {
                     MapObject obj = (response.getObjects().size() > 0) ? response.getObjects().get(0) : null;
                     BusHandler.getBus().post(new ReturnMapObjectEvent(obj));
+                    Log.d(this.getClass().getSimpleName(), "RequestMapObjectEvent: Sent OK response.");
                 } else {
-                    // TODO: Jos suoritus ei onnistunut edes uudelleenyrittämällä
+                    BusHandler.getBus().post(new RequestFailedEvent(event, response.getStatus().toString())); // TODO: HandlerResponse reason.
+                    Log.d(this.getClass().getSimpleName(), "RequestMapObjectEvent: Sent FAIL response.");
                 }
             }
         });
