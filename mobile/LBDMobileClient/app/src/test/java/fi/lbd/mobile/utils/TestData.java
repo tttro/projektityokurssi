@@ -1,9 +1,14 @@
 package fi.lbd.mobile.utils;
 
 /**
+ * Helper data for REST api requests.
+ *
  * Created by Tommi.
  */
 public class TestData {
+    //    URLResponse response1 = URLReader.get("http://lbdbackend.ignorelist.com/locationdata/api/Streetlights/inarea/?xbottomleft=23.645&ybottomleft=61.515&ytopright=61.52&xtopright=23.65");
+    //    Log.e("Data", response1.getContents());
+
     public static final String testJson = "{\"totalFeatures\": 2, \"type\": \"FeatureCollection\", \"features\": [{\"geometry\": {\"type\": \"Point\", \"coordinates\": [23.64941278370676, 61.5192743640121]}, \"id\": \"WFS_KATUVALO.391441\", \"type\": \"Feature\", \"properties\": {\"NIMI\": \"XPWR_4703229\", \"TYYPPI_KOODI\": \"105030\", \"KATUVALO_ID\": 391441, \"LAMPPU_TYYPPI\": \"8512 (IDMAN)\", \"LAMPPU_TYYPPI_KOODI\": \"100105\"}, \"geometry_name\": \"GEOLOC\"}, {\"geometry\": {\"type\": \"Point\", \"coordinates\": [23.64941278370676, 61.5192743640121]}, \"id\": \"WFS_KATUVALO.391440\", \"type\": \"Feature\", \"properties\": {\"NIMI\": \"XPWR_4703228\", \"TYYPPI_KOODI\": \"105030\", \"KATUVALO_ID\": 391440, \"LAMPPU_TYYPPI\": \"8512 (IDMAN)\", \"LAMPPU_TYYPPI_KOODI\": \"100105\"}, \"geometry_name\": \"GEOLOC\"}]}";
     public static final String testInvalidJson1 = "{\"totalFeatures\": 2, \"type\": \"FeatureCollection\", \"features\": [{\"geometry\": {\"type\": \"Point\", \"id\": \"WFS_KATUVALO.391441\", \"type\": \"Feature\", \"properties\": {\"NIMI\": \"XPWR_4703229\", \"TYYPPI_KOODI\": \"105030\", \"KATUVALO_ID\": 391441, \"LAMPPU_TYYPPI\": \"8512 (IDMAN)\", \"LAMPPU_TYYPPI_KOODI\": \"100105\"}, \"geometry_name\": \"GEOLOC\"}, {\"geometry\": {\"type\": \"Point\", \"coordinates\": [23.64941278370676, 61.5192743640121]}, \"id\": \"WFS_KATUVALO.391440\", \"type\": \"Feature\", \"properties\": {\"NIMI\": \"XPWR_4703228\", \"TYYPPI_KOODI\": \"105030\", \"KATUVALO_ID\": 391440, \"LAMPPU_TYYPPI\": \"8512 (IDMAN)\", \"LAMPPU_TYYPPI_KOODI\": \"100105\"}, \"geometry_name\": \"GEOLOC\"}]}";
     public static final String testInvalidJson2 = "{\"totalFeatures\": 2, \"type\": \"FeatureCollection\", \"features\": [{\"geometry\": {\"type\": \"Point\", \"coordinates\": [23.64941278370676, 61.5192743640121]}, \"type\": \"Feature\", \"properties\": {\"NIMI\": \"XPWR_4703229\", \"TYYPPI_KOODI\": \"105030\", \"KATUVALO_ID\": 391441, \"LAMPPU_TYYPPI\": \"8512 (IDMAN)\", \"LAMPPU_TYYPPI_KOODI\": \"100105\"}, \"geometry_name\": \"GEOLOC\"}, {\"geometry\": {\"type\": \"Point\", \"coordinates\": [23.64941278370676, 61.5192743640121]}, \"id\": \"WFS_KATUVALO.391440\", \"type\": \"Feature\", \"properties\": {\"NIMI\": \"XPWR_4703228\", \"TYYPPI_KOODI\": \"105030\", \"KATUVALO_ID\": 391440, \"LAMPPU_TYYPPI\": \"8512 (IDMAN)\", \"LAMPPU_TYYPPI_KOODI\": \"100105\"}, \"geometry_name\": \"GEOLOC\"}]}";

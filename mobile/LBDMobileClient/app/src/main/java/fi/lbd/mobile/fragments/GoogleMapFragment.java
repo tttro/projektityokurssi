@@ -24,8 +24,11 @@ import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.squareup.otto.Subscribe;
 
 import java.util.List;
@@ -43,6 +46,7 @@ import fi.lbd.mobile.location.LocationUtils;
 import fi.lbd.mobile.location.PointLocation;
 import fi.lbd.mobile.mapobjects.MapModelController;
 import fi.lbd.mobile.mapobjects.MapObject;
+import fi.lbd.mobile.mapobjects.MarkerProducer;
 import fi.lbd.mobile.mapobjects.ProgressListener;
 
 
@@ -61,7 +65,7 @@ public class GoogleMapFragment extends MapFragment implements OnInfoWindowClickL
 	private GoogleMap map;
     private EditText searchLocationField;
     private Geocoder geocoder;
-    private MapModelController modelController;
+    private MapModelController<Marker> modelController;
     private LocationHandler locationHandler;
 
 
@@ -136,10 +140,50 @@ public class GoogleMapFragment extends MapFragment implements OnInfoWindowClickL
 
         Resources res = getResources();
         int maxZoom = res.getInteger(R.integer.min_marker_zoom);
-        this.modelController = new MapModelController(this.map,
-                BitmapDescriptorFactory.fromResource(android.R.drawable.presence_online),
-                BitmapDescriptorFactory.fromResource(android.R.drawable.presence_invisible),
+        this.modelController = new MapModelController<>(new MarkerProducer<Marker>() {
+                    private final BitmapDescriptor iconSelected = BitmapDescriptorFactory.fromResource(android.R.drawable.presence_online);
+                    private final BitmapDescriptor iconDefault = BitmapDescriptorFactory.fromResource(android.R.drawable.presence_invisible);
+
+                    @Override
+                    public Marker produce(String id, double latitude, double longitude) {
+                        LatLng location = new LatLng(latitude, longitude);
+                        return map.addMarker(new MarkerOptions()
+                                .position(location)
+                                .title(id)
+                                .icon(this.iconDefault));
+                    }
+
+                    @Override
+                    public void remove(Marker obj) {
+                        obj.remove();
+                    }
+
+                    @Override
+                    public void event(Marker obj, Event evt) {
+                        if (evt.equals(Event.ACTIVE)) {
+                            obj.setIcon(this.iconSelected);
+                        } else if (evt.equals(Event.INACTIVE)) {
+                            obj.setIcon(this.iconDefault);
+                        } else if (evt.equals(Event.HIDE)) {
+                            obj.setVisible(false);
+                        } else if (evt.equals(Event.SHOW)) {
+                            obj.setVisible(true);
+                        }
+                    }
+                },
                 maxZoom);
+
+        this.map.setOnCameraChangeListener( new GoogleMap.OnCameraChangeListener() {
+            @Override
+            public void onCameraChange(CameraPosition cameraPosition) {
+                LatLngBounds bounds = map.getProjection().getVisibleRegion().latLngBounds;
+                modelController.cameraChanged(cameraPosition.zoom,
+                        bounds.southwest.latitude, bounds.southwest.longitude,
+                        bounds.northeast.latitude, bounds.northeast.longitude);
+            }
+        });
+
+
         this.modelController.addProgressListener( new ProgressListener() {
             @Override
             public void startLoading() {

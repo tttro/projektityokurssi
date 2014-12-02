@@ -3,6 +3,7 @@ package fi.lbd.mobile.backendhandler.test;
 import android.util.Log;
 
 import org.json.JSONException;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -19,6 +20,7 @@ import fi.lbd.mobile.backendhandler.HandlerResponse;
 import fi.lbd.mobile.backendhandler.MapObjectParser;
 import fi.lbd.mobile.backendhandler.URLReader;
 import fi.lbd.mobile.backendhandler.URLResponse;
+import fi.lbd.mobile.events.BusHandler;
 import fi.lbd.mobile.location.ImmutablePointLocation;
 import fi.lbd.mobile.mapobjects.ImmutableMapObject;
 import fi.lbd.mobile.mapobjects.MapObject;
@@ -28,15 +30,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 
 /**
+ * Tests for the BasicBackendHandler.
+ *
  * Created by Tommi.
  */
 @RunWith(CustomRobolectricTestRunner.class)
 public class BackendHandlerTest {
 
-
-
-//    URLResponse response1 = URLReader.get("http://lbdbackend.ignorelist.com/locationdata/api/Streetlights/inarea/?xbottomleft=23.645&ybottomleft=61.515&ytopright=61.52&xtopright=23.65");
-//    Log.e("ASDASDASD", response1.getContents());
     @Before
     public void setUp() throws Exception {
         ShadowLog.stream = System.out;
@@ -69,6 +69,8 @@ public class BackendHandlerTest {
         assertThat(responseMini.getObjects().get(0).getAdditionalProperties()).hasSize(0);
         assertThat(responseMini.getObjects().get(0).getPointLocation()).isEqualTo(new ImmutablePointLocation(61.5192743640121, 23.64941278370676));
 
+        assertThat(Robolectric.getFakeHttpLayer().hasPendingResponses()).isEqualTo(false);
+
         System.out.println("FINISHED: "+testName);
         System.out.println("_____________________________________________________________________");
     }
@@ -94,6 +96,8 @@ public class BackendHandlerTest {
         assertThat(response2.getStatus()).isEqualTo(HandlerResponse.Status.Failed);
         assertThat(response2.isOk()).isEqualTo(false);
         assertThat(response2.getObjects()).isNull();
+
+        assertThat(Robolectric.getFakeHttpLayer().hasPendingResponses()).isEqualTo(false);
 
         System.out.println("FINISHED: "+testName);
         System.out.println("_____________________________________________________________________");
@@ -126,6 +130,8 @@ public class BackendHandlerTest {
         assertThat(responseMini.getObjects().get(0).getAdditionalProperties()).hasSize(0);
         assertThat(responseMini.getObjects().get(0).getPointLocation()).isEqualTo(new ImmutablePointLocation(61.5192743640121, 23.64941278370676));
 
+        assertThat(Robolectric.getFakeHttpLayer().hasPendingResponses()).isEqualTo(false);
+
         System.out.println("FINISHED: "+testName);
         System.out.println("_____________________________________________________________________");
     }
@@ -152,6 +158,8 @@ public class BackendHandlerTest {
         assertThat(response2.isOk()).isEqualTo(false);
         assertThat(response2.getObjects()).isNull();
 
+        assertThat(Robolectric.getFakeHttpLayer().hasPendingResponses()).isEqualTo(false);
+
         System.out.println("FINISHED: "+testName);
         System.out.println("_____________________________________________________________________");
     }
@@ -172,6 +180,8 @@ public class BackendHandlerTest {
         assertThat(response.getObjects()).hasSize(1);
         assertThat(response.getObjects().get(0).getAdditionalProperties()).hasSize(5);
         assertThat(response.getObjects().get(0).getPointLocation()).isEqualTo(new ImmutablePointLocation(61.519112683582854, 23.643239226767022));
+
+        assertThat(Robolectric.getFakeHttpLayer().hasPendingResponses()).isEqualTo(false);
 
         System.out.println("FINISHED: "+testName);
         System.out.println("_____________________________________________________________________");
@@ -198,6 +208,8 @@ public class BackendHandlerTest {
         assertThat(response2.getStatus()).isEqualTo(HandlerResponse.Status.Failed);
         assertThat(response2.isOk()).isEqualTo(false);
         assertThat(response2.getObjects()).isNull();
+
+        assertThat(Robolectric.getFakeHttpLayer().hasPendingResponses()).isEqualTo(false);
 
         System.out.println("FINISHED: "+testName);
         System.out.println("_____________________________________________________________________");
@@ -246,6 +258,8 @@ public class BackendHandlerTest {
         assertThat(response.getStatus()).isEqualTo(HandlerResponse.Status.Failed);
         assertThat(response.getObjects()).isNull();
 
+        assertThat(Robolectric.getFakeHttpLayer().hasPendingResponses()).isEqualTo(false);
+
         System.out.println("FINISHED: "+testName);
         System.out.println("_____________________________________________________________________");
     }
@@ -292,6 +306,8 @@ public class BackendHandlerTest {
         response = handler.getObjectsInArea(mock(ImmutablePointLocation.class), mock(ImmutablePointLocation.class), false);
         assertThat(response.getStatus()).isEqualTo(HandlerResponse.Status.Failed);
         assertThat(response.getObjects()).isNull();
+
+        assertThat(Robolectric.getFakeHttpLayer().hasPendingResponses()).isEqualTo(false);
 
         System.out.println("FINISHED: "+testName);
         System.out.println("_____________________________________________________________________");
@@ -340,6 +356,8 @@ public class BackendHandlerTest {
         assertThat(response.getStatus()).isEqualTo(HandlerResponse.Status.Failed);
         assertThat(response.getObjects()).isNull();
 
+        assertThat(Robolectric.getFakeHttpLayer().hasPendingResponses()).isEqualTo(false);
+
         System.out.println("FINISHED: "+testName);
         System.out.println("_____________________________________________________________________");
     }
@@ -369,5 +387,10 @@ public class BackendHandlerTest {
 
         System.out.println("FINISHED: "+testName);
         System.out.println("_____________________________________________________________________");
+    }
+
+    @After
+    public void tearDown() {
+        Robolectric.getFakeHttpLayer().clearPendingHttpResponses();
     }
 }
