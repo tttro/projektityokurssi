@@ -25,6 +25,7 @@ messageControllers.controller('messageController', function($scope, MessageDataS
 
     ];
 
+
     $scope.messageList = dummyData;
     $scope.selectedItem = null;
 

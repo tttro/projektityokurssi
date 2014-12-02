@@ -8,11 +8,9 @@ mapControllers.controller('mapController', function($scope, $window,$rootScope, 
     var currentPosition = new google.maps.LatLng(appConfig.defaultPosition[0], appConfig.defaultPosition[1]); // Tampere
     var currentMarker = null;
     var markers = [];
-    var currentBounds = null;
     var infoWindow = new google.maps.InfoWindow();
     var panorama = null;
     var itemPreLoadArea = { sw: null, ne: null }
-    var geoCoder = new google.maps.Geocoder();
     var markerIcon = {
         path: google.maps.SymbolPath.CIRCLE,
         fillColor: 'red',
@@ -399,23 +397,5 @@ mapControllers.controller('mapController', function($scope, $window,$rootScope, 
         return true;
 
     }
-
-    function getAddressByCoords(latlng){
-        geoCoder.geocode({'latLng': latlng}, function(results, status) {
-            if (status == google.maps.GeocoderStatus.OK) {
-
-                if (results[1]) {
-                   return results[0].formatted_address;
-
-                } else {
-                    alert('No results found');
-                    return "";
-                }
-            } else {
-                alert('Geocoder failed due to: ' + status);
-            }
-        });
-    }
-
 
 });

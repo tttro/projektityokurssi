@@ -336,3 +336,8 @@ header a {
     background-color: #f7f7f7;
 }
 
+.address {
+    font-style: italic;
+    margin-bottom: 10px;
+    border-bottom: 1px solid #ccc;
+}
