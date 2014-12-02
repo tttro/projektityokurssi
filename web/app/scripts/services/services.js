@@ -2,7 +2,7 @@
 var dataServices = angular.module('dataServices', ['ngResource']);
 var dataSet = null;
 
-dataServices.factory('ItemDataService', function($http, appConfig){
+dataServices.factory('ObjectsService', function($http, appConfig){
     return {
 
         getSingle : function(itemId, callback){
@@ -65,7 +65,7 @@ dataServices.factory('ItemDataService', function($http, appConfig){
 });
 
 // A local data storage (model) which controllers uses
-dataServices.factory('Data', function(){
+dataServices.factory('ObjectsLocal', function(){
     return {
         get: function() {
             return dataSet;
