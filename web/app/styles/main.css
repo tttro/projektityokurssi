@@ -180,12 +180,14 @@ header a {
 
     font-size: 16px;
     text-align: center;
+    cursor: pointer;
 }
 #tabs ul li a{
     color: #fff;
     padding: 10px 0;
     display: block;
     font-size: 18px;
+    text-decoration: none;
 }
 
 #tabs ul li.active {

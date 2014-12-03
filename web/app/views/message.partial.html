@@ -25,8 +25,8 @@
             <div class="accord-title" is-open="open" ng-click="click(message)">
                 <div class="fleft">{{message.date}} {{message.title}}</div>
                 <div class="fright">
-                    <span ng-if="!open" class="glyphicon glyphicon-chevron-down"></span>
-                    <span ng-if="open" class="glyphicon glyphicon-chevron-up"></span>
+                    <span ng-if="!isSelected(message)" class="glyphicon glyphicon-chevron-down"></span>
+                    <span ng-if="isSelected(message)" class="glyphicon glyphicon-chevron-up"></span>
                 </div>
             </div>
             <div class="accord-content" style="clear: both">

@@ -27,6 +27,7 @@ mapControllers.controller('mapController', function($scope, $window,$rootScope, 
         strokeColor: 'black',
         strokeWeight: 1
     }
+    var streetViewService = new google.maps.StreetViewService();
 
     $scope.userLocationMarker = null;
     $scope.btnGeolocation = true;
@@ -116,19 +117,22 @@ mapControllers.controller('mapController', function($scope, $window,$rootScope, 
     panorama.setPosition(currentPosition);
     panorama.setOptions({ enableCloseButton: false });
     panorama.setPov(/** @type {google.maps.StreetViewPov} */({
-        heading: 40,
-        pitch: -5,
+        heading: 0,
+        pitch: 0,
         zoom : 0
     }));
 
     // Toggle button for streetview/2D map
-    $scope.toggleStreetview = function(item, event){
+    $scope.toggleStreetview = function(){
         var toggle = panorama.getVisible();
         if (toggle == false) {
             panorama.setVisible(true);
             $scope.btnText = "Go back to 2D map";
             $scope.btnGeolocation = false;
-            openedMarkerWindow.open(panorama);
+
+            //openedMarkerWindow.close();
+            //openedMarkerWindow.open(panorama);
+
         } else {
             panorama.setVisible(false);
             $scope.btnText = "Go to StreetView";
@@ -172,7 +176,6 @@ mapControllers.controller('mapController', function($scope, $window,$rootScope, 
         // Custom property for infowindow which tell is that window open or not
         google.maps.InfoWindow.prototype.isOpen = function(){
             var map = infoWindow.getMap();
-            infoWindow.getMarkers
             return (map !== null && typeof map !== "undefined");
         }
     }
@@ -215,16 +218,16 @@ mapControllers.controller('mapController', function($scope, $window,$rootScope, 
 
             if(navigator.geolocation)
             {
-
+                var map = $scope.map;
                 navigator.geolocation.getCurrentPosition(function(position){
                     $scope.showLoadingIcon = true;
                     console.log(position.coords.latitude+", " +position.coords.longitude);
                     var currentPosition =  new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
 
                     createGeoMarker(currentPosition);
-                    $scope.map.setZoom(appConfig.defaultZoom);
-                    $scope.map.setCenter(currentPosition);
-
+                    map.setZoom(appConfig.defaultZoom);
+                    map.setCenter(currentPosition);
+                    $scope.map = map;
                     $scope.showLoadingIcon = false;
 
                 }, function() {
@@ -318,6 +321,7 @@ mapControllers.controller('mapController', function($scope, $window,$rootScope, 
 
             $scope.map.setCenter(marker.getPosition());
             panorama.setPosition(marker.getPosition());
+            setPov(marker);
 
             highlightMarker(marker);
 
@@ -325,9 +329,11 @@ mapControllers.controller('mapController', function($scope, $window,$rootScope, 
             {
                 openedMarkerWindow.close();
             }
+
             if ($scope.map.getStreetView().getVisible()) {
                 infoWindow.setContent(marker.content);
-                infoWindow.open($scope.map.getStreetView(), this);
+                infoWindow.open(panorama, this);
+
             } else {
                 infoWindow.setContent(marker.content);
                 infoWindow.open($scope.map, this);
@@ -397,5 +403,33 @@ mapControllers.controller('mapController', function($scope, $window,$rootScope, 
         return true;
 
     }
+
+    function setPov(marker) {
+
+        var lookTo = marker.getPosition();
+
+        streetViewService.getPanoramaByLocation(panorama.getPosition(), 50, function(panoData) {
+            // if the function returned a result
+            if (panoData != null) {
+                // the GPS coordinates of the streetview camera position
+                var panoCenter = panoData.location.latLng;
+                // this is where the magic happens!
+                // the "computeHeading" function calculates the heading with the two GPS coordinates entered as parameters
+                var heading = google.maps.geometry.spherical.computeHeading(panoCenter, lookTo);
+                // now we know the heading (camera direction, elevation, zoom, etc) set this as parameters to the panorama object
+                var pov = panorama.getPov();
+                pov.heading = heading;
+                pov.zoom = 0;
+                pov.pitch = +10;
+                panorama.setPov(pov);
+
+
+            }
+            else {
+                alert("StreetView is not available at this marker");
+            }
+        });
+    }
+
 
 });
