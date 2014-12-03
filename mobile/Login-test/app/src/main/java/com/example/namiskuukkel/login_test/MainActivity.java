@@ -56,7 +56,7 @@ public class MainActivity extends Activity implements View.OnClickListener,
      */
     private ConnectionResult mConnectionResult;
 
-    private String url = "http://130.230.153.75:8000/locationdata/api/Streetlights/WFS_KATUVALO.405171";
+    private String url = "http://192.168.100.48:8000/locationdata/api/Streetlights/WFS_KATUVALO.405171";
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

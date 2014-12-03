@@ -126,8 +126,10 @@ def single_resource(request, *args, **kwargs):
     #############################################################
     elif request.method == "PUT":
         body = request.body
+        print "Before Geo Valid"
         content_json = json.loads(body)
         if geo_json_scheme_validation(content_json):
+            print "After Geo valid"
             try:
                 if handlerinterface.get_by_id(kwargs["resource"]) is None:
                     return HttpResponse(status=s_codes["NOTFOUND"])
