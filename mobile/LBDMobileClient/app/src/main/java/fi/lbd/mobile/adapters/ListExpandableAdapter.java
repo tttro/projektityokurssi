@@ -55,29 +55,7 @@ public class ListExpandableAdapter extends BaseExpandableListAdapter {
 
     @Override
     public int getChildrenCount(int groupPosition) {
-        MapObject object = (MapObject)getGroup(groupPosition);
-        if (object != null){
-            if(object.getAdditionalProperties().size() >= MIN_ADDITIONAL_PROPERTIES){
-                if(object.getMetadataProperties().size() >= MIN_METADATA_PROPERTIES){
-                    return MIN_ADDITIONAL_PROPERTIES + MIN_METADATA_PROPERTIES + MIN_COORDINATES;
-                }
-                else {
-                    return MIN_ADDITIONAL_PROPERTIES + object.getMetadataProperties().size() +
-                            MIN_COORDINATES;
-                }
-            }
-            else {
-                if(object.getMetadataProperties().size() >= MIN_METADATA_PROPERTIES){
-                    return object.getAdditionalProperties().size() +
-                            MIN_METADATA_PROPERTIES + MIN_COORDINATES;
-                }
-                else {
-                    return object.getAdditionalProperties().size()
-                            + object.getMetadataProperties().size() + MIN_COORDINATES;
-                }
-            }
-        }
-        return 0;
+        return 1;
     }
 
     @Override
@@ -98,12 +76,12 @@ public class ListExpandableAdapter extends BaseExpandableListAdapter {
 
     @Override
     public long getGroupId(int groupPosition) {
-        return 0;
+        return groupPosition;
     }
 
     @Override
     public long getChildId(int groupPosition, int childPosition) {
-        return 0;
+        return 1;
     }
 
     @Override
