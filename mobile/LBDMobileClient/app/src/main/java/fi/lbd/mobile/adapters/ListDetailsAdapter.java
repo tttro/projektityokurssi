@@ -33,7 +33,7 @@ public class ListDetailsAdapter extends BaseAdapter {
     private ArrayList<Map.Entry<String,String>> metaDataProperties;
     private Context context;
 
-    public void setObject(MapObject mapObject){
+    private void setObject(MapObject mapObject){
         this.object = mapObject;
         if(mapObject != null) {
             int i = 1;
@@ -51,88 +51,8 @@ public class ListDetailsAdapter extends BaseAdapter {
         }
     }
 
-    public ListDetailsAdapter(Context context, MapObject mapObject, int additionalProperties,
-                              int coordinates, int metaDataProperties) {
-        this.context = context;
-        this.additionalProperties = new ArrayList<Map.Entry<String,String>>();
-        this.metaDataProperties = new ArrayList<Map.Entry<String,String>>();
-        setAmountOfProperties(mapObject, additionalProperties, coordinates, metaDataProperties);
-        setObject(mapObject);
-    }
-
-    @Override
-    public int getCount() {
-        return amountOfAdditionalProperties + amountOfMetaDataProperties + amountOfCoordinates;
-    }
-
-    @Override
-    public Object getItem(int i) {
-        if (i == 0){
-            return object.getPointLocation();
-        }
-        else if (i > 0 && i < getCount() - 1) {
-            return additionalProperties.get(i).getValue();
-        }
-        return null;
-    }
-
-    @Override
-    public long getItemId(int i) {
-        return i;
-    }
-
-    @Override
-    public View getView(int i, View view, ViewGroup viewGroup) {
-        if(view == null){
-            LayoutInflater inflater = ((Activity) this.context).getLayoutInflater();
-            view = inflater.inflate(R.layout.listview_double_row, viewGroup, false);
-        }
-
-        if (i >= 0 && i < amountOfAdditionalProperties){
-            String key = additionalProperties.get(i).getKey();
-            if (key == null || key.isEmpty()){
-                key = EMPTY;
-            }
-            TextView textViewId = (TextView) view.findViewById(R.id.textViewObjectId);
-            textViewId.setText(key);
-
-            String value = additionalProperties.get(i).getValue();
-            if (value == null || value.isEmpty()){
-                value = EMPTY;
-            }
-            TextView textViewLocation = (TextView) view.findViewById(R.id.textViewObjectLocation);
-            textViewLocation.setText(value);
-        }
-        else if (i == amountOfAdditionalProperties && amountOfCoordinates==1){
-            TextView textViewId = (TextView) view.findViewById(R.id.textViewObjectId);
-            textViewId.setText(LOCATION);
-
-            TextView textViewLocation = (TextView) view.findViewById(R.id.textViewObjectLocation);
-            textViewLocation.setText(object.getPointLocation().toString());
-        }
-        else if(i >= amountOfAdditionalProperties && i-amountOfAdditionalProperties
-                -amountOfCoordinates < amountOfMetaDataProperties){
-            int metaDataIndex = i-amountOfAdditionalProperties-amountOfCoordinates;
-
-            String key = metaDataProperties.get(metaDataIndex).getKey();
-            if (key == null || key.isEmpty()){
-                key = EMPTY;
-            }
-            TextView textViewId = (TextView) view.findViewById(R.id.textViewObjectId);
-            textViewId.setText(key);
-
-            String value = additionalProperties.get(metaDataIndex).getValue();
-            if (value == null || value.isEmpty()){
-                value = EMPTY;
-            }
-            TextView textViewLocation = (TextView) view.findViewById(R.id.textViewObjectLocation);
-            textViewLocation.setText(value);
-        }
-        return view;
-    }
-
-    public void setAmountOfProperties(MapObject object, int additionalProperties,
-                                      int coordinateObjects, int metaDataProperties){
+    private void setAmountOfProperties(MapObject object, int additionalProperties,
+                                       int coordinateObjects, int metaDataProperties){
         if(object.getAdditionalProperties().size() >= additionalProperties) {
             this.amountOfAdditionalProperties = additionalProperties;
         }
@@ -151,5 +71,74 @@ public class ListDetailsAdapter extends BaseAdapter {
         else {
             this.amountOfCoordinates = 1;
         }
+    }
+
+    public ListDetailsAdapter(Context context, MapObject mapObject, int additionalProperties,
+                              int coordinates, int metaDataProperties) {
+        this.context = context;
+        this.additionalProperties = new ArrayList<Map.Entry<String,String>>();
+        this.metaDataProperties = new ArrayList<Map.Entry<String,String>>();
+        setAmountOfProperties(mapObject, additionalProperties, coordinates, metaDataProperties);
+        setObject(mapObject);
+    }
+
+    @Override
+    public int getCount() {
+        return amountOfAdditionalProperties + amountOfMetaDataProperties + amountOfCoordinates;
+    }
+
+    // Not used
+    @Override
+    public Object getItem(int i) {
+        return null;
+    }
+
+    // Not used
+    @Override
+    public long getItemId(int i) {
+        return i;
+    }
+
+    @Override
+    public View getView(int i, View view, ViewGroup viewGroup) {
+        if(view == null){
+            LayoutInflater inflater = ((Activity) this.context).getLayoutInflater();
+            view = inflater.inflate(R.layout.listview_double_row, viewGroup, false);
+        }
+        TextView textViewId = (TextView) view.findViewById(R.id.textViewObjectId);
+        TextView textViewLocation = (TextView) view.findViewById(R.id.textViewObjectLocation);
+
+        if (i >= 0 && i < amountOfAdditionalProperties){
+            String key = additionalProperties.get(i).getKey();
+            if (key == null || key.isEmpty()){
+                key = EMPTY;
+            }
+            textViewId.setText(key);
+            String value = additionalProperties.get(i).getValue();
+            if (value == null || value.isEmpty()){
+                value = EMPTY;
+            }
+            textViewLocation.setText(value);
+        }
+        else if (i == amountOfAdditionalProperties && amountOfCoordinates==1){
+            textViewId.setText(LOCATION);
+            textViewLocation.setText(object.getPointLocation().toString());
+        }
+        else if(i >= amountOfAdditionalProperties && i-amountOfAdditionalProperties
+                -amountOfCoordinates < amountOfMetaDataProperties){
+            int metaDataIndex = i-amountOfAdditionalProperties-amountOfCoordinates;
+
+            String key = metaDataProperties.get(metaDataIndex).getKey();
+            if (key == null || key.isEmpty()){
+                key = EMPTY;
+            }
+            textViewId.setText(key);
+            String value = additionalProperties.get(metaDataIndex).getValue();
+            if (value == null || value.isEmpty()){
+                value = EMPTY;
+            }
+            textViewLocation.setText(value);
+        }
+        return view;
     }
 }
