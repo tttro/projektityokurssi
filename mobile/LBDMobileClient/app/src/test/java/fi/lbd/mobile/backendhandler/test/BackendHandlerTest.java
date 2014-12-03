@@ -10,7 +10,9 @@ import org.junit.runner.RunWith;
 import org.robolectric.Robolectric;
 import org.robolectric.shadows.ShadowLog;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import fi.lbd.mobile.CustomRobolectricTestRunner;
@@ -361,6 +363,7 @@ public class BackendHandlerTest {
         System.out.println("FINISHED: "+testName);
         System.out.println("_____________________________________________________________________");
     }
+
 
     @Test
     public void testParserNullInputs() throws Exception {

@@ -28,6 +28,31 @@ import fi.lbd.mobile.mapobjects.MapObject;
 public final class MapObjectParser {
 	private MapObjectParser() {}
 
+
+    public static List<MapObject> parseSearchResult(String json, boolean minimized) throws IOException, JSONException {
+        if (json == null) {
+            throw new JSONException("Input string cannot be null!");
+        }
+        Log.e("asdasdasd", "JSON: "+ json);
+        ObjectMapper mapper = new ObjectMapper();
+        JsonNode rootNode = mapper.readTree(json);
+
+        JsonNode totalResults = rootNode.path("totalResults");
+        check(totalResults, "totalResults");
+        int intTotalResults = totalResults.asInt();
+
+        JsonNode limit = rootNode.path("limit");
+        check(limit, "limit");
+        int intLimit = limit.asInt();
+
+        JsonNode results = rootNode.path("results");
+        check(results, "results");
+
+        List<MapObject> mapObjects = parseCollection(results, minimized);
+
+        return mapObjects;
+    }
+
     /**
      * Parses a string of json which contains multiple elements.
      *
@@ -41,9 +66,13 @@ public final class MapObjectParser {
         if (json == null) {
             throw new JSONException("Input string cannot be null!");
         }
-        List<MapObject> mapObjects = new ArrayList<MapObject>();
         ObjectMapper mapper = new ObjectMapper();
         JsonNode rootNode = mapper.readTree(json);
+        return MapObjectParser.parseCollection(rootNode, minimized);
+    }
+
+    private static List<MapObject> parseCollection(JsonNode rootNode, boolean minimized) throws IOException, JSONException {
+        List<MapObject> mapObjects = new ArrayList<MapObject>();
 
         JsonNode totalFeatures = rootNode.path("totalFeatures");
         int intTotalFeatures = totalFeatures.asInt();

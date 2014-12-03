@@ -29,6 +29,8 @@ import fi.lbd.mobile.events.ReturnMapObjectEvent;
 import fi.lbd.mobile.events.ReturnNearObjectsEvent;
 import fi.lbd.mobile.events.ReturnNearObjectsFailedEvent;
 import fi.lbd.mobile.events.ReturnObjectsInAreaEvent;
+import fi.lbd.mobile.events.ReturnSearchResultEvent;
+import fi.lbd.mobile.events.SearchObjectsEvent;
 import fi.lbd.mobile.mapobjects.MapObject;
 
 /**
@@ -200,6 +202,31 @@ public class BackendHandlerService extends Service {
                 } else {
                     BusHandler.getBus().post(new RequestFailedEvent(event, response.getStatus().toString())); // TODO: HandlerResponse reason.
                     Log.d(this.getClass().getSimpleName(), "RequestMapObjectEvent: Sent FAIL response.");
+                }
+            }
+        });
+    }
+
+
+    /**
+     * Event for searching objects.
+     *
+     * @param event Request event.
+     */
+    @Subscribe
+    public void onEvent(final SearchObjectsEvent event) {
+        this.executorPool.execute( new Runnable() {
+            @Override
+            public void run() {
+                Log.d(this.getClass().getSimpleName(), "SearchObjectsEvent");
+                HandlerResponse response = backendHandler.getObjectsFromSearch(event.getFromFields(),
+                        event.getSearchString(), event.getLimit(), event.isMini());
+                if (response.isOk()) {
+                    BusHandler.getBus().post(new ReturnSearchResultEvent(response.getObjects()));
+                    Log.d(this.getClass().getSimpleName(), "SearchObjectsEvent: Sent OK response.");
+                } else {
+                    BusHandler.getBus().post(new RequestFailedEvent(event, response.getStatus().toString())); // TODO: HandlerResponse reason.
+                    Log.d(this.getClass().getSimpleName(), "SearchObjectsEvent: Sent FAIL response.");
                 }
             }
         });

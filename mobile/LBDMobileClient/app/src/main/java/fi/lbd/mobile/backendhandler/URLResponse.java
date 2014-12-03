@@ -11,6 +11,7 @@ import java.util.Map;
 public class URLResponse {
     public enum ResponseStatus {
         STATUS_200(200, "OK"),
+        STATUS_400(400, "Bad Request"),
         STATUS_403(403, "Forbidden"),
         STATUS_404(404, "Not found"),
         STATUS_405(405, "Method not allowed"),

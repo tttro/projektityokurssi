@@ -5,18 +5,25 @@ import android.util.Log;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.conn.ClientConnectionManager;
 import org.apache.http.conn.params.ConnManagerParams;
 import org.apache.http.conn.params.ConnPerRoute;
 import org.apache.http.conn.params.ConnPerRouteBean;
+import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.impl.conn.tsccm.ThreadSafeClientConnManager;
 import org.apache.http.params.HttpParams;
+import org.apache.http.protocol.HTTP;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 
 /**
  * Static methods for reading an url.
@@ -63,16 +70,36 @@ public final class URLReader {
      * @return  URLResponse-object with results from the URL.
      */
 	public static URLResponse get(String url) {
+        HttpGet getObj = new HttpGet(url);
+        getObj.addHeader("LBD_LOGIN_HEADER", "SimoSahkari"); // TODO: Headerit + Login?
+	    return URLReader.process(getObj); // If the url reading fails, null is returned.
+	}
+
+    public static URLResponse postJson(String url, String jsonContents) {
+        StringEntity entity = null;
+        try {
+            entity = new StringEntity(jsonContents, HTTP.UTF_8);
+            entity.setContentType("application/json");
+        } catch (UnsupportedEncodingException e) {
+            Log.e(URLReader.class.getSimpleName(), "Url post contents were invalid. Resulted in UnsupportedEncodingException. {}", e);
+            return null;
+        }
+        HttpPost postObj = new HttpPost(url);
+        postObj.addHeader("LBD_LOGIN_HEADER", "SimoSahkari"); // TODO: Headerit + Login?
+        postObj.setEntity(entity);
+        return URLReader.process(postObj); // If the url reading fails, null is returned.
+    }
+
+
+
+    private static URLResponse process(HttpUriRequest request) {
         String resultContent = "";
         URLResponse urlResponse = null;
         BufferedReader bufferedReader = null;
         InputStream contentStream = null;
         try {
             DefaultHttpClient httpClient = getHttpClient();
-            HttpGet getObj = new HttpGet(url);
-            getObj.addHeader("LBD_LOGIN_HEADER", "SimoSahkari"); // TODO: Headerit + Login?
-
-            HttpResponse response = httpClient.execute(getObj);
+            HttpResponse response = httpClient.execute(request);
             contentStream = response.getEntity().getContent();
 
             if (contentStream != null) {
@@ -115,10 +142,6 @@ public final class URLReader {
             }
         }
 
-	    return urlResponse; // If the url reading fails, null is returned.
-	}
-
-
-
-
+        return urlResponse; // If the url reading fails, null is returned.
+    }
 }
