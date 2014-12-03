@@ -50,8 +50,6 @@ public class ListActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         BusHandler.getBus().register(this);
-
-        //getWindow().requestFeature(Window.FEATURE_ACTION_BAR_OVERLAY);
         setContentView(R.layout.activity_list);
 
         // Start the object repository service. // TODO: Missä käynnistys?
@@ -81,8 +79,6 @@ public class ListActivity extends Activity {
                     view = new View(activity);
                 }
                 imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
-
-                // http://stackoverflow.com/questions/13185476/how-to-handle-back-button-using-view-pager
                 pageStack.push(i);
             }
             @Override
@@ -205,7 +201,9 @@ public class ListActivity extends Activity {
         }
     }
 
-    // http://stackoverflow.com/questions/13185476/how-to-handle-back-button-using-view-pager
+    // Handle back button presses.
+    //
+    // Pressing the back button brings user to the previous tab.
     @Override
     public void onBackPressed() {
         if(pageStack.size() > 1) {

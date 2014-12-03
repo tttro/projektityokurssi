@@ -1,6 +1,7 @@
 package fi.lbd.mobile.fragments;
 
 import android.app.ListFragment;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -19,6 +20,7 @@ import com.google.android.gms.common.GooglePlayServicesClient;
 import com.squareup.otto.Subscribe;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import fi.lbd.mobile.adapters.ListExpandableAdapter;
 import fi.lbd.mobile.events.BusHandler;
@@ -30,6 +32,7 @@ import fi.lbd.mobile.events.ReturnSearchResultEvent;
 import fi.lbd.mobile.events.SearchObjectsEvent;
 import fi.lbd.mobile.location.ImmutablePointLocation;
 import fi.lbd.mobile.location.LocationHandler;
+import fi.lbd.mobile.mapobjects.MapObject;
 
 /**
  * Fragment that shows objects using an expandable list view.
@@ -238,9 +241,24 @@ public class ObjectListFragment extends ListFragment {
         statusText.setBackgroundColor(LOCATION_BACKGROUND);
         lastStatusBackground = LOCATION_BACKGROUND;
         if (event.getMapObjects() != null) {
-            this.adapter.addAll(event.getMapObjects());
-            statusText.setText(String.format(SHOWING_NEAREST, event.getMapObjects().size()));
-            lastStatusText = String.format(SHOWING_NEAREST, event.getMapObjects().size());
+
+            if(event.getMapObjects().size() > MAX_RESULTS_AMOUNT){
+                ArrayList<MapObject> mapObjects = new ArrayList<MapObject>();
+                for(MapObject object : event.getMapObjects()){
+                    mapObjects.add(object);
+                    if(mapObjects.size() == MAX_RESULTS_AMOUNT){
+                        break;
+                    }
+                }
+                this.adapter.addAll(mapObjects);
+                statusText.setText(String.format(SHOWING_NEAREST, MAX_RESULTS_AMOUNT));
+                lastStatusText = String.format(SHOWING_NEAREST, MAX_RESULTS_AMOUNT);
+            }
+            else {
+                this.adapter.addAll(event.getMapObjects());
+                statusText.setText(String.format(SHOWING_NEAREST, event.getMapObjects().size()));
+                lastStatusText = String.format(SHOWING_NEAREST, event.getMapObjects().size());
+            }
         }
         else {
             statusText.setText(NO_NEAREST);

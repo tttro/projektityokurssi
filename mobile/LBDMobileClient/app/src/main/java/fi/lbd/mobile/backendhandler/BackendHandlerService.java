@@ -7,10 +7,7 @@ import android.util.Log;
 
 import com.squareup.otto.Subscribe;
 
-import java.io.IOException;
-import java.util.List;
 import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ScheduledExecutorService;
@@ -18,7 +15,6 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 import fi.lbd.mobile.R;
-import fi.lbd.mobile.events.AbstractEvent;
 import fi.lbd.mobile.events.BusHandler;
 import fi.lbd.mobile.events.CacheObjectsInAreaEvent;
 import fi.lbd.mobile.events.RequestFailedEvent;
@@ -27,7 +23,6 @@ import fi.lbd.mobile.events.RequestNearObjectsEvent;
 import fi.lbd.mobile.events.RequestObjectsInAreaEvent;
 import fi.lbd.mobile.events.ReturnMapObjectEvent;
 import fi.lbd.mobile.events.ReturnNearObjectsEvent;
-import fi.lbd.mobile.events.ReturnNearObjectsFailedEvent;
 import fi.lbd.mobile.events.ReturnObjectsInAreaEvent;
 import fi.lbd.mobile.events.ReturnSearchResultEvent;
 import fi.lbd.mobile.events.SearchObjectsEvent;
