@@ -60,22 +60,28 @@ public class ListExpandableAdapter extends BaseExpandableListAdapter {
 
     @Override
     public Object getGroup(int groupPosition) {
-        return this.objects.get(groupPosition);
+        if( groupPosition >= 0 && groupPosition < getGroupCount()){
+            return this.objects.get(groupPosition);
+        }
+        return null;
     }
 
     @Override
     public Object getChild(int groupPosition, int childPosition) {
-        return this.objects.get(groupPosition);
+        if( groupPosition >= 0 && groupPosition < getGroupCount()){
+            return this.objects.get(groupPosition);
+        }
+        return null;
     }
 
     @Override
     public long getGroupId(int groupPosition) {
-        return 0;
+        return groupPosition;
     }
 
     @Override
     public long getChildId(int groupPosition, int childPosition) {
-        return 0;
+        return 1;
     }
 
     @Override
@@ -139,7 +145,8 @@ public class ListExpandableAdapter extends BaseExpandableListAdapter {
     }
 
     @Override
-    public View getChildView(final int groupPosition, int childPosition, boolean isLastChild, View view, ViewGroup parent) {
+    public View getChildView(final int groupPosition, int childPosition, boolean isLastChild,
+                             View view, ViewGroup parent) {
         if (view == null) {
             LayoutInflater inflater = ((Activity) this.context).getLayoutInflater();
             view = inflater.inflate(R.layout.listview_expanded_row, parent, false);
@@ -149,7 +156,8 @@ public class ListExpandableAdapter extends BaseExpandableListAdapter {
 
             // Tag links the expanded item to its location object
             view.setTag(((Pair<Integer, MapObject>)getGroup(groupPosition)).second);
-            Log.d("TAG SET--------------------", (((Pair<Integer, MapObject>)getGroup(groupPosition)).second).getId());
+            Log.d("TAG SET--------------------",
+                    (((Pair<Integer, MapObject>)getGroup(groupPosition)).second).getId());
 
            final MapObject object = ((Pair<Integer, MapObject>)getGroup(groupPosition)).second;
            final ListDetailsAdapter adapter = new ListDetailsAdapter(
