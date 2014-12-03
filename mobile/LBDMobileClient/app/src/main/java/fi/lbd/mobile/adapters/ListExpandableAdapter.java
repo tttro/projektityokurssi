@@ -138,7 +138,7 @@ public class ListExpandableAdapter extends BaseExpandableListAdapter {
                 textViewDistance.setText(LocationUtils.formatDistance(distance));
             }
             else {
-                textViewDistance.setText(context.getResources().getString(R.string.unknown));
+                textViewDistance.setText(context.getResources().getString(R.string.unknown_distance));
             }
         }
         return view;
