@@ -4,8 +4,7 @@ import httplib
 import itertools
 from nose import with_setup
 from lbd_backend.LBD_REST_locationdata.tests.test_settings import url, port
-from lbd_backend.LBD_REST_locationdata.tests.single_resource.checkers import _status_tester, _content_tester
-
+from lbd_backend.LBD_REST_locationdata.tests.single_resource.checkers import Checker
 __author__ = 'Aki Mäkinen'
 
 _con = httplib.HTTPConnection(url, port)
@@ -54,24 +53,28 @@ def setup_get():
 @with_setup(setup_get)
 def test_generator_get_status():
     i = 1
+    c = Checker()
+    c.httpmethod = "GET"
     for col, res in _statuscombinations:
-        method = "GET"
-        call = partial(_status_tester)
-        update_wrapper(call, _status_tester)
+        call = partial(c._status_tester)
+        update_wrapper(call, Checker._status_tester)
         call.description = "Testing response statuses with different collection and resource values"
         test_generator_get_status.__name__ = "GetStatusTest#"+str(i)
-        yield _status_tester, col, res, _con, method
+        c.con = _con
+        yield c._status_tester, col, res
         i += 1
 
 
 @with_setup(setup_get)
 def test_generator_get_content():
     i = 1
+    c = Checker()
+    c.httpmethod = "GET"
     for col, res in _valuecombinations:
-        method = "GET"
-        call = partial(_content_tester)
-        update_wrapper(call, _content_tester)
+        call = partial(c._content_tester)
+        update_wrapper(call, c._content_tester)
         call.description = "Testing response statuses with different collection and resource values"
         test_generator_get_content.__name__ = "GetContentTest#"+str(i)
-        yield _content_tester, col, res, _con, method
+        c.con = _con
+        yield c._content_tester, col, res
         i += 1

@@ -139,3 +139,19 @@ def geo_json_scheme_validation(jsondict):
         result = False
 
     return result
+
+
+def flattener(dicti, parent):
+   for k, v in dicti.iteritems():
+        if isinstance(v, dict):
+            if parent is None:
+                father = k
+            else:
+                father = parent + "." + k
+            for item in flattener(v, father):
+                yield item
+        else:
+            if parent is not None:
+                yield parent + "." + k
+            else:
+                yield k
