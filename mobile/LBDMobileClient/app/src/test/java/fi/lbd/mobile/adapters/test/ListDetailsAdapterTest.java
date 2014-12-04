@@ -3,10 +3,12 @@ package fi.lbd.mobile.adapters.test;
 
 import android.app.Activity;
 import android.content.Context;
+import android.text.Layout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -20,6 +22,7 @@ import org.robolectric.annotation.Config;
 import org.robolectric.shadows.ShadowLog;
 import org.robolectric.shadows.ShadowTextView;
 import org.robolectric.Robolectric;
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -52,9 +55,10 @@ import static org.mockito.Mockito.when;
 public class ListDetailsAdapterTest {
 
     @Mock ImmutablePointLocation location;
-   // @Mock Activity activity = mock(Activity.class);
+    @Mock Activity mockActivity = mock(Activity.class);
 
     Activity activity;
+    LayoutInflater inflater;
     Map<String, String> propertiesTest1;
     Map<String, String> metadataTest1;
     MapObject mapObjectTest1;
@@ -75,16 +79,17 @@ public class ListDetailsAdapterTest {
         metadataTest1.put("propertym0", "valuem0");
         metadataTest1.put("propertym1", "valuem1");
 
-        activity = new Activity();
+        activity = Robolectric.buildActivity(Activity.class).create().get();
+
         mapObjectTest1 = new ImmutableMapObject(false, "1", location, propertiesTest1, metadataTest1);
 
-        adapterTest1 = new ListDetailsAdapter(activity, mapObjectTest1, propertiesTest1.size(),
-                1,metadataTest1.size());
-        adapterTest2 = new ListDetailsAdapter(activity, mapObjectTest1, propertiesTest1.size()+1,
-                1,metadataTest1.size()+1);
-        adapterTest3 = new ListDetailsAdapter(activity, mapObjectTest1, propertiesTest1.size(),
-                0,metadataTest1.size());
-        adapterTest4 = new ListDetailsAdapter(activity, mapObjectTest1, 0,0,0);
+        adapterTest1 = new ListDetailsAdapter(mockActivity, mapObjectTest1, propertiesTest1.size(),
+                true,true);
+        adapterTest2 = new ListDetailsAdapter(mockActivity, mapObjectTest1, propertiesTest1.size()+1,
+                true,true);
+        adapterTest3 = new ListDetailsAdapter(mockActivity, mapObjectTest1, propertiesTest1.size(),
+                false,true);
+        adapterTest4 = new ListDetailsAdapter(mockActivity, mapObjectTest1, 0,0,0);
     }
 
     @Test
@@ -100,7 +105,6 @@ public class ListDetailsAdapterTest {
         assertThat(adapterTest4.getCount() == 0);
     }
 
-    /*
     @Test
     public void testGetView(){
         final String testName = "testGetView";
@@ -108,25 +112,135 @@ public class ListDetailsAdapterTest {
         System.out.println("TESTING: "+testName);
         System.out.println("---------------------------------------------------------------------");
 
-        View view = mock(View.class);
-        TextView titleText = mock(TextView.class);
-        TextView dataText = mock(TextView.class);
+        LayoutInflater layoutInflater = Robolectric.buildActivity(Activity.class).create().get().getLayoutInflater();
+        LayoutInflater mockLayoutInflater = mock(LayoutInflater.class);
+        ViewGroup mockViewGroup = mock(ViewGroup.class);
 
-        ViewGroup viewGroup = mock(ViewGroup.class);
-        LayoutInflater layoutInflater = mock(LayoutInflater.class);
+        LinearLayout parent = new LinearLayout(Robolectric.application);
+        LinearLayout linearLayout = (LinearLayout)layoutInflater.inflate(R.layout.listview_single_row, parent);
+        TextView titleText = (TextView)linearLayout.findViewById(R.id.textViewObjectId);
+        TextView dataText = (TextView)linearLayout.findViewById(R.id.textViewDistance);
 
-        when(activity.getLayoutInflater()).thenReturn(layoutInflater);
-        when(layoutInflater.inflate(R.layout.listview_double_row, viewGroup, false)).thenReturn(view);
-        when(view.findViewById(R.id.textViewObjectId)).thenReturn(titleText);
-        when(view.findViewById(R.id.textViewObjectLocation)).thenReturn(dataText);
+        when(mockActivity.getLayoutInflater()).thenReturn(mockLayoutInflater);
+        when(mockLayoutInflater.inflate(R.layout.listview_double_row, mockViewGroup, false)).thenReturn(mockViewGroup);
+        when(mockViewGroup.findViewById(R.id.textViewObjectId)).thenReturn(titleText);
+        when(mockViewGroup.findViewById(R.id.textViewObjectLocation)).thenReturn(dataText);
 
-        for(int i = 0; i < 2; ++i){
-            adapterTest1.getView(i, null, viewGroup);
-            if(i == 0) {
-              //  assertThat(titleText.getText().equals(String.format("propertyp%d", i)));
-              //  assertThat(dataText.getText().equals(String.format("valuep%d", i)));
+
+        for(int i = 0; i < 7; ++i){
+
+            // Test the first two elements in each adapter
+            if(i < 2) {
+                adapterTest1.getView(i, null, mockViewGroup);
+                assertThat(titleText.getText().equals(String.format("propertyp%d", i)));
+                assertThat(dataText.getText().equals(String.format("valuep%d", i)));
+                titleText.setText("Should change");
+                dataText.setText("Should change");
+
+                adapterTest2.getView(i, null, mockViewGroup);
+                assertThat(titleText.getText().equals(String.format("propertyp%d", i)));
+                assertThat(dataText.getText().equals(String.format("valuep%d", i)));
+                titleText.setText("Should change");
+                dataText.setText("Should change");
+
+                adapterTest3.getView(i, null, mockViewGroup);
+                assertThat(titleText.getText().equals(String.format("propertyp%d", i)));
+                assertThat(dataText.getText().equals(String.format("valuep%d", i)));
+                titleText.setText("Should not change");
+                dataText.setText("Should not change");
+
+                adapterTest4.getView(i, null, mockViewGroup);
+                assertThat(titleText.getText().equals("Should not change"));
+                assertThat(dataText.getText().equals("Should not change"));
+                titleText.setText("Should change");
+                dataText.setText("Should change");
+            }
+
+            // Test the third element in each adapter. AdapterTest3 doesn't contain location, so
+            // third element should be a metadata element.
+            else if (i == 2){
+                adapterTest1.getView(i, null, mockViewGroup);
+                assertThat(titleText.getText().equals("LOCATION"));
+                titleText.setText("Should change");
+                adapterTest2.getView(i, null, mockViewGroup);
+                assertThat(titleText.getText().equals("LOCATION"));
+                titleText.setText("Should change");
+                adapterTest3.getView(i, null, mockViewGroup);
+                assertThat(titleText.getText().equals("propertym0"));
+                assertThat(dataText.getText().equals("valuem0"));
+                titleText.setText("Should not change");
+                adapterTest4.getView(i, null, mockViewGroup);
+                assertThat(titleText.getText().equals("Should not change"));
+                titleText.setText("Should change");
+                dataText.setText("Should change");
+            }
+
+            // Test the fourth element in each adapter
+            else if (i == 3){
+                adapterTest1.getView(i, null, mockViewGroup);
+                assertThat(titleText.getText().equals("propertym0"));
+                assertThat(dataText.getText().equals("valuem0"));
+                titleText.setText("Should change");
+                dataText.setText("Should change");
+
+                adapterTest2.getView(i, null, mockViewGroup);
+                assertThat(titleText.getText().equals("propertym0"));
+                assertThat(dataText.getText().equals("valuem0"));
+                titleText.setText("Should change");
+                dataText.setText("Should change");
+
+                adapterTest3.getView(i, null, mockViewGroup);
+                assertThat(titleText.getText().equals("propertym1"));
+                assertThat(dataText.getText().equals("valuem1"));
+                titleText.setText("Should not change");
+                dataText.setText("Should not change");
+
+                adapterTest4.getView(i, null, mockViewGroup);
+                assertThat(titleText.getText().equals("Should not change"));
+                assertThat(dataText.getText().equals("Should not change"));
+                titleText.setText("Should change");
+                dataText.setText("Should change");
+            }
+
+            // Test fifth elements
+            else if (i == 4){
+                adapterTest1.getView(i, null, mockViewGroup);
+                assertThat(titleText.getText().equals("propertym1"));
+                assertThat(dataText.getText().equals("valuem1"));
+                titleText.setText("Should change");
+                dataText.setText("Should change");
+
+                adapterTest2.getView(i, null, mockViewGroup);
+                assertThat(titleText.getText().equals("propertym1"));
+                assertThat(dataText.getText().equals("valuem1"));
+                titleText.setText("Should not change");
+                dataText.setText("Should not change");
+
+                adapterTest3.getView(i, null, mockViewGroup);
+                assertThat(titleText.getText().equals("Should not change"));
+                assertThat(dataText.getText().equals("Should not change"));
+
+                adapterTest4.getView(i, null, mockViewGroup);
+                assertThat(titleText.getText().equals("Should not change"));
+                assertThat(dataText.getText().equals("Should not change"));
+                titleText.setText("Should not change");
+                dataText.setText("Should not change");
+            }
+
+            else {
+                adapterTest1.getView(i, null, mockViewGroup);
+                assertThat(titleText.getText().equals("Should not change"));
+                assertThat(dataText.getText().equals("Should not change"));
+                adapterTest2.getView(i, null, mockViewGroup);
+                assertThat(titleText.getText().equals("Should not change"));
+                assertThat(dataText.getText().equals("Should not change"));
+                adapterTest3.getView(i, null, mockViewGroup);
+                assertThat(titleText.getText().equals("Should not change"));
+                assertThat(dataText.getText().equals("Should not change"));
+                adapterTest4.getView(i, null, mockViewGroup);
+                assertThat(titleText.getText().equals("Should not change"));
+                assertThat(dataText.getText().equals("Should not change"));
             }
         }
     }
-    */
 }

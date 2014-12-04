@@ -315,7 +315,7 @@ public class ObjectListFragment extends ListFragment {
 
     /*
      *  If BackendService was unable to fetch new objects from the backend,
-     *  update status text and release lock from "Locate" button.
+     *  update status text and release lock.
      */
     @Subscribe
     public void onEvent(RequestFailedEvent event) {

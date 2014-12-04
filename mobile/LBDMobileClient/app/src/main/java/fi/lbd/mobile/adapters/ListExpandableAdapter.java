@@ -36,11 +36,10 @@ public class ListExpandableAdapter extends BaseExpandableListAdapter {
     private ArrayList<Pair<Integer, MapObject>> objects;
     private Context context;
 
-    // Number of additional properties, coordinates and metadata properties that are shown in the
-    // expanded list
-    private final static int MIN_ADDITIONAL_PROPERTIES = 3;
-    private final static int MIN_COORDINATES = 0;
-    private final static int MIN_METADATA_PROPERTIES = 0;
+    // How much object data is shown in the expanded list
+    private final static int SHOW_NUMBER_OF_PROPERTIES = 3;
+    private final static boolean SHOW_COORDINATES = false;
+    private final static boolean SHOW_METADATA = false;
     private final static int ADDITIONAL_PADDING = 0;
 
     public ListExpandableAdapter(Context context) {
@@ -161,8 +160,7 @@ public class ListExpandableAdapter extends BaseExpandableListAdapter {
 
            final MapObject object = ((Pair<Integer, MapObject>)getGroup(groupPosition)).second;
            final ListDetailsAdapter adapter = new ListDetailsAdapter(
-                   this.context, object, MIN_ADDITIONAL_PROPERTIES, MIN_COORDINATES,
-                   MIN_METADATA_PROPERTIES);
+                  this.context, object, SHOW_NUMBER_OF_PROPERTIES, SHOW_COORDINATES, SHOW_METADATA);
 
             ((ListView)view.findViewById(android.R.id.list)).setAdapter(adapter);
             adjustListHeight((ListView)view.findViewById(android.R.id.list));

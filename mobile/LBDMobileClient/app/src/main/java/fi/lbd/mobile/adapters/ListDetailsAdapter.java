@@ -27,8 +27,8 @@ public class ListDetailsAdapter extends BaseAdapter {
 
     // Number of properties, metadata items and coordinate points contained in each object
     private int amountOfAdditionalProperties = 0;
-    private int amountOfMetaDataProperties = 0;
-    private int amountOfCoordinates = 0;
+    private boolean showMetaDataProperties = false;
+    private boolean showCoordinates = false;
 
     private MapObject object;
     private ArrayList<Map.Entry<String,String>> additionalProperties;
@@ -44,61 +44,44 @@ public class ListDetailsAdapter extends BaseAdapter {
                     this.additionalProperties.add(entry);
                 }
             }
-            i = 1;
-            for (Map.Entry<String, String> entry : object.getMetadataProperties().entrySet()) {
-                if (i <= amountOfMetaDataProperties) {
-                        this.metaDataProperties.add(entry);
-                }
-            }
-            if(this.metaDataProperties.isEmpty() && amountOfMetaDataProperties == 1){
-                Log.d("********", "Lisätäänt yhjä");
+            if(object.getMetadataProperties().isEmpty() && showMetaDataProperties){
+                Log.d("********", "Lisätään tyhjä");
                this.metaDataProperties.add(new AbstractMap.SimpleEntry<String, String>(null, null));
+            }
+            else if (!object.getMetadataProperties().isEmpty() && showMetaDataProperties){
+                for (Map.Entry<String, String> entry : object.getMetadataProperties().entrySet()) {
+                    this.metaDataProperties.add(entry);
+                    break;
+                }
             }
         }
     }
 
-    private void setAmountOfProperties(MapObject object, int additionalProperties,
-                                       int coordinateObjects, int metaDataProperties){
-        if(object.getAdditionalProperties().size() >= additionalProperties) {
-            this.amountOfAdditionalProperties = additionalProperties;
+    private void setAmountOfProperties(MapObject object, int showAdditionalProperties,
+                                       boolean showLocation, boolean showMetaData){
+        if(object.getAdditionalProperties().size() >= showAdditionalProperties) {
+            this.amountOfAdditionalProperties = showAdditionalProperties;
         }
         else {
             this.amountOfAdditionalProperties = object.getAdditionalProperties().size();
         }
-
-        if(metaDataProperties <= 0){
-            this.amountOfMetaDataProperties = 0;
-        }
-        else if(object.getMetadataProperties().size() >= metaDataProperties){
-            this.amountOfMetaDataProperties = metaDataProperties;
-        }
-        else if (object.getMetadataProperties().size() == 0){
-            this.amountOfMetaDataProperties = 1;
-        }
-        else if(object.getMetadataProperties().size() > 0) {
-            this.amountOfMetaDataProperties = object.getMetadataProperties().size();
-        }
-
-        if(coordinateObjects != 1){
-            this.amountOfCoordinates = 0;
-        }
-        else {
-            this.amountOfCoordinates = 1;
-        }
-        Log.d("************", String.format("amount of metadataproperties set to %d",this.amountOfMetaDataProperties));
+        showMetaDataProperties = showMetaData;
+        showCoordinates = showLocation;
     }
 
     public ListDetailsAdapter(Context context, MapObject mapObject, int additionalProperties,
-                              int coordinates, int metaDataProperties) {
+                              boolean showCoordinates, boolean showMetaData) {
         this.context = context;
         this.additionalProperties = new ArrayList<Map.Entry<String,String>>();
         this.metaDataProperties = new ArrayList<Map.Entry<String,String>>();
-        setAmountOfProperties(mapObject, additionalProperties, coordinates, metaDataProperties);
+        setAmountOfProperties(mapObject, additionalProperties, showCoordinates, showMetaData);
         setObject(mapObject);
     }
 
     @Override
     public int getCount() {
+        int amountOfMetaDataProperties = showMetaDataProperties ? 1 : 0;
+        int amountOfCoordinates = showCoordinates ? 1 : 0;
         return amountOfAdditionalProperties + amountOfMetaDataProperties + amountOfCoordinates;
     }
 
@@ -135,20 +118,18 @@ public class ListDetailsAdapter extends BaseAdapter {
             }
             textViewLocation.setText(value);
         }
-        else if (i == amountOfAdditionalProperties && amountOfCoordinates==1){
+        else if (i == amountOfAdditionalProperties && showCoordinates){
             textViewId.setText(LOCATION);
             textViewLocation.setText(object.getPointLocation().toString());
         }
-        else if(i >= amountOfAdditionalProperties && i-amountOfAdditionalProperties
-                -amountOfCoordinates < amountOfMetaDataProperties){
-            int metaDataIndex = i-amountOfAdditionalProperties-amountOfCoordinates;
-
-            String key = metaDataProperties.get(metaDataIndex).getKey();
+        else if(i >= amountOfAdditionalProperties && showMetaDataProperties &&
+                i < getCount()){
+            String key = metaDataProperties.get(0).getKey();
             if (key == null || key.isEmpty()){
                 key = NOTES;
             }
             textViewId.setText(key);
-            String value = metaDataProperties.get(metaDataIndex).getValue();
+            String value = metaDataProperties.get(0).getValue();
             if (value == null || value.isEmpty()){
                 value = EMPTY;
             }
