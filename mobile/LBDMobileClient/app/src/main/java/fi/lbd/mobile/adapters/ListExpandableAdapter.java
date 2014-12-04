@@ -38,10 +38,10 @@ public class ListExpandableAdapter extends BaseExpandableListAdapter {
 
     // Number of additional properties, coordinates and metadata properties that are shown in the
     // expanded list
-    private final static int MIN_ADDITIONAL_PROPERTIES = 2;
+    private final static int MIN_ADDITIONAL_PROPERTIES = 3;
     private final static int MIN_COORDINATES = 0;
-    private final static int MIN_METADATA_PROPERTIES = 1;
-    private final static int ADDITIONAL_PADDING = 20;
+    private final static int MIN_METADATA_PROPERTIES = 0;
+    private final static int ADDITIONAL_PADDING = 0;
 
     public ListExpandableAdapter(Context context) {
         this.context = context;
@@ -174,6 +174,7 @@ public class ListExpandableAdapter extends BaseExpandableListAdapter {
     public boolean isChildSelectable(int groupPosition, int childPosition) {
         return true;
     }
+
 
     // Function to adjust the height of a listview according to its children
     private static void adjustListHeight(ListView listView){

@@ -265,7 +265,7 @@ public class ObjectListFragment extends ListFragment {
             lastStatusText = NO_NEAREST;
         }
         this.getListView().requestLayout();
-        if(lastExpanded >=0) {
+        if(lastExpanded >=0 && lastExpanded < adapter.getGroupCount()) {
             expandableListView.collapseGroup(lastExpanded);
         }
         this.adapter.notifyDataSetChanged();

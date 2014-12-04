@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.Map;
 
@@ -21,6 +22,7 @@ import fi.lbd.mobile.mapobjects.MapObject;
 
 public class ListDetailsAdapter extends BaseAdapter {
     private final static String EMPTY = "Empty";
+    private final static String NOTES = "ADDITIONAL NOTES";
     private final static String LOCATION = "LOCATION";
 
     // Number of properties, metadata items and coordinate points contained in each object
@@ -48,6 +50,10 @@ public class ListDetailsAdapter extends BaseAdapter {
                         this.metaDataProperties.add(entry);
                 }
             }
+            if(this.metaDataProperties.isEmpty() && amountOfMetaDataProperties == 1){
+                Log.d("********", "Lisätäänt yhjä");
+               this.metaDataProperties.add(new AbstractMap.SimpleEntry<String, String>(null, null));
+            }
         }
     }
 
@@ -59,18 +65,27 @@ public class ListDetailsAdapter extends BaseAdapter {
         else {
             this.amountOfAdditionalProperties = object.getAdditionalProperties().size();
         }
-        if(object.getMetadataProperties().size() >= metaDataProperties){
+
+        if(metaDataProperties <= 0){
+            this.amountOfMetaDataProperties = 0;
+        }
+        else if(object.getMetadataProperties().size() >= metaDataProperties){
             this.amountOfMetaDataProperties = metaDataProperties;
         }
-        else {
+        else if (object.getMetadataProperties().size() == 0){
+            this.amountOfMetaDataProperties = 1;
+        }
+        else if(object.getMetadataProperties().size() > 0) {
             this.amountOfMetaDataProperties = object.getMetadataProperties().size();
         }
+
         if(coordinateObjects != 1){
             this.amountOfCoordinates = 0;
         }
         else {
             this.amountOfCoordinates = 1;
         }
+        Log.d("************", String.format("amount of metadataproperties set to %d",this.amountOfMetaDataProperties));
     }
 
     public ListDetailsAdapter(Context context, MapObject mapObject, int additionalProperties,
@@ -130,10 +145,10 @@ public class ListDetailsAdapter extends BaseAdapter {
 
             String key = metaDataProperties.get(metaDataIndex).getKey();
             if (key == null || key.isEmpty()){
-                key = EMPTY;
+                key = NOTES;
             }
             textViewId.setText(key);
-            String value = additionalProperties.get(metaDataIndex).getValue();
+            String value = metaDataProperties.get(metaDataIndex).getValue();
             if (value == null || value.isEmpty()){
                 value = EMPTY;
             }
