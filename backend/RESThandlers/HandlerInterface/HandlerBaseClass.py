@@ -5,6 +5,7 @@
 .. moduleauthor:: Aki Mäkinen <aki.makinen@outlook.com>
 
 """
+
 __author__ = 'Aki Mäkinen'
 
 # Class HandlerBase
@@ -97,3 +98,6 @@ class HandlerBase(object):
 
     def search(self, phrase, field):
         raise NotImplementedError("Search from REST not Implemented")
+
+    def get_field_names(self):
+        raise NotImplementedError("This function cannot be called for the base class")

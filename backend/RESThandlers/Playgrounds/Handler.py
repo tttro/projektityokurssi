@@ -5,6 +5,8 @@
 .. moduleauthor:: Aki Mäkinen <aki.makinen@outlook.com>
 
 """
+
+
 __author__ = 'Aki Mäkinen'
 
 import re
@@ -13,12 +15,12 @@ import json
 
 from RESThandlers.HandlerInterface.Exceptions import GenericDBError
 from RESThandlers.HandlerInterface.HandlerBaseClass import HandlerBase
-from RESThandlers.Streetlight.models import Streetlights
+from RESThandlers.Playgrounds.models import Playgrounds
 
 from lbd_backend.utils import flattener
 
 
-class StreetlightHandler(HandlerBase):
+class PlaygroundHandler(HandlerBase):
     @property
     @staticmethod
     def handler_id(self):
@@ -36,11 +38,21 @@ class StreetlightHandler(HandlerBase):
         },
         "geometry_name": 1,
         "properties": {
-            "KATUVALO_ID": 1,
-            "NIMI": 1,
-            "TYYPPI_KOODI": 1,
-            "LAMPPU_TYYPPI_KOODI": 1,
-            "LAMPPU_TYYPPI": 1
+            "KP_KAUSI": 1,
+            "ALUEEN_OSAN_SIJ": 1,
+            "OSA_ALUE_NIMI": 1,
+            "PINTA_ALA": 1,
+            "ALUE_NIMI": 1,
+            "TILAAJA": 1,
+            "KUNNOSSAPITAJA": 1,
+            "URAKKA_ALUE": 1,
+            "ERITYISKAYTTO": 1,
+            "KAYTTOLK": 1,
+            "VIHERALUEEN_OSAN_ID": 1,
+            "KAUPUNGINOSA": 1,
+            "TOIMLK": 1,
+            "ALUE_SIJ": 1,
+            "HOITOLK": 1
         }
     }
 
@@ -61,12 +73,12 @@ class StreetlightHandler(HandlerBase):
     }
 
     def __init__(self):
-        self.modelobject = Streetlights
+        self.modelobject = Playgrounds
 
     def update_db(self):
         req = urllib.urlopen(
-            'http://tampere.navici.com/tampere_wfs_geoserver/opendata/ows?service=WFS&version=1.0.0&request=GetFeature'
-            '&typeName=opendata:WFS_KATUVALO&outputFormat=json&srsName=EPSG:4326',
+            'http://tampere.navici.com/tampere_wfs_geoserver/opendata/ows?service=WFS&version=1.0.0&request=GetFeature&'
+            'typeName=opendata:WFS_LEIKKIPAIKKA_MVIEW&outputFormat=json&srsName=EPSG:4326',
             proxies={})
         jsonitem = json.loads(req.read())
         current_result = self.modelobject._get_collection().aggregate([
@@ -88,16 +100,18 @@ class StreetlightHandler(HandlerBase):
             if fid not in current_items:
                 temp = item
                 temp["feature_id"] = fid
-                to_add.append(temp)
+                to_add.append(Playgrounds(**temp))
+                #to_add.append(temp)
                 itemsinserted += 1
             else:
                 current_items.remove(fid)
         if len(to_add) > 0:
-            self.modelobject._get_collection().insert(to_add)
+            self.modelobject.objects.insert(to_add)
+            #self.modelobject._get_collection().insert(to_add)
         if len(current_items) > 0:
             self.modelobject._get_collection().remove({"feature_id": {"$in": current_items}})
 
-        return itemsinserted, len(current_items)
+        return current_items
 
     def get_by_id(self, iid):
         result = self.modelobject._get_collection().aggregate([

@@ -20,3 +20,16 @@ class HandlerFactory(object):
 
     def create(self):
         return _installedSources[self._collection_]["handler"]()
+
+    @staticmethod
+    def get_installed():
+        collectionlist = {}
+        for k, v in _installedSources.iteritems():
+            instance = _installedSources[k]["handler"]()
+            instance_fields = instance.get_field_names()
+            collectionlist[k] = {
+                "name": v["name"],
+                "fields": instance_fields
+            }
+
+        return collectionlist
