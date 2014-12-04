@@ -287,7 +287,7 @@ public class ObjectListFragment extends ListFragment {
         statusText.setBackgroundColor(SEARCH_BACKGROUND);
         lastStatusBackground = SEARCH_BACKGROUND;
 
-        if (event.getMapObjects() != null) {
+        if (event.getMapObjects() != null && event.getMapObjects().size() > 0) {
             if(event.getMapObjects().size() == MAX_RESULTS_AMOUNT) {
                 statusText.setText(String.format(MAX_RESULTS, MAX_RESULTS_AMOUNT));
             }
@@ -296,16 +296,16 @@ public class ObjectListFragment extends ListFragment {
             }
             lastStatusText = statusText.getText().toString();
             this.adapter.addAll(event.getMapObjects());
+            if(lastExpanded >=0 && lastExpanded < adapter.getGroupCount()) {
+                expandableListView.collapseGroup(lastExpanded);
+            }
+            this.getListView().requestLayout();
+            this.adapter.notifyDataSetChanged();
         }
         else {
             statusText.setText(NO_RESULTS);
             lastStatusText = NO_RESULTS;
         }
-        this.getListView().requestLayout();
-        if(lastExpanded >=0) {
-            expandableListView.collapseGroup(lastExpanded);
-        }
-        this.adapter.notifyDataSetChanged();
 
         synchronized (LOCK){
             Log.d("__________","Search results received. Releasing lock.");
@@ -449,13 +449,13 @@ public class ObjectListFragment extends ListFragment {
         @Override
         protected void onPostExecute(Boolean result) {
             if(!result) {
-                synchronized (LOCK){
+                synchronized (LOCK) {
                     Log.d("________", "Couldn't connect to locationclient. Releasing lock.");
                     searchInProgress = false;
+                    statusText.setText(LOCATION_FAILED);
+                    lastStatusText = LOCATION_FAILED;
+                    lastStatusBackground = LOCATION_BACKGROUND;
                 }
-                statusText.setText(LOCATION_FAILED);
-                lastStatusText = LOCATION_FAILED;
-                lastStatusBackground = LOCATION_BACKGROUND;
             }
         }
     }
