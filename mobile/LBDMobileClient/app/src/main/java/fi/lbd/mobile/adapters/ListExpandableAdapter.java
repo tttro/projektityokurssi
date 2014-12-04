@@ -36,10 +36,11 @@ public class ListExpandableAdapter extends BaseExpandableListAdapter {
     private ArrayList<Pair<Integer, MapObject>> objects;
     private Context context;
 
-    // How much object data is shown in the expanded list
-    private final static int SHOW_NUMBER_OF_PROPERTIES = 3;
-    private final static boolean SHOW_COORDINATES = false;
-    private final static boolean SHOW_METADATA = false;
+    // Number of additional properties, coordinates and metadata properties that are shown in the
+    // expanded list
+    private final static int MIN_ADDITIONAL_PROPERTIES = 3;
+    private final static int MIN_COORDINATES = 0;
+    private final static int MIN_METADATA_PROPERTIES = 0;
     private final static int ADDITIONAL_PADDING = 0;
 
     public ListExpandableAdapter(Context context) {
@@ -125,19 +126,20 @@ public class ListExpandableAdapter extends BaseExpandableListAdapter {
             view.setBackgroundColor(Color.WHITE);
         }
 
-        int distance = this.objects.get(groupPosition).first;
-        MapObject object = this.objects.get(groupPosition).second;
+        if(groupPosition >= 0 && groupPosition < getGroupCount()) {
+            int distance = this.objects.get(groupPosition).first;
+            MapObject object = this.objects.get(groupPosition).second;
 
-        if(object != null) {
-            TextView textViewId = (TextView) view.findViewById(R.id.textViewObjectId);
-            textViewId.setText(object.getId());
+            if (object != null) {
+                TextView textViewId = (TextView) view.findViewById(R.id.textViewObjectId);
+                textViewId.setText(object.getId());
 
-            TextView textViewDistance = (TextView) view.findViewById(R.id.textViewDistance);
-            if(distance >= 0){
-                textViewDistance.setText(LocationUtils.formatDistance(distance));
-            }
-            else {
-                textViewDistance.setText(context.getResources().getString(R.string.unknown_distance));
+                TextView textViewDistance = (TextView) view.findViewById(R.id.textViewDistance);
+                if (distance >= 0) {
+                    textViewDistance.setText(LocationUtils.formatDistance(distance));
+                } else {
+                    textViewDistance.setText(context.getResources().getString(R.string.unknown_distance));
+                }
             }
         }
         return view;
@@ -160,7 +162,8 @@ public class ListExpandableAdapter extends BaseExpandableListAdapter {
 
            final MapObject object = ((Pair<Integer, MapObject>)getGroup(groupPosition)).second;
            final ListDetailsAdapter adapter = new ListDetailsAdapter(
-                  this.context, object, SHOW_NUMBER_OF_PROPERTIES, SHOW_COORDINATES, SHOW_METADATA);
+                   this.context, object, MIN_ADDITIONAL_PROPERTIES, MIN_COORDINATES,
+                   MIN_METADATA_PROPERTIES);
 
             ((ListView)view.findViewById(android.R.id.list)).setAdapter(adapter);
             adjustListHeight((ListView)view.findViewById(android.R.id.list));

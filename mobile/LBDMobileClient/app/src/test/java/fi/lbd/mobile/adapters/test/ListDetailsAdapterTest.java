@@ -1,48 +1,30 @@
 package fi.lbd.mobile.adapters.test;
 
-
 import android.app.Activity;
-import android.content.Context;
-import android.text.Layout;
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-import org.robolectric.annotation.Config;
 import org.robolectric.shadows.ShadowLog;
-import org.robolectric.shadows.ShadowTextView;
 import org.robolectric.Robolectric;
-import org.w3c.dom.Text;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import fi.lbd.mobile.CustomRobolectricTestRunner;
-import fi.lbd.mobile.ListActivity;
 import fi.lbd.mobile.R;
 import fi.lbd.mobile.adapters.ListDetailsAdapter;
-import fi.lbd.mobile.adapters.ListExpandableAdapter;
 import fi.lbd.mobile.location.ImmutablePointLocation;
-import fi.lbd.mobile.location.LocationHandler;
-import fi.lbd.mobile.location.PointLocation;
 import fi.lbd.mobile.mapobjects.ImmutableMapObject;
 import fi.lbd.mobile.mapobjects.MapObject;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -84,11 +66,11 @@ public class ListDetailsAdapterTest {
         mapObjectTest1 = new ImmutableMapObject(false, "1", location, propertiesTest1, metadataTest1);
 
         adapterTest1 = new ListDetailsAdapter(mockActivity, mapObjectTest1, propertiesTest1.size(),
-                true,true);
+                1,metadataTest1.size());
         adapterTest2 = new ListDetailsAdapter(mockActivity, mapObjectTest1, propertiesTest1.size()+1,
-                true,true);
+                1,metadataTest1.size()+1);
         adapterTest3 = new ListDetailsAdapter(mockActivity, mapObjectTest1, propertiesTest1.size(),
-                false,true);
+                0,metadataTest1.size()-1);
         adapterTest4 = new ListDetailsAdapter(mockActivity, mapObjectTest1, 0,0,0);
     }
 
@@ -101,8 +83,16 @@ public class ListDetailsAdapterTest {
 
         assertThat(adapterTest1.getCount() == 5);
         assertThat(adapterTest2.getCount() == 5);
-        assertThat(adapterTest3.getCount() == 4);
+        assertThat(adapterTest3.getCount() == 3);
         assertThat(adapterTest4.getCount() == 0);
+
+        ListDetailsAdapter adapterTest5 = new ListDetailsAdapter(mockActivity, mapObjectTest1,
+                0,100,metadataTest1.size()-1);
+        ListDetailsAdapter adapterTest6 = new ListDetailsAdapter(mockActivity, mapObjectTest1,
+                propertiesTest1.size()-1,-100,metadataTest1.size()-2);
+
+        assertThat(adapterTest5.getCount() == 2);
+        assertThat(adapterTest6.getCount() == 1);
     }
 
     @Test
@@ -126,11 +116,38 @@ public class ListDetailsAdapterTest {
         when(mockViewGroup.findViewById(R.id.textViewObjectId)).thenReturn(titleText);
         when(mockViewGroup.findViewById(R.id.textViewObjectLocation)).thenReturn(dataText);
 
+        titleText.setText("Text");
+        dataText.setText("Text");
+        for(int i = -1; i < 7; ++i){
 
-        for(int i = 0; i < 7; ++i){
+            // Test an illegal index in each adapter
+            if(i == -1){
+                adapterTest1.getView(i, null, mockViewGroup);
+                assertThat(titleText.getText().equals("Text"));
+                assertThat(dataText.getText().equals("Text"));
+                titleText.setText("Text");
+                dataText.setText("Text");
 
+                adapterTest2.getView(i, null, mockViewGroup);
+                assertThat(titleText.getText().equals("Text"));
+                assertThat(dataText.getText().equals("Text"));
+                titleText.setText("Text");
+                dataText.setText("Text");
+
+                adapterTest3.getView(i, null, mockViewGroup);
+                assertThat(titleText.getText().equals("Text"));
+                assertThat(dataText.getText().equals("Text"));
+                titleText.setText("Text");
+                dataText.setText("Text");
+
+                adapterTest4.getView(i, null, mockViewGroup);
+                assertThat(titleText.getText().equals("Text"));
+                assertThat(dataText.getText().equals("Text"));
+                titleText.setText("Text");
+                dataText.setText("Text");
+            }
             // Test the first two elements in each adapter
-            if(i < 2) {
+            else if(i < 2) {
                 adapterTest1.getView(i, null, mockViewGroup);
                 assertThat(titleText.getText().equals(String.format("propertyp%d", i)));
                 assertThat(dataText.getText().equals(String.format("valuep%d", i)));
@@ -186,12 +203,12 @@ public class ListDetailsAdapterTest {
                 adapterTest2.getView(i, null, mockViewGroup);
                 assertThat(titleText.getText().equals("propertym0"));
                 assertThat(dataText.getText().equals("valuem0"));
-                titleText.setText("Should change");
-                dataText.setText("Should change");
+                titleText.setText("Should not change");
+                dataText.setText("Should not change");
 
                 adapterTest3.getView(i, null, mockViewGroup);
-                assertThat(titleText.getText().equals("propertym1"));
-                assertThat(dataText.getText().equals("valuem1"));
+                assertThat(titleText.getText().equals("Should not change"));
+                assertThat(dataText.getText().equals("Should not change"));
                 titleText.setText("Should not change");
                 dataText.setText("Should not change");
 
@@ -242,5 +259,6 @@ public class ListDetailsAdapterTest {
                 assertThat(dataText.getText().equals("Should not change"));
             }
         }
+
     }
 }
