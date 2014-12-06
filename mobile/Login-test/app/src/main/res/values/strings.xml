@@ -9,5 +9,6 @@
     <string name="revoke">Revoke access</string>
     <string name="sign_out">Sign out</string>
     <string name="rest">Rest result</string>
+    <string name="network_error">You\'re not connected to a network!</string>
 
 </resources>

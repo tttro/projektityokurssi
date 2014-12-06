@@ -63,6 +63,7 @@ def this_is_a_login_wrapper_dummy(func):
             return HttpResponse(status=400)
         else:
             access_token = request.META["HTTP_LBD_LOGIN_HEADER"]
+            print access_token
         if "HTTP_LBD_OAUTH_ID" not in request.META:
             return HttpResponse(status=400)
         else:
@@ -71,6 +72,10 @@ def this_is_a_login_wrapper_dummy(func):
                % access_token)
         h = httplib2.Http()
         result = json.loads(h.request(url, 'GET')[1])
+        # If there was an error in the access token info, abort.
+        if result.get('error') is not None:
+            print result
+            return HttpResponse(status=400)
         if userid == result["user_id"]:
             print "User matches"
         print result

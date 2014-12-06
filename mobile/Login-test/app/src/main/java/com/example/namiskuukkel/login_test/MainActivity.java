@@ -1,9 +1,12 @@
 package com.example.namiskuukkel.login_test;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.IntentSender;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -56,7 +59,7 @@ public class MainActivity extends Activity implements View.OnClickListener,
      */
     private ConnectionResult mConnectionResult;
 
-    private String url = "http://192.168.100.48:8000/locationdata/api/Streetlights/WFS_KATUVALO.405171";
+    private String url = "http://192.168.100.48:20202/locationdata/api/Streetlights/WFS_KATUVALO.405171";
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -120,7 +123,12 @@ public class MainActivity extends Activity implements View.OnClickListener,
 
     protected void onStart() {
         super.onStart();
-        mGoogleApiClient.connect();
+        if(isOnline()) {
+            mGoogleApiClient.connect();
+        } else {
+            TextView status = (TextView) findViewById(R.id.status);
+            status.setText(R.string.network_error);
+        }
     }
 
     protected void onStop() {
@@ -199,6 +207,11 @@ public class MainActivity extends Activity implements View.OnClickListener,
                             Plus.AccountApi.getAccountName(mGoogleApiClient),
                             "oauth2:"+Scopes.PLUS_ME);
                     //Return google id and the access token
+                    if(Plus.PeopleApi.getCurrentPerson(mGoogleApiClient) == null)
+                    {
+                        String[] ex = {"Errrrr"};
+                        return ex;
+                    }
                     String[] result = {accessToken,
                             Plus.PeopleApi.getCurrentPerson(mGoogleApiClient).getId()};
                     return result;
@@ -226,12 +239,24 @@ public class MainActivity extends Activity implements View.OnClickListener,
             protected void onPostExecute(String[] result) {
                 super.onPostExecute(result);
                 TextView token = (TextView) findViewById(R.id.token);
-                token.setText(result[0] + ", " + result[1]);
-                sendAccessToken(result);
+                if(result.length > 1) {
+                    token.setText(result[0] + ", " + result[1]);
+                    sendAccessToken(result);
+                }
+                else
+                {
+                    token.setText("ERRRRRRRR");
+                    return;
+                }
             }
         };
-
-        new PostTask().execute((String)null);
+        if (isOnline()) {
+            new PostTask().execute((String) null);
+        }
+        else {
+            TextView token = (TextView) findViewById(R.id.token);
+            token.setText(R.string.network_error);
+        }
     }
 
     /*
@@ -250,7 +275,7 @@ public class MainActivity extends Activity implements View.OnClickListener,
 
             @Override
             protected JSONObject doInBackground(String... params) {
-                return Rest.doPut(params);
+                return Rest.doGet(params);
             }
 
             @Override
@@ -270,5 +295,12 @@ public class MainActivity extends Activity implements View.OnClickListener,
         params[1] = access[1];
         params[2] = url;
         new RestAsyncTask().execute((String[])params);
+    }
+
+    public boolean isOnline() {
+        ConnectivityManager cm =
+                (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo netInfo = cm.getActiveNetworkInfo();
+        return netInfo != null && netInfo.isConnectedOrConnecting();
     }
 }
