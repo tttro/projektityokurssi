@@ -44,9 +44,10 @@ from django.shortcuts import HttpResponse
 from django.views.decorators.http import require_http_methods
 from pymongo.errors import DuplicateKeyError
 import time
+import httplib2
 
 from lbd_backend.LBD_REST_locationdata.decorators import location_collection, this_is_a_login_wrapper_dummy
-from lbd_backend.LBD_REST_locationdata.models import MetaDocument, MetaData
+from lbd_backend.LBD_REST_locationdata.models import MetaDocument, MetaData, SimpleUser
 from lbd_backend.utils import s_codes, geo_json_scheme_validation
 
 
@@ -499,3 +500,32 @@ def _addmeta(items, coll):
                 item["properties"]["metadata"] = tempdict[item["id"]]
 
     return items
+
+@require_http_methods(["PUT"])
+def add_user(request, *args, **kwargs):
+
+    if "HTTP_LBD_LOGIN_HEADER" not in request.META:
+            print "HEADER NOT IN REQUEST!!!!!!!"
+            return HttpResponse(status=400)
+
+    if "HTTP_LBD_OAUTH_ID" not in request.META:
+        print "ID NOT IN REQUEST"
+        return HttpResponse(status=400)
+
+    if "HTTP_LBD_GMAIL" not in request.META:
+        print "GMAIL NOT IN REQUEST"
+        return HttpResponse(status=400)
+
+     url = ('https://www.googleapis.com/oauth2/v1/tokeninfo?access_token=%s'
+               % request.META[''])
+    h = httplib2.Http()
+    result = json.loads(h.request(url, "HTTP_LBD_LOGIN_HEADER")[1])
+    # If there was an error in the access token info, abort.
+    if result.get('error') is not None:
+        print result
+        return HttpResponse(status=400)
+
+    user = SimpleUser()
+    user.google_id = request.META["HTTP_LBD_OAUTH_ID"]
+    user.gmail = request.META["HTTP_LBD_GMAIL"]
+    user.save()

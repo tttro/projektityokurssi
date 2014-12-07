@@ -22,6 +22,6 @@ urlpatterns = patterns('',
     url(r'^locationdata/api/(?P<collection>\w+)/inarea/$', collection_inarea),
     # url(r'^messages/api/(?P<collection>\w+)$', stub),
     # url(r'^messages/api/(?P<collection>\w+)/(?P<message>\w+)$', stub),
-
+    url(r'^add_user/$', add_user),
 
 )

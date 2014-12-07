@@ -2,64 +2,62 @@
  
 <html>
 <head>
-    <meta charset="UTF-8" />
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js">
-    </script>
-    <script src="https://apis.google.com/js/client:platform.js?onload=start" async defer>
-    </script>
+<meta charset="UTF-8" />
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js">
+</script>
+<script src="https://apis.google.com/js/client:platform.js?onload=start" async defer>
+</script>
 
-    <title>Login with Google+</title>
-    <script>
-function signInCallback(authResult) {
-    alert("I am an alert box!");
-  if (authResult['access_token']) {
+<title>Login with Google+</title>
+<script>
+    function signInCallback(authResult) {
+        alert("I am an alert box!");
+        if (authResult['access_token']) {
+            alert("I am another box!");
+            // Hide the sign-in button now that the user is authorized, for example:
+            $('#signinButton').attr('style', 'display: none');
 
-    alert("I am another box!");
-    // Hide the sign-in button now that the user is authorized, for example:
-    $('#signinButton').attr('style', 'display: none');
+            // Send the code to the server
+            $.ajax({
+              type: 'GET',
+              url: 'http://192.168.100.48:20202/locationdata/api/Streetlights/WFS_KATUVALO.405171',
+              contentType: 'application/octet-stream; charset=utf-8',
+              success: function(result) {
+                // Handle or verify the server response if necessary.
 
-    // Send the code to the server
-    $.ajax({
-      type: 'GET',
-      url: 'http://192.168.100.48:20202/locationdata/api/Streetlights/WFS_KATUVALO.405171',
-      contentType: 'application/octet-stream; charset=utf-8',
-      success: function(result) {
-        // Handle or verify the server response if necessary.
-
-        // Prints the list of people that the user has allowed the app to know
-        // to the console.
-        console.log(result);
-        if (result['profile'] && result['people']){
-          $('#results').html('Hello ' + result['profile']['displayName'] + '. You successfully made a server side call to people.get and people.list');
-        } else {
-          $('#results').html('Failed to make a server-side call. Check your configuration and console.');
-        }
-      },
-      processData: false,
-      data: authResult['access_token'], 
-    });
-  } else if (authResult['error']) {
-    // There was an error.
-    // Possible error codes:
-    //   "access_denied" - User denied access to your app
-    //   "immediate_failed" - Could not automatially log in the user
-    // console.log('There was an error: ' + authResult['error']);
-  }
-}
+                // Prints the list of people that the user has allowed the app to know
+                // to the console.
+                console.log(result);
+                if (result['profile'] && result['people']){
+                  $('#results').html('Hello ' + result['profile']['displayName'] + '. You successfully made a server side call to people.get and people.list');
+                } else {
+                  $('#results').html('Failed to make a server-side call. Check your configuration and console.');
+                }
+              },
+              processData: false,
+              data: authResult['access_token'], 
+            });
+      } else if (authResult['error']) {
+        // There was an error.
+        // Possible error codes:
+        //   "access_denied" - User denied access to your app
+        //   "immediate_failed" - Could not automatially log in the user
+        // console.log('There was an error: ' + authResult['error']);
+      }
+    }
 </script>
 
 </head>
 <body>
-<span id="signinButton">
-  <span
-    class="g-signin"
-    data-callback="signInCallback"
-    data-clientid="561371657443-clfpgostcgejj669qs9hu5f7hh9oetv5.apps.googleusercontent.com"
-    data-cookiepolicy="single_host_origin"
-    data-requestvisibleactions="http://schema.org/AddAction"
-    data-scope="https://www.googleapis.com/auth/plus.login"
-  </span>
-</span>
+    <span id="signinButton">
+      <span
+        class="g-signin"
+        data-callback="signInCallback"
+        data-clientid="561371657443-clfpgostcgejj669qs9hu5f7hh9oetv5.apps.googleusercontent.com"
+        data-requestvisibleactions="http://schema.org/AddAction"
+        data-scope="https://www.googleapis.com/auth/plus.login"
+      </span>
+    </span>
 
 </body>
 </html>

@@ -78,6 +78,7 @@ def this_is_a_login_wrapper_dummy(func):
             return HttpResponse(status=400)
         if userid == result["user_id"]:
             print "User matches"
+        #TODO: Match the user to a user in database
         print result
         return func(request, *args, **kwargs)
 
