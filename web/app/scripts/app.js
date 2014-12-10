@@ -18,7 +18,8 @@ var app = angular.module('app',[
     headerLogin: {'LBD_LOGIN_HEADER':'SimoSahkari'},
     nearRange: '0.0001',
     inareaRange: 0.1, // 0.1 - 1
-    defaultZoom: 17
+    defaultZoom: 17,
+    searchLimit: 10 // Result max count
 })
 .config(function($logProvider){
     $logProvider.debugEnabled(true);

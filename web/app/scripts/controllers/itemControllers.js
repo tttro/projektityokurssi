@@ -3,7 +3,7 @@
 
 var itemControllers = angular.module('itemControllers', []);
 
-itemControllers.controller('itemController', function($scope, $http, $rootScope, $filter, $timeout, ObjectsLocal){
+itemControllers.controller('itemController', function($scope, $http, $rootScope, $filter, $timeout, ObjectsLocal, ObjectsService){
 
 
     var orginalItemList = [];
@@ -12,6 +12,7 @@ itemControllers.controller('itemController', function($scope, $http, $rootScope,
     $scope.address = '';
     $scope.searchQuery = '';
     $scope.selectedItem = null;
+    $scope.searchMethod = {Map:true,All:false    }
 
     $scope.items = ObjectsLocal.get();
 
@@ -25,12 +26,24 @@ itemControllers.controller('itemController', function($scope, $http, $rootScope,
 
     $scope.itemSearch = function(searchQuery){
 
-        if(searchQuery != "" ) {
-            $scope.items.features = $filter('filter')($scope.items.features,{$:searchQuery}, false);
+        // MAP
+        if( $scope.searchMethod == 1 )
+        {
+             if(searchQuery != "" ) {
+                $scope.items.features = $filter('filter')($scope.items.features,{$:searchQuery}, false);
+             }
+             else {
+                $scope.items = orginalItemList;
+             }
         }
-        else {
-            $scope.items = orginalItemList;
+        // ALL
+        else
+        {
+            ObjectsService.search(searchQuery, function(data){
+                console.log(data);
+            });
         }
+
     }
 
     $scope.showMarker = function(markerId){

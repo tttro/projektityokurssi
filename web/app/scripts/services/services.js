@@ -30,11 +30,34 @@ dataServices.factory('ObjectsService', function($http, appConfig){
             var ne = bounds.ne;
             var sw = bounds.sw;
 
-            $http({
-                method: 'GET',
-                url: appConfig.baseApiUrl + appConfig.dataTypeUrl +'/inarea/?xbottomleft='+sw.lng()+'&ybottomleft='+sw.lat()+'&ytopright='+ne.lat()+'&xtopright='+ne.lng(),
-                headers: appConfig.headerLogin
+                $http({
+                    method: 'GET',
+                    url: appConfig.baseApiUrl + appConfig.dataTypeUrl +'/inarea/?xbottomleft='+sw.lng()+'&ybottomleft='+sw.lat()+'&ytopright='+ne.lat()+'&xtopright='+ne.lng(),
+                    headers: appConfig.headerLogin
 
+                })
+                .success(function(data){
+                    callback(data);
+                })
+                .error(function(data,status,header,config){
+                    errorHandler(data,status,header,config,appConfig.dataTypeUrl);
+                });
+
+            return retData;
+        },
+        search: function(searchQuery, callback){
+
+            var searchPostContent= {
+                'from':'id',
+                'search':searchQuery,
+                'limit':appConfig.searchLimit
+            }
+
+            $http({
+                method: 'POST',
+                url: appConfig.baseApiUrl + appConfig.dataTypeUrl +'/search/',
+                headers: appConfig.headerLogin,
+                data: searchPostContent
             })
             .success(function(data){
                 callback(data);
@@ -43,10 +66,6 @@ dataServices.factory('ObjectsService', function($http, appConfig){
                 errorHandler(data,status,header,config,appConfig.dataTypeUrl);
             });
 
-            return retData;
-        },
-        search: function(searchQuery){
-            return retData;
         }
     };
 });
@@ -77,5 +96,5 @@ dataServices.factory('MessageDataService', function(){
 
 var errorHandler = function(data,status,header,config,dataTypeUrl) {
     alert("Sorry, Data Load Failure");
-    console.log("Data Load Failure: "+dataTypeUrl +" " + status);
+    console.log("Data Load Failure: "+dataTypeUrl +" " + status+" "+config);
 }
