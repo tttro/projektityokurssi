@@ -134,7 +134,12 @@ def single_resource(request, *args, **kwargs):
     #############################################################
     elif request.method == "PUT":
         body = request.body
-        content_json = json.loads(body)
+
+        try:
+            content_json = json.loads(body)
+        except ValueError:
+            return HttpResponse(status=s_codes["BAD"])
+
         if geo_json_scheme_validation(content_json):
             try:
                 if handlerinterface.get_by_id(kwargs["resource"]) is None:
@@ -143,20 +148,22 @@ def single_resource(request, *args, **kwargs):
                     return HttpResponse(status=s_codes["BAD"])
                 else:
                     pass
+
+                content_json["properties"]["metadata"]["modified"] = int(time.time())
+                content_json["properties"]["metadata"]["modifier"] = kwargs["lbduser"]
                 try:
                     temp = MetaDocument.objects().get(feature_id=content_json["id"])
-                    temp.meta_data.status = content_json["properties"]["metadata"]["status"]
-                    temp.meta_data.modified = int(time.time())
-                    temp.meta_data.modifier = kwargs["lbduser"]
+                    temp.meta_data = MetaData(**content_json["properties"]["metadata"])
                     temp.save()
                 except mongoengine.DoesNotExist:
                     try:
                         temp = MetaDocument(feature_id = content_json["id"],
                                             collection = kwargs["collection"],
                                             meta_data = MetaData(
-                                                status = content_json["properties"]["metadata"]["status"],
-                                                modified = int(time.time()),
-                                                modifier = kwargs["lbduser"]
+                                                **content_json["properties"]["metadata"]
+                                                # status = content_json["properties"]["metadata"]["status"],
+                                                # modified = int(time.time()),
+                                                # modifier = kwargs["lbduser"]
                                             ))
                         temp.save()
                     except mongoengine.NotUniqueError:
@@ -166,6 +173,7 @@ def single_resource(request, *args, **kwargs):
                 return HttpResponse(status=s_codes["OK"])
 
             except KeyError:
+                print "Foo"
                 return HttpResponse(status=s_codes["BAD"])
 
         else:
@@ -244,7 +252,10 @@ def collection(request, *args, **kwargs):
         MetaDocument.objects().delete()
         if MetaDocument.objects().count() == 0:
             body = request.body
-            content_json = json.loads(body)
+            try:
+                content_json = json.loads(body)
+            except ValueError:
+                return HttpResponse(status=s_codes["BAD"])
             if geo_json_scheme_validation(content_json):
                 try:
                     opendata = handlerinterface.get_all()
@@ -335,7 +346,7 @@ def collection_near(request, *args, **kwargs):
         latitude = float(request.GET.get('latitude', None))
         longitude = float(request.GET.get('longitude', None))
     except (TypeError, ValueError):
-        return HttpResponse(status=s_codes["NOTFOUND"])
+        return HttpResponse(status=s_codes["BAD"])
 
     try:
         nrange = float(request.GET.get('range', None))
@@ -430,7 +441,7 @@ def collection_inarea(request, *args, **kwargs):
         xbottom_left = float(request.GET.get('xbottomleft', None))
         ybottom_left = float(request.GET.get('ybottomleft', None))
     except (TypeError, ValueError):
-        return HttpResponse(status=s_codes["NOTFOUND"])
+        return HttpResponse(status=s_codes["BAD"])
     urlmini = request.GET.get('mini', "")
 
     handlerinterface = kwargs["handlerinterface"]
@@ -486,6 +497,7 @@ def search_from_rest(request, *args, **kwargs):
         contentjson = json.loads(request.body)
     except ValueError:
         return HttpResponse(status=400)
+
     if not all (key in contentjson for key in("from", "search", "limit")):
         return HttpResponse(status=400)
 

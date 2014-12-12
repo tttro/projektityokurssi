@@ -140,14 +140,13 @@ class PlaygroundHandler(HandlerBase):
             {"$project": doc_structure}
         ])
         itemcount = len(result["result"])
-        if int(result["ok"]) and itemcount > 0:
+        if int(result["ok"]):
             fc = self._featurecollection
             fc["totalFeatures"] = itemcount
             fc["features"] = result["result"]
 
             return fc
-        else:
-            return None
+
 
     def get_within_rectangle(self, xtop_right, ytop_right, xbottom_left, ybottom_left, mini=False):
 
@@ -171,14 +170,13 @@ class PlaygroundHandler(HandlerBase):
         else:
             f_count = self.modelobject.objects(geometry__geo_within_box=
                                                [(xbottom_left, ybottom_left), (xtop_right, ytop_right)]).count()
-            if f_count > 0:
-                featurecollection = self._featurecollection
-                featurecollection["totalFeatures"] = f_count
-                featurecollection["features"] = raw["result"]
 
-                return featurecollection
-            else:
-                return None
+            featurecollection = self._featurecollection
+            featurecollection["totalFeatures"] = f_count
+            featurecollection["features"] = raw["result"]
+
+            return featurecollection
+
 
     def get_all(self, mini=True):
         if mini:
@@ -191,14 +189,13 @@ class PlaygroundHandler(HandlerBase):
             raise GenericDBError("Database query failed. Status: " + str(raw["ok"]))
         else:
             res_count = len(raw["result"])
-            if res_count > 0:
-                featurecollection = self._featurecollection
-                featurecollection["totalFeatures"] = res_count
-                featurecollection["features"] = raw["result"]
 
-                return featurecollection
-            else:
-                return None
+            featurecollection = self._featurecollection
+            featurecollection["totalFeatures"] = res_count
+            featurecollection["features"] = raw["result"]
+
+            return featurecollection
+
 
     # Return values:
     # Boolean: True if all were deleted, False if objects remain in db after deletion

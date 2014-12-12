@@ -39,7 +39,8 @@ _geojson_feature_fields = {
         "_self_": (dict(), True),
         "metadata": {
             "_self_": (dict(), False),
-            "status": (unicode(), True)
+            "status": (unicode(), True),
+            "info": (unicode(), True)
         }
     },
     "id": (unicode(), True)

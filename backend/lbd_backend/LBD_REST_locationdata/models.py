@@ -32,6 +32,7 @@ class MetaData(mongoengine.DynamicEmbeddedDocument):
     status = mongoengine.StringField(required=True)
     modified = mongoengine.IntField(required=True)
     modifier = mongoengine.StringField(required=True)
+    info = mongoengine.StringField(required=True)
 
 class MetaDocument(mongoengine.DynamicDocument):
     """
