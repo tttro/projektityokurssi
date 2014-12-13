@@ -10,7 +10,7 @@ __author__ = 'Aki Mäkinen'
 
 from django.conf.urls import patterns, url
 from lbd_backend.LBD_REST_locationdata.views import single_resource, collection, \
-    collection_near, collection_inarea
+    collection_near, collection_inarea, add_user
 from django.contrib import admin
 admin.autodiscover()
 

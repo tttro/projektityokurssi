@@ -10,52 +10,73 @@
 
 <title>Login with Google+</title>
 <script>
+    
+
+
     function signInCallback(authResult) {
-        alert("I am an alert box!");
         if (authResult['access_token']) {
-            alert("I am another box!");
+          user_id = "none_what_so_ever";
+          function makeApiCall() {
+            $.ajax({
+                url: 'https://www.googleapis.com/oauth2/v2/userinfo',
+                type: 'GET',
+                success: function(data) {
+                    alert(data['id']);
+                    $.ajax({
+                    type: 'GET',
+                    url: 'http://192.168.100.48:20202/locationdata/api/Streetlights/WFS_KATUVALO.405171',
+                    contentType: 'application/json; charset=utf-8',
+                    success: function(result) {
+                        // Handle or verify the server response if necessary.
+                    
+                        // Prints the list of people that the user has allowed the app to know
+                        // to the console.
+                        console.log(result);
+                    },
+                    processData: false,
+                    beforeSend: function (request) { 
+                                    request.setRequestHeader( 'HTTP_LBD_LOGIN_HEADER', authResult['access_token']);
+                                    request.setRequestHeader( 'HTTP_LBD_OAUTH_ID', data['id']);
+                                    }
+                                    
+                    
+                    }); },
+                error: function() { alert('boo!'); },
+                beforeSend: function (request) { request.setRequestHeader("Authorization", 'Bearer ' + authResult['access_token']); }
+            });
+          }   
             // Hide the sign-in button now that the user is authorized, for example:
             $('#signinButton').attr('style', 'display: none');
-
+            makeApiCall();
+            $('#result').html(user_id);
             // Send the code to the server
-            $.ajax({
-              type: 'GET',
-              url: 'http://192.168.100.48:20202/locationdata/api/Streetlights/WFS_KATUVALO.405171',
-              contentType: 'application/octet-stream; charset=utf-8',
-              success: function(result) {
-                // Handle or verify the server response if necessary.
+            
+            // Load the API and make an API call.  Display the results on the screen.    
 
-                // Prints the list of people that the user has allowed the app to know
-                // to the console.
-                console.log(result);
-                if (result['profile'] && result['people']){
-                  $('#results').html('Hello ' + result['profile']['displayName'] + '. You successfully made a server side call to people.get and people.list');
-                } else {
-                  $('#results').html('Failed to make a server-side call. Check your configuration and console.');
-                }
-              },
-              processData: false,
-              data: authResult['access_token'], 
-            });
+            
       } else if (authResult['error']) {
+        if (authResult['error'] == "access_denied") {
+            alert("User gave no permission :(");
+        }
         // There was an error.
         // Possible error codes:
         //   "access_denied" - User denied access to your app
         //   "immediate_failed" - Could not automatially log in the user
-        // console.log('There was an error: ' + authResult['error']);
+        console.log('There was an error: ' + authResult['error']);
       }
     }
 </script>
 
 </head>
 <body>
+    <p id="result"></p>
     <span id="signinButton">
       <span
         class="g-signin"
         data-callback="signInCallback"
         data-clientid="561371657443-clfpgostcgejj669qs9hu5f7hh9oetv5.apps.googleusercontent.com"
-        data-requestvisibleactions="http://schema.org/AddAction"
-        data-scope="https://www.googleapis.com/auth/plus.login"
+        data-cookiepolicy="single_host_origin"
+        data-scope="profile"
       </span>
     </span>
 

@@ -516,7 +516,7 @@ def add_user(request, *args, **kwargs):
         print "GMAIL NOT IN REQUEST"
         return HttpResponse(status=400)
 
-     url = ('https://www.googleapis.com/oauth2/v1/tokeninfo?access_token=%s'
+    url = ('https://www.googleapis.com/oauth2/v1/tokeninfo?access_token=%s'
                % request.META[''])
     h = httplib2.Http()
     result = json.loads(h.request(url, "HTTP_LBD_LOGIN_HEADER")[1])
