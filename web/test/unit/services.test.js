@@ -4,21 +4,22 @@
 
 'use strict';
 
-describe("services", function(){
+describe('Unit: main services', function(){
 
     var scope;//we'll use this scope in our tests
+    var Services;
+    var appConfig;
 
     //mock Application to allow us to inject our own dependencies
-    beforeEach(angular.mock.module('app'));
-    //mock the controller for the same reason and include $rootScope and $controller
-    beforeEach(angular.mock.inject(function($rootScope, $controller){
-        //create an empty scope
-        scope = $rootScope.$new();
-        //declare the controller and inject our empty scope
-        $controller('dataServices', {$scope: scope});
-    }));
-    // tests start here
+    beforeEach(function() {
+        angular.module('app',[]);
+        module('dataServices');
+        inject(function ($injector){
+            Services = $injector.get('ObjectsService');
+            appConfig = $injector.get('app.constant.appConfig');
 
+        });
+    });
 
     it("should work", function(){
         expect(true).toBe(true);

@@ -1,7 +1,7 @@
 describe('angularjs map and object list', function() {
     var ptor;
     ptor = protractor.getInstance();
-    ptor.get('http://localhost:63342/web/app/index.html');
+    ptor.get('');
 
     beforeEach(function(){
 
@@ -11,24 +11,27 @@ describe('angularjs map and object list', function() {
     });
 
 
-    it('should have a title', function() {
-        expect(browser.getTitle()).toEqual('Web-client');
-    },2000);
+    it('should find same object title from map infowindow', function() {
 
-    it('should have items on list', function() {
-        // delete all cookies
-        ptor.manage().deleteAllCookies();
-        ptor.sleep(3000);
-        var objects = element.all(by.repeater('item in items.features'));
-        expect(objects.count()).toBeGreaterThan(0);
+        var objects = element.all(by.repeater('item in items.features')); // Get all objects
+        ptor.sleep(2000);
+        expect(objects.count()).toBeGreaterThan(0); // Objects count shod be more than zero
+
+        var title = ptor.findElement(protractor.By.xpath('/html/body/div[1]/div[1]/div[2]/div/div/ng-include/div[2]/ul/li[1]/div[1]')); // Find first object from list
+        title.click(); // Click a first object on list
+
+        ptor.findElement(protractor.By.xpath('/html/body/div[1]/div[1]/div[2]/div/div/ng-include/div[2]/ul/li[1]/div[2]/div[2]/button')).click(); // Click a show on map -button
+        ptor.sleep(1000);
+
+        var h4title = ptor.findElement(protractor.By.xpath('//*[@id="map"]/div/div[1]/div[3]/div[4]/div/div[2]/div/div/div/h4')); // Get infowindow title
+        expect(h4title.getText()).toBe(title.getText()); // Title should be the same
+
     },6000);
 
-    it('should open infowindow on map', function() {
-        var titleBar = ptor.findElement(protractor.By.xpath('/html/body/div[1]/div[1]/div[2]/div/div/ng-include/div[2]/ul/li[1]/div[1]'));
-
-        var objects = element.all(by.repeater('item in items.features'));
-        expect(objects.count()).toBeGreaterThan(0);
-    },6000);
+    it('should open streetview', function() {
+        ptor.findElement(protractor.By.id('panel')).click(); // Find first object from list
+        ptor.sleep(1000);
+    }, 2000);
 
 
 });
