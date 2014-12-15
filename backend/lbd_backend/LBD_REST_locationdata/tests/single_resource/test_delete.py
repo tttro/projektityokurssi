@@ -5,7 +5,7 @@ import itertools
 
 from nose import with_setup
 
-from lbd_backend.LBD_REST_locationdata.tests.single_resource.checkers import _status_tester, _content_tester
+from lbd_backend.LBD_REST_locationdata.tests.single_resource.checkers import Checker
 from lbd_backend.LBD_REST_locationdata.tests.test_settings import url, port, lbdheader
 
 
@@ -72,24 +72,29 @@ def setup_delete_single():
 @with_setup(setup_delete_single)
 def test_generator_delete_status():
     i = 1
+    c = Checker()
+    c.httpmethod = "DELETE"
     for col, res in _statuscombinations:
-        method = "DELETE"
-        call = partial(_status_tester)
-        update_wrapper(call, _status_tester)
+        call = partial(c._status_tester)
+        update_wrapper(call, c._status_tester)
         call.description = "Testing response statuses with different collection and resource values"
         test_generator_delete_status.__name__ = "DeleteStatusTest#"+str(i)
-        yield _status_tester, col, res, _con, method
+        c.con = _con
+        yield c._status_tester, col, res
         i += 1
 
 
 @with_setup(setup_delete_single)
 def test_generator_delete_content():
     i = 1
+    c = Checker()
+    c.httpmethod = "DELETE"
     for col, res in _valuecombinations:
-        method = "DELETE"
-        call = partial(_content_tester)
-        update_wrapper(call, _content_tester)
+        call = partial(c._content_tester)
+        update_wrapper(call, c._content_tester)
         call.description = "Testing response statuses with different collection and resource values"
         test_generator_delete_content.__name__ = "DeleteContentTest#"+str(i)
-        yield _content_tester, col, res, _con, method, _content
+        c.con = _con
+        c.content = _content
+        yield c._content_tester, col, res
         i += 1

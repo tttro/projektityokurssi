@@ -14,9 +14,8 @@ import fi.lbd.mobile.location.PointLocation;
  * Created by Tommi.
  */
 public class CachingBackendHandler extends BasicBackendHandler {
-    private static final long MAX_CACHE_TIME = 1000 * 60 * 1; // 2 Min TODO: Pois staticista?
 
-    private class CachedQuery {
+    private static class CachedQuery {
         private long cacheTime;
         private List<MapObject> objects;
 
@@ -35,9 +34,11 @@ public class CachingBackendHandler extends BasicBackendHandler {
     }
 
     private ConcurrentHashMap<String, CachedQuery> cachedQueries = new ConcurrentHashMap<>();
+    private final long maxCacheTime;
 
-    public CachingBackendHandler(String baseUrl, String dataSource) {
+    public CachingBackendHandler(String baseUrl, String dataSource, long cacheTimeMs) {
         super(baseUrl, dataSource);
+        this.maxCacheTime = cacheTimeMs;
     }
 
 
@@ -51,7 +52,7 @@ public class CachingBackendHandler extends BasicBackendHandler {
      */
     @Override
     public HandlerResponse getObjectsInArea(PointLocation southWest, PointLocation northEast, boolean mini) {
-        String hash = "inarea/"+southWest.getLongitude()+","+southWest.getLatitude()+","+northEast.getLatitude()+","+northEast.getLongitude();
+        String hash = "inarea/"+southWest.getLongitude()+","+southWest.getLatitude()+","+northEast.getLatitude()+","+northEast.getLongitude()+"&m:"+mini;
         CachedQuery cached = this.cachedQueries.get(hash);
         if (cached == null) {
             HandlerResponse response = super.getObjectsInArea(southWest, northEast, mini);
@@ -74,7 +75,7 @@ public class CachingBackendHandler extends BasicBackendHandler {
         Iterator<CachedQuery> iter = this.cachedQueries.values().iterator();
         while (iter.hasNext()) {
             CachedQuery query = iter.next();
-            if (System.currentTimeMillis() - query.cacheTime > MAX_CACHE_TIME) {
+            if (System.currentTimeMillis() - query.getCacheTime() > this.maxCacheTime) {
                 iter.remove();
             }
         }

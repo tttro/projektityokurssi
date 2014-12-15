@@ -5,17 +5,17 @@
 .. moduleauthor:: Aki Mäkinen <aki.makinen@outlook.com>
 
 """
-import re
-
 __author__ = 'Aki Mäkinen'
 
-from RESThandlers.HandlerInterface.Exceptions import GenericDBError
-
+import re
 import urllib
 import json
 
+from RESThandlers.HandlerInterface.Exceptions import GenericDBError
 from RESThandlers.HandlerInterface.HandlerBaseClass import HandlerBase
 from RESThandlers.Streetlight.models import Streetlights
+
+from lbd_backend.utils import flattener
 
 
 class StreetlightHandler(HandlerBase):
@@ -126,14 +126,14 @@ class StreetlightHandler(HandlerBase):
             {"$project": doc_structure}
         ])
         itemcount = len(result["result"])
-        if int(result["ok"]) and itemcount > 0:
+        if int(result["ok"]):
             fc = self._featurecollection
             fc["totalFeatures"] = itemcount
             fc["features"] = result["result"]
 
             return fc
         else:
-            return None
+            raise GenericDBError("Database query failed. Status: " + str(result["ok"]))
 
     def get_within_rectangle(self, xtop_right, ytop_right, xbottom_left, ybottom_left, mini=False):
 
@@ -157,14 +157,11 @@ class StreetlightHandler(HandlerBase):
         else:
             f_count = self.modelobject.objects(geometry__geo_within_box=
                                                [(xbottom_left, ybottom_left), (xtop_right, ytop_right)]).count()
-            if f_count > 0:
-                featurecollection = self._featurecollection
-                featurecollection["totalFeatures"] = f_count
-                featurecollection["features"] = raw["result"]
+            featurecollection = self._featurecollection
+            featurecollection["totalFeatures"] = f_count
+            featurecollection["features"] = raw["result"]
 
-                return featurecollection
-            else:
-                return None
+            return featurecollection
 
     def get_all(self, mini=True):
         if mini:
@@ -177,14 +174,13 @@ class StreetlightHandler(HandlerBase):
             raise GenericDBError("Database query failed. Status: " + str(raw["ok"]))
         else:
             res_count = len(raw["result"])
-            if res_count > 0:
-                featurecollection = self._featurecollection
-                featurecollection["totalFeatures"] = res_count
-                featurecollection["features"] = raw["result"]
 
-                return featurecollection
-            else:
-                return None
+            featurecollection = self._featurecollection
+            featurecollection["totalFeatures"] = res_count
+            featurecollection["features"] = raw["result"]
+
+            return featurecollection
+
 
     # Return values:
     # Boolean: True if all were deleted, False if objects remain in db after deletion
@@ -244,3 +240,19 @@ class StreetlightHandler(HandlerBase):
             return totalresults, featurecollection
         else:
             raise NotImplementedError
+
+
+    def get_field_names(self):
+        doc = self.modelobject._get_collection().find_one()
+        if doc is None:
+            fields = []
+        else:
+            fields = []
+            for item in flattener(doc, None):
+                if item == "feature_id":
+                    fields.append("id")
+                elif item == "_id":
+                    pass
+                else:
+                    fields.append(item)
+        return fields

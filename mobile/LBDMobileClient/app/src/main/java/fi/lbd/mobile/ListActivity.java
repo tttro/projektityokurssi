@@ -17,6 +17,8 @@ import android.view.inputmethod.InputMethodManager;
 import java.util.ArrayDeque;
 import java.util.Locale;
 
+import fi.lbd.mobile.backendhandler.URLReader;
+import fi.lbd.mobile.backendhandler.URLResponse;
 import fi.lbd.mobile.events.BusHandler;
 import fi.lbd.mobile.events.SelectMapObjectEvent;
 import fi.lbd.mobile.fragments.GoogleMapFragment;
@@ -47,10 +49,7 @@ public class ListActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         BusHandler.getBus().register(this);
-
-        //getWindow().requestFeature(Window.FEATURE_ACTION_BAR_OVERLAY);
         setContentView(R.layout.activity_list);
 
         // Start the object repository service. // TODO: Missä käynnistys?
@@ -80,8 +79,6 @@ public class ListActivity extends Activity {
                     view = new View(activity);
                 }
                 imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
-
-                // http://stackoverflow.com/questions/13185476/how-to-handle-back-button-using-view-pager
                 pageStack.push(i);
             }
             @Override
@@ -204,7 +201,9 @@ public class ListActivity extends Activity {
         }
     }
 
-    // http://stackoverflow.com/questions/13185476/how-to-handle-back-button-using-view-pager
+    // Handle back button presses.
+    //
+    // Pressing the back button brings user to the previous tab.
     @Override
     public void onBackPressed() {
         if(pageStack.size() > 1) {

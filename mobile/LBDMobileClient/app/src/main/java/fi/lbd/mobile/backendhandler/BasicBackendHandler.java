@@ -1,15 +1,18 @@
 package fi.lbd.mobile.backendhandler;
 
+import android.support.annotation.NonNull;
 import android.util.Log;
 
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
-import fi.lbd.mobile.mapobjects.MapObject;
 import fi.lbd.mobile.location.PointLocation;
+import fi.lbd.mobile.mapobjects.MapObject;
 
 /**
  * Handles the map objects. Fetches the requested objects from backend service.
@@ -59,14 +62,67 @@ public class BasicBackendHandler implements BackendHandler {
                 objects = MapObjectParser.parseCollection(response.getContents(), mini);
             } catch (JSONException e) {
                 Log.e(this.getClass().getSimpleName(), "Failed to parse map objects from JSON! {}", e);
+                return new HandlerResponse(null, HandlerResponse.Status.Failed);
             } catch (IOException e) {
                 Log.e(this.getClass().getSimpleName(), "Failed to parse map objects from JSON! {}", e);
+                return new HandlerResponse(null, HandlerResponse.Status.Failed);
             }
             return new HandlerResponse(objects, HandlerResponse.Status.Succeeded);
         }
-        Log.e(BasicBackendHandler.class.getSimpleName(), "Failed to get objects in area, response: "+ response);
+        Log.e(BasicBackendHandler.class.getSimpleName(), "Failed to get objects near location, response: "+ response);
         return new HandlerResponse(null, HandlerResponse.Status.Failed);
 	}
+
+    @Override
+    public HandlerResponse getObjectsFromSearch(@NonNull List<String> fromFields, @NonNull String searchString,
+                                                int limit, boolean mini) {
+        StringBuilder str = new StringBuilder();
+        str.append(this.baseUrl);
+        str.append(this.dataSource);
+        str.append("search/");
+        if (mini) {
+            str.append("&mini=true");
+        }
+        String url = str.toString();
+
+        StringBuilder fields = new StringBuilder();
+        Iterator<String> iter = fromFields.iterator();
+        while (iter.hasNext()) {
+            String field = iter.next();
+            fields.append(field);
+            if (iter.hasNext()) {
+                fields.append(",");
+            }
+        }
+
+        JSONObject jsonObj = new JSONObject();
+        try {
+            jsonObj.put("from", fields.toString());
+            jsonObj.put("search", searchString);
+            jsonObj.put("limit", limit);
+        } catch (JSONException e) {
+            Log.e(URLReader.class.getSimpleName(), "ERROR. {}", e);
+
+        }
+        URLResponse response = URLReader.postJson(url, jsonObj.toString());
+
+        // Only if the url returns code 200, we can parse the results.
+        if (response != null && response.getStatus() == URLResponse.ResponseStatus.STATUS_200) {
+            List<MapObject> objects = null;
+            try {
+                objects = MapObjectParser.parseSearchResult(response.getContents(), mini);
+            } catch (JSONException e) {
+                Log.e(this.getClass().getSimpleName(), "Failed to parse map objects from JSON! {}", e);
+                return new HandlerResponse(null, HandlerResponse.Status.Failed);
+            } catch (IOException e) {
+                Log.e(this.getClass().getSimpleName(), "Failed to parse map objects from JSON! {}", e);
+                return new HandlerResponse(null, HandlerResponse.Status.Failed);
+            }
+            return new HandlerResponse(objects, HandlerResponse.Status.Succeeded);
+        }
+        Log.e(BasicBackendHandler.class.getSimpleName(), "Failed to get objects from search, response: "+ response);
+        return new HandlerResponse(null, HandlerResponse.Status.Failed);
+    }
 
     @Override
     public HandlerResponse getObjectsInArea(PointLocation southWest, PointLocation northEast, boolean mini) {
@@ -95,8 +151,10 @@ public class BasicBackendHandler implements BackendHandler {
                 objects = MapObjectParser.parseCollection(response.getContents(), mini);
             } catch (JSONException e) {
                 Log.e(this.getClass().getSimpleName(), "Failed to parse map objects from JSON! {}", e);
+                return new HandlerResponse(null, HandlerResponse.Status.Failed);
             } catch (IOException e) {
                 Log.e(this.getClass().getSimpleName(), "Failed to parse map objects from JSON! {}", e);
+                return new HandlerResponse(null, HandlerResponse.Status.Failed);
             }
             return new HandlerResponse(objects, HandlerResponse.Status.Succeeded);
         }
@@ -121,14 +179,16 @@ public class BasicBackendHandler implements BackendHandler {
                 mapObject = MapObjectParser.parse(response.getContents());
             } catch (JSONException e){
                 Log.e(this.getClass().getSimpleName(), "Failed to parse map objects from JSON! {}", e);
+                return new HandlerResponse(null, HandlerResponse.Status.Failed);
             } catch (IOException e){
                 Log.e(this.getClass().getSimpleName(), "Failed to parse map objects from JSON! {}", e);
+                return new HandlerResponse(null, HandlerResponse.Status.Failed);
             }
             List<MapObject> list = new ArrayList<>();
             list.add(mapObject);
             return new HandlerResponse(list, HandlerResponse.Status.Succeeded);
         }
-        Log.e(BasicBackendHandler.class.getSimpleName(), "Failed to get objects in area, response: "+ response);
+        Log.e(BasicBackendHandler.class.getSimpleName(), "Failed to get object, response: "+ response);
         return new HandlerResponse(null, HandlerResponse.Status.Failed);
     }
 

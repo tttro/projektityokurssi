@@ -398,7 +398,9 @@ public class MapTableModel<T> {
             }
             tableElement.addAll(objects);
         } else {
-            throw new NullPointerException("Invalid cell location!");
+            //throw new NullPointerException("Invalid cell location!");
+            Log.w(this.getClass().getSimpleName(), "Tried to add elements into cell location which didn't exist: ("+
+                            gridStartLat+","+gridStartLon+"). Cell might already be removed when the event returns?");
         }
     }
 

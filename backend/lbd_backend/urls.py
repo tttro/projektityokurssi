@@ -9,7 +9,7 @@ __author__ = 'Aki Mäkinen'
 
 from django.conf.urls import patterns, url
 from lbd_backend.LBD_REST_locationdata.views import single_resource, collection, \
-    collection_near, collection_inarea, testing_view_popmeta, testing_view_dropmeta, search_from_rest
+    collection_near, collection_inarea, testing_view_popmeta, testing_view_dropmeta, search_from_rest, api
 from django.contrib import admin
 from django.conf import settings
 
@@ -17,6 +17,7 @@ admin.autodiscover()
 
 urlpatterns = patterns('',
     # REST API
+    url(r'^locationdata/api/$', api),
     url(r'^locationdata/api/(?P<collection>\w+)/$', collection),
     url(r'^locationdata/api/(?P<collection>\w+)/(?P<resource>(\w|\.)+)$', single_resource),
     url(r'^locationdata/api/(?P<collection>\w+)/near/$', collection_near),

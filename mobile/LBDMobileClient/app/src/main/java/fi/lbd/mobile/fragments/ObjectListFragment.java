@@ -1,8 +1,10 @@
 package fi.lbd.mobile.fragments;
 
 import android.app.ListFragment;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,15 +20,19 @@ import com.google.android.gms.common.GooglePlayServicesClient;
 import com.squareup.otto.Subscribe;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import fi.lbd.mobile.adapters.ListExpandableAdapter;
 import fi.lbd.mobile.events.BusHandler;
 import fi.lbd.mobile.R;
+import fi.lbd.mobile.events.RequestFailedEvent;
 import fi.lbd.mobile.events.RequestNearObjectsEvent;
 import fi.lbd.mobile.events.ReturnNearObjectsEvent;
-import fi.lbd.mobile.events.ReturnNearObjectsFailedEvent;
+import fi.lbd.mobile.events.ReturnSearchResultEvent;
+import fi.lbd.mobile.events.SearchObjectsEvent;
 import fi.lbd.mobile.location.ImmutablePointLocation;
 import fi.lbd.mobile.location.LocationHandler;
+import fi.lbd.mobile.mapobjects.MapObject;
 
 /**
  * Fragment that shows objects using an expandable list view.
@@ -45,6 +51,10 @@ public class ObjectListFragment extends ListFragment {
     private String SHOWING_NEAREST;
     private String NO_NEAREST;
     private String SEARCH_RESULTS;
+    private String NO_RESULTS;
+    private String MAX_RESULTS;
+    private String MORE_CHARACTERS;
+    private final Integer MAX_RESULTS_AMOUNT = 20;
 
     // Declare background colors used in the status bar.
     // Defined in onCreateView(), since colors.xml cannot be accessed here.
@@ -60,12 +70,11 @@ public class ObjectListFragment extends ListFragment {
     private String lastStatusText = EMPTY;
     private int lastStatusBackground = 0;
 
-    private LocationHandler locationHandler;
-    // Lock and boolean variables used to prevent users from creating more than one LocationTask
-    // at a time, even if they tap the location button repeatedly.
+    // Lock and boolean variables used to prevent users from flooding the backend with searches,
+    // even if they tap the location button or search button repeatedly.
     private static final Object LOCK = new Object();
-    private static Boolean locationInProgress = false;
-    LocationTask activeTask = null;
+    private static Boolean searchInProgress = false;
+    private LocationHandler locationHandler;
 
     private int firstVisiblePosition;
     private ArrayList<Boolean> groupExpandedArray;
@@ -97,6 +106,9 @@ public class ObjectListFragment extends ListFragment {
         SHOWING_NEAREST = getActivity().getString(R.string.showing_nearest);
         NO_NEAREST = getActivity().getString(R.string.no_nearest_found);
         SEARCH_RESULTS = getActivity().getString(R.string.showing_results);
+        NO_RESULTS = getActivity().getString(R.string.no_results);
+        MAX_RESULTS = getActivity().getString(R.string.max_results);
+        MORE_CHARACTERS = getActivity().getString(R.string.more_characters);
         LOCATION_BACKGROUND = getActivity().getResources().getColor(R.color
                 .near_objects_background);
         SEARCH_BACKGROUND = getActivity().getResources().getColor(R.color
@@ -116,7 +128,7 @@ public class ObjectListFragment extends ListFragment {
             public boolean onEditorAction(TextView v, int actionId,
                                           KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                    performSearch();
+                    performSearch(v.getText());
                     hideKeyBoard();
                     hideCursor();
                     return true;
@@ -159,8 +171,8 @@ public class ObjectListFragment extends ListFragment {
             @Override
             public void onConnected(Bundle bundle) {
                 synchronized (LOCK) {
-                    if (!locationInProgress) {
-                        activeTask = new LocationTask();
+                    if (!searchInProgress) {
+                        LocationTask activeTask = new LocationTask();
                         activeTask.execute();
                     }
                 }
@@ -200,10 +212,10 @@ public class ObjectListFragment extends ListFragment {
         BusHandler.getBus().unregister(this);
         this.locationHandler.stop();
 
-        // Set active location task as finished, clear the status bar text
+        // Set active location/search task as finished, clear the status bar text
         synchronized (LOCK){
-            locationInProgress = false;
-            activeTask = null;
+            Log.d("________", "onPause(). Releasing lock.");
+            searchInProgress = false;
         }
         statusText.setText(EMPTY);
 
@@ -219,47 +231,104 @@ public class ObjectListFragment extends ListFragment {
     }
 
     /**
-     *  Receive nearest objects from BackendHandler by OTTO bus.
+     *  Receives nearest objects from BackendHandler by OTTO bus.
+     *
      *  Updates the list view and status bar accordingly.
      */
     @Subscribe
     public void onEvent(ReturnNearObjectsEvent event) {
         this.adapter.clear();
-
         statusText.setBackgroundColor(LOCATION_BACKGROUND);
         lastStatusBackground = LOCATION_BACKGROUND;
         if (event.getMapObjects() != null) {
-            this.adapter.addAll(event.getMapObjects());
-            statusText.setText(String.format(SHOWING_NEAREST, event.getMapObjects().size()));
-            lastStatusText = String.format(SHOWING_NEAREST, event.getMapObjects().size());
+
+            if(event.getMapObjects().size() > MAX_RESULTS_AMOUNT){
+                ArrayList<MapObject> mapObjects = new ArrayList<MapObject>();
+                for(MapObject object : event.getMapObjects()){
+                    mapObjects.add(object);
+                    if(mapObjects.size() == MAX_RESULTS_AMOUNT){
+                        break;
+                    }
+                }
+                this.adapter.addAll(mapObjects);
+                statusText.setText(String.format(SHOWING_NEAREST, MAX_RESULTS_AMOUNT));
+                lastStatusText = String.format(SHOWING_NEAREST, MAX_RESULTS_AMOUNT);
+            }
+            else {
+                this.adapter.addAll(event.getMapObjects());
+                statusText.setText(String.format(SHOWING_NEAREST, event.getMapObjects().size()));
+                lastStatusText = String.format(SHOWING_NEAREST, event.getMapObjects().size());
+            }
         }
         else {
             statusText.setText(NO_NEAREST);
             lastStatusText = NO_NEAREST;
         }
         this.getListView().requestLayout();
+        if(lastExpanded >=0 && lastExpanded < adapter.getGroupCount()) {
+            expandableListView.collapseGroup(lastExpanded);
+        }
+        this.adapter.notifyDataSetChanged();
 
         synchronized (LOCK){
-            this.activeTask = null;
-            locationInProgress = false;
+            Log.d("__________","Locationtask results received. Releasing lock.");
+            searchInProgress = false;
         }
     }
 
-    /**
-     *  If BackendService was unable to fetch new objects from the backend,
-     *  update status text and release lock from "Locate" button.
+    /*
+     *  Receives search results from BackendHandler by OTTO bus.
+     *
+     *  Updates the list view and status bar accordingly.
      */
     @Subscribe
-    public void onEvent(ReturnNearObjectsFailedEvent event) {
+    public void onEvent (ReturnSearchResultEvent event){
+        this.adapter.clear();
+        statusText.setBackgroundColor(SEARCH_BACKGROUND);
+        lastStatusBackground = SEARCH_BACKGROUND;
 
-        statusText.setBackgroundColor(lastStatusBackground);
-        statusText.setText(LOCATION_FAILED);
-        lastStatusText = LOCATION_FAILED;
-        this.getListView().requestLayout();
+        if (event.getMapObjects() != null && event.getMapObjects().size() > 0) {
+            if(event.getMapObjects().size() == MAX_RESULTS_AMOUNT) {
+                statusText.setText(String.format(MAX_RESULTS, MAX_RESULTS_AMOUNT));
+            }
+            else {
+                statusText.setText(String.format(SEARCH_RESULTS, event.getMapObjects().size()));
+            }
+            lastStatusText = statusText.getText().toString();
+            this.adapter.addAll(event.getMapObjects());
+            if(lastExpanded >=0 && lastExpanded < adapter.getGroupCount()) {
+                expandableListView.collapseGroup(lastExpanded);
+            }
+            this.getListView().requestLayout();
+            this.adapter.notifyDataSetChanged();
+        }
+        else {
+            statusText.setText(NO_RESULTS);
+            lastStatusText = NO_RESULTS;
+        }
 
         synchronized (LOCK){
-            this.activeTask = null;
-            locationInProgress = false;
+            Log.d("__________","Search results received. Releasing lock.");
+            searchInProgress = false;
+        }
+    }
+
+    /*
+     *  If BackendService was unable to fetch new objects from the backend,
+     *  update status text and release lock.
+     */
+    @Subscribe
+    public void onEvent(RequestFailedEvent event) {
+        if (event.getFailedEvent() instanceof RequestNearObjectsEvent) {
+            statusText.setBackgroundColor(lastStatusBackground);
+            statusText.setText(LOCATION_FAILED);
+            lastStatusText = LOCATION_FAILED;
+            this.getListView().requestLayout();
+
+            synchronized (LOCK){
+                Log.d("__________","Error received. Releasing lock.");
+                searchInProgress = false;
+            }
         }
     }
 
@@ -281,7 +350,7 @@ public class ObjectListFragment extends ListFragment {
         }
     }
 
-    // When expanding a list element: collapse old expanded element and scroll to correct position
+    // When expanding a list element, collapses old expanded element and scrolls to correct position
     public class ExpandListener implements ExpandableListView.OnGroupExpandListener {
         @Override
         public void onGroupExpand(int groupPosition) {
@@ -302,21 +371,39 @@ public class ObjectListFragment extends ListFragment {
         }
     }
 
-    // TODO: search functionality
-    public void performSearch(){
-        if (this.locationHandler != null && this.locationHandler.getLocationClient().isConnected()) {
-            this.locationHandler.updateCachedLocation();
-            statusText.setText(String.format(SEARCH_RESULTS, 0));
-            lastStatusText = String.format(SEARCH_RESULTS, 0);
-            statusText.setBackgroundColor(SEARCH_BACKGROUND);
-            lastStatusBackground = SEARCH_BACKGROUND;
+ /*
+  *  Performs search from backend using OTTO bus event "SearchObjectsEvent".
+  *
+  *   Only searches from the "id" field.
+  */
+    public void performSearch(CharSequence searchParameter){
+        synchronized (LOCK) {
+            if(!searchInProgress) {
+                if(searchParameter != null && searchParameter.length() > 2) {
+                    Log.d("________", "New search started");
+                    searchInProgress = true;
+                    ArrayList list = new ArrayList<String>();
+                    list.add("id");
+                    BusHandler.getBus().post(new SearchObjectsEvent(list, searchParameter.toString(),
+                            MAX_RESULTS_AMOUNT, false));
+                    statusText.setText(LOADING);
+                    statusText.setBackgroundColor(SEARCH_BACKGROUND);
+                }
+                else {
+                    statusText.setText(MORE_CHARACTERS);
+                    statusText.setBackgroundColor(SEARCH_BACKGROUND);
+                    lastStatusText = MORE_CHARACTERS;
+                    lastStatusBackground = SEARCH_BACKGROUND;
+                }
+            }
         }
     }
 
     public void showNearestObjects() {
         synchronized (LOCK){
-            if(!locationInProgress) {
-                this.activeTask = new LocationTask();
+            if(!searchInProgress) {
+                searchInProgress = true;
+                LocationTask activeTask = new LocationTask();
                 activeTask.execute();
             }
         }
@@ -335,9 +422,7 @@ public class ObjectListFragment extends ListFragment {
     private class LocationTask extends AsyncTask<Void, Void, Boolean>{
         @Override
         protected void onPreExecute(){
-            synchronized (LOCK){
-                locationInProgress = true;
-            }
+            Log.d("________", "New locationtask started");
             statusText.setText(LOADING);
             statusText.setBackgroundColor(LOCATION_BACKGROUND);
         }
@@ -349,7 +434,7 @@ public class ObjectListFragment extends ListFragment {
                     if (locationHandler.getCachedLocation() != null) {
                         BusHandler.getBus().post(new RequestNearObjectsEvent(new ImmutablePointLocation(
                                 locationHandler.getCachedLocation().getLatitude(),
-                                locationHandler.getCachedLocation().getLongitude()), 0.001, false));
+                                locationHandler.getCachedLocation().getLongitude()), 0.002, false));
                         return true;
                     }
                 }
@@ -364,13 +449,13 @@ public class ObjectListFragment extends ListFragment {
         @Override
         protected void onPostExecute(Boolean result) {
             if(!result) {
-                synchronized (LOCK){
-                    locationInProgress = false;
-                    activeTask = null;
+                synchronized (LOCK) {
+                    Log.d("________", "Couldn't connect to locationclient. Releasing lock.");
+                    searchInProgress = false;
+                    statusText.setText(LOCATION_FAILED);
+                    lastStatusText = LOCATION_FAILED;
+                    lastStatusBackground = LOCATION_BACKGROUND;
                 }
-                statusText.setText(LOCATION_FAILED);
-                lastStatusText = LOCATION_FAILED;
-                lastStatusBackground = LOCATION_BACKGROUND;
             }
         }
     }

@@ -53,7 +53,7 @@ public class DetailsActivity extends Activity {
             MapObject obj = event.getMapObject();
             if (obj != null){
                 this.adapter = new ListDetailsAdapter(this, obj, obj
-                        .getAdditionalProperties().size(), 1, obj.getMetadataProperties().size());
+                        .getAdditionalProperties().size(), 1, 1);
                 setContentView(R.layout.activity_details);
                 ListView list = (ListView)findViewById(android.R.id.list);
                 list.setAdapter(this.adapter);

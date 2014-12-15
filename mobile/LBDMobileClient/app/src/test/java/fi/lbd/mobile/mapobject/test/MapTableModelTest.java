@@ -27,6 +27,8 @@ import static org.assertj.core.api.Fail.fail;
 import static org.mockito.Mockito.*;
 
 /**
+ * Tests for MapTableModel.
+ *
  * Created by Tommi.
  */
 @RunWith(CustomRobolectricTestRunner.class)
@@ -501,14 +503,14 @@ public class MapTableModelTest {
         final List<Area> requestedCacheAreas = new ArrayList<>();
         MapTableModel<MapObject> model = initModel(testName, removedObjects, requestedAreas, requestedCacheAreas);
 
-        // Adding twice to same cell should not cause exceptions.
+        boolean threwException = false;
         List<MapObject> addObjects = new ArrayList<>();
         try {
             model.addObjects(10.0, 10.0, addObjects);
-            fail("Method should throw a null pointer exeption!");
         } catch (RuntimeException e) {
-            assertThat(e.getClass()).isEqualTo(NullPointerException.class);
+            threwException = true;
         }
+        assertThat(threwException).isEqualTo(false);
 
         System.out.println("FINISHED: "+testName);
         System.out.println("_____________________________________________________________________");

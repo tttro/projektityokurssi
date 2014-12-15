@@ -1,14 +1,8 @@
 package fi.lbd.mobile.mapobjects;
 
 import android.support.annotation.NonNull;
+import android.util.Log;
 
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.model.BitmapDescriptor;
-import com.google.android.gms.maps.model.CameraPosition;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
-import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.maps.model.VisibleRegion;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 
@@ -21,10 +15,6 @@ import fi.lbd.mobile.events.BusHandler;
 import fi.lbd.mobile.events.CacheObjectsInAreaEvent;
 import fi.lbd.mobile.events.RequestObjectsInAreaEvent;
 import fi.lbd.mobile.location.ImmutablePointLocation;
-import fi.lbd.mobile.mapobjects.MapObject;
-import fi.lbd.mobile.mapobjects.MapTableModel;
-import fi.lbd.mobile.mapobjects.MapTableModelListener;
-import fi.lbd.mobile.mapobjects.ProgressListener;
 
 /**
  * Class which handles the dependencies between the map objects and markers. Class also updates
@@ -32,37 +22,36 @@ import fi.lbd.mobile.mapobjects.ProgressListener;
  *
  * Created by Tommi.
  */
-public class MapModelController implements MapTableModelListener<Marker>, GoogleMap.OnCameraChangeListener {
-    private static final double DIVIDE_GRID_LAT = 0.0025;
-    private static final double DIVIDE_GRID_LON = 0.005;
+public class MapModelController<T> implements MapTableModelListener<T>, CameraChangeListener {
+    public static final double DIVIDE_GRID_LAT = 0.0025;
+    public static final double DIVIDE_GRID_LON = 0.005;
     private final int hideMarkersZoom;
-    private final BitmapDescriptor iconSelected;
-    private final BitmapDescriptor iconDefault;
 
-    private GoogleMap map;
-    private MapTableModel<Marker> tableModel;
+    private MarkerProducer<T> markerProducer;
+    private MapTableModel<T> tableModel;
     private boolean isMarkersHidden = false;
-    private BiMap<Marker, MapObject> markerObjectMap;
+    private BiMap<T, MapObject> markerObjectMap;
     private MapObject activeMarker;
     private List<ProgressListener> progressListeners = new ArrayList<>();
     private boolean isLoading = false;
+
 
     /**
      * Class which handles the dependencies between the map objects and markers. Class also updates
      * the model and requests new map objects if they are required.
      *
-     * @param map   GoogleMap which is monitored
+     * @param markerProducer    Instance which creates the markers, removes them and performs
+     *                          needed actions to them. Used to decouple the map implementation
+     *                          from this class.
+     * @param hideMarkersZoom   Level at which the markers should be hidden.
      */
-    public MapModelController(@NonNull GoogleMap map, BitmapDescriptor iconSelected, BitmapDescriptor iconDefault, int hideMarkersZoom) {
-        this.map = map;
+    public MapModelController(@NonNull MarkerProducer<T> markerProducer, int hideMarkersZoom) {
+        this.markerProducer = markerProducer;
         this.tableModel = new MapTableModel<>(DIVIDE_GRID_LAT, DIVIDE_GRID_LON);
         this.tableModel.addListener( this );
-        this.map.setOnCameraChangeListener( this );
         this.markerObjectMap = HashBiMap.create();
         this.activeMarker = null;
         this.hideMarkersZoom = hideMarkersZoom;
-        this.iconDefault = iconDefault;
-        this.iconSelected = iconSelected;
     }
 
     public void addProgressListener(ProgressListener listener) {
@@ -91,9 +80,13 @@ public class MapModelController implements MapTableModelListener<Marker>, Google
      * @param obj   Map object which is being removed.
      */
     @Override
-    public void objectRemoved(Marker obj) {
+    public void objectRemoved(T obj) {
         this.markerObjectMap.remove(obj);
-        obj.remove();
+        MapObject mapObject = this.findMapObject(obj);
+        if (mapObject != null) {
+            this.markerObjectMap.inverse().remove(mapObject);
+        }
+        this.markerProducer.remove(obj);
     }
 
     /**
@@ -135,39 +128,41 @@ public class MapModelController implements MapTableModelListener<Marker>, Google
         }
     }
 
+
     /**
      * Updates the model if the map camera has moved. Also checks if the map is zoomed too far
      * away and hides the map objects if needed.
      *
-     * @param cameraPosition    Current camera position.
+     * @param zoom  Current zoom level.
+     * @param startLat  Start coordinate.
+     * @param startLon  Start coordinate.
+     * @param endtLat   End coordinate.
+     * @param endLon    End coordinate.
      */
     @Override
-    public void onCameraChange(CameraPosition cameraPosition) {
+    public void cameraChanged(double zoom, double startLat, double startLon, double endtLat, double endLon) {
 //            Log.d(this.getClass().getSimpleName(), "Camera moved: " + map.getProjection().getVisibleRegion().latLngBounds + " Zoom: "+ cameraPosition.zoom);
-        if (cameraPosition.zoom <= this.hideMarkersZoom) {
+        if (zoom <= this.hideMarkersZoom) {
             if (!this.isMarkersHidden) {
-                Iterator<Marker> iter = this.markerObjectMap.keySet().iterator();
+                Iterator<T> iter = this.markerObjectMap.keySet().iterator();
                 while (iter.hasNext()) {
-                    Marker marker = iter.next();
-                    marker.setVisible(false);
+                    T obj = iter.next();
+                    this.markerProducer.event(obj, MarkerProducer.Event.HIDE);
                 }
-                // TODO: Notification to the user that the markers are hidden?
                 this.isMarkersHidden = true;
             }
+            Log.d(this.getClass().getSimpleName(), "Zoomed too far, hiding markers.");
         } else {
             if (this.isMarkersHidden) {
-                Iterator<Marker> iter = this.markerObjectMap.keySet().iterator();
+                Iterator<T> iter = this.markerObjectMap.keySet().iterator();
                 while (iter.hasNext()) {
-                    Marker marker = iter.next();
-                    marker.setVisible(true);
+                    T obj = iter.next();
+                    this.markerProducer.event(obj, MarkerProducer.Event.SHOW);
                 }
                 this.isMarkersHidden = false;
+                Log.d(this.getClass().getSimpleName(), "Zoomed in, showing markers.");
             }
-            VisibleRegion region = this.map.getProjection().getVisibleRegion();
-            this.tableModel.updateTable(region.latLngBounds.southwest.latitude,
-                    region.latLngBounds.southwest.longitude,
-                    region.latLngBounds.northeast.latitude,
-                    region.latLngBounds.northeast.longitude);
+            this.tableModel.updateTable(startLat, startLon, endtLat, endLon);
         }
     }
 
@@ -183,24 +178,22 @@ public class MapModelController implements MapTableModelListener<Marker>, Google
      */
     public void processObjects(List<MapObject> objects, double startLat, double startLon) {
         if (objects != null && this.tableModel.isEmpty(startLat, startLon)) {
-            List<Marker> markers = new ArrayList<>();
+            List<T> markers = new ArrayList<>();
             for (MapObject mapObject : objects) {
-                LatLng location = new LatLng(mapObject.getPointLocation().getLatitude(),
+
+                T obj = this.markerProducer.produce(mapObject.getId(),
+                        mapObject.getPointLocation().getLatitude(),
                         mapObject.getPointLocation().getLongitude());
 
-                Marker marker = this.map.addMarker(
-                        new MarkerOptions()
-                                .position(location)
-                                .title(mapObject.getId())
-                                .icon(this.iconDefault));
-
-                markers.add(marker);
-                this.markerObjectMap.put(marker, mapObject);
+                markers.add(obj);
+                this.markerObjectMap.put(obj, mapObject);
 
                 if(SelectionManager.get().getSelectedObject() != null &&
                         mapObject.getId().equals(SelectionManager.get().getSelectedObject().getId())){
-                    setActiveMarker(marker);
-                    marker.showInfoWindow();
+                    setActiveMarker(obj);
+                    this.markerProducer.event(obj, MarkerProducer.Event.SHOW_INFO);
+                } else {
+                    this.markerProducer.event(obj, MarkerProducer.Event.INACTIVE);
                 }
             }
             this.tableModel.addObjects(startLat, startLon, markers);
@@ -211,18 +204,14 @@ public class MapModelController implements MapTableModelListener<Marker>, Google
         }
     }
 
-    public boolean hasCellsWaitingForObjects() {
-        return this.tableModel.hasGridCellsWaitingForObjects();
-    }
-
     /**
      * Clears the currently selected active marker.
      */
     public void clearActiveMarker() {
         if(this.activeMarker != null){
-            Marker marker = this.findMarker(this.activeMarker);
+            T marker = this.findMarker(this.activeMarker);
             if(marker != null) {
-                marker.setIcon(this.iconDefault);
+                this.markerProducer.event(marker, MarkerProducer.Event.INACTIVE);
             }
         }
     }
@@ -232,17 +221,17 @@ public class MapModelController implements MapTableModelListener<Marker>, Google
      *
      * @param marker    Marker which will be set as active.
      */
-    public void setActiveMarker(Marker marker) {
+    public void setActiveMarker(T marker) {
         clearActiveMarker();
         this.activeMarker = findMapObject(marker);
-        marker.setIcon(this.iconSelected);
+        this.markerProducer.event(marker, MarkerProducer.Event.ACTIVE);
     }
 
-    public Marker findMarker(MapObject object){
+    public T findMarker(MapObject object){
         return (object == null) ? null : this.markerObjectMap.inverse().get(object);
     }
 
-    public MapObject findMapObject(Marker marker){
+    public MapObject findMapObject(T marker){
         return (marker == null) ? null : this.markerObjectMap.get(marker);
     }
 }

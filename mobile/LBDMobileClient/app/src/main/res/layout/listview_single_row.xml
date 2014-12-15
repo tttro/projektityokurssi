@@ -22,6 +22,6 @@
         android:layout_weight="0"
         android:layout_height="wrap_content"
         android:textSize="@dimen/listview_small_text_size"
-        android:text="@string/unknown" />
+        android:text="@string/unknown_distance" />
 
 </LinearLayout>
