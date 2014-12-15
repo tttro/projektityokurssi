@@ -11,7 +11,7 @@ describe('angularjs map and object list', function() {
     });
 
 
-    it('should find same object title from map infowindow', function() {
+    it('should find same object title from the map infowindow', function() {
 
         var objects = element.all(by.repeater('item in items.features')); // Get all objects
         ptor.sleep(2000);
@@ -28,10 +28,16 @@ describe('angularjs map and object list', function() {
 
     },6000);
 
-    it('should open streetview', function() {
+    it('should find same object title from the streetview infowindow', function() {
         ptor.findElement(protractor.By.id('panel')).click(); // Find first object from list
         ptor.sleep(1000);
-    }, 2000);
+        ptor.findElement(protractor.By.xpath('/html/body/div[1]/div[1]/div[2]/div/div/ng-include/div[2]/ul/li[1]/div[2]/div[2]/button')).click(); // Click a show on map -button
+        ptor.sleep(1000);
+        var title = ptor.findElement(protractor.By.xpath('/html/body/div[1]/div[1]/div[2]/div/div/ng-include/div[2]/ul/li[1]/div[1]')); // Find first object from list
+
+        var h4title = ptor.findElement(protractor.By.xpath('//*[@id="map"]/div[2]/div[1]/div/div[8]/div/div[2]/div/div/div/h4')); // Get infowindow title
+        expect(h4title.getText()).toBe(title.getText()); // Title should be the same
+    }, 4000);
 
 
 });
