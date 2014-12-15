@@ -12,7 +12,7 @@ itemControllers.controller('itemController', function($scope, $http, $rootScope,
     $scope.address = '';
     $scope.searchQuery = '';
     $scope.selectedItem = null;
-    $scope.searchMethod = {Map:true,All:false    }
+    $scope.searchMethod = 'map'
 
     $scope.items = ObjectsLocal.get();
 
@@ -21,13 +21,12 @@ itemControllers.controller('itemController', function($scope, $http, $rootScope,
      * ***/
     $scope.$on('dataIsLoaded', function(e) {
         $scope.items = ObjectsLocal.get();
-        orginalItemList = ObjectsLocal.get();
+        orginalItemList = $scope.items;
     });
 
     $scope.itemSearch = function(searchQuery){
-
         // MAP
-        if( $scope.searchMethod == 1 )
+        if( $scope.searchMethod === 'map' )
         {
              if(searchQuery != "" ) {
                 $scope.items.features = $filter('filter')($scope.items.features,{$:searchQuery}, false);
@@ -39,9 +38,28 @@ itemControllers.controller('itemController', function($scope, $http, $rootScope,
         // ALL
         else
         {
-            ObjectsService.search(searchQuery, function(data){
-                console.log(data);
-            });
+            if(searchQuery.length >= 3){
+                ObjectsService.search(searchQuery, function(data){
+
+                    // Check results count
+                    var itemCount = 0;
+                    for(var i in data.results.features){
+                        itemCount++;
+                    }
+
+                    if(itemCount > 0) {
+
+                        ObjectsLocal.set(data.results); // Set data to local dataset
+                        $scope.items = data.results;
+                        $rootScope.$broadcast('searchResultsIsLoaded'); // notify mapController that new items are loaded
+                    }
+                    else {
+                        //TODO: no items found
+                    }
+
+                });
+            }
+
         }
 
     }
@@ -71,6 +89,16 @@ itemControllers.controller('itemController', function($scope, $http, $rootScope,
     $scope.isSelected = function(item){
 
         return $scope.selectedItem === item;
+    }
+
+    $scope.setSelectedValue = function(searchMethod){
+        $scope.searchMethod =  searchMethod;
+    }
+
+    $scope.checkEmpty = function(searchQuery){
+        if(searchQuery.length == 0){
+            $scope.items = orginalItemList;
+        }
     }
 
     function getAddressByCoords(item){

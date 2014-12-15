@@ -431,5 +431,11 @@ mapControllers.controller('mapController', function($scope, $window,$rootScope, 
         });
     }
 
+    $scope.$on('searchResultsIsLoaded', function(e) {
+        var searchResults = ObjectsLocal.get();
+        loadMarkers(searchResults);
+
+    });
+
 
 });

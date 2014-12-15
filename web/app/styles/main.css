@@ -25,6 +25,10 @@ html, body{
 
 }
 
+.map-outer {
+    height: 95%;
+    position: relative;
+}
 .map {
     height: 100%;
     position: relative;
@@ -93,7 +97,7 @@ header {
     margin: 0;
     padding: 0;
     border-bottom: 1px solid #ccc;
-    height: 30px;
+    height: 5%;
 }
 header .logo {
     padding: 10px;
