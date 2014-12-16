@@ -8,11 +8,13 @@ itemControllers.controller('itemController', function($scope, $http, $rootScope,
 
     var orginalItemList = [];
     var geoCoder = new google.maps.Geocoder();
-
+    var filter;
     $scope.address = '';
     $scope.searchQuery = '';
     $scope.selectedItem = null;
     $scope.searchMethod = 'map'
+    $scope.showSearchResultText = false;
+    $scope.searchResultText = '';
 
     $scope.items = ObjectsLocal.get();
 
@@ -20,20 +22,21 @@ itemControllers.controller('itemController', function($scope, $http, $rootScope,
      *  Add markers when all data fetched from server
      * ***/
     $scope.$on('dataIsLoaded', function(e) {
-        $scope.items = ObjectsLocal.get();
-        orginalItemList = $scope.items;
+        orginalItemList = ObjectsLocal.get();
+        $scope.items = orginalItemList;
+        $scope.showSearchResultText = false;
+        $scope.searchResultText = '';
     });
 
     $scope.itemSearch = function(searchQuery){
+
+        $scope.showSearchResultText = false;
+        $scope.searchResultText = '';
+
         // MAP
         if( $scope.searchMethod === 'map' )
         {
-             if(searchQuery != "" ) {
-                $scope.items.features = $filter('filter')($scope.items.features,{$:searchQuery}, false);
-             }
-             else {
-                $scope.items = orginalItemList;
-             }
+            $scope.items = getFilteredObjectList(searchQuery);
         }
         // ALL
         else
@@ -41,20 +44,23 @@ itemControllers.controller('itemController', function($scope, $http, $rootScope,
             if(searchQuery.length >= 3){
                 ObjectsService.search(searchQuery, function(data){
 
-                    // Check results count
-                    var itemCount = 0;
-                    for(var i in data.results.features){
-                        itemCount++;
-                    }
-
-                    if(itemCount > 0) {
+                    if(data.totalResults > 0) {
 
                         ObjectsLocal.set(data.results); // Set data to local dataset
+                        orginalItemList = data.results;
                         $scope.items = data.results;
+
+                        $scope.showSearchResultText = true;
+                        $scope.searchResultText = data.totalResults + ' search results';
+
                         $rootScope.$broadcast('searchResultsIsLoaded'); // notify mapController that new items are loaded
+
                     }
                     else {
                         //TODO: no items found
+                        $scope.showSearchResultText = true;
+                        $scope.searchResultText = 'No results found';
+                        $scope.items = [];
                     }
 
                 });
@@ -96,9 +102,8 @@ itemControllers.controller('itemController', function($scope, $http, $rootScope,
     }
 
     $scope.checkEmpty = function(searchQuery){
-        if(searchQuery.length == 0){
-            $scope.items = orginalItemList;
-        }
+        $scope.showSearchResultText = false;
+        $scope.searchResultText = '';
     }
 
     function getAddressByCoords(item){
@@ -129,6 +134,21 @@ itemControllers.controller('itemController', function($scope, $http, $rootScope,
         });
 
         $scope.showLoadingIcon = false;
+    }
+
+    function getFilteredObjectList(searchQuery){
+        var filteredList = $filter('filter')(orginalItemList.features,{$:searchQuery},false);
+
+        var reStructure = {
+            totalFeatures:orginalItemList.totalFeatures,
+            type:orginalItemList.type,
+            items:{
+                features:{
+                }
+            }
+        }
+        reStructure.features = filteredList;;
+        return reStructure;
     }
 
 });

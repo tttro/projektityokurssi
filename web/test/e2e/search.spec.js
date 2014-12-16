@@ -17,17 +17,12 @@ describe('angularjs object search', function() {
 
     it('should find an object from map', function() {
 
-
         ptor.sleep(2000);
-
         searchInput.sendKeys('403044');
         searchButton.click();
         ptor.sleep(500);
         var objects = element.all(by.repeater('item in items.features')); // Get all objects
         expect(objects.count()).toBe(1); // Objects count should be 1
-
-
-
 
 
     },3000);

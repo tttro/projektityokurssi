@@ -17,9 +17,12 @@
 </div>
 
 <div class="tab-content-inner">
+    <div id="searchInfo" ng-show="showSearchResultText">
+       {{searchResultText}}
+    </div>
     <ul>
         <!-- Details -->
-        <li ng-repeat="item in items.features" ng-class="{'open': isSelected(item)}">
+        <li ng-repeat="item in items.features | orderBy:'id'" ng-class="{'open': isSelected(item)}">
             <div class="accord-title" is-open="open" ng-click="click(item) ">
                 <div class="fleft">{{item.id}}</div>
                 <div class="fright">

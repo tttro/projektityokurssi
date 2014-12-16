@@ -319,6 +319,13 @@ header a {
     color:#eee;
 }
 
+#searchInfo {
+    width: 100%;
+    text-align: center;
+    color: #CC6622;
+    margin: 5px 0;
+}
+
 /* Infowindow */
 .markerDetails {
     border-collapse: collapse;
