@@ -161,9 +161,6 @@ def single_resource(request, *args, **kwargs):
                                             collection = kwargs["collection"],
                                             meta_data = MetaData(
                                                 **content_json["properties"]["metadata"]
-                                                # status = content_json["properties"]["metadata"]["status"],
-                                                # modified = int(time.time()),
-                                                # modifier = kwargs["lbduser"]
                                             ))
                         temp.save()
                     except mongoengine.NotUniqueError:
