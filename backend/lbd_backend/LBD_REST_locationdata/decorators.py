@@ -57,7 +57,7 @@ def this_is_a_login_wrapper_dummy(func):
     def wrapper(request, *args, **kwargs):
         if "HTTP_LBD_LOGIN_HEADER" in request.META and "HTTP_LBD_OAUTH_ID" in request.META:
             try:
-                user = User.objects.get(user_id=request.META["HTTP_LBD_OAUTHID"])
+                user = User.objects.get(user_id=request.META["HTTP_LBD_OAUTH_ID"])
                 kwargs["lbduser"] = user
                 return func(request, *args, **kwargs)
             except mongoengine.DoesNotExist:
