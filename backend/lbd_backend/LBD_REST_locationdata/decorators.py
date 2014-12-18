@@ -57,7 +57,7 @@ def this_is_a_login_wrapper_dummy(func):
                  "TiinaTeekkari",
                  "HeliHumanisti",
                  "TeePannu"]
-        if "HTTP_LBD_LOGIN_HEADER" in request.META:
+        if "HTTP_LBD_LOGIN_HEADER" in request.META and "HTTP_LBD_OAUTH_ID" in request.META:
             if request.META["HTTP_LBD_LOGIN_HEADER"] in users:
                 kwargs["lbduser"] = request.META["HTTP_LBD_LOGIN_HEADER"]
                 return func(request, *args, **kwargs)
@@ -65,4 +65,5 @@ def this_is_a_login_wrapper_dummy(func):
                 return HttpResponse(status=403)
         else:
             return HttpResponse(status=400)
+
     return wrapper
