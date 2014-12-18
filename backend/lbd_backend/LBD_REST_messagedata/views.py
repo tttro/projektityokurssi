@@ -16,7 +16,7 @@ from lbd_backend.LBD_REST_locationdata.decorators import this_is_a_login_wrapper
 @require_http_methods(["GET", "DELETE"])
 def msg_collection(request, *args, **kwargs):
 
-    userdata = User.objects.get(user_id=kwargs["lbduser"])
+    userdata = User.objects.get(user_id=kwargs["lbduser"].user_id)
     print userdata.email
     #############################################################
     #
@@ -47,7 +47,7 @@ def msg_collection(request, *args, **kwargs):
 @this_is_a_login_wrapper_dummy
 @require_http_methods(["POST"])
 def msg_send(request, *args, **kwargs):
-    userdata = User.objects.get(user_id=kwargs["lbduser"])
+    userdata = User.objects.get(user_id=kwargs["lbduser"].user_id)
     print userdata.email
     #############################################################
     #

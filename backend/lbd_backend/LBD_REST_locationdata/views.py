@@ -150,7 +150,7 @@ def single_resource(request, *args, **kwargs):
                     pass
 
                 content_json["properties"]["metadata"]["modified"] = int(time.time())
-                content_json["properties"]["metadata"]["modifier"] = kwargs["lbduser"]
+                content_json["properties"]["metadata"]["modifier"] = kwargs["lbduser"].email
                 try:
                     temp = MetaDocument.objects().get(feature_id=content_json["id"])
                     temp.meta_data = MetaData(**content_json["properties"]["metadata"])
@@ -270,7 +270,7 @@ def collection(request, *args, **kwargs):
                                                     meta_data=MetaData(
                                                         status=feature["properties"]["metadata"]["status"],
                                                         modified=int(time.time()),
-                                                        modifier=kwargs["lbduser"]
+                                                        modifier=kwargs["lbduser"].email
                                                     ))
                                 temp.save()
                             except mongoengine.NotUniqueError:
@@ -296,7 +296,7 @@ def collection(request, *args, **kwargs):
                 temp = MetaDocument(feature_id=content_json["id"], collection=kwargs["collection"],
                                     meta_data=MetaData(
                                         status=content_json["properties"]["metadata"]["status"],
-                                        modified=int(time.time()), modifier=kwargs["lbduser"]
+                                        modified=int(time.time()), modifier=kwargs["lbduser"].email
                                     ))
                 temp.save()
             except mongoengine.NotUniqueError:
