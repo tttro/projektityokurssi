@@ -599,7 +599,7 @@ def user_exists(request, *args, **kwargs):
 
 #This is a very simple registration method.
 #DO NOT USER THIS IN PRODUCTION!
-@require_http_methods(["PUT"])
+@require_http_methods(["POST"])
 def add_user(request, *args, **kwargs):
     access_token = request.META["HTTP_LBD_LOGIN_HEADER"]
 
@@ -626,7 +626,6 @@ def add_user(request, *args, **kwargs):
         user.user_id = request.META["HTTP_LBD_OAUTH_ID"]
         user.email = result['email']
         user.save()
-        print user.email
         return HttpResponse(status=s_codes["OK"])
     except Exception as e:
         template = "An exception of type {0} occured. Arguments:\n{1!r}"

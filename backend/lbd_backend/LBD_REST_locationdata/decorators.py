@@ -69,24 +69,21 @@ def this_is_a_login_wrapper_dummy(func):
 
                 #############################################################################################
                 access_token = request.META["HTTP_LBD_LOGIN_HEADER"]
-                print access_token
                 userid = request.META["HTTP_LBD_OAUTH_ID"]
                 url = ('https://www.googleapis.com/oauth2/v1/tokeninfo?access_token=%s' % access_token)
                 h = httplib2.Http()
                 result = json.loads(h.request(url, 'GET')[1])
 
-                # If there was an error in the access token info, abort.
-                print result
-                # if result.get('error') is not None:
-                #     print result
-                    #return HttpResponse(status=400)
+                # If there was an error in the access token info, abort
+                if result.get('error') is not None:
+                    print result
+                    return HttpResponse(status=400)
 
                 if userid == result["user_id"]:
                     print "User matches"
                 #############################################################################################
                 try:
                     user = User.objects.get(user_id=request.META["HTTP_LBD_OAUTH_ID"])
-                    print user.user_id
                     kwargs["lbduser"] = user
                 except Exception as e:
                     template = "An exception of type {0} occured. Arguments:\n{1!r}"
