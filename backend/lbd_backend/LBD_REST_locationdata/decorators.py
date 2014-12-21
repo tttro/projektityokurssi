@@ -9,6 +9,9 @@ Decorators for location data REST
 .. moduleauthor:: Aki Mäkinen <aki.makinen@outlook.com>
 
 """
+import httplib
+import json
+import httplib2
 import mongoengine
 from lbd_backend.LBD_REST_users.models import User
 
@@ -57,6 +60,36 @@ def this_is_a_login_wrapper_dummy(func):
     def wrapper(request, *args, **kwargs):
         if "HTTP_LBD_LOGIN_HEADER" in request.META and "HTTP_LBD_OAUTH_ID" in request.META:
             try:
+                #############################################################################################
+                access_token = request.META["HTTP_LBD_LOGIN_HEADER"]
+                print access_token
+                userid = request.META["HTTP_LBD_OAUTH_ID"]
+                url = 'www.googleapis.com'
+                h = httplib.HTTPSConnection(url)
+                h.request("GET", '/oauth2/v1/tokeninfo?access_token=' + access_token)
+                response = h.getresponse()
+                res_content = response.read()
+                result = json.loads(res_content)
+
+                # If there was an error in the access token info, abort.
+                print result
+                # if result.get('error') is not None:
+                #     print result
+                    #return HttpResponse(status=400)
+
+                if userid == result["user_id"]:
+                    print "User matches"
+                infohttp = httplib.HTTPSConnection("www.googleapis.com")
+                infohttp.request("GET", 'https://www.googleapis.com/plus/v1/people/' +
+                                 request.META["HTTP_LBD_OAUTH_ID"] + '?key=AIzaSyC0Px_GBDPrefu4IK_lC7iyH86njxEu79A'
+                                                                     '&fields=emails',
+                                 headers={"Authorization": "Bearer "+ request.META["HTTP_LBD_LOGIN_HEADER"]})
+                inforesp = infohttp.getresponse()
+                info_content = inforesp.read()
+                info_result = json.loads(info_content)
+
+                print info_result
+                #############################################################################################
                 user = User.objects.get(user_id=request.META["HTTP_LBD_OAUTH_ID"])
                 kwargs["lbduser"] = user
                 return func(request, *args, **kwargs)
