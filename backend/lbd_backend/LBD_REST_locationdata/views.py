@@ -40,7 +40,7 @@ reasons unknown.
 
 import json
 import mongoengine
-from django.shortcuts import HttpResponse
+from django.shortcuts import HttpResponse, render_to_response
 from django.views.decorators.http import require_http_methods
 from pymongo.errors import DuplicateKeyError
 import time
@@ -620,3 +620,6 @@ def add_user(request, *args, **kwargs):
     user.gmail = request.META["HTTP_LBD_GMAIL"]
     user.save()
 
+
+def index(request, *args, **kwargs):
+    return render_to_response('google_auth.html')

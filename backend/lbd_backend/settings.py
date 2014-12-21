@@ -59,3 +59,15 @@ AUTHENTICATION_BACKENDS = (
 SESSION_ENGINE = 'mongoengine.django.sessions'
 
 TEST_RUNNER = 'lbd_backend.LBD_REST_locationdata.testrunner.NoSQLTestRunner'
+
+TEMPLATE_LOADERS = (
+    'django.template.loaders.filesystem.Loader',
+    'django.template.loaders.app_directories.Loader',
+    'django.template.loaders.eggs.Loader',
+)
+
+root_path = os.path.abspath(os.path.dirname(__file__))
+
+TEMPLATE_DIRS = (
+    os.path.normpath(root_path+"/templates"),
+)

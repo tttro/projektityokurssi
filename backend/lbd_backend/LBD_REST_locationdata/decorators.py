@@ -9,6 +9,7 @@ Decorators for location data REST
 .. moduleauthor:: Aki Mäkinen <aki.makinen@outlook.com>
 
 """
+from dbus import service
 
 import mongoengine
 from lbd_backend.LBD_REST_users.models import User
@@ -64,6 +65,32 @@ def this_is_a_login_wrapper_dummy(func):
     def wrapper(request, *args, **kwargs):
         if "HTTP_LBD_LOGIN_HEADER" in request.META and "HTTP_LBD_OAUTH_ID" in request.META:
             try:
+
+                #############################################################################################
+                access_token = request.META["HTTP_LBD_LOGIN_HEADER"]
+                print access_token
+                userid = request.META["HTTP_LBD_OAUTH_ID"]
+                url = ('https://www.googleapis.com/oauth2/v1/tokeninfo?access_token=%s' % access_token)
+                h = httplib2.Http()
+                result = json.loads(h.request(url, 'GET')[1])
+
+                # If there was an error in the access token info, abort.
+                print result
+                # if result.get('error') is not None:
+                #     print result
+                    #return HttpResponse(status=400)
+
+                if userid == result["user_id"]:
+                    print "User matches"
+                result = json.loads(h.request('https://www.googleapis.com/plus/v1/people/' +
+                                              request.META["HTTP_LBD_OAUTH_ID"] +
+                                              '?key=AIzaSyC0Px_GBDPrefu4IK_lC7iyH86njxEu79A&fields=emails', 'GET',
+                                              headers={
+                                                  "Authorization": "Bearer "+ request.META["HTTP_LBD_LOGIN_HEADER"]
+                                              })[1])
+                print result
+                #############################################################################################
+
                 user = User.objects.get(user_id=request.META["HTTP_LBD_OAUTH_ID"])
                 kwargs["lbduser"] = user
                 return func(request, *args, **kwargs)
@@ -71,26 +98,8 @@ def this_is_a_login_wrapper_dummy(func):
                 return HttpResponse(status=401)
 
         else:
-            access_token = request.META["HTTP_LBD_LOGIN_HEADER"]
-            print access_token
-        if "HTTP_LBD_OAUTH_ID" not in request.META:
             return HttpResponse(status=400)
 
-        else:
-            userid = request.META["HTTP_LBD_OAUTH_ID"]
-        url = ('https://www.googleapis.com/oauth2/v1/tokeninfo?access_token=%s'
-               % access_token)
-        h = httplib2.Http()
-        result = json.loads(h.request(url, 'GET')[1])
-        # If there was an error in the access token info, abort.
-        if result.get('error') is not None:
-            print result
-            return HttpResponse(status=400)
-        if userid == result["user_id"]:
-            print "User matches"
-        #TODO: Match the user to a user in database
-        print result
-        return func(request, *args, **kwargs)
 
         # users = ["SimoSahkari",
         #          "TiinaTeekkari",
