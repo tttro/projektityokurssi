@@ -1,8 +1,8 @@
 /* MapController - a map and points functions */
 
-var mapControllers = angular.module('mapControllers', []);
+var mapController = angular.module('mapController', []);
 
-mapControllers.controller('mapController', function($scope, $window,$rootScope, $timeout, ObjectsService, ObjectsLocal, appConfig){
+mapController.controller('mapController', function($scope, $window,$rootScope, $timeout, ObjectsService, ObjectsLocal, appConfig){
 
     // Init
     var currentPosition = new google.maps.LatLng(appConfig.defaultPosition[0], appConfig.defaultPosition[1]); // Tampere
@@ -13,15 +13,15 @@ mapControllers.controller('mapController', function($scope, $window,$rootScope, 
     var itemPreLoadArea = { sw: null, ne: null }
     var markerIcon = {
         path: google.maps.SymbolPath.CIRCLE,
-        fillColor: 'red',
+        fillColor: '#184663',
         fillOpacity: 0.6,
         scale: 5,
-        strokeColor: 'black',
+        strokeColor: "#184663",
         strokeWeight: 1
     }
     var markerIconHighlight = {
         path: google.maps.SymbolPath.CIRCLE,
-        fillColor: 'green',
+        fillColor: 'yellow',
         fillOpacity: 0.6,
         scale: 5,
         strokeColor: 'black',
@@ -239,14 +239,7 @@ mapControllers.controller('mapController', function($scope, $window,$rootScope, 
 
         // Infowindow close-click
         google.maps.event.addListener(infoWindow,'closeclick',function(){
-            currentMarker.setIcon({
-                path: google.maps.SymbolPath.CIRCLE,
-                fillColor: 'red',
-                fillOpacity: 0.6,
-                scale: 5,
-                strokeColor: 'black',
-                strokeWeight: 1
-            })
+            currentMarker.setIcon(markerIcon);
         });
 
     }
@@ -283,14 +276,7 @@ mapControllers.controller('mapController', function($scope, $window,$rootScope, 
                 item.geometry.coordinates[1], // Lat
                 item.geometry.coordinates[0]), // Lng
             title: item.id,
-            icon: {
-                path: google.maps.SymbolPath.CIRCLE,
-                fillColor: 'red',
-                fillOpacity: 0.6,
-                scale: 5,
-                strokeColor: 'black',
-                strokeWeight: 1
-            }
+            icon: markerIcon
         });
 
         var markerDetails = "";
@@ -369,7 +355,7 @@ mapControllers.controller('mapController', function($scope, $window,$rootScope, 
             title: 'Item',
             icon: {
                 path: google.maps.SymbolPath.CIRCLE,
-                fillColor: 'blue',
+                fillColor: 'lightblue',
                 fillOpacity: 0.6,
                 scale: 7,
                 strokeColor: 'black',

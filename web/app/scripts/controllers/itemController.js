@@ -1,9 +1,9 @@
 /* ItemController - items functions */
 
 
-var itemControllers = angular.module('itemControllers', []);
+var itemController = angular.module('itemController', []);
 
-itemControllers.controller('itemController', function($scope, $http, $rootScope, $filter, $timeout, ObjectsLocal, ObjectsService){
+itemController.controller('itemController', function($scope, $http, $rootScope, $filter, $timeout, ObjectsLocal, ObjectsService){
 
 
     var orginalItemList = [];
@@ -137,6 +137,7 @@ itemControllers.controller('itemController', function($scope, $http, $rootScope,
     }
 
     function getFilteredObjectList(searchQuery){
+
         var filteredList = $filter('filter')(orginalItemList.features,{$:searchQuery},false);
 
         var reStructure = {
@@ -147,7 +148,9 @@ itemControllers.controller('itemController', function($scope, $http, $rootScope,
                 }
             }
         }
-        reStructure.features = filteredList;;
+
+        reStructure.features = filteredList;
+
         return reStructure;
     }
 
