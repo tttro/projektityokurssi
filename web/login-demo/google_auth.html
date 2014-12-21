@@ -7,7 +7,7 @@
     </script>
     <script src="https://apis.google.com/js/client:platform.js?onload=start" async defer>
     </script>
-    <title>Login with Google+</title>
+    <title>Register with Google+</title>
     <script>
     function signInCallback(authResult) {
         if (authResult['status']['signed_in']) {
@@ -21,24 +21,26 @@
                 $.ajax({
                 url: 'https://www.googleapis.com/oauth2/v2/userinfo',
                 type: 'GET',
+                crossDomain: true,
                 success: function(data) {
-                            $('#result').html($('#result').html() + "<p>API returned google id" + data['id'] + "</p>");
-                            $.ajax({
-                                type: 'GET',
-                                url: 'http://lbdbackend.ignorelist.com/locationdata/api/Streetlights/WFS_KATUVALO.405171',
-                                contentType: 'application/json; charset=utf-8',
-                                success: function(result) {
-                                console.log(result);
-                            },
-                processData: false,
-                beforeSend: function (request) { 
+                    $('#result').html($('#result').html() + "<p>API returned google id " + data['id'] + "</p>");
+                    $.ajax({
+                        type: 'PUT',
+                        url: 'http://127.0.0.1:8001/add_user/',
+                        contentType: 'application/json; charset=utf-8',
+                        withCredentials: false,
+                        success: function(result) {
+                            $('#result').html($('#result').html() + "<p>Congratulations! You SHOULD now be registered as a location service user.</p>");
+                        },                        
+                        error: function() { alert('err'); },
+                        processData: false,
+                        beforeSend: function (request) { 
                             $('#result').html($('#result').html() + "<p>Now sending access token and google id to backend</p>");
-                            request.setRequestHeader( 'HTTP_LBD_LOGIN_HEADER', authResult['access_token']);
-                            request.setRequestHeader( 'HTTP_LBD_OAUTH_ID', data['id']);
-                            }
-                        
-
-                }); },
+                            request.setRequestHeader( 'LBD_LOGIN_HEADER', authResult['access_token']);
+                            request.setRequestHeader( 'LBD_OAUTH_ID', data['id']);
+                        }
+                    }); 
+                },
                 error: function() { alert('Google API call failed!'); },
                 beforeSend: function (request) { request.setRequestHeader("Authorization", 'Bearer ' + authResult['access_token']); }
                 });
@@ -73,9 +75,9 @@
     <span
     class="g-signin"
     data-callback="signInCallback"
-    data-clientid="388919682787-vf743dghif9m483leu0se5raajqsfaan.apps.googleusercontent.com"
+    data-clientid="561371657443-clfpgostcgejj669qs9hu5f7hh9oetv5.apps.googleusercontent.com"
     data-cookiepolicy="single_host_origin"
-    data-scope="profile"
+    data-scope="profile email"
     </span>
     </span>
 </body>
