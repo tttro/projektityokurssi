@@ -5,7 +5,7 @@ from django.http import HttpResponse
 _cors_dict = {
     "Access-Control-Allow-Origin": "*",
     "Access-Control-Allow-Credentials": "false",
-    "Access-Control-Allow-Headers": "LBD_LOGIN_HEADER, Authorization, Content-Type, Accept"
+    "Access-Control-Allow-Headers": "LBD_LOGIN_HEADER, LBD_OAUTH_ID, Authorization, Content-Type, Accept"
 }
 
 class CorsMiddleware(object):

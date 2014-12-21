@@ -9,6 +9,8 @@ Decorators for location data REST
 .. moduleauthor:: Aki Mäkinen <aki.makinen@outlook.com>
 
 """
+import mongoengine
+from lbd_backend.LBD_REST_users.models import User
 
 __author__ = 'Aki Mäkinen'
 
@@ -53,16 +55,14 @@ def this_is_a_login_wrapper_dummy(func):
     """
     @wraps(func)
     def wrapper(request, *args, **kwargs):
-        users = ["SimoSahkari",
-                 "TiinaTeekkari",
-                 "HeliHumanisti",
-                 "TeePannu"]
-        if "HTTP_LBD_LOGIN_HEADER" in request.META:
-            if request.META["HTTP_LBD_LOGIN_HEADER"] in users:
-                kwargs["lbduser"] = request.META["HTTP_LBD_LOGIN_HEADER"]
+        if "HTTP_LBD_LOGIN_HEADER" in request.META and "HTTP_LBD_OAUTH_ID" in request.META:
+            try:
+                user = User.objects.get(user_id=request.META["HTTP_LBD_OAUTH_ID"])
+                kwargs["lbduser"] = user
                 return func(request, *args, **kwargs)
-            else:
-                return HttpResponse(status=403)
+            except mongoengine.DoesNotExist:
+                return HttpResponse(status=401)
         else:
             return HttpResponse(status=400)
+
     return wrapper
