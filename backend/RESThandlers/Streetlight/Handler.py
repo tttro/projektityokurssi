@@ -7,13 +7,15 @@
 """
 __author__ = 'Aki Mäkinen'
 
-from RESThandlers.HandlerInterface.Exceptions import GenericDBError
-
+import re
 import urllib
 import json
 
+from RESThandlers.HandlerInterface.Exceptions import GenericDBError
 from RESThandlers.HandlerInterface.HandlerBaseClass import HandlerBase
 from RESThandlers.Streetlight.models import Streetlights
+
+from lbd_backend.utils import flattener
 
 
 class StreetlightHandler(HandlerBase):
@@ -67,18 +69,35 @@ class StreetlightHandler(HandlerBase):
             '&typeName=opendata:WFS_KATUVALO&outputFormat=json&srsName=EPSG:4326',
             proxies={})
         jsonitem = json.loads(req.read())
+        current_result = self.modelobject._get_collection().aggregate([
+            {"$project": {"feature_id": 1,
+                          "_id": 0}}
+        ])
+        if current_result["ok"] == 1 and len(current_result["result"]):
+            current_items = []
+            for item in current_result["result"]:
+                current_items.append(item["feature_id"])
+        else:
+            current_items = []
         itemsinserted = 0
-        itemlist = list()
-        self.modelobject.drop_collection()
+        to_add = list()
+        loop = 0
         for item in jsonitem["features"]:
+            loop += 1
             fid = item.pop("id")
-            temp = self.modelobject.from_json(json.dumps(item))
-            temp.feature_id = fid
-            itemlist.append(temp)
-            itemsinserted += 1
-        self.modelobject.objects().insert(itemlist)
+            if fid not in current_items:
+                temp = item
+                temp["feature_id"] = fid
+                to_add.append(temp)
+                itemsinserted += 1
+            else:
+                current_items.remove(fid)
+        if len(to_add) > 0:
+            self.modelobject._get_collection().insert(to_add)
+        if len(current_items) > 0:
+            self.modelobject._get_collection().remove({"feature_id": {"$in": current_items}})
 
-        return itemsinserted
+        return itemsinserted, len(current_items)
 
     def get_by_id(self, iid):
         result = self.modelobject._get_collection().aggregate([
@@ -107,14 +126,14 @@ class StreetlightHandler(HandlerBase):
             {"$project": doc_structure}
         ])
         itemcount = len(result["result"])
-        if int(result["ok"]) and itemcount > 0:
+        if int(result["ok"]):
             fc = self._featurecollection
             fc["totalFeatures"] = itemcount
             fc["features"] = result["result"]
 
             return fc
         else:
-            return None
+            raise GenericDBError("Database query failed. Status: " + str(result["ok"]))
 
     def get_within_rectangle(self, xtop_right, ytop_right, xbottom_left, ybottom_left, mini=False):
 
@@ -138,14 +157,11 @@ class StreetlightHandler(HandlerBase):
         else:
             f_count = self.modelobject.objects(geometry__geo_within_box=
                                                [(xbottom_left, ybottom_left), (xtop_right, ytop_right)]).count()
-            if f_count > 0:
-                featurecollection = self._featurecollection
-                featurecollection["totalFeatures"] = f_count
-                featurecollection["features"] = raw["result"]
+            featurecollection = self._featurecollection
+            featurecollection["totalFeatures"] = f_count
+            featurecollection["features"] = raw["result"]
 
-                return featurecollection
-            else:
-                return None
+            return featurecollection
 
     def get_all(self, mini=True):
         if mini:
@@ -158,14 +174,13 @@ class StreetlightHandler(HandlerBase):
             raise GenericDBError("Database query failed. Status: " + str(raw["ok"]))
         else:
             res_count = len(raw["result"])
-            if res_count > 0:
-                featurecollection = self._featurecollection
-                featurecollection["totalFeatures"] = res_count
-                featurecollection["features"] = raw["result"]
 
-                return featurecollection
-            else:
-                return None
+            featurecollection = self._featurecollection
+            featurecollection["totalFeatures"] = res_count
+            featurecollection["features"] = raw["result"]
+
+            return featurecollection
+
 
     # Return values:
     # Boolean: True if all were deleted, False if objects remain in db after deletion
@@ -195,3 +210,49 @@ class StreetlightHandler(HandlerBase):
     #       Integer: number of items in table
     def get_item_count(self):
         return self.modelobject.objects().count()
+
+
+    def search(self, regex, limit, field=None):
+        if field is None:
+            raise NotImplementedError # TODO: Search from all fields... some day
+        elif field == "id":
+            reg = re.compile(regex, re.IGNORECASE)
+            raw = self.modelobject._get_collection().aggregate([{'$match': {
+                                                                     "feature_id": {
+                                                                         "$regex": reg
+                                                                     }
+                                                                 }
+                                                            }, {
+                                                                '$project': self._doc_structure
+                                                            }])
+            if int(raw["ok"]) == 1:
+                results = raw["result"]
+            else:
+                results = []
+
+            totalresults = len(results)
+            if totalresults > limit:
+                results = results[:limit]
+            featurecollection = self._featurecollection
+            featurecollection["totalFeatures"] = len(results)
+            featurecollection["features"] = results
+
+            return totalresults, featurecollection
+        else:
+            raise NotImplementedError
+
+
+    def get_field_names(self):
+        doc = self.modelobject._get_collection().find_one()
+        if doc is None:
+            fields = []
+        else:
+            fields = []
+            for item in flattener(doc, None):
+                if item == "feature_id":
+                    fields.append("id")
+                elif item == "_id":
+                    pass
+                else:
+                    fields.append(item)
+        return fields

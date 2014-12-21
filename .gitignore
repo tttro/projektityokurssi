@@ -12,3 +12,4 @@ backend/manage.py
 *.directory
 __pycache__
 Login-test
+web/test/unit/

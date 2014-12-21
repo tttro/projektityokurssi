@@ -7,10 +7,15 @@
 """
 __author__ = 'Aki Mäkinen'
 
-from RESThandlers.Streetlight import Handler
-
+from RESThandlers.Streetlight import Handler as SL_Handler
+from RESThandlers.Playgrounds import Handler as P_Handler
 _installedSources = {
     "Streetlights": {
-        "handler": Handler.StreetlightHandler
+        "handler": SL_Handler.StreetlightHandler,
+        "name": "Tampere Streetlights"
+    },
+    "Playgrounds": {
+        "handler": P_Handler.PlaygroundHandler,
+        "name": "Ring around the rosie"
     }
 }

@@ -1,5 +1,9 @@
 package fi.lbd.mobile.backendhandler;
 
+import android.support.annotation.NonNull;
+
+import java.util.List;
+
 import fi.lbd.mobile.location.PointLocation;
 
 /**
@@ -35,4 +39,16 @@ public interface BackendHandler {
      * @return
      */
     HandlerResponse getMapObject(String id);
+
+    /**
+     * Search objects which has the search string in the given fields.
+     *
+     * @param fromFields    Fields to search from.
+     * @param searchString  String to search.
+     * @param limit Limit results.
+     * @param mini  Results minimized.
+     * @return
+     */
+    HandlerResponse getObjectsFromSearch(@NonNull List<String> fromFields, @NonNull String searchString,
+                                                int limit, boolean mini);
 }

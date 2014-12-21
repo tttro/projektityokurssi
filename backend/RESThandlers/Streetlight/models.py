@@ -28,4 +28,3 @@ class Streetlights(Document):
     geometry =  EmbeddedDocumentField(Geometry)
     geometry_name = StringField()
     properties = EmbeddedDocumentField(Properties)
-

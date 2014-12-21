@@ -11,7 +11,7 @@ import mongoengine
 req = urllib.urlopen(
             'http://tampere.navici.com/tampere_wfs_geoserver/opendata/ows?service=WFS&version=1.0.0&request=GetFeature'
             '&typeName=opendata:WFS_KATUVALO&outputFormat=json&srsName=EPSG:4326', proxies={})
-jsonitem = json.loads(req.read())
+jsonitem = json.loads(unicode(req.read()))
 SL.Streetlights.drop_collection()
 
 start = time.time()*1000
@@ -38,5 +38,7 @@ def populate_meta():
         if i % 1000 == 0:
             print i
         i += 1
+
+
 
 #populate_meta()

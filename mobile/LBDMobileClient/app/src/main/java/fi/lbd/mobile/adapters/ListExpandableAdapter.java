@@ -40,8 +40,8 @@ public class ListExpandableAdapter extends BaseExpandableListAdapter {
     // expanded list
     private final static int MIN_ADDITIONAL_PROPERTIES = 3;
     private final static int MIN_COORDINATES = 0;
-    private final static int MIN_METADATA_PROPERTIES = 1;
-    private final static int ADDITIONAL_PADDING = 20;
+    private final static int MIN_METADATA_PROPERTIES = 0;
+    private final static int ADDITIONAL_PADDING = 0;
 
     public ListExpandableAdapter(Context context) {
         this.context = context;
@@ -60,22 +60,28 @@ public class ListExpandableAdapter extends BaseExpandableListAdapter {
 
     @Override
     public Object getGroup(int groupPosition) {
-        return this.objects.get(groupPosition);
+        if( groupPosition >= 0 && groupPosition < getGroupCount()){
+            return this.objects.get(groupPosition);
+        }
+        return null;
     }
 
     @Override
     public Object getChild(int groupPosition, int childPosition) {
-        return this.objects.get(groupPosition);
+        if( groupPosition >= 0 && groupPosition < getGroupCount()){
+            return this.objects.get(groupPosition);
+        }
+        return null;
     }
 
     @Override
     public long getGroupId(int groupPosition) {
-        return 0;
+        return groupPosition;
     }
 
     @Override
     public long getChildId(int groupPosition, int childPosition) {
-        return 0;
+        return 1;
     }
 
     @Override
@@ -120,26 +126,28 @@ public class ListExpandableAdapter extends BaseExpandableListAdapter {
             view.setBackgroundColor(Color.WHITE);
         }
 
-        int distance = this.objects.get(groupPosition).first;
-        MapObject object = this.objects.get(groupPosition).second;
+        if(groupPosition >= 0 && groupPosition < getGroupCount()) {
+            int distance = this.objects.get(groupPosition).first;
+            MapObject object = this.objects.get(groupPosition).second;
 
-        if(object != null) {
-            TextView textViewId = (TextView) view.findViewById(R.id.textViewObjectId);
-            textViewId.setText(object.getId());
+            if (object != null) {
+                TextView textViewId = (TextView) view.findViewById(R.id.textViewObjectId);
+                textViewId.setText(object.getId());
 
-            TextView textViewDistance = (TextView) view.findViewById(R.id.textViewDistance);
-            if(distance >= 0){
-                textViewDistance.setText(LocationUtils.formatDistance(distance));
-            }
-            else {
-                textViewDistance.setText(context.getResources().getString(R.string.unknown));
+                TextView textViewDistance = (TextView) view.findViewById(R.id.textViewDistance);
+                if (distance >= 0) {
+                    textViewDistance.setText(LocationUtils.formatDistance(distance));
+                } else {
+                    textViewDistance.setText(context.getResources().getString(R.string.unknown_distance));
+                }
             }
         }
         return view;
     }
 
     @Override
-    public View getChildView(final int groupPosition, int childPosition, boolean isLastChild, View view, ViewGroup parent) {
+    public View getChildView(final int groupPosition, int childPosition, boolean isLastChild,
+                             View view, ViewGroup parent) {
         if (view == null) {
             LayoutInflater inflater = ((Activity) this.context).getLayoutInflater();
             view = inflater.inflate(R.layout.listview_expanded_row, parent, false);
@@ -149,7 +157,8 @@ public class ListExpandableAdapter extends BaseExpandableListAdapter {
 
             // Tag links the expanded item to its location object
             view.setTag(((Pair<Integer, MapObject>)getGroup(groupPosition)).second);
-            Log.d("TAG SET--------------------", (((Pair<Integer, MapObject>)getGroup(groupPosition)).second).getId());
+            Log.d("TAG SET--------------------",
+                    (((Pair<Integer, MapObject>)getGroup(groupPosition)).second).getId());
 
            final MapObject object = ((Pair<Integer, MapObject>)getGroup(groupPosition)).second;
            final ListDetailsAdapter adapter = new ListDetailsAdapter(
@@ -166,6 +175,7 @@ public class ListExpandableAdapter extends BaseExpandableListAdapter {
     public boolean isChildSelectable(int groupPosition, int childPosition) {
         return true;
     }
+
 
     // Function to adjust the height of a listview according to its children
     private static void adjustListHeight(ListView listView){

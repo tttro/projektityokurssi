@@ -2,7 +2,7 @@
 var dataServices = angular.module('dataServices', ['ngResource']);
 var dataSet = null;
 
-dataServices.factory('ItemDataService', function($http, appConfig){
+dataServices.factory('ObjectsService', function($http, appConfig){
     return {
 
         getSingle : function(itemId, callback){
@@ -30,29 +30,34 @@ dataServices.factory('ItemDataService', function($http, appConfig){
             var ne = bounds.ne;
             var sw = bounds.sw;
 
-            $http({
-                method: 'GET',
-                url: appConfig.baseApiUrl + appConfig.dataTypeUrl +'/inarea/?xbottomleft='+sw.lng()+'&ybottomleft='+sw.lat()+'&ytopright='+ne.lat()+'&xtopright='+ne.lng(),
-                headers: appConfig.headerLogin
+                $http({
+                    method: 'GET',
+                    url: appConfig.baseApiUrl + appConfig.dataTypeUrl +'/inarea/?xbottomleft='+sw.lng()+'&ybottomleft='+sw.lat()+'&ytopright='+ne.lat()+'&xtopright='+ne.lng(),
+                    headers: appConfig.headerLogin
 
-            })
-            .success(function(data){
-                callback(data);
-            })
-            .error(function(data,status,header,config){
-                errorHandler(data,status,header,config,appConfig.dataTypeUrl);
-            });
+                })
+                .success(function(data){
+                    callback(data);
+                })
+                .error(function(data,status,header,config){
+                    errorHandler(data,status,header,config,appConfig.dataTypeUrl);
+                });
 
             return retData;
         },
+        search: function(searchQuery, callback){
 
-        getTestData: function(callback) {
+            var searchPostContent= {
+                'from':'id',
+                'search':searchQuery,
+                'limit':appConfig.searchLimit
+            }
 
             $http({
-                method: 'GET',
-                url: appConfig.baseApiUrl + appConfig.dataTypeUrl + '/inarea/?xbottomleft=23.63&ybottomleft=61.51&ytopright=61.52&xtopright=23.65',
-                //url: 'data/demo.json',
-                headers: appConfig.headerLogin
+                method: 'POST',
+                url: appConfig.baseApiUrl + appConfig.dataTypeUrl +'/search/',
+                headers: appConfig.headerLogin,
+                data: searchPostContent
             })
             .success(function(data){
                 callback(data);
@@ -60,12 +65,13 @@ dataServices.factory('ItemDataService', function($http, appConfig){
             .error(function(data,status,header,config){
                 errorHandler(data,status,header,config,appConfig.dataTypeUrl);
             });
+
         }
     };
 });
 
 // A local data storage (model) which controllers uses
-dataServices.factory('Data', function(){
+dataServices.factory('ObjectsLocal', function(){
     return {
         get: function() {
             return dataSet;
@@ -90,5 +96,5 @@ dataServices.factory('MessageDataService', function(){
 
 var errorHandler = function(data,status,header,config,dataTypeUrl) {
     alert("Sorry, Data Load Failure");
-    console.log("Data Load Failure: "+dataTypeUrl +" " + status);
+    console.log("Data Load Failure: "+dataTypeUrl +" " + status+" "+config);
 }

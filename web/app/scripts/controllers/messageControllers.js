@@ -4,6 +4,7 @@ var messageControllers = angular.module('messageControllers', []);
 
 messageControllers.controller('messageController', function($scope, MessageDataService){
 
+
     var dummyData = [
         {
             'title':'This is a message title',
@@ -24,7 +25,27 @@ messageControllers.controller('messageController', function($scope, MessageDataS
 
     ];
 
+
     $scope.messageList = dummyData;
+    $scope.selectedItem = null;
+
+    /* Accordion */
+    $scope.click = function(message){
+
+        // If
+        if($scope.selectedItem === message){
+            $scope.selectedItem = null;
+        }
+        else {
+            $scope.selectedItem = message;
+        }
+
+    }
+
+    $scope.isSelected = function(message){
+
+        return $scope.selectedItem === message;
+    }
 
 
 });
