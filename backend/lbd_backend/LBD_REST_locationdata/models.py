@@ -52,7 +52,3 @@ class MetaDocument(mongoengine.DynamicDocument):
     feature_id = mongoengine.StringField(unique=True, required=True)
     collection = mongoengine.StringField(required=True)
     meta_data = mongoengine.EmbeddedDocumentField(MetaData, required=True)
-
-class SimpleUser(mongoengine.DynamicDocument):
-    google_id = mongoengine.IntField(required=True)
-    gmail = mongoengine.StringField(required=True)

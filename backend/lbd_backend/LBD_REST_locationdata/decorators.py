@@ -9,7 +9,7 @@ Decorators for location data REST
 .. moduleauthor:: Aki Mäkinen <aki.makinen@outlook.com>
 
 """
-from dbus import service
+#from dbus import service
 
 import mongoengine
 from lbd_backend.LBD_REST_users.models import User
@@ -63,6 +63,7 @@ def this_is_a_login_wrapper_dummy(func):
     """
     @wraps(func)
     def wrapper(request, *args, **kwargs):
+
         if "HTTP_LBD_LOGIN_HEADER" in request.META and "HTTP_LBD_OAUTH_ID" in request.META:
             try:
 
@@ -82,18 +83,17 @@ def this_is_a_login_wrapper_dummy(func):
 
                 if userid == result["user_id"]:
                     print "User matches"
-                result = json.loads(h.request('https://www.googleapis.com/plus/v1/people/' +
-                                              request.META["HTTP_LBD_OAUTH_ID"] +
-                                              '?key=AIzaSyC0Px_GBDPrefu4IK_lC7iyH86njxEu79A&fields=emails', 'GET',
-                                              headers={
-                                                  "Authorization": "Bearer "+ request.META["HTTP_LBD_LOGIN_HEADER"]
-                                              })[1])
-                print result
                 #############################################################################################
-
-                user = User.objects.get(user_id=request.META["HTTP_LBD_OAUTH_ID"])
-                kwargs["lbduser"] = user
+                try:
+                    user = User.objects.get(user_id=request.META["HTTP_LBD_OAUTH_ID"])
+                    print user.user_id
+                    kwargs["lbduser"] = user
+                except Exception as e:
+                    template = "An exception of type {0} occured. Arguments:\n{1!r}"
+                    print template.format(type(e).__name__, e.args)
+                    return HttpResponse(status=403)
                 return func(request, *args, **kwargs)
+
             except mongoengine.DoesNotExist:
                 return HttpResponse(status=401)
 
