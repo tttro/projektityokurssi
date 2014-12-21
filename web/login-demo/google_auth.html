@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js">
+    </script>
+    <script src="https://apis.google.com/js/client:platform.js?onload=start" async defer>
+    </script>
+    <title>Login with Google+</title>
+    <script>
+    function signInCallback(authResult) {
+        if (authResult['status']['signed_in']) {
+            $('#result').html($('#result').html() + "<p>User is now signed in to our service with Google account</p>");
+            if (authResult['access_token'] === undefined) {
+                alert("No access token!");
+            }
+            $('#result').html($('#result').html() + "<p>Google returned access token:" + authResult['access_token'] + "</p>");
+            function makeApiCall() {
+                $('#result').html($('#result').html() + "<p>Now using access token to get user's google id from Google API</p>");
+                $.ajax({
+                url: 'https://www.googleapis.com/oauth2/v2/userinfo',
+                type: 'GET',
+                success: function(data) {
+                            $('#result').html($('#result').html() + "<p>API returned google id" + data['id'] + "</p>");
+                            $.ajax({
+                                type: 'GET',
+                                url: 'http://lbdbackend.ignorelist.com/locationdata/api/Streetlights/WFS_KATUVALO.405171',
+                                contentType: 'application/json; charset=utf-8',
+                                success: function(result) {
+                                console.log(result);
+                            },
+                processData: false,
+                beforeSend: function (request) { 
+                            $('#result').html($('#result').html() + "<p>Now sending access token and google id to backend</p>");
+                            request.setRequestHeader( 'HTTP_LBD_LOGIN_HEADER', authResult['access_token']);
+                            request.setRequestHeader( 'HTTP_LBD_OAUTH_ID', data['id']);
+                            }
+                        
+
+                }); },
+                error: function() { alert('Google API call failed!'); },
+                beforeSend: function (request) { request.setRequestHeader("Authorization", 'Bearer ' + authResult['access_token']); }
+                });
+            }   
+            // Hide the sign-in button now that the user is authorized, for example:
+            $('#signinButton').attr('style', 'display: none');
+            //Call on Google API to get user_id required by the backend API call
+            makeApiCall();
+            
+            $('#result').html($('#result').html() + "<p>Yatta!</p>");
+            // Send the code to the server
+
+            // Load the API and make an API call.  Display the results on the screen.    
+
+
+        } else if (authResult['error']) {
+            if (authResult['error'] == "access_denied") {
+                alert("User gave no permission :(");
+            }
+            // There was an error.
+            // Possible error codes:
+            //   "access_denied" - User denied access to your app
+            //   "immediate_failed" - Could not automatially log in the user
+            console.log('There was an error: ' + authResult['error']);
+        }
+    }
+    </script>
+</head>
+<body>
+    <p id="result"></p>
+    <span id="signinButton">
+    <span
+    class="g-signin"
+    data-callback="signInCallback"
+    data-clientid="388919682787-vf743dghif9m483leu0se5raajqsfaan.apps.googleusercontent.com"
+    data-cookiepolicy="single_host_origin"
+    data-scope="profile"
+    </span>
+    </span>
+</body>
+</html>
