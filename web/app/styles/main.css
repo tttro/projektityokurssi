@@ -12,7 +12,8 @@ html, body{
     margin: 0;
     padding: 0;
 }
-.container {
+.container,
+.container .view{
     width: 100%;
     height: 100%;
     margin: 0;
@@ -353,4 +354,15 @@ header a {
     font-style: italic;
     margin-bottom: 10px;
     border-bottom: 1px solid #ccc;
+}
+
+/* Settings */
+#settings {
+
+}
+
+#signinButton {
+    position: absolute;
+    top: 5px;
+    right: 200px;
 }

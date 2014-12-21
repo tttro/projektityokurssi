@@ -13,26 +13,17 @@
         <!--[if lt IE 9]>
         <script src="scripts/vendor/html5shiv.min.js"></script>
         <![endif]-->
+
     </head>
     <body>
 
         <!-- Main container -->
-        <div class="container" >
-            <!-- Include sidebar -->
-            <div class="w20p fleft sidebar" ng-include="'views/sidebar.html'"></div>
-            <div class="w80p fleft">
-                <!-- Include header -->
-                <ng-include src="'views/header.partial.html'"></ng-include>
-                <!-- Include map -->
-                <ng-include src="'views/map.partial.html'"></ng-include>
-            </div>
+        <div class="container" ng-controller="mainController" >
+            <div ng-view class="view"></div>
         </div>
 
         <!-- Google Maps JavaScript API v3 -->
         <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places&sensor=false"></script>
-
-        <!-- google-maps-utility-library-v3 -->
-        <!--<script src="scripts/vendor/markerclusterer.js"></script>-->
 
         <!-- AngularJS core-->
         <script src="scripts/vendor/angular.min.js"></script>
@@ -45,14 +36,20 @@
         <script src="scripts/services/services.js"></script>
 
         <!-- Controllers -->
-        <script src="scripts/controllers/mapControllers.js"></script>
-        <script src="scripts/controllers/messageControllers.js"></script>
-        <script src="scripts/controllers/itemControllers.js"></script>
+        <script src="scripts/controllers/mainControllers.js"></script>
+        <script src="scripts/controllers/mapController.js"></script>
+        <script src="scripts/controllers/messageController.js"></script>
+        <script src="scripts/controllers/itemController.js"></script>
+        <script src="scripts/controllers/loginController.js"></script>
+        <script src="scripts/controllers/settingsController.js"></script>
 
         <!-- Directives -->
         <script src="scripts/directives/directives.js"></script>
 
         <!-- Application files -->
+        <!--<script src="../app.min.js"></script>-->
         <script src="scripts/app.js"></script>
+
+
     </body>
 </html>

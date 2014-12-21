@@ -13,3 +13,5 @@ backend/manage.py
 __pycache__
 Login-test
 web/test/unit/
+web/*.sh
+web/app/scripts/app.min.js

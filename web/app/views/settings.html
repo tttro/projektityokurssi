@@ -1,0 +1,16 @@
+<h1>Settings</h1>
+
+<form role="form">
+    <div class="form-group">
+        <label for="baseUrl">Data source base url</label>
+        <input type="text" class="form-control" id="baseUrl" placeholder="Enter url" ng-model="settingsModel.baseApiUrl">
+    </div>
+    <div class="radio">
+        <label>
+            <input type="radio"> Streetlights
+        </label>
+    </div>
+    <button class="btn btn-default" ng-click="cancel()">Cancel</button>
+    <button class="btn btn-primary" ng-click="saveSettings()">Save</button>
+</form>
+<script src="https://apis.google.com/js/client:platform.js" async defer></script>

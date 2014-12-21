@@ -13,8 +13,7 @@ dataServices.factory('ObjectsService', function($http, appConfig){
 
             $http({
                 method: 'GET',
-                url: appConfig.baseApiUrl + appConfig.dataTypeUrl +'/near/?latitude='+ lat+ +'&longitude='+ lng +'&range='+appConfig.nearRange,
-                headers: appConfig.headerLogin
+                url: appConfig.baseApiUrl + appConfig.dataTypeUrl + appConfig.dataCollectionUrl +'/near/?latitude='+ lat+ +'&longitude='+ lng +'&range='+appConfig.nearRange
             })
             .success(function(data){
                 callback(data);
@@ -32,9 +31,7 @@ dataServices.factory('ObjectsService', function($http, appConfig){
 
                 $http({
                     method: 'GET',
-                    url: appConfig.baseApiUrl + appConfig.dataTypeUrl +'/inarea/?xbottomleft='+sw.lng()+'&ybottomleft='+sw.lat()+'&ytopright='+ne.lat()+'&xtopright='+ne.lng(),
-                    headers: appConfig.headerLogin
-
+                    url: appConfig.baseApiUrl + appConfig.dataTypeUrl + appConfig.dataCollectionUrl +'/inarea/?xbottomleft='+sw.lng()+'&ybottomleft='+sw.lat()+'&ytopright='+ne.lat()+'&xtopright='+ne.lng()
                 })
                 .success(function(data){
                     callback(data);
@@ -55,8 +52,7 @@ dataServices.factory('ObjectsService', function($http, appConfig){
 
             $http({
                 method: 'POST',
-                url: appConfig.baseApiUrl + appConfig.dataTypeUrl +'/search/',
-                headers: appConfig.headerLogin,
+                url: appConfig.baseApiUrl + appConfig.dataTypeUrl + appConfig.dataCollectionUrl +'/search/',
                 data: searchPostContent
             })
             .success(function(data){
@@ -83,17 +79,98 @@ dataServices.factory('ObjectsLocal', function(){
 });
 
 // Message service
-dataServices.factory('MessageDataService', function(){
+dataServices.factory('MessageService', function($http, appConfig){
     return {
-        get: function() {
-
+        get: function(callback) {
+            $http({
+                method: 'GET',
+                url: appConfig.baseApiUrl + 'messagedata/api/messages/'
+            })
+            .success(function(data){
+                callback(data);
+            })
+            .error(function(data,status,header,config){
+                errorHandler(data,status,header,config,appConfig.dataTypeUrl);
+            });
         },
-        set: function(){
+        send: function(messageObject, callback){
 
+            var message = {
+                'type':'Message',
+                'recipient': messageObject.to,
+                'topic': messageObject.topic,
+                'message': messageObject.message
+            }
+
+            $http({
+                method: 'POST',
+                url: appConfig.baseApiUrl + 'messagedata/api/send/',
+                data: message
+            })
+            .success(function(data){
+                callback(data);
+            })
+            .error(function(data,status,header,config){
+                errorHandler(data,status,header,config,appConfig.dataTypeUrl);
+            });
         }
     }
 });
 
+// GOOGLE SIGN IN
+dataServices.factory('AuthService', function($rootScope,$http,appConfig){
+    var user = null;
+    return {
+
+        login: function(){
+            return true; // TODO: ask from the backend
+        },
+        isLoggedIn: function(){
+            return !!user;
+        },
+        getUserInfo: function(authResult, callback){
+
+            delete $http.defaults.headers.common['LBD_LOGIN_HEADER'];
+            delete $http.defaults.headers.common['LBD_OAUTH_ID'];
+
+            $http({
+                method: 'GET',
+                url: 'https://www.googleapis.com/oauth2/v2/userinfo',
+                headers: {
+                    'Authorization': 'Bearer '+authResult.access_token
+                },
+                data: authResult
+            }).success(function(userinfo){
+                user = {
+                    id: userinfo.id,
+                    name: userinfo.name,
+                    email: userinfo.email,
+                    picture: userinfo.picture,
+                    locale: userinfo.locale
+                };
+
+                // Add Google Account info to all http requests
+                $http.defaults.headers.common = {
+                    'LBD_LOGIN_HEADER' : authResult.access_token,
+                    'LBD_OAUTH_ID' : user.id
+                };
+
+                callback(userinfo);
+            })
+            .error(function(data,status,header,config){
+                errorHandler(data,status,header,config);
+            });
+        },
+        logout: function(){
+            user = null;
+        },
+        getUser: function(){
+            return user;
+        }
+    }
+});
+
+// Private
 var errorHandler = function(data,status,header,config,dataTypeUrl) {
     alert("Sorry, Data Load Failure");
     console.log("Data Load Failure: "+dataTypeUrl +" " + status+" "+config);
