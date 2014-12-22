@@ -21,6 +21,7 @@
     <string name="distance">Distance %s</string>
     <string name="loading">Loading objects...</string>
     <string name="location_failed">Location failed, please try again</string>
+    <string name="search_failed">Search failed, please try again</string>
     <string name="showing_nearest">Showing %d nearest objects</string>
     <string name="no_nearest_found">No near objects found</string>
     <string name="showing_results">Search resulted in %d objects</string>

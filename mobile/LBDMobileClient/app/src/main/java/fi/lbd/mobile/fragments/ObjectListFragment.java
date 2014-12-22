@@ -50,6 +50,7 @@ public class ObjectListFragment extends ListFragment {
     private String LOCATION_FAILED;
     private String SHOWING_NEAREST;
     private String NO_NEAREST;
+    private String SEARCH_FAILED;
     private String SEARCH_RESULTS;
     private String NO_RESULTS;
     private String MAX_RESULTS;
@@ -105,6 +106,7 @@ public class ObjectListFragment extends ListFragment {
         LOCATION_FAILED = getActivity().getString(R.string.location_failed);
         SHOWING_NEAREST = getActivity().getString(R.string.showing_nearest);
         NO_NEAREST = getActivity().getString(R.string.no_nearest_found);
+        SEARCH_FAILED = getActivity().getString(R.string.search_failed);
         SEARCH_RESULTS = getActivity().getString(R.string.showing_results);
         NO_RESULTS = getActivity().getString(R.string.no_results);
         MAX_RESULTS = getActivity().getString(R.string.max_results);
@@ -319,16 +321,20 @@ public class ObjectListFragment extends ListFragment {
      */
     @Subscribe
     public void onEvent(RequestFailedEvent event) {
+        statusText.setBackgroundColor(lastStatusBackground);
+
         if (event.getFailedEvent() instanceof RequestNearObjectsEvent) {
-            statusText.setBackgroundColor(lastStatusBackground);
             statusText.setText(LOCATION_FAILED);
             lastStatusText = LOCATION_FAILED;
-            this.getListView().requestLayout();
-
-            synchronized (LOCK){
-                Log.d("__________","Error received. Releasing lock.");
-                searchInProgress = false;
-            }
+        }
+        else if (event.getFailedEvent() instanceof SearchObjectsEvent) {
+            statusText.setText(SEARCH_FAILED);
+            lastStatusText = SEARCH_FAILED;
+        }
+        this.getListView().requestLayout();
+        synchronized (LOCK){
+            Log.d("__________","Error received. Releasing lock.");
+            searchInProgress = false;
         }
     }
 
