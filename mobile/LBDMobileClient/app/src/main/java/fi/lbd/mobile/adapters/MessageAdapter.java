@@ -20,12 +20,12 @@ import fi.lbd.mobile.mapobjects.MapObject;
  */
 
 // TODO: http://www.codeofaninja.com/2013/09/android-viewholder-pattern-example.html
-public class ListMapObjectAdapter extends BaseAdapter {
+public class MessageAdapter extends BaseAdapter {
     private List<MapObject> objects;
     private Context context;
 
 
-    public ListMapObjectAdapter(Context context) {
+    public MessageAdapter(Context context) {
         this.context = context;
         this.objects = new ArrayList<MapObject>();
     }

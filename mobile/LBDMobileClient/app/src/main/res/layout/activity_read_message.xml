@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#2F3A41">
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Read message"
+            android:id="@+id/title"
+            android:padding="10dip"
+            android:textColor="#FFF"
+            android:background="#2F3A41"
+            android:layout_gravity="center_vertical" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:orientation="vertical">
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="From:"
+        android:id="@+id/textView3"
+        android:textSize="14dp"
+        android:textAllCaps="true"/>
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Tero Teekkari"
+        android:id="@+id/textView4"
+        android:textSize="14dp"
+        android:textStyle="italic"/>
+
+     <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Title:"
+        android:id="@+id/textView"
+         android:layout_marginTop="15dp"
+        android:textSize="14dp"
+        android:textAllCaps="true"/>
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Fix request"
+        android:id="@+id/textView2"
+        android:textSize="14dp"
+        android:textStyle="italic"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/scrollView">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Please go fix this lamp."
+            android:layout_marginTop="15dp"
+            android:id="@+id/textView5"
+            android:textSize="14dp"/>
+    </ScrollView>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="20dp">
+
+    <Button
+        android:layout_width="120dp"
+        android:layout_height="wrap_content"
+        android:text="REPLY"
+        android:background="@color/button_background"
+        android:id="@+id/replyButton"
+        android:layout_marginRight="20dp"
+        android:minHeight="30dp"
+        android:textSize="6pt"
+        android:onClick="onDetailsClick"
+        android:textColor="@color/white_text"
+        android:layout_gravity="center_horizontal"/>
+
+    <Button
+        android:layout_width="120dp"
+        android:layout_height="wrap_content"
+        android:text="DELETE"
+        android:background="@android:color/holo_red_dark"
+        android:id="@+id/deleteButton"
+        android:minHeight="30dp"
+        android:textSize="6pt"
+        android:onClick="onDetailsClick"
+        android:textColor="@color/white_text"
+        android:layout_gravity="center_horizontal"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="47dp"
+        android:background="#2F3A41">
+    </LinearLayout>
+
+</LinearLayout>

@@ -65,6 +65,14 @@
             android:label="@string/title_activity_details"
             android:theme="@android:style/Theme.Holo.Light.NoActionBar" >
         </activity>
+        <activity
+            android:name=".ReadMessageActivity"
+            android:label="@string/title_activity_read_message" >
+        </activity>
+        <activity
+            android:name=".SendMessageActivity"
+            android:label="@string/title_activity_send_message" >
+        </activity>
     </application>
 
 </manifest>

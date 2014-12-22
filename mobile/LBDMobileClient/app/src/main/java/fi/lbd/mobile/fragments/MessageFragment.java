@@ -8,12 +8,12 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 
 import fi.lbd.mobile.R;
-import fi.lbd.mobile.adapters.ListMapObjectAdapter;
+import fi.lbd.mobile.adapters.MessageAdapter;
 import fi.lbd.mobile.events.BusHandler;
 
 
 public class MessageFragment extends ListFragment {
-    private ListMapObjectAdapter adapter;
+    private MessageAdapter adapter;
 
     public static MessageFragment newInstance() { return new MessageFragment();
     }
@@ -21,7 +21,7 @@ public class MessageFragment extends ListFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        this.adapter = new ListMapObjectAdapter(this.getActivity()); // TODO: Oma adapteri.
+        this.adapter = new MessageAdapter(this.getActivity()); // TODO: Oma adapteri.
 
     }
 

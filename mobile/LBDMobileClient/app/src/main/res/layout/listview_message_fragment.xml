@@ -5,6 +5,22 @@
     android:focusable="true"
     android:focusableInTouchMode="true">
 
+    <Button
+        android:layout_width="155dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
+        android:text="NEW MESSAGE"
+        android:background="@color/button_background"
+        android:id="@+id/detailsButton"
+        android:paddingEnd="30dp"
+        android:paddingStart="30dp"
+        android:minHeight="30dp"
+        android:textSize="6pt"
+        android:onClick="onDetailsClick"
+        android:textColor="@color/white_text"
+        android:layout_gravity="center_horizontal"/>
+
     <ListView
         android:listSelector="@android:color/transparent"
         android:cacheColorHint="@android:color/transparent"
