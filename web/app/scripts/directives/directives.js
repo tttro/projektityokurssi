@@ -70,5 +70,3 @@ run(['$window','$rootScope',function($window, $rootScope) {
     };
 }]);
 
-
-

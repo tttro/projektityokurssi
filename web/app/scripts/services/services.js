@@ -2,7 +2,7 @@
 var dataServices = angular.module('dataServices', ['ngResource']);
 var dataSet = null;
 
-dataServices.factory('ObjectsService', function($http, appConfig){
+dataServices.factory('ObjectsService', function($http, appConfig, notify){
     return {
 
         getSingle : function(itemId, callback){
@@ -19,7 +19,7 @@ dataServices.factory('ObjectsService', function($http, appConfig){
                 callback(data);
             })
             .error(function(data,status,header,config){
-                errorHandler(data,status,header,config,appConfig.dataTypeUrl);
+                errorHandler(data,'location',appConfig.dataTypeUrl,notify);
             });
 
             return retData;
@@ -37,7 +37,7 @@ dataServices.factory('ObjectsService', function($http, appConfig){
                     callback(data);
                 })
                 .error(function(data,status,header,config){
-                    errorHandler(data,status,header,config,appConfig.dataTypeUrl);
+                        errorHandler(data,'location',appConfig.dataTypeUrl,notify);
                 });
 
             return retData;
@@ -59,7 +59,7 @@ dataServices.factory('ObjectsService', function($http, appConfig){
                 callback(data);
             })
             .error(function(data,status,header,config){
-                errorHandler(data,status,header,config,appConfig.dataTypeUrl);
+                    errorHandler(data,'location',appConfig.dataTypeUrl,notify);
             });
 
         }
@@ -79,7 +79,7 @@ dataServices.factory('ObjectsLocal', function(){
 });
 
 // Message service
-dataServices.factory('MessageService', function($http, appConfig){
+dataServices.factory('MessageService', function($http, appConfig,notify){
     return {
         get: function(callback) {
             $http({
@@ -90,7 +90,7 @@ dataServices.factory('MessageService', function($http, appConfig){
                 callback(data);
             })
             .error(function(data,status,header,config){
-                errorHandler(data,status,header,config,appConfig.dataTypeUrl);
+                    errorHandler(data,'message',appConfig.dataTypeUrl,notify);
             });
         },
         send: function(messageObject, callback){
@@ -111,7 +111,7 @@ dataServices.factory('MessageService', function($http, appConfig){
                 callback(data);
             })
             .error(function(data,status,header,config){
-                errorHandler(data,status,header,config,appConfig.dataTypeUrl);
+                    errorHandler(data,'message',appConfig.dataTypeUrl,notify);
             });
         }
     }
@@ -152,13 +152,13 @@ dataServices.factory('AuthService', function($rootScope,$http,appConfig){
                 // Add Google Account info to all http requests
                 $http.defaults.headers.common = {
                     'LBD_LOGIN_HEADER' : authResult.access_token,
-                    'LBD_OAUTH_ID' : user.id
+                    'LBD_OAUTH_ID' : userinfo.id
                 };
 
                 callback(userinfo);
             })
             .error(function(data,status,header,config){
-                errorHandler(data,status,header,config);
+                    errorHandler(data,'auth',appConfig.dataTypeUrl,notify);
             });
         },
         logout: function(){
@@ -171,7 +171,8 @@ dataServices.factory('AuthService', function($rootScope,$http,appConfig){
 });
 
 // Private
-var errorHandler = function(data,status,header,config,dataTypeUrl) {
-    alert("Sorry, Data Load Failure");
-    console.log("Data Load Failure: "+dataTypeUrl +" " + status+" "+config);
+var errorHandler = function(data,message,dataTypeUrl,notify) {
+    //alert("Sorry, Data Load Failure");
+    notify('Failed to load '+message+' data from the server! Please try again later.');
+    console.log("Data Load Failure: "+dataTypeUrl +" " + status);
 }

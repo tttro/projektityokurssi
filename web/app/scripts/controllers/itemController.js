@@ -3,7 +3,7 @@
 
 var itemController = angular.module('itemController', []);
 
-itemController.controller('itemController', function($scope, $http, $rootScope, $filter, $timeout, ObjectsLocal, ObjectsService){
+itemController.controller('itemController', function($scope, $http, $rootScope, $filter, $timeout, ObjectsLocal, ObjectsService, notify){
 
 
     var orginalItemList = [];
@@ -124,11 +124,11 @@ itemController.controller('itemController', function($scope, $http, $rootScope, 
                     });
 
                 } else {
-                    alert('No results found');
+                    notify('No results found');
                     $scope.address = "";
                 }
             } else {
-                alert('Geocoder failed due to: ' + status);
+                notify('Geocoder failed due to: ' + status);
                 $scope.address = '';
             }
         });
