@@ -1,9 +1,12 @@
 package fi.lbd.mobile;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
+
+import fi.lbd.mobile.messageobjects.StringMessageObject;
 
 
 public class ReadMessageActivity extends Activity {
@@ -12,25 +15,23 @@ public class ReadMessageActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_read_message);
+
+        StringMessageObject object = (StringMessageObject) MessageObjectSelectionManager.get()
+                .getSelectedMessageObject();
+        View rootView = findViewById(android.R.id.content);
+        ((TextView)rootView.findViewById(R.id.textViewSender)).setText(object.getSender());
+        ((TextView)rootView.findViewById(R.id.textViewTopic)).setText(object.getTopic());
+        ((TextView)rootView.findViewById(R.id.textViewMessageContents)).setText(object.getMessage());
     }
 
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.read_message, menu);
-        return true;
+    // TODO: Viestin deletointi
+    public void onDeleteClick(View view){
+        onBackPressed();
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
+    public void onReplyClick(View view){
+        Intent intent = new Intent(this, SendMessageActivity.class);
+        intent.putExtra("Replying", true);
+        startActivity(intent);
     }
 }

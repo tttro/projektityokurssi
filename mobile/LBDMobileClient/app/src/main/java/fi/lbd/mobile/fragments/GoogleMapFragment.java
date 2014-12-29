@@ -35,8 +35,9 @@ import java.util.List;
 import java.util.Locale;
 
 import fi.lbd.mobile.DetailsActivity;
+import fi.lbd.mobile.MessageObjectSelectionManager;
 import fi.lbd.mobile.R;
-import fi.lbd.mobile.SelectionManager;
+import fi.lbd.mobile.MapObjectSelectionManager;
 import fi.lbd.mobile.events.BusHandler;
 import fi.lbd.mobile.events.ReturnObjectsInAreaEvent;
 import fi.lbd.mobile.events.SelectMapObjectEvent;
@@ -218,7 +219,7 @@ public class GoogleMapFragment extends MapFragment implements OnInfoWindowClickL
 
     @Override
     public void onInfoWindowClick(Marker marker) {
-        SelectionManager.get().setSelection(this.modelController.findMapObject(marker));
+        MapObjectSelectionManager.get().setSelectedMapObject(this.modelController.findMapObject(marker));
         Intent intent = new Intent(this.getActivity(), DetailsActivity.class);
         startActivity(intent);
         this.getActivity().overridePendingTransition(0, 0); // Hides the transition animation
@@ -248,7 +249,7 @@ public class GoogleMapFragment extends MapFragment implements OnInfoWindowClickL
         Resources res = getResources();
         final int defaultZoom =  res.getInteger(R.integer.default_zoom);
 
-        MapObject mapObject = SelectionManager.get().getSelectedObject();
+        MapObject mapObject = MapObjectSelectionManager.get().getSelectedMapObject();
         if(mapObject != null){
             PointLocation location = mapObject.getPointLocation();
             CameraUpdate cameraLocation = CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), defaultZoom);
@@ -276,7 +277,7 @@ public class GoogleMapFragment extends MapFragment implements OnInfoWindowClickL
         this.modelController.setActiveMarker(marker);
 
         MapObject mapObject = this.modelController.findMapObject(marker);
-        SelectionManager.get().setSelection(mapObject);
+        MapObjectSelectionManager.get().setSelectedMapObject(mapObject);
         // False for default behavior (center camera and open infowindow)
         return false;
     }
@@ -284,7 +285,7 @@ public class GoogleMapFragment extends MapFragment implements OnInfoWindowClickL
     @Override
     public void onMapClick(LatLng point){
         this.modelController.clearActiveMarker();
-        SelectionManager.get().setSelection(null);
+        MessageObjectSelectionManager.get().setSelectedMessageObject(null);
         hideCursor();
         hideKeyBoard();
     }

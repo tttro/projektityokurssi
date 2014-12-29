@@ -23,7 +23,7 @@ public class DetailsActivity extends Activity {
         super.onCreate(savedInstanceState);
 
         BusHandler.getBus().register(this);
-        BusHandler.getBus().post(new RequestMapObjectEvent(SelectionManager.get().getSelectedObject().getId()));
+        BusHandler.getBus().post(new RequestMapObjectEvent(MapObjectSelectionManager.get().getSelectedMapObject().getId()));
     }
 
     @Override

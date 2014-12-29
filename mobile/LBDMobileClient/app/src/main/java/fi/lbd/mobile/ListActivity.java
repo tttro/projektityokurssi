@@ -17,8 +17,6 @@ import android.view.inputmethod.InputMethodManager;
 import java.util.ArrayDeque;
 import java.util.Locale;
 
-import fi.lbd.mobile.backendhandler.URLReader;
-import fi.lbd.mobile.backendhandler.URLResponse;
 import fi.lbd.mobile.events.BusHandler;
 import fi.lbd.mobile.events.SelectMapObjectEvent;
 import fi.lbd.mobile.fragments.GoogleMapFragment;
@@ -177,7 +175,7 @@ public class ListActivity extends Activity {
             Log.d("NO OBJECT TAG RECEIVED", "-----ON DETAILS CLICK");
         }
         if (object != null) {
-            SelectionManager.get().setSelection(object);
+            MapObjectSelectionManager.get().setSelectedMapObject(object);
             Intent intent = new Intent(this, DetailsActivity.class);
             startActivity(intent);
         }
@@ -195,7 +193,7 @@ public class ListActivity extends Activity {
             Log.d("NO OBJECT TAG RECEIVED", "-----ON MAP CLICK");
         }
         if (object != null){
-            SelectionManager.get().setSelection(object);
+            MapObjectSelectionManager.get().setSelectedMapObject(object);
             BusHandler.getBus().post(new SelectMapObjectEvent());
             viewPager.setCurrentItem(MAP_TAB);
         }

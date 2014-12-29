@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import fi.lbd.mobile.SelectionManager;
+import fi.lbd.mobile.MapObjectSelectionManager;
 import fi.lbd.mobile.events.BusHandler;
 import fi.lbd.mobile.events.CacheObjectsInAreaEvent;
 import fi.lbd.mobile.events.RequestObjectsInAreaEvent;
@@ -188,8 +188,8 @@ public class MapModelController<T> implements MapTableModelListener<T>, CameraCh
                 markers.add(obj);
                 this.markerObjectMap.put(obj, mapObject);
 
-                if(SelectionManager.get().getSelectedObject() != null &&
-                        mapObject.getId().equals(SelectionManager.get().getSelectedObject().getId())){
+                if(MapObjectSelectionManager.get().getSelectedMapObject() != null &&
+                        mapObject.getId().equals(MapObjectSelectionManager.get().getSelectedMapObject().getId())){
                     setActiveMarker(obj);
                     this.markerProducer.event(obj, MarkerProducer.Event.SHOW_INFO);
                 } else {

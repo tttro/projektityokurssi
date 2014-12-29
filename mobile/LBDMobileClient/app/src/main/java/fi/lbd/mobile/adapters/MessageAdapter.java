@@ -2,6 +2,7 @@ package fi.lbd.mobile.adapters;
 
 import android.app.Activity;
 import android.content.Context;
+import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +15,7 @@ import java.util.List;
 
 import fi.lbd.mobile.R;
 import fi.lbd.mobile.mapobjects.MapObject;
+import fi.lbd.mobile.messageobjects.MessageObject;
 
 /**
  * Created by tommi on 20.10.2014.
@@ -21,13 +23,12 @@ import fi.lbd.mobile.mapobjects.MapObject;
 
 // TODO: http://www.codeofaninja.com/2013/09/android-viewholder-pattern-example.html
 public class MessageAdapter extends BaseAdapter {
-    private List<MapObject> objects;
+    private List<MessageObject> objects;
     private Context context;
-
 
     public MessageAdapter(Context context) {
         this.context = context;
-        this.objects = new ArrayList<MapObject>();
+        this.objects = new ArrayList<MessageObject>();
     }
 
     @Override
@@ -35,7 +36,7 @@ public class MessageAdapter extends BaseAdapter {
         return this.objects.size();
     }
 
-    public MapObject get(int i) {
+    public MessageObject get(int i) {
         return this.objects.get(i);
     }
 
@@ -48,7 +49,7 @@ public class MessageAdapter extends BaseAdapter {
         this.objects.clear();
     }
 
-    public void addAll(Collection<MapObject> objects) {
+    public void addAll(Collection<MessageObject> objects) {
         this.objects.addAll(objects);
     }
 
@@ -63,15 +64,16 @@ public class MessageAdapter extends BaseAdapter {
             LayoutInflater inflater = ((Activity) this.context).getLayoutInflater();
             view = inflater.inflate(R.layout.listview_double_row, viewGroup, false);
         }
-        MapObject obj = this.objects.get(i);
+        MessageObject object = this.objects.get(i);
+        view.setTag(object.getId());
 
         TextView textViewId = (TextView) view.findViewById(R.id.textViewObjectId);
-        textViewId.setText(obj.getId());
-        textViewId.setTag(obj.getId());
+        textViewId.setText(object.getTopic());
+       // textViewId.setTag(object.getId());
 
         TextView textViewLocation = (TextView) view.findViewById(R.id.textViewObjectLocation);
-        textViewLocation.setText(obj.getPointLocation().toString());
-        textViewLocation.setTag(obj.getId());
+        textViewLocation.setText(object.getSender());
+      //  textViewLocation.setTag(object.getId());
 
         return view;
     }

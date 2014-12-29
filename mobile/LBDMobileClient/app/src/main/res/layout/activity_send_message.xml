@@ -33,25 +33,24 @@
          android:layout_height="wrap_content"
          android:orientation="horizontal">
 
+         <Button
+             android:layout_width="60dp"
+             android:layout_height="40dp"
+             android:text="TO:"
+             android:background="@color/navigation_bar_background"
+             android:id="@+id/receiverButton"
+             android:layout_marginRight="20dp"
+             android:minHeight="30dp"
+             android:textSize="6pt"
+             android:onClick="onSelectReceiverClick"
+             android:textColor="@color/white_text"/>
+
         <TextView
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:text="TO:"
-            android:id="@+id/textView3"
+            android:id="@+id/textViewReceiver"
             android:textSize="14dp"
             android:textAllCaps="true"/>
-
-        <ImageButton
-            android:id="@+id/locationButton"
-            android:layout_width="40dp"
-            android:layout_height="30dp"
-            android:src="@drawable/ic_search"
-            android:layout_marginLeft="20dp"
-            android:paddingLeft="15dip"
-            android:paddingRight="15dip"
-            android:paddingBottom="10dp"
-            android:paddingTop="10dp"
-            android:background="@color/white_text"/>
 
      </LinearLayout>
 
@@ -68,7 +67,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:hint="Write your title here"
-            android:id="@+id/textView2"
+            android:id="@+id/textViewTitle"
             android:textSize="14dp"
             android:textStyle="italic"/>
 
@@ -85,7 +84,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:hint="Write your message here"
-            android:id="@+id/textView5"
+            android:id="@+id/textViewMessage"
             android:textSize="14dp"/>
 
     </LinearLayout>
@@ -94,6 +93,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
+        android:layout_gravity="center_horizontal"
         android:padding="20dp">
 
         <Button
@@ -101,11 +101,11 @@
             android:layout_height="wrap_content"
             android:text="SEND"
             android:background="@color/button_background"
-            android:id="@+id/replyButton"
+            android:id="@+id/sendButton"
             android:layout_marginRight="20dp"
             android:minHeight="30dp"
             android:textSize="6pt"
-            android:onClick="onDetailsClick"
+            android:onClick="onSendClick"
             android:textColor="@color/white_text"
             android:layout_gravity="center_horizontal"/>
 
@@ -114,10 +114,10 @@
             android:layout_height="wrap_content"
             android:text="CANCEL"
             android:background="@android:color/holo_red_dark"
-            android:id="@+id/deleteButton"
+            android:id="@+id/cancelButton"
             android:minHeight="30dp"
             android:textSize="6pt"
-            android:onClick="onDetailsClick"
+            android:onClick="onCancelClick"
             android:textColor="@color/white_text"
             android:layout_gravity="center_horizontal"/>
 
@@ -132,7 +132,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="47dp"
-        android:background="#2F3A41">
+        android:background="@color/navigation_bar_background">
     </LinearLayout>
 
 </LinearLayout>

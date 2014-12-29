@@ -22,7 +22,8 @@
 
     <LinearLayout
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="4"
         android:layout_marginLeft="10dp"
         android:layout_marginStart="10dp"
         android:layout_marginTop="10dp"
@@ -40,7 +41,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:text="Tero Teekkari"
-        android:id="@+id/textView4"
+        android:id="@+id/textViewSender"
         android:textSize="14dp"
         android:textStyle="italic"/>
 
@@ -57,20 +58,29 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:text="Fix request"
-        android:id="@+id/textView2"
+        android:id="@+id/textViewTopic"
         android:textSize="14dp"
         android:textStyle="italic"/>
 
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Message:"
+        android:id="@+id/textView6"
+        android:layout_marginTop="15dp"
+        android:textSize="14dp"
+        android:textAllCaps="true"/>
+
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         android:id="@+id/scrollView">
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Please go fix this lamp."
-            android:layout_marginTop="15dp"
-            android:id="@+id/textView5"
+            android:id="@+id/textViewMessageContents"
             android:textSize="14dp"/>
     </ScrollView>
 
@@ -80,7 +90,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:padding="20dp">
+        android:padding="20dp"
+        android:layout_gravity="center_horizontal">
 
     <Button
         android:layout_width="120dp"
@@ -91,7 +102,7 @@
         android:layout_marginRight="20dp"
         android:minHeight="30dp"
         android:textSize="6pt"
-        android:onClick="onDetailsClick"
+        android:onClick="onReplyClick"
         android:textColor="@color/white_text"
         android:layout_gravity="center_horizontal"/>
 
@@ -103,22 +114,22 @@
         android:id="@+id/deleteButton"
         android:minHeight="30dp"
         android:textSize="6pt"
-        android:onClick="onDetailsClick"
-        android:textColor="@color/white_text"
-        android:layout_gravity="center_horizontal"/>
+        android:onClick="onDeleteClick"
+        android:textColor="@color/white_text" />
 
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1">
+        android:layout_weight="3">
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="47dp"
-        android:background="#2F3A41">
+        android:background="#2F3A41"
+        android:layout_gravity="bottom">
     </LinearLayout>
 
 </LinearLayout>
