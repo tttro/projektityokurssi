@@ -163,6 +163,11 @@ header a {
     padding: 10px 15px;
     height: 40px;
 }
+
+.accord-title.clearfix {
+    height: auto;
+}
+
 .accord-title .fleft,
 .accord-title .fright{
     overflow: hidden;

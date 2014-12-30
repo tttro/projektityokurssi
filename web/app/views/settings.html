@@ -1,18 +1,26 @@
 <div class="single-page">
     <h1>Settings</h1>
-
+    <h2>User</h2>
+    <div class="user">
+        {{settingsModel.user.name}}
+        <br>
+        {{settingsModel.user.email}}
+        <br>
+        <img width="150" src="{{settingsModel.user.picture}}">
+    </div>
+    <h2>Data</h2>
     <form role="form">
         <div class="form-group">
             <label for="baseUrl">Data source base url</label>
             <input type="text" class="form-control" id="baseUrl" placeholder="Enter url" ng-model="settingsModel.baseApiUrl">
         </div>
-        <div class="radio">
+        <div class="radio" ng-repeat="(key, value) in settingsModel.collections">
             <label>
-                <input type="radio"> Streetlights
+                <input type="radio" ng-value="key" ng-model="settingsModel.collectionModel"> {{key}}
             </label>
         </div>
         <button class="btn btn-default" ng-click="cancel()">Cancel</button>
-        <button class="btn btn-primary" ng-click="saveSettings()">Save</button>
+        <button class="btn btn-primary" ng-click="saveSettings()">Save changes and move back</button>
     </form>
 </div>
 <script src="https://apis.google.com/js/client:platform.js" async defer></script>

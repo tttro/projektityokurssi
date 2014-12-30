@@ -2,38 +2,41 @@
 
 var messageController = angular.module('messageController', []);
 
-messageController.controller('messageController', function($scope, MessageService){
+messageController.controller('messageController', function($scope, MessageService, notify){
 
+    var message = {
+        to:'tero.taipale@lbd.net',
+        topic:'',
+        message:''
+    }
+
+    $scope.showLoadingIcon = true;
+    $scope.messageModel = message;
 
     MessageService.get(function(messages){
+        console.log(messages);
         $scope.messageList = messages;
         $scope.showLoadingIcon = false;
     });
 
-    var dummyData = [
-        {
-            'topic':'This is a message title',
-            'date':'11.11.2014',
-            'message': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla eget eros sed metus cursus tristique. In finibus purus sit amet mauris rutrum, nec lacinia nunc pulvinar. Fusce diam lorem, ultricies at arcu vel, vestibulum hendrerit libero. Nunc sit amet est eget lorem imperdiet auctor feugiat eget mauris.'
-        },
-        {
-            'topic':'Lorem ipsum dolor sit amet',
-            'date':'1.11.2014',
-            'message': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla eget eros sed metus cursus tristique. In finibus purus sit amet mauris rutrum, nec lacinia nunc pulvinar. Fusce diam lorem, ultricies at arcu vel, vestibulum hendrerit libero. Nunc sit amet est eget lorem imperdiet auctor feugiat eget mauris.'
-        },
-        {
-
-            'topic':'Test test',
-            'date':'5.10.2014',
-            'message': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla eget eros sed metus cursus tristique. In finibus purus sit amet mauris rutrum, nec lacinia nunc pulvinar. Fusce diam lorem, ultricies at arcu vel, vestibulum hendrerit libero. Nunc sit amet est eget lorem imperdiet auctor feugiat eget mauris.'
-        }
-
-    ];
-
-
-
     $scope.selectedItem = null;
 
+    $scope.send = function(){
+        var messageModel = $scope.messageModel;
+
+        if(messageModel.to == '' || messageModel.topic == '' || messageModel.message == '')
+        {
+            notify('Please fill out all fields before sending');
+        }
+        else
+        {
+            MessageService.send(messageModel);
+        }
+
+    }
+    $scope.delete = function(id){
+        //MessageService.delete(id);
+    }
     /* Accordion */
     $scope.click = function(message){
 

@@ -11,6 +11,7 @@ var app = angular.module('app',[
     'mapController',
     'messageController',
     'loginController',
+    'settingsController',
     'appDirectives'
 ])
 // Configs
@@ -19,6 +20,7 @@ var app = angular.module('app',[
     baseApiUrl: 'https://lbdbackend.ignorelist.com/',
     dataTypeUrl:'locationdata/api/',
     dataCollectionUrl:'Streetlights',
+    dataPlaygroundsUrl: 'https://lbdbackend.ignorelist.com/locationdata/api/',
     googleToken: 'ABCDEFG',
     googleId: '',
     nearRange: '0.0001',

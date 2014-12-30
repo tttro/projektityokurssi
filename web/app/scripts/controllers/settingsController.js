@@ -2,11 +2,22 @@
 
 var settingsController = angular.module('settingsController', []);
 
-loginController.controller('settingsController', function($scope, $location, appConfig){
+settingsController.controller('settingsController', function($scope, $location,$timeout, ObjectsService,AuthService,notify, appConfig){
+
+    if(!AuthService.isLoggedIn()){
+        $location.path('/login');
+    }
 
     var settingsModel = {
-        baseApiUrl:appConfig.baseApiUrl
+        baseApiUrl:appConfig.baseApiUrl,
+        collections:'',
+        collectionModel:appConfig.dataCollectionUrl,
+        user: AuthService.getUser()
     }
+
+    ObjectsService.getCollections(function(result){
+        $scope.settingsModel.collections = result;
+    });
 
     $scope.settingsModel = settingsModel;
 
@@ -15,7 +26,14 @@ loginController.controller('settingsController', function($scope, $location, app
     }
 
     $scope.saveSettings = function(){
-        appConfig.baseApiUrl = $scope.settingsModel.baseApiUrl;
+
+        appConfig.baseApiUrl = $scope.settingsModel.baseApiUrl; // Datasource url
+        appConfig.dataCollectionUrl = $scope.settingsModel.collectionModel; // Datasource url
+
+        notify('Settings have been saved');
+        $timeout(function(){
+            $location.path('/');
+        },2000);
     }
 
 });

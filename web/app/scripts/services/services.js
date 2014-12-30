@@ -2,6 +2,29 @@
 var dataServices = angular.module('dataServices', ['ngResource']);
 var dataSet = null;
 
+dataServices.factory('PlaygroundsService', function($http, appConfig, notify){
+   return {
+       get: function(){
+
+            var playgrounds = [];
+
+            $http({
+                method: 'GET',
+                url: appConfig.dataPlaygroundsUrl
+            })
+            .success(function(data){
+                playgrounds = data;
+                    console.log(data);
+            })
+            .error(function(data){
+                errorHandler(data,'playground',appConfig.dataTypeUrl,notify);
+            });
+
+           return playgrounds;
+       }
+   }
+});
+
 dataServices.factory('ObjectsService', function($http, appConfig, notify){
     return {
 
@@ -62,7 +85,20 @@ dataServices.factory('ObjectsService', function($http, appConfig, notify){
                     errorHandler(data,'location',appConfig.dataTypeUrl,notify);
             });
 
+        },
+        getCollections: function(callback){
+            $http({
+                method: 'GET',
+                url: appConfig.dataPlaygroundsUrl
+            })
+                .success(function(data){
+                    callback(data);
+                })
+                .error(function(data){
+                    errorHandler(data,'playground',appConfig.dataTypeUrl,notify);
+                });
         }
+
     };
 });
 
@@ -93,7 +129,7 @@ dataServices.factory('MessageService', function($http, appConfig,notify){
                     errorHandler(data,'message',appConfig.dataTypeUrl,notify);
             });
         },
-        send: function(messageObject, callback){
+        send: function(messageObject){
 
             var message = {
                 'type':'Message',
@@ -108,10 +144,25 @@ dataServices.factory('MessageService', function($http, appConfig,notify){
                 data: message
             })
             .success(function(data){
-                callback(data);
+                notify('Message has been sent to ' + messageObject.to);
             })
             .error(function(data,status,header,config){
-                    errorHandler(data,'message',appConfig.dataTypeUrl,notify);
+                notify('Failed to send message to ' + messageObject.to);
+            });
+        },
+        delete: function(id){
+            $http({
+                method: 'DELETE',
+                url: appConfig.baseApiUrl + 'messagedata/api/messages/',
+                data: {
+                    'mid':id
+                }
+            })
+            .success(function(data){
+                notify('Message has been deleted');
+            })
+            .error(function(data,status,header,config){
+                notify('Failed to delete message');
             });
         }
     }
