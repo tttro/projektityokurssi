@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>Example Page</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta charset="UTF-8" />
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js">
+        </script>
+        <script src="https://apis.google.com/js/client:platform.js?onload=start" async defer>
+        </script>
+        <script src="authentication.js">
+        </script>
+        <script>
+        function helper() {
+            //Start authentication process (Asynchronic)
+            startAuth();
+            //Start a task that checks every 500ms if the authentication has finished
+            var interval = setInterval( function (){
+                                            if(isFinished()) {
+                                                //Stop the timed task
+                                                clearInterval(interval);
+                                                
+                                                //We now have the token and google_id values available (if no errors)
+                                                var info = getInfo();
+                                                
+                                                //Just for testing
+                                                $('#token').html(info.token);
+                                                $('#id').html(info.google_id);
+                                                if(info.error != "") {
+                                                    //There was some error. You propably want to deal with it somehow.
+                                                    $('#error').html(info.error);
+                                                }
+                                            }
+                                        }, 500); 
+        }
+        </script>
+    </head>
+    <body>
+         <button onclick="helper()">Click me</button> 
+         <p id = "token" ></p>
+         <p id = "id"></p>
+         <p id = "error></p>
+    </body>
+</html>
