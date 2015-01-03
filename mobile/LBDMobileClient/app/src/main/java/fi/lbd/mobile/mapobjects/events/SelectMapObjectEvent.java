@@ -1,4 +1,6 @@
-package fi.lbd.mobile.events;
+package fi.lbd.mobile.mapobjects.events;
+
+import fi.lbd.mobile.events.AbstractEvent;
 
 /**
  * Event for OTTO-bus.

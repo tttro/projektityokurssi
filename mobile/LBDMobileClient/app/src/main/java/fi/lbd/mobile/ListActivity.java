@@ -18,7 +18,7 @@ import java.util.ArrayDeque;
 import java.util.Locale;
 
 import fi.lbd.mobile.events.BusHandler;
-import fi.lbd.mobile.events.SelectMapObjectEvent;
+import fi.lbd.mobile.mapobjects.events.SelectMapObjectEvent;
 import fi.lbd.mobile.fragments.GoogleMapFragment;
 import fi.lbd.mobile.fragments.MessageFragment;
 import fi.lbd.mobile.fragments.ObjectListFragment;

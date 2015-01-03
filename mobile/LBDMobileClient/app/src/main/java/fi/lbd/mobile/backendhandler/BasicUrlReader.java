@@ -2,10 +2,12 @@ package fi.lbd.mobile.backendhandler;
 
 import android.support.annotation.NonNull;
 import android.util.Log;
+import android.util.Pair;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpUriRequest;
@@ -25,7 +27,6 @@ import org.apache.http.params.HttpParams;
 import org.apache.http.protocol.HTTP;
 
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -38,6 +39,8 @@ import java.security.UnrecoverableKeyException;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
 
+import fi.lbd.mobile.ApplicationDetails;
+
 /**
  * Static methods for reading an url.
  *
@@ -49,16 +52,18 @@ public class BasicUrlReader implements UrlReader {
 
     public BasicUrlReader() {}
 
-    public void initialize(@NonNull Certificate firstCertificate, @NonNull Certificate... certificates) throws UrlReaderException {
+    public void initialize(@NonNull Pair<String, Certificate> firstCertificate,
+                           @NonNull Pair<String, Certificate>... certificates) throws UrlReaderException {
         try {
             // Store given certificates to the key store
             String keyStoreType = KeyStore.getDefaultType();
             KeyStore keyStore = KeyStore.getInstance(keyStoreType);
             keyStore.load(null, null);
 
-            keyStore.setCertificateEntry("test1", firstCertificate);
-            for (Certificate certificate : certificates) {
-                keyStore.setCertificateEntry("test", certificate);
+            keyStore.setCertificateEntry(firstCertificate.first, firstCertificate.second);
+            int i = 1;
+            for (Pair<String, Certificate> certificate : certificates) {
+                keyStore.setCertificateEntry(certificate.first, certificate.second);
             }
 
             SSLSocketFactory sf = new SSLSocketFactory(keyStore);
@@ -92,7 +97,7 @@ public class BasicUrlReader implements UrlReader {
 
     private void setHeaders(AbstractHttpMessage message) {
         message.addHeader("LBD_LOGIN_HEADER", "asdasd"); // TODO: Access token
-        message.addHeader("LBD_OAUTH_ID", "108363990223992898018"); // Google id
+        message.addHeader("LBD_OAUTH_ID", ApplicationDetails.get().getUserId()); // Google id
     }
 
     /**
@@ -120,6 +125,19 @@ public class BasicUrlReader implements UrlReader {
         setHeaders(getObj);
 	    return this.process(getObj); // If the url reading fails, null is returned.
 	}
+
+    /**
+     * Tries to remove the contents in the given url.
+     *
+     * @param url
+     * @return
+     */
+    @Override
+    public UrlResponse delete(String url) {
+        HttpDelete deleteObj = new HttpDelete(url);
+        setHeaders(deleteObj);
+        return this.process(deleteObj); // If the url reading fails, null is returned.
+    }
 
     @Override
     public UrlResponse postJson(String url, String jsonContents) {

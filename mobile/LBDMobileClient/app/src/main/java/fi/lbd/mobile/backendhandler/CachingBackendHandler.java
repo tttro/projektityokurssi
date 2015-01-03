@@ -36,8 +36,8 @@ public class CachingBackendHandler extends BasicBackendHandler {
     private ConcurrentHashMap<String, CachedQuery> cachedQueries = new ConcurrentHashMap<>();
     private final long maxCacheTime;
 
-    public CachingBackendHandler(UrlReader urlReader, String baseUrl, String dataSource, long cacheTimeMs) {
-        super(urlReader, baseUrl, dataSource);
+    public CachingBackendHandler(UrlReader urlReader, String baseObjectsUrl, String baseMessagesUrl, long cacheTimeMs) {
+        super(urlReader, baseObjectsUrl, baseMessagesUrl);
         this.maxCacheTime = cacheTimeMs;
     }
 
@@ -45,17 +45,18 @@ public class CachingBackendHandler extends BasicBackendHandler {
     /**
      * Returns the objects inside the area from the backend or as a cached result.
      *
+     * @param dataSource Data source which should be used.
      * @param southWest Start point.
      * @param northEast End point.
      * @param mini  Should the results be in minimized format.
      * @return
      */
     @Override
-    public HandlerResponse getObjectsInArea(PointLocation southWest, PointLocation northEast, boolean mini) {
+    public HandlerResponse getObjectsInArea(String dataSource, PointLocation southWest, PointLocation northEast, boolean mini) {
         String hash = "inarea/"+southWest.getLongitude()+","+southWest.getLatitude()+","+northEast.getLatitude()+","+northEast.getLongitude()+"&m:"+mini;
         CachedQuery cached = this.cachedQueries.get(hash);
         if (cached == null) {
-            HandlerResponse response = super.getObjectsInArea(southWest, northEast, mini);
+            HandlerResponse response = super.getObjectsInArea(dataSource, southWest, northEast, mini);
 
             // If the connection succeeded, cache the results.
             if (response.isOk()) {
