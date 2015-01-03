@@ -109,18 +109,6 @@
             android:textColor="@color/white_text"
             android:layout_gravity="center_horizontal"/>
 
-        <Button
-            android:layout_width="120dp"
-            android:layout_height="wrap_content"
-            android:text="CANCEL"
-            android:background="@android:color/holo_red_dark"
-            android:id="@+id/cancelButton"
-            android:minHeight="30dp"
-            android:textSize="6pt"
-            android:onClick="onCancelClick"
-            android:textColor="@color/white_text"
-            android:layout_gravity="center_horizontal"/>
-
     </LinearLayout>
 
     <LinearLayout

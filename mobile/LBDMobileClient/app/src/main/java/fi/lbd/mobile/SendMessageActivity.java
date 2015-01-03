@@ -29,10 +29,6 @@ public class SendMessageActivity extends Activity {
         }
     }
 
-    public void onCancelClick(View view){
-        onBackPressed();
-    }
-
     public void onSelectReceiverClick(View view){
 
     }
