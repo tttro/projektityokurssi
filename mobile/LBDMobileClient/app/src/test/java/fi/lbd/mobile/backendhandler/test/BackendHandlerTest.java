@@ -1,7 +1,5 @@
 package fi.lbd.mobile.backendhandler.test;
 
-import android.util.Log;
-
 import org.json.JSONException;
 import org.junit.After;
 import org.junit.Before;
@@ -10,22 +8,12 @@ import org.junit.runner.RunWith;
 import org.robolectric.Robolectric;
 import org.robolectric.shadows.ShadowLog;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import fi.lbd.mobile.CustomRobolectricTestRunner;
 import fi.lbd.mobile.backendhandler.BackendHandler;
 import fi.lbd.mobile.backendhandler.BasicBackendHandler;
 import fi.lbd.mobile.backendhandler.HandlerResponse;
 import fi.lbd.mobile.backendhandler.MapObjectParser;
-import fi.lbd.mobile.backendhandler.URLReader;
-import fi.lbd.mobile.backendhandler.URLResponse;
-import fi.lbd.mobile.events.BusHandler;
 import fi.lbd.mobile.location.ImmutablePointLocation;
-import fi.lbd.mobile.mapobjects.ImmutableMapObject;
-import fi.lbd.mobile.mapobjects.MapObject;
 import fi.lbd.mobile.utils.TestData;
 
 import static org.assertj.core.api.Assertions.assertThat;
