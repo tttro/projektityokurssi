@@ -1,6 +1,8 @@
-package fi.lbd.mobile.events;
+package fi.lbd.mobile.mapobjects.events;
 
 import android.support.annotation.NonNull;
+
+import fi.lbd.mobile.events.AbstractEvent;
 
 public class RequestMapObjectEvent extends AbstractEvent {
     private final String id;

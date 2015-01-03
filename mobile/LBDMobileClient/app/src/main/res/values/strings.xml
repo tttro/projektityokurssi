@@ -13,8 +13,9 @@
     <string name="button_details">DETAILS</string>
     <string name="button_map">MAP</string>
     <string name="address_hint">Search address..</string>
-    <string name="source_base_url">https://lbdbackend.ignorelist.com/locationdata/api/</string>
-    <string name="source_type">Streetlights/</string>
+    <string name="source_objects_base_url">https://lbdbackend.ignorelist.com/locationdata/api/</string>
+    <string name="source_messages_base_url">https://lbdbackend.ignorelist.com/messagedata/api/</string>
+    <string name="source_type">Streetlights</string>
     <string name="distance">Distance %s</string>
     <string name="loading">Loading objects...</string>
     <string name="location_failed">Location failed, please try again</string>

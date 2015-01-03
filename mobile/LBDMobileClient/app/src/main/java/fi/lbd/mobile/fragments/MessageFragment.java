@@ -12,20 +12,22 @@ import android.widget.ListView;
 import com.squareup.otto.Subscribe;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import fi.lbd.mobile.MessageObjectSelectionManager;
 import fi.lbd.mobile.R;
 import fi.lbd.mobile.ReadMessageActivity;
-import fi.lbd.mobile.SendMessageActivity;
 import fi.lbd.mobile.adapters.MessageAdapter;
 import fi.lbd.mobile.events.BusHandler;
-import fi.lbd.mobile.events.RequestUserMessagesEvent;
-import fi.lbd.mobile.events.ReturnNearObjectsEvent;
-import fi.lbd.mobile.events.ReturnUserMessagesEvent;
-import fi.lbd.mobile.mapobjects.MapObject;
+import fi.lbd.mobile.location.ImmutablePointLocation;
+import fi.lbd.mobile.mapobjects.ImmutableMapObject;
+import fi.lbd.mobile.messageobjects.events.DeleteMessageEvent;
+import fi.lbd.mobile.messageobjects.events.RequestUserMessagesEvent;
+import fi.lbd.mobile.messageobjects.events.ReturnUserMessagesEvent;
 import fi.lbd.mobile.messageobjects.MessageObject;
 import fi.lbd.mobile.messageobjects.StringMessageObject;
+import fi.lbd.mobile.messageobjects.events.SendMessageEvent;
 
 
 public class MessageFragment extends ListFragment {
@@ -99,6 +101,10 @@ public class MessageFragment extends ListFragment {
 
 	@Override
     public void onListItemClick(ListView l, View v, int position, long id) {
+//        BusHandler.getBus().post(new SendMessageEvent<>("lbd@lbd.net", "Testi viesti", "Viestin message123",
+//                new ImmutableMapObject(false, "TEST_ID_1231", new ImmutablePointLocation(10, 10),
+//                        new HashMap<String, String>(), new HashMap<String, String>()))); // TODO: FIXME: Oikee paikka
+
         MessageObjectSelectionManager.get().setSelectedMessageObject(this.adapter.get(position));
         Intent intent = new Intent(getActivity(), ReadMessageActivity.class);
         startActivity(intent);

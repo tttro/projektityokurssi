@@ -1,7 +1,6 @@
 package fi.lbd.mobile.fragments;
 
 import android.app.ListFragment;
-import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -20,16 +19,15 @@ import com.google.android.gms.common.GooglePlayServicesClient;
 import com.squareup.otto.Subscribe;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import fi.lbd.mobile.adapters.ListExpandableAdapter;
 import fi.lbd.mobile.events.BusHandler;
 import fi.lbd.mobile.R;
 import fi.lbd.mobile.events.RequestFailedEvent;
-import fi.lbd.mobile.events.RequestNearObjectsEvent;
-import fi.lbd.mobile.events.ReturnNearObjectsEvent;
-import fi.lbd.mobile.events.ReturnSearchResultEvent;
-import fi.lbd.mobile.events.SearchObjectsEvent;
+import fi.lbd.mobile.mapobjects.events.RequestNearObjectsEvent;
+import fi.lbd.mobile.mapobjects.events.ReturnNearObjectsEvent;
+import fi.lbd.mobile.mapobjects.events.ReturnSearchResultEvent;
+import fi.lbd.mobile.mapobjects.events.SearchObjectsEvent;
 import fi.lbd.mobile.location.ImmutablePointLocation;
 import fi.lbd.mobile.location.LocationHandler;
 import fi.lbd.mobile.mapobjects.MapObject;
