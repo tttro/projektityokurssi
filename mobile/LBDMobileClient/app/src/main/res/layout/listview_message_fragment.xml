@@ -12,23 +12,43 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:drawSelectorOnTop="false" >
+        android:drawSelectorOnTop="false"
+        android:background="#FFF">
     </ListView>
 
-    <Button
-        android:layout_width="155dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:layout_marginBottom="20dp"
-        android:text="NEW MESSAGE"
-        android:background="@color/button_background"
-        android:id="@+id/newMessageButton"
-        android:paddingEnd="30dp"
-        android:paddingStart="30dp"
-        android:minHeight="30dp"
-        android:textSize="6pt"
-        android:onClick="onNewMessageClick"
-        android:textColor="@color/white_text"
-        android:layout_gravity="center_horizontal"/>
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="47dp"
+        android:background="#2F3A41">
+
+        <ImageButton
+            android:id="@+id/newMessageButton"
+            android:layout_width="90dp"
+            android:layout_height="match_parent"
+            android:src="@drawable/ic_menu_compose"
+            android:paddingLeft="15dip"
+            android:paddingRight="15dip"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp"
+            android:background="@color/locate_button_background"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
+
+        <ImageButton
+            android:id="@+id/refreshButton"
+            android:layout_width="60dp"
+            android:layout_height="match_parent"
+            android:src="@drawable/ic_popup_sync_3"
+            android:paddingLeft="15dip"
+            android:paddingRight="15dip"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp"
+            android:background="@color/locate_button_background"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+
+    </RelativeLayout>
 
 </LinearLayout>
