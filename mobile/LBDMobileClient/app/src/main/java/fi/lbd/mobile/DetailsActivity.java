@@ -1,8 +1,10 @@
 package fi.lbd.mobile;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.View;
 import android.widget.ListView;
 
 import com.squareup.otto.Subscribe;
@@ -57,6 +59,19 @@ public class DetailsActivity extends Activity {
                 setContentView(R.layout.activity_details);
                 ListView list = (ListView)findViewById(android.R.id.list);
                 list.setAdapter(this.adapter);
+
+                // Listen to edit button press
+                findViewById(R.id.editNoteButton).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        editNote();
+                    }
+                });
             }
+    }
+
+    public void editNote(){
+        Intent intent = new Intent(this, EditNoteActivity.class);
+        startActivity(intent);
     }
 }

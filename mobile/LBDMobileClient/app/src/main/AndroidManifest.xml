@@ -68,12 +68,16 @@
         <activity
             android:name=".ReadMessageActivity"
             android:label="@string/title_activity_read_message"
-            android:theme="@android:style/Theme.Holo.Light.NoActionBar">
+            android:theme="@android:style/Theme.Holo.Light.NoActionBar" >
         </activity>
         <activity
             android:name=".SendMessageActivity"
             android:label="@string/title_activity_send_message"
-            android:theme="@android:style/Theme.Holo.Light.NoActionBar">
+            android:theme="@android:style/Theme.Holo.Light.NoActionBar" >
+        </activity>
+        <activity
+            android:name=".EditNoteActivity"
+            android:label="@string/title_activity_edit_note" >
         </activity>
     </application>
 

@@ -36,7 +36,7 @@
         android:background="#2F3A41">
 
         <ImageButton
-            android:id="@+id/locationButton"
+            android:id="@+id/editNoteButton"
             android:layout_width="60dp"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_menu_edit"
