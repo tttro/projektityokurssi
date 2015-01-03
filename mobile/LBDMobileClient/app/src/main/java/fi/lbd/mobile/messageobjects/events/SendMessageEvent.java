@@ -36,6 +36,7 @@ public class SendMessageEvent<T> extends AbstractEvent {
         this.objectAttachments = ImmutableList.copyOf(tempList);
     }
 
+    /*
     public SendMessageEvent(@NonNull String receiver,
                             @NonNull String topic,
                             @NonNull T message,
@@ -69,7 +70,7 @@ public class SendMessageEvent<T> extends AbstractEvent {
         this.objectAttachments = ImmutableList.copyOf(tempList);
     }
 
-
+*/
     public String getReceiver() {
         return receiver;
     }

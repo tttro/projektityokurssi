@@ -68,10 +68,10 @@ public class MessageAdapter extends BaseAdapter {
         view.setTag(object.getId());
 
         TextView textViewId = (TextView) view.findViewById(R.id.textViewObjectId);
-        textViewId.setText(object.getTopic());
+        textViewId.setText("TOPIC: " + object.getTopic());
 
         TextView textViewLocation = (TextView) view.findViewById(R.id.textViewObjectLocation);
-        textViewLocation.setText(object.getSender());
+        textViewLocation.setText("FROM: " + object.getSender());
 
         return view;
     }

@@ -30,26 +30,27 @@
         android:layout_weight="1">
     </ListView>
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="47dp"
-        android:background="#2F3A41">
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="20dp"
+        android:padding="20dp">
 
-        <ImageButton
-            android:id="@+id/editNoteButton"
-            android:layout_width="60dp"
+        <Button
+            android:layout_width="120dp"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_menu_edit"
-            android:paddingLeft="15dip"
-            android:paddingRight="15dip"
-            android:paddingBottom="10dp"
-            android:paddingTop="10dp"
-            android:background="@color/locate_button_background"
-            android:layout_gravity="center"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true" />
+            android:text="EDIT"
+            android:background="@color/button_background"
+            android:id="@+id/editNoteButton"
+            android:layout_marginRight="20dp"
+            android:minHeight="30dp"
+            android:textSize="6pt"
+            android:onClick="onSendClick"
+            android:textColor="@color/white_text"
+            android:layout_gravity="center_horizontal"/>
 
-    </RelativeLayout>
+    </LinearLayout>
 
 </LinearLayout>

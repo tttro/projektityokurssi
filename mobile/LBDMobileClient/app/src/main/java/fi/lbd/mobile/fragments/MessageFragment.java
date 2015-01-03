@@ -18,6 +18,7 @@ import java.util.List;
 import fi.lbd.mobile.MessageObjectSelectionManager;
 import fi.lbd.mobile.R;
 import fi.lbd.mobile.ReadMessageActivity;
+import fi.lbd.mobile.SendMessageActivity;
 import fi.lbd.mobile.adapters.MessageAdapter;
 import fi.lbd.mobile.events.BusHandler;
 import fi.lbd.mobile.location.ImmutablePointLocation;

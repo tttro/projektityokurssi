@@ -283,11 +283,11 @@ public class ObjectListFragment extends ListFragment {
      */
     @Subscribe
     public void onEvent (ReturnSearchResultEvent event){
-        this.adapter.clear();
         statusText.setBackgroundColor(SEARCH_BACKGROUND);
         lastStatusBackground = SEARCH_BACKGROUND;
 
         if (event.getMapObjects() != null && event.getMapObjects().size() > 0) {
+            this.adapter.clear();
             if(event.getMapObjects().size() == MAX_RESULTS_AMOUNT) {
                 statusText.setText(String.format(MAX_RESULTS, MAX_RESULTS_AMOUNT));
             }
