@@ -13,8 +13,7 @@ import java.util.List;
 
 import fi.lbd.mobile.location.PointLocation;
 import fi.lbd.mobile.mapobjects.MapObject;
-import fi.lbd.mobile.messages.Message;
-import fi.lbd.mobile.messages.MessageParser;
+import fi.lbd.mobile.messageobjects.MessageObject;
 
 /**
  * Handles the map objects. Fetches the requested objects from backend service.
@@ -198,9 +197,9 @@ public class BasicBackendHandler implements BackendHandler {
 
 
     @Override
-    public HandlerResponse<Message> getMessages(String userId) {
+    public HandlerResponse<MessageObject> getMessages() {
         StringBuilder str = new StringBuilder();
-        str.append("http://lbdbackend.ignorelist.com/messagedata/api/messages/");
+        str.append("https://lbdbackend.ignorelist.com/messagedata/api/messages/");
 //        str.append(userId);
 //        str.append("messages/"+userId);
 //        str.append(this.dataSource);
@@ -214,7 +213,7 @@ public class BasicBackendHandler implements BackendHandler {
         // Only if the url returns code 200, we can parse the results.
         if (response != null && response.getStatus() == UrlResponse.ResponseStatus.STATUS_200) {
             Log.i("ASDASDASDASDASASD", "Contents: "+ response.getContents());
-            List<Message> messages;
+            List<MessageObject> messages;
             try {
                 messages = MessageParser.parseCollection(response.getContents());
             } catch (JSONException e){
@@ -231,7 +230,7 @@ public class BasicBackendHandler implements BackendHandler {
     }
 
     @Override
-    public HandlerResponse<Message> postMessage() {
+    public HandlerResponse<MessageObject> postMessage() {
         StringBuilder str = new StringBuilder();
         str.append("http://lbdbackend.ignorelist.com/messagedata/api/send/");
 

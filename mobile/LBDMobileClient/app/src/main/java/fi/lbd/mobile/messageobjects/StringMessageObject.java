@@ -22,4 +22,8 @@ public class StringMessageObject extends MessageObject {
         return this.message;
     }
 
+    @Override
+    public String toString(){
+        return "StringMessageObject: message("+ this.message +") parent: "+ super.toString();
+    }
 }

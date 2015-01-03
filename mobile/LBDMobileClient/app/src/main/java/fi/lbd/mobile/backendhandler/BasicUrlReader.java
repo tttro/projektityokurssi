@@ -167,24 +167,24 @@ public class BasicUrlReader implements UrlReader {
                     response.getStatusLine().getReasonPhrase());
 
         } catch (ClientProtocolException e) {
-            Log.e(BasicUrlReader.class.getSimpleName(), "Reading url encountered HTTP protocol error: "+ e.getMessage());
+            Log.e(BasicUrlReader.class.getSimpleName(), "Reading url encountered HTTP protocol error!", e);
         } catch (IOException e) {
-            Log.e(BasicUrlReader.class.getSimpleName(), "Reading url encountered I/O error: "+ e.getMessage());
+            Log.e(BasicUrlReader.class.getSimpleName(), "Reading url encountered I/O error!", e);
         } catch (IllegalArgumentException e) {
-            Log.e(BasicUrlReader.class.getSimpleName(), "Given url is not in valid format: "+ e.getMessage());
+            Log.e(BasicUrlReader.class.getSimpleName(), "Given url is not in valid format!", e);
         } finally {
             if (bufferedReader != null) {
                 try {
                     bufferedReader.close();
                 } catch (IOException e) {
-                    Log.e(BasicUrlReader.class.getSimpleName(), "Failed to close buffered reader: "+ e.getMessage());
+                    Log.e(BasicUrlReader.class.getSimpleName(), "Failed to close buffered reader!", e);
                 }
             }
             if (contentStream != null) {
                 try {
                     contentStream.close();
                 } catch (IOException e) {
-                    Log.e(BasicUrlReader.class.getSimpleName(), "Failed to close content stream: "+ e.getMessage());
+                    Log.e(BasicUrlReader.class.getSimpleName(), "Failed to close content stream!", e);
                 }
             }
         }

@@ -3,10 +3,13 @@ package fi.lbd.mobile.fragments;
 import android.app.ListFragment;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+
+import com.squareup.otto.Subscribe;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,6 +20,10 @@ import fi.lbd.mobile.ReadMessageActivity;
 import fi.lbd.mobile.SendMessageActivity;
 import fi.lbd.mobile.adapters.MessageAdapter;
 import fi.lbd.mobile.events.BusHandler;
+import fi.lbd.mobile.events.RequestUserMessagesEvent;
+import fi.lbd.mobile.events.ReturnNearObjectsEvent;
+import fi.lbd.mobile.events.ReturnUserMessagesEvent;
+import fi.lbd.mobile.mapobjects.MapObject;
 import fi.lbd.mobile.messageobjects.MessageObject;
 import fi.lbd.mobile.messageobjects.StringMessageObject;
 
@@ -68,8 +75,9 @@ public class MessageFragment extends ListFragment {
         newMessageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), SendMessageActivity.class);
-                startActivity(intent);
+                BusHandler.getBus().post(new RequestUserMessagesEvent()); // TODO: FIXME: Oikee paikka
+//                Intent intent = new Intent(getActivity(), SendMessageActivity.class);
+//                startActivity(intent);
             }
         });
 
@@ -98,5 +106,16 @@ public class MessageFragment extends ListFragment {
 
     public void onNewMessageClick(){
 
+    }
+
+
+    @Subscribe
+    public void onEvent(ReturnUserMessagesEvent event) {
+        this.adapter.clear();
+        this.adapter.addAll(event.getMessageObjects());
+        for (MessageObject message : event.getMessageObjects()) {
+            Log.d(this.getClass().getSimpleName(), "Message: "+ message);
+        }
+        this.adapter.notifyDataSetChanged();
     }
 } 

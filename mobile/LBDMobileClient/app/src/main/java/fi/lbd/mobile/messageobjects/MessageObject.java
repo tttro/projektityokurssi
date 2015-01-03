@@ -43,4 +43,9 @@ public abstract class MessageObject {
     public boolean isRead(){
         return this.isRead;
     }
+
+    @Override
+    public String toString(){
+        return "MessageObject: id("+ this.id +") receiver("+ this.receiver +") sender("+ this.sender +") topic("+ this.topic +") isRead("+ this.isRead +")";
+    }
 }

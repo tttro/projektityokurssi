@@ -6,7 +6,7 @@ import java.util.List;
 
 import fi.lbd.mobile.location.PointLocation;
 import fi.lbd.mobile.mapobjects.MapObject;
-import fi.lbd.mobile.messages.Message;
+import fi.lbd.mobile.messageobjects.MessageObject;
 
 /**
  * Interface which defines the functions of the backend handlers.
@@ -55,7 +55,15 @@ public interface BackendHandler {
                                                 int limit, boolean mini);
 
 
-    HandlerResponse<Message> getMessages(String userId);
+    /**
+     * Request messages for the current user.
+     * @return
+     */
+    HandlerResponse<MessageObject> getMessages();
 
-    HandlerResponse<Message> postMessage();
+    /**
+     * Post a message
+     * @return
+     */
+    HandlerResponse<MessageObject> postMessage();
 }

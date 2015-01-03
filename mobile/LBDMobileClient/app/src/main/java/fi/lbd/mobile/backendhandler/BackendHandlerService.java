@@ -28,13 +28,15 @@ import fi.lbd.mobile.events.RequestFailedEvent;
 import fi.lbd.mobile.events.RequestMapObjectEvent;
 import fi.lbd.mobile.events.RequestNearObjectsEvent;
 import fi.lbd.mobile.events.RequestObjectsInAreaEvent;
+import fi.lbd.mobile.events.RequestUserMessagesEvent;
 import fi.lbd.mobile.events.ReturnMapObjectEvent;
 import fi.lbd.mobile.events.ReturnNearObjectsEvent;
 import fi.lbd.mobile.events.ReturnObjectsInAreaEvent;
 import fi.lbd.mobile.events.ReturnSearchResultEvent;
+import fi.lbd.mobile.events.ReturnUserMessagesEvent;
 import fi.lbd.mobile.events.SearchObjectsEvent;
 import fi.lbd.mobile.mapobjects.MapObject;
-import fi.lbd.mobile.messages.Message;
+import fi.lbd.mobile.messageobjects.MessageObject;
 
 /**
  * Service which interacts with the backend handler. Communication is done through OTTO-bus.
@@ -258,9 +260,6 @@ public class BackendHandlerService extends Service {
             public void run() {
                 Log.d(this.getClass().getSimpleName(), "SearchObjectsEvent");
 
-//                HandlerResponse<Message> responseTest1 = backendHandler.postMessage();
-                HandlerResponse<Message> responseTest2 = backendHandler.getMessages("108363990223992898018/");
-
                 HandlerResponse<MapObject> response = backendHandler.getObjectsFromSearch(event.getFromFields(),
                         event.getSearchString(), event.getLimit(), event.isMini());
                 if (response.isOk()) {
@@ -269,6 +268,31 @@ public class BackendHandlerService extends Service {
                 } else {
                     BusHandler.getBus().post(new RequestFailedEvent(event, response.getReason()));
                     Log.d(this.getClass().getSimpleName(), "SearchObjectsEvent: Sent FAIL response.");
+                }
+            }
+        });
+    }
+
+
+    /**
+     * Event for fetching user messages.
+     *
+     * @param event Request event.
+     */
+    @Subscribe
+    public void onEvent(final RequestUserMessagesEvent event) {
+        this.executorPool.execute( new Runnable() {
+            @Override
+            public void run() {
+                Log.d(this.getClass().getSimpleName(), "RequestUserMessagesEvent");
+                HandlerResponse<MessageObject> response = backendHandler.getMessages(); // TODO: "108363990223992898018/"
+
+                if (response.isOk()) {
+                    BusHandler.getBus().post(new ReturnUserMessagesEvent(response.getObjects()));
+                    Log.d(this.getClass().getSimpleName(), "RequestUserMessagesEvent: Sent OK response.");
+                } else {
+                    BusHandler.getBus().post(new RequestFailedEvent(event, response.getReason()));
+                    Log.d(this.getClass().getSimpleName(), "RequestUserMessagesEvent: Sent FAIL response.");
                 }
             }
         });
