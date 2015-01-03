@@ -13,6 +13,8 @@ import java.util.List;
 
 import fi.lbd.mobile.location.PointLocation;
 import fi.lbd.mobile.mapobjects.MapObject;
+import fi.lbd.mobile.messages.Message;
+import fi.lbd.mobile.messages.MessageParser;
 
 /**
  * Handles the map objects. Fetches the requested objects from backend service.
@@ -20,9 +22,10 @@ import fi.lbd.mobile.mapobjects.MapObject;
  * Created by Tommi.
  */
 public class BasicBackendHandler implements BackendHandler {
-    private static final int RETRY_AMOUNT = 1;
-    private final String baseUrl;
-    private final String dataSource;
+    protected static final int RETRY_AMOUNT = 1;
+    protected final String baseUrl;
+    protected final String dataSource;
+    protected final UrlReader urlReader;
 
     /**
      * Handles the map objects. Fetches the requested objects from backend service.
@@ -30,13 +33,14 @@ public class BasicBackendHandler implements BackendHandler {
      * @param baseUrl   Base url for the REST api.
      * @param dataSource    Data source which should be loaded. For example "Streetlights/"
      */
-    public BasicBackendHandler(String baseUrl, String dataSource) {
+    public BasicBackendHandler(UrlReader urlReader, String baseUrl, String dataSource) {
+        this.urlReader = urlReader;
         this.baseUrl = baseUrl;
         this.dataSource = dataSource;
     }
 
     @Override
-	public HandlerResponse getObjectsNearLocation(PointLocation location, double range, boolean mini) {
+	public HandlerResponse<MapObject> getObjectsNearLocation(PointLocation location, double range, boolean mini) {
         StringBuilder str = new StringBuilder();
         str.append(this.baseUrl);
         str.append(this.dataSource);
@@ -53,28 +57,28 @@ public class BasicBackendHandler implements BackendHandler {
             str.append(range);
         }
         String url = str.toString();
-        URLResponse response = BasicBackendHandler.getUrl(url, RETRY_AMOUNT);
+        UrlResponse response = this.getUrl(url, RETRY_AMOUNT);
 
         // Only if the url returns code 200, we can parse the results.
-        if (response != null && response.getStatus() == URLResponse.ResponseStatus.STATUS_200) {
-            List<MapObject> objects = null;
+        if (response != null && response.getStatus() == UrlResponse.ResponseStatus.STATUS_200) {
+            List<MapObject> objects;
             try {
                 objects = MapObjectParser.parseCollection(response.getContents(), mini);
             } catch (JSONException e) {
                 Log.e(this.getClass().getSimpleName(), "Failed to parse map objects from JSON! {}", e);
-                return new HandlerResponse(null, HandlerResponse.Status.Failed);
+                return new HandlerResponse(null, HandlerResponse.Status.Failed, "Failed to parse messages from JSON!");
             } catch (IOException e) {
                 Log.e(this.getClass().getSimpleName(), "Failed to parse map objects from JSON! {}", e);
-                return new HandlerResponse(null, HandlerResponse.Status.Failed);
+                return new HandlerResponse(null, HandlerResponse.Status.Failed, "Failed to parse messages from JSON!");
             }
             return new HandlerResponse(objects, HandlerResponse.Status.Succeeded);
         }
         Log.e(BasicBackendHandler.class.getSimpleName(), "Failed to get objects near location, response: "+ response);
-        return new HandlerResponse(null, HandlerResponse.Status.Failed);
+        return new HandlerResponse<>(null, HandlerResponse.Status.Failed, "Failed to get objects near location, response: "+ response);
 	}
 
     @Override
-    public HandlerResponse getObjectsFromSearch(@NonNull List<String> fromFields, @NonNull String searchString,
+    public HandlerResponse<MapObject> getObjectsFromSearch(@NonNull List<String> fromFields, @NonNull String searchString,
                                                 int limit, boolean mini) {
         StringBuilder str = new StringBuilder();
         str.append(this.baseUrl);
@@ -101,31 +105,31 @@ public class BasicBackendHandler implements BackendHandler {
             jsonObj.put("search", searchString);
             jsonObj.put("limit", limit);
         } catch (JSONException e) {
-            Log.e(URLReader.class.getSimpleName(), "ERROR. {}", e);
+            Log.e(BasicUrlReader.class.getSimpleName(), "ERROR. {}", e);
 
         }
-        URLResponse response = URLReader.postJson(url, jsonObj.toString());
+        UrlResponse response = this.urlReader.postJson(url, jsonObj.toString());
 
         // Only if the url returns code 200, we can parse the results.
-        if (response != null && response.getStatus() == URLResponse.ResponseStatus.STATUS_200) {
-            List<MapObject> objects = null;
+        if (response != null && response.getStatus() == UrlResponse.ResponseStatus.STATUS_200) {
+            List<MapObject> objects;
             try {
                 objects = MapObjectParser.parseSearchResult(response.getContents(), mini);
             } catch (JSONException e) {
                 Log.e(this.getClass().getSimpleName(), "Failed to parse map objects from JSON! {}", e);
-                return new HandlerResponse(null, HandlerResponse.Status.Failed);
+                return new HandlerResponse(null, HandlerResponse.Status.Failed, "Failed to parse messages from JSON!");
             } catch (IOException e) {
                 Log.e(this.getClass().getSimpleName(), "Failed to parse map objects from JSON! {}", e);
-                return new HandlerResponse(null, HandlerResponse.Status.Failed);
+                return new HandlerResponse(null, HandlerResponse.Status.Failed, "Failed to parse messages from JSON!");
             }
             return new HandlerResponse(objects, HandlerResponse.Status.Succeeded);
         }
         Log.e(BasicBackendHandler.class.getSimpleName(), "Failed to get objects from search, response: "+ response);
-        return new HandlerResponse(null, HandlerResponse.Status.Failed);
+        return new HandlerResponse<>(null, HandlerResponse.Status.Failed, "Failed to get objects from search, response: "+ response);
     }
 
     @Override
-    public HandlerResponse getObjectsInArea(PointLocation southWest, PointLocation northEast, boolean mini) {
+    public HandlerResponse<MapObject> getObjectsInArea(PointLocation southWest, PointLocation northEast, boolean mini) {
         StringBuilder str = new StringBuilder();
         str.append(this.baseUrl);
         str.append(this.dataSource);
@@ -142,54 +146,118 @@ public class BasicBackendHandler implements BackendHandler {
             str.append("&mini=true");
         }
         String url = str.toString();
-        URLResponse response = BasicBackendHandler.getUrl(url, RETRY_AMOUNT);
+        UrlResponse response = this.getUrl(url, RETRY_AMOUNT);
 
         // Only if the url returns code 200, we can parse the results.
-        if (response != null && response.getStatus() == URLResponse.ResponseStatus.STATUS_200) {
-            List<MapObject> objects = null;
+        if (response != null && response.getStatus() == UrlResponse.ResponseStatus.STATUS_200) {
+            List<MapObject> objects;
             try {
                 objects = MapObjectParser.parseCollection(response.getContents(), mini);
             } catch (JSONException e) {
                 Log.e(this.getClass().getSimpleName(), "Failed to parse map objects from JSON! {}", e);
-                return new HandlerResponse(null, HandlerResponse.Status.Failed);
+                return new HandlerResponse(null, HandlerResponse.Status.Failed, "Failed to parse messages from JSON!");
             } catch (IOException e) {
                 Log.e(this.getClass().getSimpleName(), "Failed to parse map objects from JSON! {}", e);
-                return new HandlerResponse(null, HandlerResponse.Status.Failed);
+                return new HandlerResponse(null, HandlerResponse.Status.Failed, "Failed to parse messages from JSON!");
             }
             return new HandlerResponse(objects, HandlerResponse.Status.Succeeded);
         }
         Log.e(BasicBackendHandler.class.getSimpleName(), "Failed to get objects in area, response: "+ response);
-        return new HandlerResponse(null, HandlerResponse.Status.Failed);
+        return new HandlerResponse<>(null, HandlerResponse.Status.Failed, "Failed to get objects in area, response: "+ response);
     }
 
     @Override
-    public HandlerResponse getMapObject(String id) {
+    public HandlerResponse<MapObject> getMapObject(String id) {
         StringBuilder str = new StringBuilder();
         str.append(this.baseUrl);
         str.append(this.dataSource);
         str.append(id);
 
         String url = str.toString();
-        URLResponse response = BasicBackendHandler.getUrl(url, RETRY_AMOUNT);
+        UrlResponse response = this.getUrl(url, RETRY_AMOUNT);
 
         // Only if the url returns code 200, we can parse the results.
-        if (response != null && response.getStatus() == URLResponse.ResponseStatus.STATUS_200) {
-            MapObject mapObject = null;
+        if (response != null && response.getStatus() == UrlResponse.ResponseStatus.STATUS_200) {
+            MapObject mapObject;
             try {
                 mapObject = MapObjectParser.parse(response.getContents());
             } catch (JSONException e){
                 Log.e(this.getClass().getSimpleName(), "Failed to parse map objects from JSON! {}", e);
-                return new HandlerResponse(null, HandlerResponse.Status.Failed);
+                return new HandlerResponse(null, HandlerResponse.Status.Failed, "Failed to parse messages from JSON!");
             } catch (IOException e){
                 Log.e(this.getClass().getSimpleName(), "Failed to parse map objects from JSON! {}", e);
-                return new HandlerResponse(null, HandlerResponse.Status.Failed);
+                return new HandlerResponse(null, HandlerResponse.Status.Failed, "Failed to parse messages from JSON!");
             }
             List<MapObject> list = new ArrayList<>();
             list.add(mapObject);
             return new HandlerResponse(list, HandlerResponse.Status.Succeeded);
         }
         Log.e(BasicBackendHandler.class.getSimpleName(), "Failed to get object, response: "+ response);
-        return new HandlerResponse(null, HandlerResponse.Status.Failed);
+        return new HandlerResponse<>(null, HandlerResponse.Status.Failed, "Failed to get object, response: "+ response);
+    }
+
+
+    @Override
+    public HandlerResponse<Message> getMessages(String userId) {
+        StringBuilder str = new StringBuilder();
+        str.append("http://lbdbackend.ignorelist.com/messagedata/api/messages/");
+//        str.append(userId);
+//        str.append("messages/"+userId);
+//        str.append(this.dataSource);
+
+        String url = str.toString();
+        UrlResponse response = this.getUrl(url, RETRY_AMOUNT);
+
+        Log.i("ASDASDASDASDASASD", "URL: "+ url + " response: "+ response);
+
+
+        // Only if the url returns code 200, we can parse the results.
+        if (response != null && response.getStatus() == UrlResponse.ResponseStatus.STATUS_200) {
+            Log.i("ASDASDASDASDASASD", "Contents: "+ response.getContents());
+            List<Message> messages;
+            try {
+                messages = MessageParser.parseCollection(response.getContents());
+            } catch (JSONException e){
+                Log.e(this.getClass().getSimpleName(), "Failed to parse messages from JSON! {}", e);
+                return new HandlerResponse(null, HandlerResponse.Status.Failed, "Failed to parse messages from JSON!");
+            } catch (IOException e){
+                Log.e(this.getClass().getSimpleName(), "Failed to parse messages from JSON! {}", e);
+                return new HandlerResponse(null, HandlerResponse.Status.Failed, "Failed to parse messages from JSON!");
+            }
+            return new HandlerResponse<>(messages, HandlerResponse.Status.Succeeded);
+        }
+        Log.e(BasicBackendHandler.class.getSimpleName(), "Failed to get messages, response: "+ response);
+        return new HandlerResponse<>(null, HandlerResponse.Status.Failed, "Failed to get messages, response: "+ response);
+    }
+
+    @Override
+    public HandlerResponse<Message> postMessage() {
+        StringBuilder str = new StringBuilder();
+        str.append("http://lbdbackend.ignorelist.com/messagedata/api/send/");
+
+        String testMsg = "{\"category\": \"Streetlights\", \"recipient\": \"lbd@lbd.net\"," +
+            "\"attachements\": [{\"category\": \"Jokin\", \"aid\": \"jokin id\"}], \"topic\": \"Meeppä kuule korjaan toi valo\"," +
+            "\"message\": \"Tässä sulle tikkaat\"}";
+
+
+        UrlResponse response = this.urlReader.postJson(str.toString(), testMsg);
+
+        // Only if the url returns code 200, we can parse the results.
+        if (response != null && response.getStatus() == UrlResponse.ResponseStatus.STATUS_200) {
+//            List<MapObject> objects;
+//            try {
+//                objects = MapObjectParser.parseSearchResult(response.getContents(), mini);
+//            } catch (JSONException e) {
+//                Log.e(this.getClass().getSimpleName(), "Failed to parse map objects from JSON! {}", e);
+//                return new HandlerResponse(null, HandlerResponse.Status.Failed);
+//            } catch (IOException e) {
+//                Log.e(this.getClass().getSimpleName(), "Failed to parse map objects from JSON! {}", e);
+//                return new HandlerResponse(null, HandlerResponse.Status.Failed);
+//            }
+            return new HandlerResponse(null, HandlerResponse.Status.Succeeded);
+        }
+        Log.e(BasicBackendHandler.class.getSimpleName(), "Failed to get objects from send message, response: "+ response);
+        return new HandlerResponse<>(null, HandlerResponse.Status.Failed, "Failed to get objects from send message, response: "+ response);
     }
 
     /**
@@ -199,10 +267,10 @@ public class BasicBackendHandler implements BackendHandler {
      * @param retries   Amount of retries before giving up.
      * @return  Returned response or null.
      */
-    private static URLResponse getUrl(String url, int retries) {
-        URLResponse response = null;
+    private UrlResponse getUrl(String url, int retries) {
+        UrlResponse response;
         for (int i = 0; i < retries+1; i++) {
-            response = URLReader.get(url);
+            response = this.urlReader.get(url);
             if (response != null) {
                 if (shouldRetry(response.getStatus())) {
                     Log.e(BasicBackendHandler.class.getSimpleName(), "Retrying request on url: "+url+", response was: "+ response);
@@ -217,8 +285,8 @@ public class BasicBackendHandler implements BackendHandler {
     }
 
     // TODO: Which respose codes should result in retry?
-    private static boolean shouldRetry(URLResponse.ResponseStatus status) {
-        return (status == URLResponse.ResponseStatus.STATUS_500
-                || status == URLResponse.ResponseStatus.STATUS_404);
+    private static boolean shouldRetry(UrlResponse.ResponseStatus status) {
+        return (status == UrlResponse.ResponseStatus.STATUS_500);
+//                || status == URLResponse.ResponseStatus.STATUS_404);
     }
 }

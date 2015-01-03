@@ -36,8 +36,8 @@ public class CachingBackendHandler extends BasicBackendHandler {
     private ConcurrentHashMap<String, CachedQuery> cachedQueries = new ConcurrentHashMap<>();
     private final long maxCacheTime;
 
-    public CachingBackendHandler(String baseUrl, String dataSource, long cacheTimeMs) {
-        super(baseUrl, dataSource);
+    public CachingBackendHandler(UrlReader urlReader, String baseUrl, String dataSource, long cacheTimeMs) {
+        super(urlReader, baseUrl, dataSource);
         this.maxCacheTime = cacheTimeMs;
     }
 

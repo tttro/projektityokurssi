@@ -10,13 +10,15 @@ import fi.lbd.mobile.mapobjects.MapObject;
  *
  * Created by Tommi.
  */
-public class HandlerResponse {
+public class HandlerResponse<T> {
     public enum Status {
         Succeeded, Failed, Cached
     }
 
-    private final List<MapObject> objects;
+    private final List<T> objects;
     private final Status status;
+    private final String reason;
+
 
     /**
      * Used as a response object from the BackendHandlers.
@@ -24,18 +26,32 @@ public class HandlerResponse {
      * @param objects   Response objects.
      * @param status    Response status.
      */
-    public HandlerResponse(List<MapObject> objects, Status status) {
+    public HandlerResponse(List<T> objects, Status status) {
+        this(objects, status, "");
+    }
+
+    /**
+     * Used as a response object from the BackendHandlers.
+     *
+     * @param objects   Response objects.
+     * @param status    Response status.
+     * @param reason    Response reason.
+     */
+    public HandlerResponse(List<T> objects, Status status, String reason) {
         this.objects = objects;
         this.status = status;
+        this.reason = reason;
     }
 
     public Status getStatus() {
         return status;
     }
 
-    public List<MapObject> getObjects() {
+    public List<T> getObjects() {
         return objects;
     }
+
+    public String getReason() { return this.reason; }
 
     public boolean isOk() {
         return this.status == Status.Succeeded || this.status == Status.Cached;

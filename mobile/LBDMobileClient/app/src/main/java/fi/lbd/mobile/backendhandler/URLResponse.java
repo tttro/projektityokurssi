@@ -8,10 +8,11 @@ import java.util.Map;
  *
  * Created by Tommi.
  */
-public class URLResponse {
+public class UrlResponse {
     public enum ResponseStatus {
         STATUS_200(200, "OK"),
         STATUS_400(400, "Bad Request"),
+        STATUS_401(401, "Unauthorized"),
         STATUS_403(403, "Forbidden"),
         STATUS_404(404, "Not found"),
         STATUS_405(405, "Method not allowed"),
@@ -59,7 +60,7 @@ public class URLResponse {
      * @param status    Returned status.
      * @param statusReason  Returned reason for the status.
      */
-    public URLResponse(String contents, ResponseStatus status, String statusReason) {
+    public UrlResponse(String contents, ResponseStatus status, String statusReason) {
         this.contents = contents;
         this.status = status;
         this.statusReason = statusReason;

@@ -17,8 +17,6 @@ import android.view.inputmethod.InputMethodManager;
 import java.util.ArrayDeque;
 import java.util.Locale;
 
-import fi.lbd.mobile.backendhandler.URLReader;
-import fi.lbd.mobile.backendhandler.URLResponse;
 import fi.lbd.mobile.events.BusHandler;
 import fi.lbd.mobile.events.SelectMapObjectEvent;
 import fi.lbd.mobile.fragments.GoogleMapFragment;
