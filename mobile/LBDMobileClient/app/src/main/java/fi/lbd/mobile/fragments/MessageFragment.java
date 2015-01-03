@@ -38,33 +38,6 @@ public class MessageFragment extends ListFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.adapter = new MessageAdapter(this.getActivity());
-
-        List<MessageObject> objects = new ArrayList<>();
-        objects.add(new StringMessageObject("no_id", "pekka1", "jaakko1", "testitopic1", false, "testimessage1"));
-        objects.add(new StringMessageObject("no_id", "pekka2", "jaakko2", "testitopic2", false, "testimessage2"));
-        objects.add(new StringMessageObject("no_id", "pekka3", "jaakko3", "testitopic3", false, "testimessage3"));
-        objects.add(new StringMessageObject("no_id", "pekka4", "jaakko4", "testitopic4", false, "testimessage4testimessage4testimessage4testimessage4testimessage4testimessage4testimessage4testimessage4" +
-                "testimessage4testimessage4testimessage4testimessage4testimessage4testimessage4testimessage4" +
-                "testimessage4testimessage4testimessage4testimessage4testimessage4testimessage4testimessage4testimessage4" +
-                "testimessage4testimessage4testimessage4testimessage4testimessage4testimessage4testimessage4testimessage4" +
-                "testimessage4testimessage4testimessage4testimessage4testimessage4testimessage4testimessage4testimessage4testimessage4" +
-        "testimessage4testimessage4testimessage4testimessage4testimessage4testimessage4testimessage4testimessage4testimessage4testimessage4" +
-                "testimessage4testimessage4testimessage4testimessage4testimessage4testimessage4testimessage4testimessage4testimessage4testimessage4" +
-                "testimessage4testimessage4testimessage4testimessage4testimessage4testimessage4testimessage4testimessage4testimessage4testimessage4testimessage4" +
-                "testimessage4testimessage4testimessage4testimessage4testimessage4testimessage4testimessage4testimessage4testimessage4testimessage4testimessage4" +
-                "testimessage4testimessage4testimessage4testimessage4testimessage4testimessage4testimessage4testimessage4testimessage4" +
-                "testimessage4testimessage4testimessage4testimessage4testimessage4testimessage4testimessage4testimessage4testimessage4testimessage4" +
-                "testimessage4testimessage4testimessage4testimessage4testimessage4testimessage4testimessage4testimessage4" +
-                "testimessage4testimessage4testimessage4 LOPPU"));
-        objects.add(new StringMessageObject("no_id", "pekka5", "jaakko5", "testitopic5", false, "testimessage5"));
-        objects.add(new StringMessageObject("no_id", "pekka6", "jaakko6", "testitopic6", false, "testimessage6"));
-        objects.add(new StringMessageObject("no_id", "pekka7", "jaakko7", "testitopic7", false, "testimessage7"));
-        objects.add(new StringMessageObject("no_id", "pekka8", "jaakko8", "testitopic8", false, "testimessage8"));
-        objects.add(new StringMessageObject("no_id", "pekka9", "jaakko9", "testitopic9", false, "testimessage9"));
-        objects.add(new StringMessageObject("no_id", "pekka10", "jaakko10", "testitopic10", false, "testimessage10"));
-
-        this.adapter.addAll(objects);
-
     }
 
     @Override
@@ -75,11 +48,20 @@ public class MessageFragment extends ListFragment {
         newMessageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                BusHandler.getBus().post(new RequestUserMessagesEvent()); // TODO: FIXME: Oikee paikka
-//                Intent intent = new Intent(getActivity(), SendMessageActivity.class);
-//                startActivity(intent);
+                Intent intent = new Intent(getActivity(), SendMessageActivity.class);
+                startActivity(intent);
             }
         });
+
+        View refreshButton = view.findViewById(R.id.refreshButton);
+        refreshButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                BusHandler.getBus().post(new RequestUserMessagesEvent());
+            }
+        });
+
+        BusHandler.getBus().post(new RequestUserMessagesEvent());
 
         return view;
     }
@@ -103,11 +85,6 @@ public class MessageFragment extends ListFragment {
         Intent intent = new Intent(getActivity(), ReadMessageActivity.class);
         startActivity(intent);
 	}
-
-    public void onNewMessageClick(){
-
-    }
-
 
     @Subscribe
     public void onEvent(ReturnUserMessagesEvent event) {

@@ -64,12 +64,15 @@
             android:textAllCaps="true"/>
 
         <EditText
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Write your title here"
             android:id="@+id/textViewTitle"
             android:textSize="14dp"
-            android:textStyle="italic"/>
+            android:textStyle="italic"
+            android:singleLine="true"
+            android:layout_marginEnd="60dp"
+            android:layout_marginRight="60dp"/>
 
         <TextView
             android:layout_width="fill_parent"
@@ -81,12 +84,21 @@
             android:textAllCaps="true"/>
 
         <EditText
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Write your message here"
             android:id="@+id/textViewMessage"
-            android:textSize="14dp"/>
+            android:textSize="14dp"
+            android:singleLine="true"
+            android:layout_marginEnd="60dp"
+            android:layout_marginRight="60dp"/>
 
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
     </LinearLayout>
 
     <LinearLayout
@@ -111,11 +123,7 @@
 
     </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1">
-    </LinearLayout>
+
 
     <LinearLayout
         android:layout_width="match_parent"
