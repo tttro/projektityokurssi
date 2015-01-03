@@ -1,7 +1,5 @@
 package fi.lbd.mobile.backendhandler;
 
-import org.apache.http.client.methods.HttpUriRequest;
-
 /**
  * Interface for a class which performs the operations to the rest api.
  *
