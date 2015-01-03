@@ -68,7 +68,7 @@ Really, these parameters should be read from static variables stored somewhere. 
 */
 function startAuth() {
     gapi.auth.signIn({
-                    'clientid' : '561371657443-clfpgostcgejj669qs9hu5f7hh9oetv5.apps.googleusercontent.com',
+                    'clientid' : '388919682787-vf743dghif9m483leu0se5raajqsfaan.apps.googleusercontent.com',
                     'cookiepolicy' : 'single_host_origin',
                     'callback' : 'signInCallback',
                     'scope': 'profile email'
