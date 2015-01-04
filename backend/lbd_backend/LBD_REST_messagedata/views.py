@@ -2,6 +2,7 @@
 import json
 from django.http import HttpResponse
 import mongoengine
+from RESThandlers.HandlerInterface.Factory import HandlerFactory
 from lbd_backend.LBD_REST_locationdata.models import MetaDocument
 from lbd_backend.LBD_REST_messagedata.models import Message, Attachment
 from lbd_backend.LBD_REST_users.models import User
@@ -85,18 +86,23 @@ def msg_send(request, *args, **kwargs):
         del_from_att = list()
         if "attachments" in content_json:
             for item in content_json["attachments"]:
+                delete_item = False
                 if not ("category" in item or "aid" in item):
                     return HttpResponse(status=s_codes["BAD"])
-                for fieldname, value in item.iteritems:
+                for fieldname in item:
                     if fieldname not in att_fields:
                         del_from_att.append(fieldname)
-                    else:
-                        try:
-                            MetaDocument.objects.get(feature_id=value)
-                        except mongoengine.DoesNotExist:
-                            return HttpResponse(status=s_codes["BAD"],
-                                                content_json='{"message": "Attachment item not found"}',
-                                                content_type="application/json")
+                        delete_item = True
+
+                if not delete_item:
+                    try:
+                        hf = HandlerFactory(item["category"])
+                        hinterface = hf.create()
+                        hinterface.get_by_id(item["aid"])
+                    except mongoengine.DoesNotExist:
+                        return HttpResponse(status=s_codes["BAD"],
+                                            content='{"message": "Attachment item not found"}',
+                                            content_type="application/json")
 
         for item in del_from_att:
             try:
