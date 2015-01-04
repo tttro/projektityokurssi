@@ -72,12 +72,13 @@ def this_is_a_login_wrapper_dummy(func):
                 result = json.loads(res_content)
 
                 # If there was an error in the access token info, abort.
-                print result
                 # if result.get('error') is not None:
                 #     print result
                     #return HttpResponse(status=400)
-
-                if userid == result["user_id"]:
+                print result
+                print response.status
+                
+                if response.status == 200 and userid == result["user_id"]:
                     print "User matches"
                 infohttp = httplib.HTTPSConnection("www.googleapis.com")
                 infohttp.request("GET", 'https://www.googleapis.com/plus/v1/people/' +
