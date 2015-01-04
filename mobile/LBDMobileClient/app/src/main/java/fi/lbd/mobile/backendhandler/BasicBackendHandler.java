@@ -194,12 +194,56 @@ public class BasicBackendHandler implements BackendHandler {
         return new HandlerResponse<>(null, HandlerResponse.Status.Failed, "Failed to get object, response: "+ response);
     }
 
+    @Override
+    public HandlerResponse<String> getUsers(){
+        String url = this.baseMessageUrl + "users/list/";
+        UrlResponse response = this.getUrl(url, RETRY_AMOUNT);
+
+        // Only if the url returns code 200, we can parse the results.
+        if (response != null && response.getStatus() == UrlResponse.ResponseStatus.STATUS_200) {
+            List<String> users;
+            try {
+                users = UserParser.parseCollection(response.getContents());
+            } catch (JSONException e){
+                Log.e(this.getClass().getSimpleName(), "Failed to parse users from JSON! {}", e);
+                return new HandlerResponse<>(null, HandlerResponse.Status.Failed, "Failed to parse users from JSON!");
+            } catch (IOException e){
+                Log.e(this.getClass().getSimpleName(), "Failed to parse users from JSON! {}", e);
+                return new HandlerResponse<>(null, HandlerResponse.Status.Failed, "Failed to parse users from JSON!");
+            }
+            return new HandlerResponse<>(users, HandlerResponse.Status.Succeeded);
+        }
+        Log.e(BasicBackendHandler.class.getSimpleName(), "Failed to get users, response: "+ response);
+        return new HandlerResponse<>(null, HandlerResponse.Status.Failed, "Failed to get users, response: "+ response);
+    }
+
+    @Override
+    public HandlerResponse<String> getCollections(){
+        String url = this.baseObjectUrl;
+        UrlResponse response = this.getUrl(url, RETRY_AMOUNT);
+
+        // Only if the url returns code 200, we can parse the results.
+        if (response != null && response.getStatus() == UrlResponse.ResponseStatus.STATUS_200) {
+            List<String> collections;
+            try {
+                collections = CollectionParser.parseCollection(response.getContents());
+            } catch (JSONException e){
+                Log.e(this.getClass().getSimpleName(), "Failed to parse collections from JSON! {}", e);
+                return new HandlerResponse<>(null, HandlerResponse.Status.Failed, "Failed to parse collections from JSON!");
+            } catch (IOException e){
+                Log.e(this.getClass().getSimpleName(), "Failed to parse collections from JSON! {}", e);
+                return new HandlerResponse<>(null, HandlerResponse.Status.Failed, "Failed to parse collections from JSON!");
+            }
+            return new HandlerResponse<>(collections, HandlerResponse.Status.Succeeded);
+        }
+        Log.e(BasicBackendHandler.class.getSimpleName(), "Failed to get collections, response: "+ response);
+        return new HandlerResponse<>(null, HandlerResponse.Status.Failed, "Failed to get collections, response: "+ response);
+    }
 
     @Override
     public HandlerResponse<MessageObject> getMessages() {
         String url = this.baseMessageUrl + "messages/";
         UrlResponse response = this.getUrl(url, RETRY_AMOUNT);
-
 
         // Only if the url returns code 200, we can parse the results.
         if (response != null && response.getStatus() == UrlResponse.ResponseStatus.STATUS_200) {

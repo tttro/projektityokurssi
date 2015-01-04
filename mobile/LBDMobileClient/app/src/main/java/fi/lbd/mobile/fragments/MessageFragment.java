@@ -14,10 +14,6 @@ import android.widget.Toast;
 
 import com.squareup.otto.Subscribe;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-
 import fi.lbd.mobile.MessageObjectSelectionManager;
 import fi.lbd.mobile.R;
 import fi.lbd.mobile.ReadMessageActivity;
@@ -25,14 +21,9 @@ import fi.lbd.mobile.SendMessageActivity;
 import fi.lbd.mobile.adapters.MessageAdapter;
 import fi.lbd.mobile.events.BusHandler;
 import fi.lbd.mobile.events.RequestFailedEvent;
-import fi.lbd.mobile.location.ImmutablePointLocation;
-import fi.lbd.mobile.mapobjects.ImmutableMapObject;
-import fi.lbd.mobile.messageobjects.events.DeleteMessageEvent;
 import fi.lbd.mobile.messageobjects.events.RequestUserMessagesEvent;
 import fi.lbd.mobile.messageobjects.events.ReturnUserMessagesEvent;
 import fi.lbd.mobile.messageobjects.MessageObject;
-import fi.lbd.mobile.messageobjects.StringMessageObject;
-import fi.lbd.mobile.messageobjects.events.SendMessageEvent;
 
 
 public class MessageFragment extends ListFragment {

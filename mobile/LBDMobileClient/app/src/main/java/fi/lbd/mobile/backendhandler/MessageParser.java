@@ -46,7 +46,7 @@ public class MessageParser {
     }
 
     private static MessageObject parseMessage(JsonNode rootNode) throws IOException, JSONException {
-        List<MessageObject> messages = new ArrayList<>();
+        //List<MessageObject> messages = new ArrayList<>();
 
         Log.d(MessageParser.class.getSimpleName(), "parseMessage node NODE: "+ rootNode);
         Log.d(MessageParser.class.getSimpleName(), "parseMessage node NODE size: "+ rootNode.size());

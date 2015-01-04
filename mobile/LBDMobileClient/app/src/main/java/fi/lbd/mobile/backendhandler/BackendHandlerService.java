@@ -38,8 +38,12 @@ import fi.lbd.mobile.mapobjects.events.SearchObjectsEvent;
 import fi.lbd.mobile.messageobjects.MessageObject;
 import fi.lbd.mobile.messageobjects.events.DeleteMessageEvent;
 import fi.lbd.mobile.messageobjects.events.DeleteMessageSucceededEvent;
+import fi.lbd.mobile.events.RequestCollectionsEvent;
 import fi.lbd.mobile.messageobjects.events.RequestUserMessagesEvent;
+import fi.lbd.mobile.events.RequestUsersEvent;
+import fi.lbd.mobile.events.ReturnCollectionsEvent;
 import fi.lbd.mobile.messageobjects.events.ReturnUserMessagesEvent;
+import fi.lbd.mobile.events.ReturnUsersEvent;
 import fi.lbd.mobile.messageobjects.events.SendMessageEvent;
 import fi.lbd.mobile.messageobjects.events.SendMessageSucceededEvent;
 
@@ -268,15 +272,66 @@ public class BackendHandlerService extends Service {
             @Override
             public void run() {
                 Log.d(this.getClass().getSimpleName(), "SearchObjectsEvent");
-
                 HandlerResponse<MapObject> response = backendHandler.getObjectsFromSearch(ApplicationDetails.get().getCurrentCategory(),
                         event.getFromFields(), event.getSearchString(), event.getLimit(), event.isMini());
+
                 if (response.isOk()) {
                     BusHandler.getBus().post(new ReturnSearchResultEvent(response.getObjects()));
                     Log.d(this.getClass().getSimpleName(), "SearchObjectsEvent: Sent OK response.");
                 } else {
                     BusHandler.getBus().post(new RequestFailedEvent(event, response.getReason()));
                     Log.d(this.getClass().getSimpleName(), "SearchObjectsEvent: Sent FAIL response.");
+                }
+            }
+        });
+    }
+
+    /**
+     * Event for fetching list of authorized users.
+     *
+     * @param event Request event.
+     */
+    @SuppressWarnings("unused")
+    @Subscribe
+    public void onEvent(final RequestUsersEvent event){
+        this.executorPool.execute(new Runnable(){
+            @Override
+            public void run(){
+                Log.d(this.getClass().getSimpleName(), "RequestUsersEvent");
+                HandlerResponse<String> response = backendHandler.getUsers();
+
+                if (response.isOk()) {
+                    BusHandler.getBus().post(new ReturnUsersEvent(response.getObjects()));
+                    Log.d(this.getClass().getSimpleName(), "RequestUsersEvent: Sent OK response.");
+                } else {
+                    BusHandler.getBus().post(new RequestFailedEvent(event, response.getReason()));
+                    Log.d(this.getClass().getSimpleName(), "RequestUsersEvent: Sent FAIL response.");
+                }
+            }
+        });
+    }
+
+
+    /**
+     * Event for fetching list of object collections in the database.
+     *
+     * @param event Request event.
+     */
+    @SuppressWarnings("unused")
+    @Subscribe
+    public void onEvent(final RequestCollectionsEvent event){
+        this.executorPool.execute(new Runnable(){
+            @Override
+            public void run(){
+                Log.d(this.getClass().getSimpleName(), "RequestCollectionsEvent");
+                HandlerResponse<String> response = backendHandler.getCollections();
+
+                if (response.isOk()) {
+                    BusHandler.getBus().post(new ReturnCollectionsEvent(response.getObjects()));
+                    Log.d(this.getClass().getSimpleName(), "RequestCollectionsEvent: Sent OK response.");
+                } else {
+                    BusHandler.getBus().post(new RequestFailedEvent(event, response.getReason()));
+                    Log.d(this.getClass().getSimpleName(), "RequestCollectionsEvent: Sent FAIL response.");
                 }
             }
         });

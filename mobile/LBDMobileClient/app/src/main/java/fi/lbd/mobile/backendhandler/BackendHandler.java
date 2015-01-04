@@ -59,6 +59,17 @@ public interface BackendHandler {
     HandlerResponse<MapObject> getObjectsFromSearch(String dataSource, List<String> fromFields, String searchString,
                                                 int limit, boolean mini);
 
+    /**
+     * Requests the list of authorized users.
+     * @return
+     */
+    HandlerResponse<String> getUsers();
+
+    /**
+     * Requests the list of object collections in the database.
+     * @return
+     */
+    HandlerResponse<String> getCollections();
 
     /**
      * Request messages for the current user.
