@@ -5,6 +5,7 @@
     :synopsis: This module handles http requests related to location data.
 """
 from lbd_backend.LBD_REST_messagedata.views import msg_collection, msg_send
+from lbd_backend.LBD_REST_users.views import list_users
 
 __author__ = 'Aki Mäkinen'
 
@@ -28,6 +29,7 @@ urlpatterns = patterns('',
 
     url(r'^messagedata/api/messages/$', msg_collection),
     url(r'^messagedata/api/send/$', msg_send),
+    url(r'^messagedata/api/users/list/$', list_users),
     # url(r'^messagedata/api/(?P<collection>\w+)/(?P<message>\w+)$', stub),
     # url(r'^messagedata/api/(?P<collection>\w+)/(?P<category>\w+)$', stub),
 )
