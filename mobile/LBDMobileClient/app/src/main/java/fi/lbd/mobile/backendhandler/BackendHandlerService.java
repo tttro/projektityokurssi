@@ -4,11 +4,11 @@ import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
 import android.util.Log;
+import android.util.Pair;
 
 import com.squareup.otto.Subscribe;
 
 import java.io.BufferedInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.security.cert.Certificate;
@@ -21,22 +21,27 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
+import fi.lbd.mobile.ApplicationDetails;
 import fi.lbd.mobile.R;
 import fi.lbd.mobile.events.BusHandler;
-import fi.lbd.mobile.events.CacheObjectsInAreaEvent;
 import fi.lbd.mobile.events.RequestFailedEvent;
-import fi.lbd.mobile.events.RequestMapObjectEvent;
-import fi.lbd.mobile.events.RequestNearObjectsEvent;
-import fi.lbd.mobile.events.RequestObjectsInAreaEvent;
-import fi.lbd.mobile.events.RequestUserMessagesEvent;
-import fi.lbd.mobile.events.ReturnMapObjectEvent;
-import fi.lbd.mobile.events.ReturnNearObjectsEvent;
-import fi.lbd.mobile.events.ReturnObjectsInAreaEvent;
-import fi.lbd.mobile.events.ReturnSearchResultEvent;
-import fi.lbd.mobile.events.ReturnUserMessagesEvent;
-import fi.lbd.mobile.events.SearchObjectsEvent;
 import fi.lbd.mobile.mapobjects.MapObject;
+import fi.lbd.mobile.mapobjects.events.CacheObjectsInAreaEvent;
+import fi.lbd.mobile.mapobjects.events.RequestMapObjectEvent;
+import fi.lbd.mobile.mapobjects.events.RequestNearObjectsEvent;
+import fi.lbd.mobile.mapobjects.events.RequestObjectsInAreaEvent;
+import fi.lbd.mobile.mapobjects.events.ReturnMapObjectEvent;
+import fi.lbd.mobile.mapobjects.events.ReturnNearObjectsEvent;
+import fi.lbd.mobile.mapobjects.events.ReturnObjectsInAreaEvent;
+import fi.lbd.mobile.mapobjects.events.ReturnSearchResultEvent;
+import fi.lbd.mobile.mapobjects.events.SearchObjectsEvent;
 import fi.lbd.mobile.messageobjects.MessageObject;
+import fi.lbd.mobile.messageobjects.events.DeleteMessageEvent;
+import fi.lbd.mobile.messageobjects.events.DeleteMessageSucceededEvent;
+import fi.lbd.mobile.messageobjects.events.RequestUserMessagesEvent;
+import fi.lbd.mobile.messageobjects.events.ReturnUserMessagesEvent;
+import fi.lbd.mobile.messageobjects.events.SendMessageEvent;
+import fi.lbd.mobile.messageobjects.events.SendMessageSucceededEvent;
 
 /**
  * Service which interacts with the backend handler. Communication is done through OTTO-bus.
@@ -55,7 +60,7 @@ public class BackendHandlerService extends Service {
     private static final int INTERVAL_START_DURATION = 10;
     private static final TimeUnit INTERVAL_TIME_UNIT = TimeUnit.SECONDS;
 
-    private final BlockingQueue<Runnable> workQueue = new LinkedBlockingQueue<Runnable>();
+    private final BlockingQueue<Runnable> workQueue = new LinkedBlockingQueue<>();
     private ThreadPoolExecutor executorPool = new ThreadPoolExecutor(
             EXECUTING_THREADS,
             EXECUTING_THREADS,
@@ -81,11 +86,7 @@ public class BackendHandlerService extends Service {
             CertificateFactory cf = CertificateFactory.getInstance("X.509");
             certificateInput = new BufferedInputStream(this.getApplicationContext().getAssets().open("lbd.crt"));
             certificate = cf.generateCertificate(certificateInput);
-        } catch (CertificateException ex) {
-            Log.e(BasicUrlReader.class.getSimpleName(), "ERROR", ex);
-        } catch (FileNotFoundException ex) {
-            Log.e(BasicUrlReader.class.getSimpleName(), "ERROR", ex);
-        } catch (IOException ex) {
+        } catch (CertificateException | IOException ex) {
             Log.e(BasicUrlReader.class.getSimpleName(), "ERROR", ex);
         } finally {
             if (certificateInput != null) {
@@ -103,12 +104,13 @@ public class BackendHandlerService extends Service {
 
         BasicUrlReader urlReader = new BasicUrlReader();
         try {
-            urlReader.initialize(certificate);
+            urlReader.initialize(new Pair<>("LBDServiceCertificate", certificate));
         } catch (UrlReaderException ex) {
             throw new RuntimeException(ex.getOriginalException());
         }
 
-        this.backendHandler = new CachingBackendHandler(urlReader, getString(R.string.source_base_url), getString(R.string.source_type), MAX_CACHE_TIME);
+        this.backendHandler = new CachingBackendHandler(urlReader, getString(R.string.source_objects_base_url),
+                getString(R.string.source_messages_base_url), MAX_CACHE_TIME);
 
         // Start the repeating check for outdated caches.
         this.scheduledExecutor.scheduleAtFixedRate(new Runnable() {
@@ -155,6 +157,7 @@ public class BackendHandlerService extends Service {
      *
      * @param event Request event.
      */
+    @SuppressWarnings("unused")
     @Subscribe
     public void onEvent(final RequestNearObjectsEvent event) {
         this.executorPool.execute( new Runnable() {
@@ -162,7 +165,8 @@ public class BackendHandlerService extends Service {
             public void run() {
                 Log.d(this.getClass().getSimpleName(), "RequestNearObjectsEvent: "+ event.getLocation());
 
-                HandlerResponse<MapObject> response = backendHandler.getObjectsNearLocation(event.getLocation(), event.getRange(), event.isMinimized());
+                HandlerResponse<MapObject> response = backendHandler.getObjectsNearLocation(ApplicationDetails.get().getCurrentCategory(),
+                        event.getLocation(), event.getRange(), event.isMinimized());
                 if (response.isOk()) {
                     BusHandler.getBus().post(new ReturnNearObjectsEvent(response.getObjects()));
                     Log.d(this.getClass().getSimpleName(), "RequestNearObjectsEvent: Sent OK response.");
@@ -179,13 +183,15 @@ public class BackendHandlerService extends Service {
      *
      * @param event Request event.
      */
+    @SuppressWarnings("unused")
     @Subscribe
     public void onEvent(final RequestObjectsInAreaEvent event) {
         this.executorPool.execute( new Runnable() {
             @Override
             public void run() {
                 Log.d(this.getClass().getSimpleName(), "RequestObjectsInAreaEvent: "+ event.getSouthWest() + event.getNorthEast());
-                HandlerResponse<MapObject> response = backendHandler.getObjectsInArea(event.getSouthWest(), event.getNorthEast(), event.isMinimized());
+                HandlerResponse<MapObject> response = backendHandler.getObjectsInArea(ApplicationDetails.get().getCurrentCategory(),
+                        event.getSouthWest(), event.getNorthEast(), event.isMinimized());
                 if (response.isOk()) {
                     BusHandler.getBus().post(new ReturnObjectsInAreaEvent(event.getSouthWest(), event.getNorthEast(), response.getObjects()));
                     Log.d(this.getClass().getSimpleName(), "RequestObjectsInAreaEvent: Sent OK response.");
@@ -203,6 +209,7 @@ public class BackendHandlerService extends Service {
      *
      * @param event Request event.
      */
+    @SuppressWarnings("unused")
     @Subscribe
     public void onEvent(final CacheObjectsInAreaEvent event) {
         this.executorPool.execute( new Runnable() {
@@ -210,7 +217,8 @@ public class BackendHandlerService extends Service {
             public void run() {
                 if (backendHandler instanceof CachingBackendHandler) {
                     Log.d(this.getClass().getSimpleName(), "CacheObjectsInAreaEvent: "+ event.getSouthWest() + event.getNorthEast());
-                    HandlerResponse<MapObject> response = backendHandler.getObjectsInArea(event.getSouthWest(), event.getNorthEast(), event.isMinimized());
+                    HandlerResponse<MapObject> response = backendHandler.getObjectsInArea(ApplicationDetails.get().getCurrentCategory(),
+                            event.getSouthWest(), event.getNorthEast(), event.isMinimized());
                     if (response.isOk()) {
                         Log.d(this.getClass().getSimpleName(), "CacheObjectsInAreaEvent: Sent OK response.");
                     } else {
@@ -228,13 +236,14 @@ public class BackendHandlerService extends Service {
      *
      * @param event Request event.
      */
+    @SuppressWarnings("unused")
     @Subscribe
     public void onEvent(final RequestMapObjectEvent event) {
         this.executorPool.execute( new Runnable() {
             @Override
             public void run() {
                 Log.d(this.getClass().getSimpleName(), "RequestMapObjectEvent: "+ event.getId());
-                HandlerResponse<MapObject> response = backendHandler.getMapObject(event.getId());
+                HandlerResponse<MapObject> response = backendHandler.getMapObject(ApplicationDetails.get().getCurrentCategory(), event.getId());
                 if (response.isOk()) {
                     MapObject obj = (response.getObjects().size() > 0) ? response.getObjects().get(0) : null;
                     BusHandler.getBus().post(new ReturnMapObjectEvent(obj));
@@ -247,12 +256,12 @@ public class BackendHandlerService extends Service {
         });
     }
 
-
     /**
      * Event for searching objects.
      *
-     * @param event Request event.
+     * @param event Search event.
      */
+    @SuppressWarnings("unused")
     @Subscribe
     public void onEvent(final SearchObjectsEvent event) {
         this.executorPool.execute( new Runnable() {
@@ -260,8 +269,8 @@ public class BackendHandlerService extends Service {
             public void run() {
                 Log.d(this.getClass().getSimpleName(), "SearchObjectsEvent");
 
-                HandlerResponse<MapObject> response = backendHandler.getObjectsFromSearch(event.getFromFields(),
-                        event.getSearchString(), event.getLimit(), event.isMini());
+                HandlerResponse<MapObject> response = backendHandler.getObjectsFromSearch(ApplicationDetails.get().getCurrentCategory(),
+                        event.getFromFields(), event.getSearchString(), event.getLimit(), event.isMini());
                 if (response.isOk()) {
                     BusHandler.getBus().post(new ReturnSearchResultEvent(response.getObjects()));
                     Log.d(this.getClass().getSimpleName(), "SearchObjectsEvent: Sent OK response.");
@@ -279,13 +288,14 @@ public class BackendHandlerService extends Service {
      *
      * @param event Request event.
      */
+    @SuppressWarnings("unused")
     @Subscribe
     public void onEvent(final RequestUserMessagesEvent event) {
         this.executorPool.execute( new Runnable() {
             @Override
             public void run() {
                 Log.d(this.getClass().getSimpleName(), "RequestUserMessagesEvent");
-                HandlerResponse<MessageObject> response = backendHandler.getMessages(); // TODO: "108363990223992898018/"
+                HandlerResponse<MessageObject> response = backendHandler.getMessages();
 
                 if (response.isOk()) {
                     BusHandler.getBus().post(new ReturnUserMessagesEvent(response.getObjects()));
@@ -293,6 +303,62 @@ public class BackendHandlerService extends Service {
                 } else {
                     BusHandler.getBus().post(new RequestFailedEvent(event, response.getReason()));
                     Log.d(this.getClass().getSimpleName(), "RequestUserMessagesEvent: Sent FAIL response.");
+                }
+            }
+        });
+    }
+
+
+    /**
+     * Event for sending messages which are string type.
+     *
+     * @param event Send event.
+     */
+    @SuppressWarnings("unused")
+    @Subscribe
+    public void onEvent(final SendMessageEvent<String> event) {
+        this.executorPool.execute( new Runnable() {
+            @Override
+            public void run() {
+                Log.d(this.getClass().getSimpleName(), "SendMessageEvent");
+
+                HandlerResponse<MessageObject> response = backendHandler.postMessage(ApplicationDetails.get().getCurrentCategory(),
+                        event.getReceiver(), event.getTopic(), event.getMessage(), event.getObjectAttachments());
+
+                if (response.isOk()) {
+                    BusHandler.getBus().post(new SendMessageSucceededEvent(event));
+                    Log.d(this.getClass().getSimpleName(), "SendMessageEvent: Sent OK response.");
+                } else {
+                    BusHandler.getBus().post(new RequestFailedEvent(event, response.getReason()));
+                    Log.d(this.getClass().getSimpleName(), "SendMessageEvent: Sent FAIL response.");
+                }
+            }
+        });
+    }
+
+
+    /**
+     * Event for deleting messages
+     *
+     * @param event Send event.
+     */
+    @SuppressWarnings("unused")
+    @Subscribe
+    public void onEvent(final DeleteMessageEvent event) {
+        this.executorPool.execute( new Runnable() {
+            @Override
+            public void run() {
+                Log.d(this.getClass().getSimpleName(), "DeleteMessageEvent");
+
+                HandlerResponse<MessageObject> response = backendHandler.deleteMessage(ApplicationDetails.get().getCurrentCategory(),
+                        event.getMessageId());
+
+                if (response.isOk()) {
+                    BusHandler.getBus().post(new DeleteMessageSucceededEvent(event));
+                    Log.d(this.getClass().getSimpleName(), "DeleteMessageEvent: Sent OK response.");
+                } else {
+                    BusHandler.getBus().post(new RequestFailedEvent(event, response.getReason()));
+                    Log.d(this.getClass().getSimpleName(), "DeleteMessageEvent: Sent FAIL response.");
                 }
             }
         });

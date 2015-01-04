@@ -11,8 +11,8 @@ import com.squareup.otto.Subscribe;
 
 import fi.lbd.mobile.adapters.ListDetailsAdapter;
 import fi.lbd.mobile.events.BusHandler;
-import fi.lbd.mobile.events.RequestMapObjectEvent;
-import fi.lbd.mobile.events.ReturnMapObjectEvent;
+import fi.lbd.mobile.mapobjects.events.RequestMapObjectEvent;
+import fi.lbd.mobile.mapobjects.events.ReturnMapObjectEvent;
 import fi.lbd.mobile.mapobjects.MapObject;
 
 

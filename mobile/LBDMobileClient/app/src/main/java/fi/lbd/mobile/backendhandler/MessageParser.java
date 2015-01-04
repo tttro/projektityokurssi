@@ -24,6 +24,8 @@ public class MessageParser {
         if (json == null) {
             throw new JSONException("Input string cannot be null!");
         }
+
+//        Log.d(MessageParser.class.getSimpleName(), "parse message json: "+ json);
         ObjectMapper mapper = new ObjectMapper();
         JsonNode rootNode = mapper.readTree(json);
         return MessageParser.parseCollection(rootNode);
@@ -64,6 +66,17 @@ public class MessageParser {
         JsonNode topicNode = rootNode.path("topic");
         check(topicNode, "Topic");
         String topic = topicNode.asText();
+
+        JsonNode attachmentsNode = rootNode.path("attachments");
+//        check(attachmentsNode, "Attachments");
+        if (!attachmentsNode.isMissingNode()) {
+            Log.i(MessageParser.class.getSimpleName(), "HAS ATTACHMENTS: "+ attachmentsNode.toString());
+            Log.i(MessageParser.class.getSimpleName(), "HAS ATTACHMENTS, IS ARRAY: "+ attachmentsNode.isArray());
+            for (Iterator<JsonNode> iter = attachmentsNode.elements(); iter.hasNext(); ) {
+                JsonNode node = iter.next();
+                Log.i(MessageParser.class.getSimpleName(), "attachment Node: "+ node.toString());
+            }
+        }
 
         JsonNode messageNode = rootNode.path("message");
         check(messageNode, "Message");

@@ -23,7 +23,7 @@
 
         <ImageButton
             android:id="@+id/newMessageButton"
-            android:layout_width="90dp"
+            android:layout_width="60dp"
             android:layout_height="match_parent"
             android:src="@drawable/ic_menu_compose"
             android:paddingLeft="15dip"

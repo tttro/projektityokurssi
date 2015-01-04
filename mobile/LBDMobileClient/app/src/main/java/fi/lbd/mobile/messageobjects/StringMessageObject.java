@@ -8,7 +8,7 @@ import android.support.annotation.NonNull;
  *
  * Created by Ossi on 29.12.2014.
  */
-public class StringMessageObject extends MessageObject {
+public class StringMessageObject extends MessageObject<String> {
 
     private final String message;
 

@@ -21,4 +21,12 @@ public interface UrlReader {
      * @return
      */
     UrlResponse postJson(String url, String jsonContents);
+
+    /**
+     * DELETE command for the rest api.
+     *
+     * @param url
+     * @return
+     */
+    UrlResponse delete(String url);
 }

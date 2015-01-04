@@ -1,6 +1,12 @@
 package fi.lbd.mobile.messageobjects;
 
 import android.support.annotation.NonNull;
+import android.util.Log;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import fi.lbd.mobile.backendhandler.BasicUrlReader;
 
 /**
  *
@@ -8,7 +14,7 @@ import android.support.annotation.NonNull;
  *
  * Created by Ossi on 29.12.2014.
  */
-public abstract class MessageObject {
+public abstract class MessageObject<T> {
     private final String id;
     private final String receiver;
     private final String sender;
@@ -43,6 +49,8 @@ public abstract class MessageObject {
     public boolean isRead(){
         return this.isRead;
     }
+
+    public abstract T getMessage();
 
     @Override
     public String toString(){
