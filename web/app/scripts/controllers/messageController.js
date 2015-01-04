@@ -2,7 +2,7 @@
 
 var messageController = angular.module('messageController', []);
 
-messageController.controller('messageController', function($scope, MessageService, notify){
+messageController.controller('messageController', function($scope, $filter, MessageService, notify){
 
     var message = {
         to:'tero.taipale@lbd.net',
@@ -10,12 +10,15 @@ messageController.controller('messageController', function($scope, MessageServic
         message:''
     }
 
+    var orginalMessageList = [];
+
     $scope.showLoadingIcon = true;
     $scope.messageModel = message;
 
     MessageService.get(function(messages){
         console.log(messages);
         $scope.messageList = messages;
+        orginalMessageList = messages;
         $scope.showLoadingIcon = false;
     });
 
@@ -55,5 +58,15 @@ messageController.controller('messageController', function($scope, MessageServic
         return $scope.selectedItem === message;
     }
 
+    $scope.messageSearch = function(searchQuery) {
+        $scope.messageList = getFilteredObjectList(searchQuery);
+    }
+
+    var getFilteredObjectList = function(searchQuery){
+
+        var filteredList = $filter('filter')(orginalMessageList,{$:searchQuery},false);
+
+        return filteredList;
+    }
 
 });

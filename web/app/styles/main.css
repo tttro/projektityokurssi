@@ -99,6 +99,7 @@ header {
     padding: 0;
     border-bottom: 1px solid #ccc;
     height: 5%;
+    min-height: 35px;
 }
 header .logo {
     padding: 10px;
@@ -114,6 +115,16 @@ padding-top: 5px;
 
 header a {
     color: #184663;
+}
+.user {
+    margin-right: 20px;
+}
+.user img {
+    margin: 0 5px;
+}
+.settings{
+    margin-left: 5px;
+    margin-top: 5px;
 }
 
 .search-input, .sendmsg-form {
@@ -172,6 +183,14 @@ header a {
 .accord-title .fright{
     overflow: hidden;
 }
+.accord-title .title {
+    font-size: 13px;
+    color: #e3e3e3;
+}
+.accord-title .sender {
+    font-weight: 200;
+}
+
 
 .search-form{
     margin: 14px 0;
@@ -297,7 +316,7 @@ header a {
     -o-transition:opacity 0.1s ease-out;
     transition:opacity 0.1s ease-out;
 }
-.open .accord-title {
+.open .accord-title, .open .title {
     background: #eaeaea;
     color: #000000;
 }
@@ -360,6 +379,7 @@ header a {
     margin-bottom: 10px;
     border-bottom: 1px solid #ccc;
 }
+
 
 /* Settings */
 .single-page {

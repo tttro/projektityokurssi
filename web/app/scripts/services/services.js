@@ -2,28 +2,6 @@
 var dataServices = angular.module('dataServices', ['ngResource']);
 var dataSet = null;
 
-dataServices.factory('PlaygroundsService', function($http, appConfig, notify){
-   return {
-       get: function(){
-
-            var playgrounds = [];
-
-            $http({
-                method: 'GET',
-                url: appConfig.dataPlaygroundsUrl
-            })
-            .success(function(data){
-                playgrounds = data;
-                    console.log(data);
-            })
-            .error(function(data){
-                errorHandler(data,'playground',appConfig.dataTypeUrl,notify);
-            });
-
-           return playgrounds;
-       }
-   }
-});
 
 dataServices.factory('ObjectsService', function($http, appConfig, notify){
     return {
@@ -135,7 +113,8 @@ dataServices.factory('MessageService', function($http, appConfig,notify){
                 'type':'Message',
                 'recipient': messageObject.to,
                 'topic': messageObject.topic,
-                'message': messageObject.message
+                'message': messageObject.message,
+                'category': appConfig.dataCollectionUrl
             }
 
             $http({
@@ -144,10 +123,10 @@ dataServices.factory('MessageService', function($http, appConfig,notify){
                 data: message
             })
             .success(function(data){
-                notify('Message has been sent to ' + messageObject.to);
+                notify('A message has been sent to ' + messageObject.to);
             })
             .error(function(data,status,header,config){
-                notify('Failed to send message to ' + messageObject.to);
+                notify('A message failed to send to ' + messageObject.to);
             });
         },
         delete: function(id){
@@ -169,7 +148,7 @@ dataServices.factory('MessageService', function($http, appConfig,notify){
 });
 
 // GOOGLE SIGN IN
-dataServices.factory('AuthService', function($rootScope,$http,appConfig){
+dataServices.factory('AuthService', function($rootScope,$http,notify,appConfig){
     var user = null;
     return {
 
@@ -209,7 +188,7 @@ dataServices.factory('AuthService', function($rootScope,$http,appConfig){
                 callback(userinfo);
             })
             .error(function(data,status,header,config){
-                    errorHandler(data,'auth',appConfig.dataTypeUrl,notify);
+                errorHandler(data,'auth',appConfig.dataTypeUrl,notify);
             });
         },
         logout: function(){
