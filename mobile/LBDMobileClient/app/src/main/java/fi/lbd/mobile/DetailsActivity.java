@@ -1,11 +1,15 @@
 package fi.lbd.mobile;
 
 import android.app.Activity;
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.squareup.otto.Subscribe;
 
@@ -52,7 +56,7 @@ public class DetailsActivity extends Activity {
 
     @Subscribe
     public void onEvent (ReturnMapObjectEvent event){
-            MapObject obj = event.getMapObject();
+            final MapObject obj = event.getMapObject();
             if (obj != null){
                 this.adapter = new ListDetailsAdapter(this, obj, obj
                         .getAdditionalProperties().size(), 1, 1);
@@ -67,11 +71,30 @@ public class DetailsActivity extends Activity {
                         editNote();
                     }
                 });
+
+                // Listen to copy button press
+                findViewById(R.id.copyButton).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        copyId(obj.getId());
+                    }
+                });
             }
     }
 
-    public void editNote(){
+    private void editNote(){
         Intent intent = new Intent(this, EditNoteActivity.class);
         startActivity(intent);
+    }
+
+    private void copyId(String id){
+        ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+        ClipData clip = ClipData.newPlainText("ID", id);
+        clipboard.setPrimaryClip(clip);
+
+        Context context = getApplicationContext();
+        CharSequence dialogText = "Object id copied to clipboard";
+        int duration = Toast.LENGTH_SHORT;
+        Toast.makeText(context, dialogText, duration).show();
     }
 }

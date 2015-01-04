@@ -101,6 +101,7 @@ public class SendMessageActivity extends Activity {
             CharSequence dialogText = "Failed to send message";
             int duration = Toast.LENGTH_SHORT;
             Toast.makeText(context, dialogText, duration).show();
+            Log.d("*********", event.getReason());
         }
         else if(event.getFailedEvent() instanceof RequestUsersEvent){
             Context context = getApplicationContext();

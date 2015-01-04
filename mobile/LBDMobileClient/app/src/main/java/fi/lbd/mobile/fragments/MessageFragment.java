@@ -57,7 +57,8 @@ public class MessageFragment extends ListFragment {
             @Override
             public void onClick(View v) {
                 BusHandler.getBus().post(new RequestUserMessagesEvent());
-                progressDialog = ProgressDialog.show(getActivity(), "", "Downloading messages", true);
+                progressDialog = ProgressDialog.show(getActivity(), "", "Downloading messages...", true);
+                progressDialog.setCancelable(true);
             }
         });
 
@@ -77,6 +78,9 @@ public class MessageFragment extends ListFragment {
     public void onPause() {
         super.onPause();
         BusHandler.getBus().unregister(this);
+        if(progressDialog != null && progressDialog.isShowing()){
+            this.progressDialog.dismiss();
+        }
     }
 
 	@Override
