@@ -6,7 +6,7 @@ from mongoengine import *
 
 class Attachment(EmbeddedDocument):
     category = StringField(required=True)
-    aid = StringField(ired=True)
+    aid = StringField(requiired=True)
 
 class Message(Document):
     mid = SequenceField()
