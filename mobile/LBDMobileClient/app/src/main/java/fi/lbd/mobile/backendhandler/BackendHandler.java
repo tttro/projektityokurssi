@@ -1,13 +1,10 @@
 package fi.lbd.mobile.backendhandler;
 
-import android.support.annotation.NonNull;
-
 import java.util.List;
 
 import fi.lbd.mobile.location.PointLocation;
 import fi.lbd.mobile.mapobjects.MapObject;
-import fi.lbd.mobile.messageobjects.MessageObject;
-import fi.lbd.mobile.messageobjects.StringMessageObject;
+import fi.lbd.mobile.messaging.messageobjects.MessageObject;
 
 /**
  * Interface which defines the functions of the backend handlers.

@@ -14,16 +14,17 @@ import android.widget.Toast;
 
 import com.squareup.otto.Subscribe;
 
-import fi.lbd.mobile.MessageObjectSelectionManager;
+import fi.lbd.mobile.messaging.MessageObjectSelectionManager;
 import fi.lbd.mobile.R;
-import fi.lbd.mobile.ReadMessageActivity;
-import fi.lbd.mobile.SendMessageActivity;
+import fi.lbd.mobile.messaging.ReadMessageActivity;
+import fi.lbd.mobile.messaging.SendMessageActivity;
 import fi.lbd.mobile.adapters.MessageAdapter;
 import fi.lbd.mobile.events.BusHandler;
 import fi.lbd.mobile.events.RequestFailedEvent;
-import fi.lbd.mobile.messageobjects.events.RequestUserMessagesEvent;
-import fi.lbd.mobile.messageobjects.events.ReturnUserMessagesEvent;
-import fi.lbd.mobile.messageobjects.MessageObject;
+import fi.lbd.mobile.messaging.events.DeleteMessageFromListEvent;
+import fi.lbd.mobile.messaging.events.RequestUserMessagesEvent;
+import fi.lbd.mobile.messaging.events.ReturnUserMessagesEvent;
+import fi.lbd.mobile.messaging.messageobjects.MessageObject;
 
 
 public class MessageFragment extends ListFragment {
@@ -114,5 +115,12 @@ public class MessageFragment extends ListFragment {
                 this.progressDialog.dismiss();
             }
         }
+    }
+
+    @Subscribe
+    public void onEvent(DeleteMessageFromListEvent event){
+//        Log.d("*****DELETING", event.getMessageId());
+        adapter.deleteItem(event.getMessageId());
+        adapter.notifyDataSetChanged();
     }
 } 

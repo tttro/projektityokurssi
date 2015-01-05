@@ -66,12 +66,12 @@
             android:theme="@android:style/Theme.Holo.Light.NoActionBar" >
         </activity>
         <activity
-            android:name=".ReadMessageActivity"
+            android:name=".messaging.ReadMessageActivity"
             android:label="@string/title_activity_read_message"
             android:theme="@android:style/Theme.Holo.Light.NoActionBar" >
         </activity>
         <activity
-            android:name=".SendMessageActivity"
+            android:name=".messaging.SendMessageActivity"
             android:label="@string/title_activity_send_message"
             android:theme="@android:style/Theme.Holo.Light.NoActionBar" >
         </activity>

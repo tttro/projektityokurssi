@@ -1,12 +1,6 @@
-package fi.lbd.mobile.messageobjects;
+package fi.lbd.mobile.messaging.messageobjects;
 
 import android.support.annotation.NonNull;
-import android.util.Log;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import fi.lbd.mobile.backendhandler.BasicUrlReader;
 
 /**
  *

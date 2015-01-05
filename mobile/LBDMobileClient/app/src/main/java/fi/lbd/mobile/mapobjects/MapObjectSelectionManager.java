@@ -1,7 +1,6 @@
-package fi.lbd.mobile;
+package fi.lbd.mobile.mapobjects;
 
-import fi.lbd.mobile.mapobjects.MapObject;
-import fi.lbd.mobile.messageobjects.MessageObject;
+import fi.lbd.mobile.messaging.messageobjects.MessageObject;
 
 /**
  *

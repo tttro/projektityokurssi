@@ -1,4 +1,4 @@
-package fi.lbd.mobile;
+package fi.lbd.mobile.messaging;
 
 import android.app.Activity;
 import android.app.DialogFragment;
@@ -14,19 +14,20 @@ import android.widget.Toast;
 
 import com.squareup.otto.Subscribe;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
+import fi.lbd.mobile.R;
 import fi.lbd.mobile.events.BusHandler;
 import fi.lbd.mobile.events.RequestFailedEvent;
 import fi.lbd.mobile.events.RequestUsersEvent;
 import fi.lbd.mobile.events.ReturnUsersEvent;
-import fi.lbd.mobile.messageobjects.MessageObject;
-import fi.lbd.mobile.messageobjects.SelectReceiverDialogFragment;
-import fi.lbd.mobile.messageobjects.StringMessageObject;
-import fi.lbd.mobile.messageobjects.events.SelectReceiverEvent;
-import fi.lbd.mobile.messageobjects.events.SendMessageEvent;
-import fi.lbd.mobile.messageobjects.events.SendMessageSucceededEvent;
+import fi.lbd.mobile.location.ImmutablePointLocation;
+import fi.lbd.mobile.mapobjects.ImmutableMapObject;
+import fi.lbd.mobile.messaging.messageobjects.MessageObject;
+import fi.lbd.mobile.messaging.events.SelectReceiverEvent;
+import fi.lbd.mobile.messaging.events.SendMessageEvent;
+import fi.lbd.mobile.messaging.events.SendMessageSucceededEvent;
 
 
 public class SendMessageActivity extends Activity {
@@ -63,6 +64,7 @@ public class SendMessageActivity extends Activity {
         BusHandler.getBus().post(new RequestUsersEvent());
     }
 
+    // TODO: fix send
     public void onSendClick(View view){
         View rootView = findViewById(android.R.id.content);
         String receiver = (String)(((TextView)rootView.findViewById(R.id.textViewReceiver)).getText());
@@ -71,7 +73,9 @@ public class SendMessageActivity extends Activity {
 
         if(receiver != null && title != null && message != null && receiver.length()>0
              && title.length()>0 && message.length() > 0){
-            SendMessageEvent<String> sendMessageEvent = new SendMessageEvent<>(receiver, title, message, null);
+            SendMessageEvent<String> sendMessageEvent = new SendMessageEvent<>(receiver, title, message,
+                    new ImmutableMapObject(false, "TEST_ID_1231", new ImmutablePointLocation(10, 10),
+                            new HashMap<String, String>(), new HashMap<String, String>()));
             BusHandler.getBus().post(sendMessageEvent);
             Log.d("********", "Sending message");
             Log.d("******** Receiver", receiver);

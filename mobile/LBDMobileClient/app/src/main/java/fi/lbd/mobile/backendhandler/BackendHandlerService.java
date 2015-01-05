@@ -35,17 +35,17 @@ import fi.lbd.mobile.mapobjects.events.ReturnNearObjectsEvent;
 import fi.lbd.mobile.mapobjects.events.ReturnObjectsInAreaEvent;
 import fi.lbd.mobile.mapobjects.events.ReturnSearchResultEvent;
 import fi.lbd.mobile.mapobjects.events.SearchObjectsEvent;
-import fi.lbd.mobile.messageobjects.MessageObject;
-import fi.lbd.mobile.messageobjects.events.DeleteMessageEvent;
-import fi.lbd.mobile.messageobjects.events.DeleteMessageSucceededEvent;
+import fi.lbd.mobile.messaging.messageobjects.MessageObject;
+import fi.lbd.mobile.messaging.events.DeleteMessageEvent;
+import fi.lbd.mobile.messaging.events.DeleteMessageSucceededEvent;
 import fi.lbd.mobile.events.RequestCollectionsEvent;
-import fi.lbd.mobile.messageobjects.events.RequestUserMessagesEvent;
+import fi.lbd.mobile.messaging.events.RequestUserMessagesEvent;
 import fi.lbd.mobile.events.RequestUsersEvent;
 import fi.lbd.mobile.events.ReturnCollectionsEvent;
-import fi.lbd.mobile.messageobjects.events.ReturnUserMessagesEvent;
+import fi.lbd.mobile.messaging.events.ReturnUserMessagesEvent;
 import fi.lbd.mobile.events.ReturnUsersEvent;
-import fi.lbd.mobile.messageobjects.events.SendMessageEvent;
-import fi.lbd.mobile.messageobjects.events.SendMessageSucceededEvent;
+import fi.lbd.mobile.messaging.events.SendMessageEvent;
+import fi.lbd.mobile.messaging.events.SendMessageSucceededEvent;
 
 /**
  * Service which interacts with the backend handler. Communication is done through OTTO-bus.

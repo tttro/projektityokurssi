@@ -1,4 +1,4 @@
-package fi.lbd.mobile.messageobjects;
+package fi.lbd.mobile.messaging;
 
 import android.app.DialogFragment;
 import android.os.Bundle;
@@ -13,7 +13,7 @@ import java.util.List;
 
 import fi.lbd.mobile.R;
 import fi.lbd.mobile.events.BusHandler;
-import fi.lbd.mobile.messageobjects.events.SelectReceiverEvent;
+import fi.lbd.mobile.messaging.events.SelectReceiverEvent;
 
 /**
  * Created by Ossi on 4.1.2015.

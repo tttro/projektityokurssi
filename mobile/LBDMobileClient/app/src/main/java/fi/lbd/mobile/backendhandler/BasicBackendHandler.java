@@ -16,7 +16,7 @@ import java.util.List;
 
 import fi.lbd.mobile.location.PointLocation;
 import fi.lbd.mobile.mapobjects.MapObject;
-import fi.lbd.mobile.messageobjects.MessageObject;
+import fi.lbd.mobile.messaging.messageobjects.MessageObject;
 
 /**
  * Handles the map objects. Fetches the requested objects from backend service.

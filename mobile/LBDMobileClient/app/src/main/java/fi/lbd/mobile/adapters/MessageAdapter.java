@@ -2,7 +2,6 @@ package fi.lbd.mobile.adapters;
 
 import android.app.Activity;
 import android.content.Context;
-import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,11 +10,11 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 
 import fi.lbd.mobile.R;
-import fi.lbd.mobile.mapobjects.MapObject;
-import fi.lbd.mobile.messageobjects.MessageObject;
+import fi.lbd.mobile.messaging.messageobjects.MessageObject;
 
 /**
  * Created by tommi on 20.10.2014.
@@ -74,5 +73,15 @@ public class MessageAdapter extends BaseAdapter {
         textViewLocation.setText("FROM: " + object.getSender());
 
         return view;
+    }
+
+    public void deleteItem(String deleteId){
+        for(Iterator iterator = objects.iterator(); iterator.hasNext();){
+
+            if(((MessageObject)iterator.next()).getId().equals(deleteId)){
+       //         Log.d("********* Iterating through ", ((MessageObject)iterator).getId());
+                iterator.remove();
+            }
+        }
     }
 }

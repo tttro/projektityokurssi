@@ -1,4 +1,4 @@
-package fi.lbd.mobile.messageobjects;
+package fi.lbd.mobile.messaging.messageobjects;
 
 import android.support.annotation.NonNull;
 
