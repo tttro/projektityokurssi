@@ -43,16 +43,17 @@
         android:text="Tero Teekkari"
         android:id="@+id/textViewSender"
         android:textSize="14dp"
-        android:textStyle="italic"/>
+        android:textStyle="italic"
+        android:textIsSelectable="true"/>
 
-     <TextView
+    <TextView
+        android:id="@+id/textView"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
         android:text="Title:"
-        android:id="@+id/textView"
-         android:layout_marginTop="15dp"
-        android:textSize="14dp"
-        android:textAllCaps="true"/>
+        android:textAllCaps="true"
+        android:textSize="14dp"/>
 
     <TextView
         android:layout_width="fill_parent"
@@ -60,7 +61,8 @@
         android:text="Fix request"
         android:id="@+id/textViewTopic"
         android:textSize="14dp"
-        android:textStyle="italic"/>
+        android:textStyle="italic"
+        android:textIsSelectable="true"/>
 
     <TextView
         android:layout_width="fill_parent"
@@ -81,7 +83,8 @@
             android:layout_height="wrap_content"
             android:text="Please go fix this lamp."
             android:id="@+id/textViewMessageContents"
-            android:textSize="14dp"/>
+            android:textSize="14dp"
+            android:textIsSelectable="true"/>
     </ScrollView>
 
     </LinearLayout>

@@ -48,9 +48,11 @@ public class SendMessageActivity extends Activity {
         if(getIntent().getSerializableExtra("Replying") != null &&
                 (boolean)getIntent().getSerializableExtra("Replying") == true){
             MessageObject object = MessageObjectSelectionManager.get().getSelectedMessageObject();
-            View rootView = findViewById(android.R.id.content);
-            ((TextView)rootView.findViewById(R.id.textViewReceiver)).setText(object.getSender());
-            ((TextView)rootView.findViewById(R.id.textViewTitle)).setText("RE: " + object.getTopic());
+            if(object != null) {
+                View rootView = findViewById(android.R.id.content);
+                ((TextView) rootView.findViewById(R.id.textViewReceiver)).setText(object.getSender());
+                ((TextView) rootView.findViewById(R.id.textViewTitle)).setText("RE: " + object.getTopic());
+            }
         }
     }
 

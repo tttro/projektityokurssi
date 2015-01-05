@@ -40,6 +40,7 @@ public class MessageFragment extends ListFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.adapter = new MessageAdapter(this.getActivity());
+        setListAdapter(this.adapter);
     }
 
     @Override
@@ -65,14 +66,12 @@ public class MessageFragment extends ListFragment {
             }
         });
 
-        BusHandler.getBus().post(new RequestUserMessagesEvent());
         return view;
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        setListAdapter(this.adapter);
         BusHandler.getBus().register(this);
     }
 
@@ -87,9 +86,12 @@ public class MessageFragment extends ListFragment {
 
 	@Override
     public void onListItemClick(ListView l, View v, int position, long id) {
-        MessageObjectSelectionManager.get().setSelectedMessageObject(this.adapter.get(position));
-        Intent intent = new Intent(getActivity(), ReadMessageActivity.class);
-        startActivity(intent);
+        MessageObject object = this.adapter.get(position);
+        if(object != null) {
+            MessageObjectSelectionManager.get().setSelectedMessageObject(object);
+            Intent intent = new Intent(getActivity(), ReadMessageActivity.class);
+            startActivity(intent);
+        }
 	}
 
     @Subscribe
@@ -97,21 +99,8 @@ public class MessageFragment extends ListFragment {
         // TODO: More efficient way to comparison (using sets?)
         List<MessageObject> newMessageObjects = event.getMessageObjects();
         List<MessageObject> oldMessageObjects = adapter.getObjects();
-        boolean isIdentical = true;
-        for(MessageObject newObject : newMessageObjects){
-            int iterator = 0;
-            for(MessageObject oldObject : oldMessageObjects){
-                if(oldObject.equals(newObject)){
-                    break;
-                }
-                ++iterator;
-            }
-            if(iterator == oldMessageObjects.size()){
-                isIdentical = false;
-                break;
-            }
-        }
-        if(!isIdentical) {
+
+        if(!areMessageListsIdentical(oldMessageObjects, newMessageObjects)) {
             this.adapter.clear();
             this.adapter.addAll(event.getMessageObjects());
             this.adapter.notifyDataSetChanged();
@@ -143,8 +132,29 @@ public class MessageFragment extends ListFragment {
 
     @Subscribe
     public void onEvent(DeleteMessageFromListEvent event){
-//        Log.d("*****DELETING", event.getMessageId());
-        adapter.deleteItem(event.getMessageId());
-        adapter.notifyDataSetChanged();
+        if(event.getMessageId() != null) {
+            Log.d("*****Deleting message with ID ", event.getMessageId());
+            adapter.deleteItem(event.getMessageId());
+            adapter.notifyDataSetChanged();
+        }
+    }
+
+    private boolean areMessageListsIdentical(List<MessageObject> oldMessageObjects,
+                                     List<MessageObject> newMessageObjects){
+        boolean areIdentical = true;
+        for(MessageObject newObject : newMessageObjects){
+            int iterator = 0;
+            for(MessageObject oldObject : oldMessageObjects){
+                if(oldObject.equals(newObject)){
+                    break;
+                }
+                ++iterator;
+            }
+            if(iterator == oldMessageObjects.size()){
+                areIdentical = false;
+                break;
+            }
+        }
+        return areIdentical;
     }
 } 

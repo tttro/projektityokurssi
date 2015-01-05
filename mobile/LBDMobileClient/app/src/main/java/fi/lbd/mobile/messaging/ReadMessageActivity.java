@@ -28,10 +28,12 @@ public class ReadMessageActivity extends Activity {
 
         StringMessageObject object = (StringMessageObject) MessageObjectSelectionManager.get()
                 .getSelectedMessageObject();
-        View rootView = findViewById(android.R.id.content);
-        ((TextView)rootView.findViewById(R.id.textViewSender)).setText(object.getSender());
-        ((TextView)rootView.findViewById(R.id.textViewTopic)).setText(object.getTopic());
-        ((TextView)rootView.findViewById(R.id.textViewMessageContents)).setText(object.getMessage());
+        if(object != null) {
+            View rootView = findViewById(android.R.id.content);
+            ((TextView) rootView.findViewById(R.id.textViewSender)).setText(object.getSender());
+            ((TextView) rootView.findViewById(R.id.textViewTopic)).setText(object.getTopic());
+            ((TextView) rootView.findViewById(R.id.textViewMessageContents)).setText(object.getMessage());
+        }
     }
 
     @Override
@@ -63,7 +65,7 @@ public class ReadMessageActivity extends Activity {
 
     @Subscribe
     public void onEvent(DeleteMessageSucceededEvent event){
-        BusHandler.getBus().post(new RequestUserMessagesEvent());
+     //   BusHandler.getBus().post(new RequestUserMessagesEvent());
         Context context = getApplicationContext();
         CharSequence dialogText = "Message deleted";
         int duration = Toast.LENGTH_SHORT;
