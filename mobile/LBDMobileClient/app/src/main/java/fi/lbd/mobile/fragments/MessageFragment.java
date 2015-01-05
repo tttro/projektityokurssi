@@ -14,6 +14,8 @@ import android.widget.Toast;
 
 import com.squareup.otto.Subscribe;
 
+import java.util.List;
+
 import fi.lbd.mobile.messaging.MessageObjectSelectionManager;
 import fi.lbd.mobile.R;
 import fi.lbd.mobile.messaging.ReadMessageActivity;
@@ -64,7 +66,6 @@ public class MessageFragment extends ListFragment {
         });
 
         BusHandler.getBus().post(new RequestUserMessagesEvent());
-
         return view;
     }
 
@@ -93,13 +94,36 @@ public class MessageFragment extends ListFragment {
 
     @Subscribe
     public void onEvent(ReturnUserMessagesEvent event) {
-        this.adapter.clear();
-        this.adapter.addAll(event.getMessageObjects());
-        for (MessageObject message : event.getMessageObjects()) {
-            Log.d(this.getClass().getSimpleName(), "Message: "+ message);
+        // TODO: More efficient way to comparison (using sets?)
+        List<MessageObject> newMessageObjects = event.getMessageObjects();
+        List<MessageObject> oldMessageObjects = adapter.getObjects();
+        boolean isIdentical = true;
+        for(MessageObject newObject : newMessageObjects){
+            int iterator = 0;
+            for(MessageObject oldObject : oldMessageObjects){
+                if(oldObject.equals(newObject)){
+                    break;
+                }
+                ++iterator;
+            }
+            if(iterator == oldMessageObjects.size()){
+                isIdentical = false;
+                break;
+            }
         }
-        this.adapter.notifyDataSetChanged();
-        if(progressDialog != null && progressDialog.isShowing()) {
+        if(!isIdentical) {
+            this.adapter.clear();
+            this.adapter.addAll(event.getMessageObjects());
+            this.adapter.notifyDataSetChanged();
+            for (MessageObject message : event.getMessageObjects()) {
+                Log.d(this.getClass().getSimpleName(), "Message: " + message);
+            }
+            Context context = getActivity().getApplicationContext();
+            CharSequence dialogText = "You have a new message!";
+            int duration = Toast.LENGTH_LONG;
+            Toast.makeText(context, dialogText, duration).show();
+        }
+        if (progressDialog != null && progressDialog.isShowing()) {
             this.progressDialog.dismiss();
         }
     }

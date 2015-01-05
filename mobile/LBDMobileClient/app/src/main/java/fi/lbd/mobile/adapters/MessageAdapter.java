@@ -17,7 +17,7 @@ import fi.lbd.mobile.R;
 import fi.lbd.mobile.messaging.messageobjects.MessageObject;
 
 /**
- * Created by tommi on 20.10.2014.
+ * Created by Ossi on 20.12.2014.
  */
 
 // TODO: http://www.codeofaninja.com/2013/09/android-viewholder-pattern-example.html
@@ -75,11 +75,14 @@ public class MessageAdapter extends BaseAdapter {
         return view;
     }
 
+    public List<MessageObject> getObjects(){
+        return this.objects;
+    }
+
     public void deleteItem(String deleteId){
         for(Iterator iterator = objects.iterator(); iterator.hasNext();){
 
             if(((MessageObject)iterator.next()).getId().equals(deleteId)){
-       //         Log.d("********* Iterating through ", ((MessageObject)iterator).getId());
                 iterator.remove();
             }
         }

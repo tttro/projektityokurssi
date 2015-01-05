@@ -78,8 +78,19 @@
         <activity
             android:name=".EditNoteActivity"
             android:label="@string/title_activity_edit_note"
-            android:theme="@android:style/Theme.Holo.Light.NoActionBar">
+            android:theme="@android:style/Theme.Holo.Light.NoActionBar" >
         </activity>
+
+        <service
+            android:name=".messaging.messageobjects.MessageUpdateService"
+            android:enabled="true"
+            android:exported="true" >
+        </service>
+        <service
+            android:name=".messaging.MessageUpdateService"
+            android:enabled="true"
+            android:exported="true" >
+        </service>
     </application>
 
 </manifest>

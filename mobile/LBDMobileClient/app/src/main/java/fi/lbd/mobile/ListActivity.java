@@ -26,6 +26,7 @@ import fi.lbd.mobile.fragments.ObjectListFragment;
 import fi.lbd.mobile.location.LocationHandler;
 import fi.lbd.mobile.mapobjects.MapObject;
 import fi.lbd.mobile.backendhandler.BackendHandlerService;
+import fi.lbd.mobile.messaging.MessageUpdateService;
 
 
 public class ListActivity extends Activity {
@@ -53,6 +54,7 @@ public class ListActivity extends Activity {
 
         // Start the object repository service. // TODO: Missä käynnistys?
         startService(new Intent(this, BackendHandlerService.class));
+        startService(new Intent(this, MessageUpdateService.class));
 
         pageStack = new ArrayDeque<Integer>();
         pageStack.push(START_TAB);
@@ -149,6 +151,7 @@ public class ListActivity extends Activity {
     protected void onDestroy() {
         super.onDestroy();
         stopService(new Intent(this, BackendHandlerService.class)); // TODO: Missä pysäytys?
+        stopService(new Intent(this, MessageUpdateService.class));
         BusHandler.getBus().unregister(this);
     }
 
