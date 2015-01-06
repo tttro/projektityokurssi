@@ -7,6 +7,7 @@ from django.http import HttpResponse
 from django.views.decorators.http import require_http_methods
 import mongoengine
 
+from RESThandlers.HandlerInterface.Exceptions import CollectionNotInstalled
 from RESThandlers.HandlerInterface.Factory import HandlerFactory
 from lbd_backend.LBD_REST_messagedata.models import Message, Attachment
 from lbd_backend.LBD_REST_users.models import User
@@ -153,6 +154,11 @@ def msg_send(request, *args, **kwargs):
             del content_json[item]
 
         if "attachments" in content_json:
+            if not isinstance(content_json["attachments"], list):
+                return HttpResponse(status=s_codes["BAD"],
+                                            content='{"message": "Malformed MessageJSON"}',
+                                            content_type="application/json; charset=utf-8")
+
             attlist = list()
             for item in content_json["attachments"]:
                 temp = dict()
@@ -169,7 +175,15 @@ def msg_send(request, *args, **kwargs):
                     temp["aid"] = item["id"]
                     temp["category"] = item["category"]
                 except KeyError:
-                    return HttpResponse(status=s_codes["BAD"])
+                    return HttpResponse(status=s_codes["BAD"],
+                                            content='{"message": "Malformed MessageJSON"}',
+                                            content_type="application/json; charset=utf-8")
+
+                except CollectionNotInstalled:
+                    return HttpResponse(status=s_codes["BAD"],
+                                            content='{"message": "Malformed MessageJSON"}',
+                                            content_type="application/json; charset=utf-8")
+
 
                 attlist.append(temp)
             content_json["attachments"] = attlist
@@ -185,11 +199,12 @@ def msg_send(request, *args, **kwargs):
 
         if True: # PLACEHOLDER
             try:
-                attlist = list()
-                for att in content_json["attachments"]:
-                    attlist.append(Attachment(**att))
                 temp = Message(**content_json)
-                temp.attachments = attlist
+                if "attachments" in content_json:
+                    attlist = list()
+                    for att in content_json["attachments"]:
+                        attlist.append(Attachment(**att))
+                    temp.attachments = attlist
                 temp.save()
             except mongoengine.NotUniqueError:
                 return HttpResponse(status=s_codes["INTERNALERROR"])
