@@ -40,13 +40,15 @@ reasons unknown.
 
 import json
 import mongoengine
-from django.shortcuts import HttpResponse
+from django.shortcuts import HttpResponse, render_to_response
 from django.views.decorators.http import require_http_methods
 from pymongo.errors import DuplicateKeyError
 import time
+import httplib2
 
 from lbd_backend.LBD_REST_locationdata.decorators import location_collection, this_is_a_login_wrapper_dummy
 from lbd_backend.LBD_REST_locationdata.models import MetaDocument, MetaData
+from lbd_backend.LBD_REST_users.models import User
 from lbd_backend.utils import s_codes, geo_json_scheme_validation
 
 #@this_is_a_login_wrapper_dummy
@@ -134,13 +136,14 @@ def single_resource(request, *args, **kwargs):
     #############################################################
     elif request.method == "PUT":
         body = request.body
-
         try:
             content_json = json.loads(body)
         except ValueError:
             return HttpResponse(status=s_codes["BAD"])
 
+
         if geo_json_scheme_validation(content_json):
+            print "After Geo valid"
             try:
                 if handlerinterface.get_by_id(kwargs["resource"]) is None:
                     return HttpResponse(status=s_codes["NOTFOUND"])
@@ -556,7 +559,6 @@ def _addmeta(items, coll):
 
     return items
 
-
 ######################################### FOR TESTING ONLY #########################################
 
 def testing_view_popmeta(request):
@@ -589,3 +591,47 @@ def testing_view_dropmeta(request):
         return HttpResponse(status=500)
     else:
         return HttpResponse(status=200)
+
+@require_http_methods(["GET"])
+def user_exists(request, *args, **kwargs):
+    return render_to_response('registered_user_test.html')
+
+
+#This is a very simple registration method.
+#DO NOT USER THIS IN PRODUCTION!
+@require_http_methods(["POST"])
+def add_user(request, *args, **kwargs):
+    access_token = request.META["HTTP_LBD_LOGIN_HEADER"]
+
+    userid = request.META["HTTP_LBD_OAUTH_ID"]
+    url = ('https://www.googleapis.com/oauth2/v1/tokeninfo?access_token=%s' % access_token)
+    h = httplib2.Http()
+    result = json.loads(h.request(url, 'GET')[1])
+
+    # If there was an error in the access token info, abort.
+
+    if result.get('error') is not None:
+        print result
+        return HttpResponse(status=s_codes["BAD"])
+
+    if userid == result["user_id"]:
+        print "User matches"
+
+    result = json.loads(h.request('https://www.googleapis.com/oauth2/v2/userinfo',
+                                              headers={
+                                                  "Authorization": "Bearer "+ request.META["HTTP_LBD_LOGIN_HEADER"]
+                                              })[1])
+    try:
+        user = User()
+        user.user_id = request.META["HTTP_LBD_OAUTH_ID"]
+        user.email = result['email']
+        user.save()
+        return HttpResponse(status=s_codes["OK"])
+    except Exception as e:
+        template = "An exception of type {0} occured. Arguments:\n{1!r}"
+        print template.format(type(e).__name__, e.args)
+        return HttpResponse(status=s_codes["BAD"])
+
+def index(request, *args, **kwargs):
+    return render_to_response('google_auth.html')
+
