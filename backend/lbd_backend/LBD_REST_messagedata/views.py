@@ -132,8 +132,7 @@ def msg_send(request, *args, **kwargs):
         content_json = json.loads(body)
         if not ("recipient" in content_json and "topic" in content_json and "message" in content_json):
             return HttpResponse(status=s_codes["BAD"])
-        if ("attachments" in content_json and "category" not in content_json) or ("category" in content_json and
-                                                                                  "attachments" not in content_json):
+        if ("attachments" in content_json and "category" not in content_json):
             return HttpResponse(status=s_codes["BAD"])
 
         del_from_msg = list()
@@ -200,4 +199,7 @@ def _beautify_message(msg):
     msg["type"] = "Message"
     msg.pop("_id")
     msg["id"] = msg.pop("mid")
+    if "attachments" in msg:
+        for item in msg["attachments"]:
+            item["id"] = item.pop("aid")
     return msg

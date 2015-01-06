@@ -26,7 +26,7 @@
                     $('#result').html($('#result').html() + "<p>API returned google id " + data['id'] + "</p>");
                     $.ajax({
                         type: 'POST',
-                        url: 'http://localhost:8000/add_user/',
+                        url: 'https://lbdbackend.ignorelist.com/add_user/',
                         contentType: 'application/json; charset=utf-8',
                         success: function(result) {
                             $('#result').html($('#result').html() + "<p>Congratulations! You SHOULD now be registered as a location service user.</p>");

@@ -87,6 +87,7 @@ def this_is_a_login_wrapper_dummy(func):
                 else:
                     print "ERRORD!"
                     print "STATUS: " + str(response.status)
+                    return HttpResponse(status=s_codes["BAD"])
 
                 try:
                     user = User.objects.get(user_id=request.META["HTTP_LBD_OAUTH_ID"])
