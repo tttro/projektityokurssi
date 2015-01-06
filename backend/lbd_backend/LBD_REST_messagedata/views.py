@@ -38,7 +38,7 @@ def msg_single(request, *args, **kwargs):
             return HttpResponse(status=s_codes["NOTFOUND"])
 
         return HttpResponse(content=json.dumps(_beautify_message(msg)), status=s_codes["OK"],
-                            content_type="application/json")
+                            content_type="application/json; charset=utf-8")
 
     elif request.method == "DELETE":
         try:
@@ -49,7 +49,7 @@ def msg_single(request, *args, **kwargs):
         if Message.objects(recipient=userdata.email.lower(), mid=kwargs["message"]).count() == 0:
             return HttpResponse(status=s_codes["OK"])
         else:
-            return HttpResponse(status=s_codes["INTERNALERROR"], content_type="application/json",
+            return HttpResponse(status=s_codes["INTERNALERROR"], content_type="application/json; charset=utf-8",
                                 content='{"message": "Internal error. Something went wrong when '
                                         'trying to delete the message"}')
 
@@ -63,6 +63,10 @@ def msg_general(request, *args, **kwargs):
     query = dict()
     query["recipient"] = userdata.email.lower()
     if "category" in kwargs:
+        installed_categories = HandlerFactory.get_installed()
+        if kwargs["category"] not in installed_categories:
+            return HttpResponse(status=s_codes["NOTFOUND"])
+
         query["category"] = kwargs["category"]
     if "message" in kwargs:
         try:
@@ -89,13 +93,13 @@ def msg_general(request, *args, **kwargs):
             elif itemcount == 0:
                 return HttpResponse(status=s_codes["NOTFOUND"])
             else:
-                resp = items[0]
+                resp = temp[0]
         else:
             resp = _messagecollection
             resp["totalMessages"] = len(temp)
             resp["messages"] = temp
 
-        return HttpResponse(content=json.dumps(resp), status=s_codes["OK"], content_type="application/json")
+        return HttpResponse(content=json.dumps(resp), status=s_codes["OK"], content_type="application/json; charset=utf-8")
     #############################################################
     #
     # DELETE
@@ -134,9 +138,11 @@ def msg_send(request, *args, **kwargs):
         body = request.body
         content_json = json.loads(body)
         if not ("recipient" in content_json and "topic" in content_json and "message" in content_json):
-            return HttpResponse(status=s_codes["BAD"])
+            return HttpResponse(status=s_codes["BAD"], content='{"message": "Malformed MessageJSON"}',
+                                content_type="application/json; charset=utf-8")
         if ("attachments" in content_json and "category" not in content_json):
-            return HttpResponse(status=s_codes["BAD"])
+            return HttpResponse(status=s_codes["BAD"], content='{"message": "Malformed MessageJSON"}',
+                                content_type="application/json; charset=utf-8")
 
         del_from_msg = list()
         for field in content_json:
@@ -146,40 +152,36 @@ def msg_send(request, *args, **kwargs):
         for item in del_from_msg:
             del content_json[item]
 
-        del_from_att = list()
         if "attachments" in content_json:
+            attlist = list()
             for item in content_json["attachments"]:
-                delete_item = False
-                if not ("category" in item or "id" in item):
-                    return HttpResponse(status=s_codes["BAD"])
-                for fieldname in item:
-                    if fieldname not in att_fields:
-                        del_from_att.append(fieldname)
-                        delete_item = True
-
-                if not delete_item:
+                temp = dict()
+                try:
                     hf = HandlerFactory(item["category"])
                     hinterface = hf.create()
                     result = hinterface.get_by_id(item["id"])
+
                     if result is None:
                         return HttpResponse(status=s_codes["BAD"],
                                             content='{"message": "Attachment item not found"}',
-                                            content_type="application/json")
+                                            content_type="application/json; charset=utf-8")
 
-        for item in del_from_att:
-            try:
-                index = content_json["attachments"].index(item)
-                del content_json["attachments"][index]
-            except ValueError:
-                pass
+                    temp["aid"] = item["id"]
+                    temp["category"] = item["category"]
+                except KeyError:
+                    return HttpResponse(status=s_codes["BAD"])
+
+                attlist.append(temp)
+            content_json["attachments"] = attlist
 
         content_json["sender"] = userdata.email
         content_json["recipient"] = content_json["recipient"].lower()
+
         try:
             recipientdata = User.objects.get(email=content_json["recipient"])
         except mongoengine.DoesNotExist:
             return HttpResponse(content='{"message": "Recipient does not exist"}', status=s_codes["BAD"],
-                                content_type="application/json")
+                                content_type="application/json; charset=utf-8")
 
         if True: # PLACEHOLDER
             try:

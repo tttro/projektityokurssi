@@ -20,7 +20,7 @@ def list_users(request, *args, **kwargs):
         item.pop("_id")
         item.pop("user_id")
         temp.append(item)
-    return HttpResponse(content=json.dumps(temp), status=s_codes["OK"], content_type="application/json")
+    return HttpResponse(content=json.dumps(temp), status=s_codes["OK"], content_type="application/json; charset=utf-8")
 
 ### SIMPLE REGISTERATION. DO NOT USE IN PRODUCTION!
 
@@ -55,7 +55,7 @@ def add_user(request, *args, **kwargs):
         print "User matches"
     else:
         return HttpResponse(content='{"message": "Error. ID mismatch."}', status=s_codes["BAD"],
-                            content_type="application/json")
+                            content_type="application/json; charset=utf-8")
 
     result = json.loads(h.request('https://www.googleapis.com/oauth2/v2/userinfo',
                                   headers={"Authorization": "Bearer "+ request.META["HTTP_LBD_LOGIN_HEADER"]})[1])

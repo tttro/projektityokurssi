@@ -64,7 +64,7 @@ def api(request):
         v["name"] = k
         temp.append(v)
     installed_sources_json = json.dumps(temp)
-    return HttpResponse(content=installed_sources_json, content_type="application/json")
+    return HttpResponse(content=installed_sources_json, content_type="application/json; charset=utf-8")
 
 
 
@@ -119,7 +119,7 @@ def single_resource(request, *args, **kwargs):
             if metatemp is not None:
                 datatemp["properties"]["metadata"] = metatemp["meta_data"]
 
-            return HttpResponse(status=s_codes["OK"], content_type="application/json", content=json.dumps(datatemp))
+            return HttpResponse(status=s_codes["OK"], content_type="application/json; charset=utf-8", content=json.dumps(datatemp))
 
     #############################################################
     #
@@ -237,7 +237,7 @@ def collection(request, *args, **kwargs):
         if not mini:
             items = _addmeta(items, colle)
 
-        return HttpResponse(content=json.dumps(items), status=s_codes["OK"], content_type="application/json")
+        return HttpResponse(content=json.dumps(items), status=s_codes["OK"], content_type="application/json; charset=utf-8")
 
     #############################################################
     #
@@ -383,7 +383,7 @@ def collection_near(request, *args, **kwargs):
         if items is not None:
             if not mini:
                 items = _addmeta(items, colle)
-            return HttpResponse(status=s_codes["OK"], content=json.dumps(items), content_type="application/json")
+            return HttpResponse(status=s_codes["OK"], content=json.dumps(items), content_type="application/json; charset=utf-8")
         else:
             return HttpResponse(status=s_codes["NOTFOUND"])
 
@@ -471,7 +471,7 @@ def collection_inarea(request, *args, **kwargs):
             if not mini:
                 items = _addmeta(items, colle)
 
-            return HttpResponse(status=s_codes["OK"], content=json.dumps(items), content_type="application/json")
+            return HttpResponse(status=s_codes["OK"], content=json.dumps(items), content_type="application/json; charset=utf-8")
         else:
             return HttpResponse(status=s_codes["NOTFOUND"])
 
