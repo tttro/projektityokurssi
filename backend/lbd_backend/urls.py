@@ -4,19 +4,18 @@
     :platform: Unix, Windows
     :synopsis: This module handles http requests related to location data.
 """
-from lbd_backend.LBD_REST_messagedata.views import msg_collection, msg_send
-from lbd_backend.LBD_REST_users.views import list_users
 
 __author__ = 'Aki Mäkinen'
 
-
 from django.conf.urls import patterns, url
-from lbd_backend.LBD_REST_locationdata.views import single_resource, collection, \
-    collection_near, collection_inarea, testing_view_popmeta, testing_view_dropmeta, search_from_rest, api, add_user, \
-    index, user_exists
-
 from django.contrib import admin
 from django.conf import settings
+
+from lbd_backend.LBD_REST_locationdata.views import single_resource, collection, \
+    collection_near, collection_inarea, testing_view_popmeta, testing_view_dropmeta, search_from_rest, api
+from lbd_backend.LBD_REST_messagedata.views import msg_general, msg_send, msg_category
+from lbd_backend.LBD_REST_users.views import list_users, user_exists, add_user, index
+
 
 admin.autodiscover()
 
@@ -29,16 +28,12 @@ urlpatterns = patterns('',
     url(r'^locationdata/api/(?P<collection>\w+)/inarea/$', collection_inarea),
     url(r'^locationdata/api/(?P<collection>\w+)/search/$', search_from_rest),
 
-    # url(r'^messages/api/(?P<collection>\w+)$', stub),
-    # url(r'^messages/api/(?P<collection>\w+)/(?P<message>\w+)$', stub),
-
-
-
-    url(r'^messagedata/api/messages/$', msg_collection),
     url(r'^messagedata/api/send/$', msg_send),
     url(r'^messagedata/api/users/list/$', list_users),
-    # url(r'^messagedata/api/(?P<collection>\w+)/(?P<message>\w+)$', stub),
-    # url(r'^messagedata/api/(?P<collection>\w+)/(?P<category>\w+)$', stub),
+    url(r'^messagedata/api/messages/$', msg_general),
+    url(r'^messagedata/api/messages/(?P<message>\w+)$', msg_general),
+    url(r'^messagedata/api/messages/(?P<category>\w+)/$', msg_general),
+    url(r'^messagedata/api/messages/(?P<category>\w+)/(?P<message>\w+)$', msg_general),
 )
 
 if settings.TESTING_URLS:

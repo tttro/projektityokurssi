@@ -26,12 +26,15 @@
                     $('#result').html($('#result').html() + "<p>API returned google id " + data['id'] + "</p>");
                     $.ajax({
                         type: 'POST',
-                        url: 'http://127.0.0.1:8000/add_user/',
+                        url: 'http://localhost:8000/add_user/',
                         contentType: 'application/json; charset=utf-8',
                         success: function(result) {
                             $('#result').html($('#result').html() + "<p>Congratulations! You SHOULD now be registered as a location service user.</p>");
                         },                        
-                        error: function() { alert('err'); },
+                        error: function(result) {
+                            console.log(result);
+                            alert('err');
+                        },
                         processData: false,
                         beforeSend: function (request) { 
                             $('#result').html($('#result').html() + "<p>Now sending access token and google id to backend</p>");
@@ -74,7 +77,7 @@
     <span
     class="g-signin"
     data-callback="signInCallback"
-    data-clientid="561371657443-clfpgostcgejj669qs9hu5f7hh9oetv5.apps.googleusercontent.com"
+    data-clientid="228334631320-k85qp7t0gk84oa66vk02ulj9drem55di.apps.googleusercontent.com"
     data-cookiepolicy="single_host_origin"
     data-scope="profile email"
     </span>
