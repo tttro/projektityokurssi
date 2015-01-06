@@ -30,10 +30,12 @@ public class StartupActivity extends Activity {
         String url = settings.getString(BACKEND_URL, null);
         String collection = settings.getString(OBJECT_COLLECTION, null);
 
+        // If no previous settings were found, move the user to SettingsActivity
         if(url == null || collection == null){
             Intent intent = new Intent(this, SettingsActivity.class);
             startActivity(intent);
         }
+        // Else go straight to ListActivity
         else {
             // TODO: selvitä
             if(collection.equals("Ring around the rosie")){
