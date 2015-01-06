@@ -169,7 +169,7 @@ public class BackendHandlerService extends Service {
             public void run() {
                 Log.d(this.getClass().getSimpleName(), "RequestNearObjectsEvent: "+ event.getLocation());
 
-                HandlerResponse<MapObject> response = backendHandler.getObjectsNearLocation(ApplicationDetails.get().getCurrentCategory(),
+                HandlerResponse<MapObject> response = backendHandler.getObjectsNearLocation(ApplicationDetails.get().getCurrentCollection(),
                         event.getLocation(), event.getRange(), event.isMinimized());
                 if (response.isOk()) {
                     BusHandler.getBus().post(new ReturnNearObjectsEvent(response.getObjects()));
@@ -194,7 +194,7 @@ public class BackendHandlerService extends Service {
             @Override
             public void run() {
                 Log.d(this.getClass().getSimpleName(), "RequestObjectsInAreaEvent: "+ event.getSouthWest() + event.getNorthEast());
-                HandlerResponse<MapObject> response = backendHandler.getObjectsInArea(ApplicationDetails.get().getCurrentCategory(),
+                HandlerResponse<MapObject> response = backendHandler.getObjectsInArea(ApplicationDetails.get().getCurrentCollection(),
                         event.getSouthWest(), event.getNorthEast(), event.isMinimized());
                 if (response.isOk()) {
                     BusHandler.getBus().post(new ReturnObjectsInAreaEvent(event.getSouthWest(), event.getNorthEast(), response.getObjects()));
@@ -221,7 +221,7 @@ public class BackendHandlerService extends Service {
             public void run() {
                 if (backendHandler instanceof CachingBackendHandler) {
                     Log.d(this.getClass().getSimpleName(), "CacheObjectsInAreaEvent: "+ event.getSouthWest() + event.getNorthEast());
-                    HandlerResponse<MapObject> response = backendHandler.getObjectsInArea(ApplicationDetails.get().getCurrentCategory(),
+                    HandlerResponse<MapObject> response = backendHandler.getObjectsInArea(ApplicationDetails.get().getCurrentCollection(),
                             event.getSouthWest(), event.getNorthEast(), event.isMinimized());
                     if (response.isOk()) {
                         Log.d(this.getClass().getSimpleName(), "CacheObjectsInAreaEvent: Sent OK response.");
@@ -247,7 +247,7 @@ public class BackendHandlerService extends Service {
             @Override
             public void run() {
                 Log.d(this.getClass().getSimpleName(), "RequestMapObjectEvent: "+ event.getId());
-                HandlerResponse<MapObject> response = backendHandler.getMapObject(ApplicationDetails.get().getCurrentCategory(), event.getId());
+                HandlerResponse<MapObject> response = backendHandler.getMapObject(ApplicationDetails.get().getCurrentCollection(), event.getId());
                 if (response.isOk()) {
                     MapObject obj = (response.getObjects().size() > 0) ? response.getObjects().get(0) : null;
                     BusHandler.getBus().post(new ReturnMapObjectEvent(obj));
@@ -272,7 +272,7 @@ public class BackendHandlerService extends Service {
             @Override
             public void run() {
                 Log.d(this.getClass().getSimpleName(), "SearchObjectsEvent");
-                HandlerResponse<MapObject> response = backendHandler.getObjectsFromSearch(ApplicationDetails.get().getCurrentCategory(),
+                HandlerResponse<MapObject> response = backendHandler.getObjectsFromSearch(ApplicationDetails.get().getCurrentCollection(),
                         event.getFromFields(), event.getSearchString(), event.getLimit(), event.isMini());
 
                 if (response.isOk()) {
@@ -324,7 +324,7 @@ public class BackendHandlerService extends Service {
             @Override
             public void run(){
                 Log.d(this.getClass().getSimpleName(), "RequestCollectionsEvent");
-                HandlerResponse<String> response = backendHandler.getCollections();
+                HandlerResponse<String> response = backendHandler.getCollections(event.getUrl());
 
                 if (response.isOk()) {
                     BusHandler.getBus().post(new ReturnCollectionsEvent(response.getObjects()));
@@ -377,7 +377,7 @@ public class BackendHandlerService extends Service {
             public void run() {
                 Log.d(this.getClass().getSimpleName(), "SendMessageEvent");
 
-                HandlerResponse<MessageObject> response = backendHandler.postMessage(ApplicationDetails.get().getCurrentCategory(),
+                HandlerResponse<MessageObject> response = backendHandler.postMessage(ApplicationDetails.get().getCurrentCollection(),
                         event.getReceiver(), event.getTopic(), event.getMessage(), event.getObjectAttachments());
 
                 if (response.isOk()) {
@@ -405,7 +405,7 @@ public class BackendHandlerService extends Service {
             public void run() {
                 Log.d(this.getClass().getSimpleName(), "DeleteMessageEvent");
 
-                HandlerResponse<MessageObject> response = backendHandler.deleteMessage(ApplicationDetails.get().getCurrentCategory(),
+                HandlerResponse<MessageObject> response = backendHandler.deleteMessage(ApplicationDetails.get().getCurrentCollection(),
                         event.getMessageId());
 
                 if (response.isOk()) {

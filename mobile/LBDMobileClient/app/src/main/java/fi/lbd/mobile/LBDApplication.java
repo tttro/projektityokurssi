@@ -1,12 +1,15 @@
 package fi.lbd.mobile;
 
 import android.app.Application;
+import android.content.Intent;
 import android.util.Log;
 
+import fi.lbd.mobile.backendhandler.BackendHandlerService;
 import fi.lbd.mobile.events.BusHandler;
 import fi.lbd.mobile.mapobjects.MapObjectSelectionManager;
 import fi.lbd.mobile.messaging.MessageObjectDeletionManager;
 import fi.lbd.mobile.messaging.MessageObjectSelectionManager;
+import fi.lbd.mobile.messaging.MessageUpdateService;
 
 /**
  * Created by Tommi.
@@ -28,10 +31,9 @@ public class LBDApplication extends Application {
         MessageObjectDeletionManager.initialize();
         ApplicationDetails.initialize();
         ApplicationDetails.get().setUserId("108363990223992898018"); // TODO: FIXME
-        ApplicationDetails.get().setCurrentCategory(getString(R.string.source_type)); // TODO: FIXME
+        //ApplicationDetails.get().setCurrentCollection(getString(R.string.streetlights)); // TODO: FIXME
 
         Log.d("MAIN APPLICATION CONTEXT-----------", "ALL INITIALIZED");
     }
-
 }
 

@@ -218,9 +218,9 @@ public class BasicBackendHandler implements BackendHandler {
     }
 
     @Override
-    public HandlerResponse<String> getCollections(){
-        String url = this.baseObjectUrl;
-        UrlResponse response = this.getUrl(url, RETRY_AMOUNT);
+    public HandlerResponse<String> getCollections(String url){
+        //String url = this.baseObjectUrl;
+        UrlResponse response = this.getUrl(url+"locationdata/api/", RETRY_AMOUNT);
 
         // Only if the url returns code 200, we can parse the results.
         if (response != null && response.getStatus() == UrlResponse.ResponseStatus.STATUS_200) {

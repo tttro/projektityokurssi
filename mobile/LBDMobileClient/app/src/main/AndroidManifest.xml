@@ -19,28 +19,22 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
 
-        <!-- <activity -->
-        <!-- android:name=".MainActivity" -->
-        <!-- android:label="@string/app_name" -->
-        <!-- android:screenOrientation="portrait" > -->
-        <!-- <intent-filter> -->
-        <!-- <action android:name="android.intent.action.MAIN" /> -->
-
-
-        <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
-        <!-- </intent-filter> -->
-        <!-- </activity> -->
+        <activity
+            android:name=".StartupActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Holo.Light.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
 
         <activity
             android:name=".ListActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Holo.Light.NoActionBar" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
 
         <!-- <activity -->
@@ -82,15 +76,16 @@
         </activity>
 
         <service
-            android:name=".messaging.messageobjects.MessageUpdateService"
-            android:enabled="true"
-            android:exported="true" >
-        </service>
-        <service
             android:name=".messaging.MessageUpdateService"
             android:enabled="true"
             android:exported="true" >
         </service>
+
+        <activity
+            android:name=".SettingsActivity"
+            android:label="@string/title_activity_settings"
+            android:theme="@android:style/Theme.Holo.Light.NoActionBar">
+        </activity>
     </application>
 
 </manifest>

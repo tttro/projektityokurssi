@@ -64,9 +64,10 @@ public interface BackendHandler {
 
     /**
      * Requests the list of object collections in the database.
+     * @param url  Backend url
      * @return
      */
-    HandlerResponse<String> getCollections();
+    HandlerResponse<String> getCollections(String url);
 
     /**
      * Request messages for the current user.
