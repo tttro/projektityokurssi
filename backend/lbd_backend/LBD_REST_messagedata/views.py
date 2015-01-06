@@ -65,7 +65,10 @@ def msg_general(request, *args, **kwargs):
     if "category" in kwargs:
         query["category"] = kwargs["category"]
     if "message" in kwargs:
-        query["mid"] = kwargs["message"]
+        try:
+            query["mid"] = int(kwargs["message"])
+        except ValueError:
+            return HttpResponse(status=s_codes["BAD"])
         single_msg = True
 
     items = Message.objects(**query).as_pymongo()
@@ -184,7 +187,7 @@ def msg_send(request, *args, **kwargs):
                 for att in content_json["attachments"]:
                     attlist.append(Attachment(**att))
                 temp = Message(**content_json)
-                temp.attachements = attlist
+                temp.attachments = attlist
                 temp.save()
             except mongoengine.NotUniqueError:
                 return HttpResponse(status=s_codes["INTERNALERROR"])

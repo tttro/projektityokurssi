@@ -13,6 +13,6 @@ class Message(Document):
     category = StringField()
     sender = EmailField(required=True)
     recipient = EmailField(required=True)
-    attachements = ListField(EmbeddedDocumentField(Attachment))
+    attachments = ListField(EmbeddedDocumentField(Attachment))
     topic = StringField(required=True)
     message = StringField(required=True)
