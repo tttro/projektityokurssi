@@ -1,6 +1,5 @@
 package fi.lbd.mobile.backendhandler;
 
-import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.fasterxml.jackson.databind.JsonNode;
@@ -13,8 +12,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import fi.lbd.mobile.messageobjects.MessageObject;
-import fi.lbd.mobile.messageobjects.StringMessageObject;
+import fi.lbd.mobile.messaging.messageobjects.MessageObject;
+import fi.lbd.mobile.messaging.messageobjects.StringMessageObject;
 
 /**
  * Created by Tommi on 20.12.2014.
@@ -46,7 +45,7 @@ public class MessageParser {
     }
 
     private static MessageObject parseMessage(JsonNode rootNode) throws IOException, JSONException {
-        List<MessageObject> messages = new ArrayList<>();
+        //List<MessageObject> messages = new ArrayList<>();
 
         Log.d(MessageParser.class.getSimpleName(), "parseMessage node NODE: "+ rootNode);
         Log.d(MessageParser.class.getSimpleName(), "parseMessage node NODE size: "+ rootNode.size());

@@ -1,4 +1,4 @@
-package fi.lbd.mobile.messageobjects.events;
+package fi.lbd.mobile.messaging.events;
 
 import fi.lbd.mobile.events.AbstractEvent;
 

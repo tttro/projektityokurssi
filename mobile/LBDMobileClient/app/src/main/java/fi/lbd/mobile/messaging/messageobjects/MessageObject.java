@@ -1,12 +1,7 @@
-package fi.lbd.mobile.messageobjects;
+package fi.lbd.mobile.messaging.messageobjects;
 
 import android.support.annotation.NonNull;
 import android.util.Log;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import fi.lbd.mobile.backendhandler.BasicUrlReader;
 
 /**
  *
@@ -56,4 +51,7 @@ public abstract class MessageObject<T> {
     public String toString(){
         return "MessageObject: id("+ this.id +") receiver("+ this.receiver +") sender("+ this.sender +") topic("+ this.topic +") isRead("+ this.isRead +")";
     }
+
+    @Override
+    abstract public boolean equals(Object object);
 }

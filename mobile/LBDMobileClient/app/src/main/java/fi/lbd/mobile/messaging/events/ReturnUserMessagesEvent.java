@@ -1,11 +1,11 @@
-package fi.lbd.mobile.messageobjects.events;
+package fi.lbd.mobile.messaging.events;
 
 import android.support.annotation.Nullable;
 
 import java.util.List;
 
 import fi.lbd.mobile.events.AbstractEvent;
-import fi.lbd.mobile.messageobjects.MessageObject;
+import fi.lbd.mobile.messaging.messageobjects.MessageObject;
 
 /**
  * Created by Tommi on 3.1.2015.

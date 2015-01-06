@@ -96,8 +96,10 @@ public class BasicUrlReader implements UrlReader {
     }
 
     private void setHeaders(AbstractHttpMessage message) {
-        message.addHeader("LBD_LOGIN_HEADER", "asdasd"); // TODO: Access token
-        message.addHeader("LBD_OAUTH_ID", ApplicationDetails.get().getUserId()); // Google id
+        if(message != null) {
+            message.addHeader("LBD_LOGIN_HEADER", "asdasd"); // TODO: Access token
+            message.addHeader("LBD_OAUTH_ID", ApplicationDetails.get().getUserId()); // Google id
+        }
     }
 
     /**
@@ -121,7 +123,13 @@ public class BasicUrlReader implements UrlReader {
      */
     @Override
 	public UrlResponse get(String url) {
-        HttpGet getObj = new HttpGet(url);
+        HttpGet getObj;
+        try {
+            getObj = new HttpGet(url);
+        } catch (Exception e){
+            e.printStackTrace();
+            getObj = null;
+        }
         setHeaders(getObj);
 	    return this.process(getObj); // If the url reading fails, null is returned.
 	}

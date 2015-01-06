@@ -1,4 +1,4 @@
-package fi.lbd.mobile;
+package fi.lbd.mobile.messaging;
 
 import android.app.Activity;
 import android.content.Context;
@@ -10,12 +10,13 @@ import android.widget.Toast;
 
 import com.squareup.otto.Subscribe;
 
+import fi.lbd.mobile.R;
 import fi.lbd.mobile.events.BusHandler;
 import fi.lbd.mobile.events.RequestFailedEvent;
-import fi.lbd.mobile.messageobjects.StringMessageObject;
-import fi.lbd.mobile.messageobjects.events.DeleteMessageEvent;
-import fi.lbd.mobile.messageobjects.events.DeleteMessageSucceededEvent;
-import fi.lbd.mobile.messageobjects.events.RequestUserMessagesEvent;
+import fi.lbd.mobile.messaging.events.DeleteMessageEvent;
+import fi.lbd.mobile.messaging.events.DeleteMessageSucceededEvent;
+import fi.lbd.mobile.messaging.events.RequestUserMessagesEvent;
+import fi.lbd.mobile.messaging.messageobjects.StringMessageObject;
 
 
 public class ReadMessageActivity extends Activity {
@@ -27,10 +28,12 @@ public class ReadMessageActivity extends Activity {
 
         StringMessageObject object = (StringMessageObject) MessageObjectSelectionManager.get()
                 .getSelectedMessageObject();
-        View rootView = findViewById(android.R.id.content);
-        ((TextView)rootView.findViewById(R.id.textViewSender)).setText(object.getSender());
-        ((TextView)rootView.findViewById(R.id.textViewTopic)).setText(object.getTopic());
-        ((TextView)rootView.findViewById(R.id.textViewMessageContents)).setText(object.getMessage());
+        if(object != null) {
+            View rootView = findViewById(android.R.id.content);
+            ((TextView) rootView.findViewById(R.id.textViewSender)).setText(object.getSender());
+            ((TextView) rootView.findViewById(R.id.textViewTopic)).setText(object.getTopic());
+            ((TextView) rootView.findViewById(R.id.textViewMessageContents)).setText(object.getMessage());
+        }
     }
 
     @Override
@@ -62,11 +65,15 @@ public class ReadMessageActivity extends Activity {
 
     @Subscribe
     public void onEvent(DeleteMessageSucceededEvent event){
-        BusHandler.getBus().post(new RequestUserMessagesEvent());
+     //   BusHandler.getBus().post(new RequestUserMessagesEvent());
         Context context = getApplicationContext();
         CharSequence dialogText = "Message deleted";
         int duration = Toast.LENGTH_SHORT;
         Toast.makeText(context, dialogText, duration).show();
+
+        MessageObjectDeletionManager manager = MessageObjectDeletionManager.get();
+        manager.setDeletedMessageObject(event.getOriginalEvent().getMessageId());
+        manager.deleteMessageFromList();
         onBackPressed();
     }
 

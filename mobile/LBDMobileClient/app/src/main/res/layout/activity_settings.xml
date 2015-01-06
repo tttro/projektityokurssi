@@ -1,0 +1,137 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    tools:context="fi.lbd.mobile.SettingsActivity">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Settings"
+        android:id="@+id/textView2"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="1. Select Backend URL:"
+        android:id="@+id/textView4"
+        android:textSize="14dp"
+        android:textAllCaps="true"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="30dp"
+        android:layout_below="@+id/textView2"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Empty"
+        android:id="@+id/backendUrlText"
+        android:textSize="14dp"
+        android:inputType="textUri"
+        android:singleLine="true"
+        android:layout_marginEnd="60dp"
+        android:layout_marginRight="60dp"
+        android:layout_marginBottom="20dp"
+        android:layout_below="@+id/textView4"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:text="https://lbdbackend.ignorelist.com/"/>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_gravity="center_horizontal"
+        android:padding="20dp"
+        android:id="@+id/linearLayout2"
+        android:layout_below="@+id/backendUrlText"
+        android:layout_centerHorizontal="true">
+        <Button
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:text="LOAD URL"
+            android:background="@color/button_background"
+            android:id="@+id/loadButton"
+            android:minHeight="30dp"
+            android:textSize="6pt"
+            android:onClick="onLoadClick"
+            android:textColor="@color/white_text" />
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="2. Select object collection: "
+        android:id="@+id/collectionText"
+        android:textSize="14dp"
+        android:textAllCaps="true"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="30dp"
+        android:layout_below="@+id/linearLayout2" />
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:layout_below="@+id/collectionText"
+    android:layout_centerHorizontal="true"
+    android:id="@+id/linearLayout3">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/scrollView"
+            android:layout_gravity="center_horizontal"
+            android:layout_weight="20">
+
+            <RadioGroup
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/radioGroup"
+                android:checkedButton="@+id/emptyRadioButton">
+
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Empty"
+                    android:id="@+id/emptyRadioButton"
+                    android:layout_centerHorizontal="true" />
+
+            </RadioGroup>
+        </ScrollView>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_gravity="center_horizontal"
+        android:padding="20dp"
+        android:id="@+id/linearLayout"
+
+        android:layout_weight="1">
+        <Button
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:text="ACCEPT"
+            android:background="@color/button_background"
+            android:id="@+id/acceptButton"
+            android:minHeight="30dp"
+            android:textSize="6pt"
+            android:onClick="onAcceptClick"
+            android:textColor="@color/white_text"
+            android:layout_gravity="center_horizontal" />
+    </LinearLayout>
+
+</LinearLayout>
+</RelativeLayout>

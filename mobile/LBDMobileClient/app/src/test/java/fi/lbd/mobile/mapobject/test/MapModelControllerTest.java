@@ -14,7 +14,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import fi.lbd.mobile.CustomRobolectricTestRunner;
-import fi.lbd.mobile.MapObjectSelectionManager;
+import fi.lbd.mobile.mapobjects.MapObjectSelectionManager;
 import fi.lbd.mobile.events.BusHandler;
 import fi.lbd.mobile.mapobjects.events.CacheObjectsInAreaEvent;
 import fi.lbd.mobile.mapobjects.events.RequestObjectsInAreaEvent;

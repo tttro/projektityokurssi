@@ -1,5 +1,7 @@
 package fi.lbd.mobile;
 
+import android.util.Log;
+
 /**
  * Created by Tommi on 3.1.2015.
  */
@@ -7,7 +9,8 @@ public class ApplicationDetails {
     private static ApplicationDetails singleton;
 
     private String userId;
-    private String currentCategory;
+    private String currentCollection;
+    private String currentBackendUrl;
 
     public static void initialize() {
         if (ApplicationDetails.singleton == null) {
@@ -26,13 +29,17 @@ public class ApplicationDetails {
         this.userId = userId;
     }
 
-
-    public String getCurrentCategory() {
-        return currentCategory;
+    public String getCurrentBackendUrl(){
+        return this.currentBackendUrl;
     }
-    public void setCurrentCategory(String currentCategory) {
-        this.currentCategory = currentCategory;
+    public void setCurrentBackendUrl(String currentBackendUrl){
+        this.currentBackendUrl = currentBackendUrl;
     }
 
-
+    public String getCurrentCollection() {
+        return currentCollection;
+    }
+    public void setCurrentCollection(String currentCollection) {
+        this.currentCollection = currentCollection;
+    }
 }

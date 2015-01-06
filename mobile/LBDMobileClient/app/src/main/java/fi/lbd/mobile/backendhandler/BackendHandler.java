@@ -1,13 +1,10 @@
 package fi.lbd.mobile.backendhandler;
 
-import android.support.annotation.NonNull;
-
 import java.util.List;
 
 import fi.lbd.mobile.location.PointLocation;
 import fi.lbd.mobile.mapobjects.MapObject;
-import fi.lbd.mobile.messageobjects.MessageObject;
-import fi.lbd.mobile.messageobjects.StringMessageObject;
+import fi.lbd.mobile.messaging.messageobjects.MessageObject;
 
 /**
  * Interface which defines the functions of the backend handlers.
@@ -59,6 +56,18 @@ public interface BackendHandler {
     HandlerResponse<MapObject> getObjectsFromSearch(String dataSource, List<String> fromFields, String searchString,
                                                 int limit, boolean mini);
 
+    /**
+     * Requests the list of authorized users.
+     * @return
+     */
+    HandlerResponse<String> getUsers();
+
+    /**
+     * Requests the list of object collections in the database.
+     * @param url  Backend url
+     * @return
+     */
+    HandlerResponse<String> getCollections(String url);
 
     /**
      * Request messages for the current user.

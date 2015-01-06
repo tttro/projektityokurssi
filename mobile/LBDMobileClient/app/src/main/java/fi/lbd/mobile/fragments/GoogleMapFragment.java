@@ -35,9 +35,9 @@ import java.util.List;
 import java.util.Locale;
 
 import fi.lbd.mobile.DetailsActivity;
-import fi.lbd.mobile.MessageObjectSelectionManager;
+import fi.lbd.mobile.messaging.MessageObjectSelectionManager;
 import fi.lbd.mobile.R;
-import fi.lbd.mobile.MapObjectSelectionManager;
+import fi.lbd.mobile.mapobjects.MapObjectSelectionManager;
 import fi.lbd.mobile.events.BusHandler;
 import fi.lbd.mobile.mapobjects.events.ReturnObjectsInAreaEvent;
 import fi.lbd.mobile.mapobjects.events.SelectMapObjectEvent;

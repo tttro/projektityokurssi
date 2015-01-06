@@ -17,14 +17,16 @@ import android.view.inputmethod.InputMethodManager;
 import java.util.ArrayDeque;
 import java.util.Locale;
 
+import fi.lbd.mobile.backendhandler.BackendHandlerService;
 import fi.lbd.mobile.events.BusHandler;
+import fi.lbd.mobile.mapobjects.MapObjectSelectionManager;
 import fi.lbd.mobile.mapobjects.events.SelectMapObjectEvent;
 import fi.lbd.mobile.fragments.GoogleMapFragment;
 import fi.lbd.mobile.fragments.MessageFragment;
 import fi.lbd.mobile.fragments.ObjectListFragment;
 import fi.lbd.mobile.location.LocationHandler;
 import fi.lbd.mobile.mapobjects.MapObject;
-import fi.lbd.mobile.backendhandler.BackendHandlerService;
+import fi.lbd.mobile.messaging.MessageUpdateService;
 
 
 public class ListActivity extends Activity {
@@ -47,11 +49,7 @@ public class ListActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        BusHandler.getBus().register(this);
         setContentView(R.layout.activity_list);
-
-        // Start the object repository service. // TODO: Missä käynnistys?
-        startService(new Intent(this, BackendHandlerService.class));
 
         pageStack = new ArrayDeque<Integer>();
         pageStack.push(START_TAB);
@@ -95,10 +93,14 @@ public class ListActivity extends Activity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            return true;
+        switch (id){
+            case R.id.action_settings:
+                Intent intent = new Intent(this, SettingsActivity.class);
+                startActivity(intent);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
-        return super.onOptionsItemSelected(item);
     }
 
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
@@ -148,13 +150,14 @@ public class ListActivity extends Activity {
     protected void onDestroy() {
         super.onDestroy();
         stopService(new Intent(this, BackendHandlerService.class)); // TODO: Missä pysäytys?
-        BusHandler.getBus().unregister(this);
+        stopService(new Intent(this, MessageUpdateService.class));
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         this.locationHandler.start();
+        BusHandler.getBus().register(this);
         overridePendingTransition(R.anim.fadein, R.anim.fadeout);
     }
 
@@ -162,6 +165,7 @@ public class ListActivity extends Activity {
     protected void onPause() {
         super.onPause();
         this.locationHandler.stop();
+        BusHandler.getBus().unregister(this);
         overridePendingTransition(R.anim.fadein, R.anim.fadeout);
     }
 

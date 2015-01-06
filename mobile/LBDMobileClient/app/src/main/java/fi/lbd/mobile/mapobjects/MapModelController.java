@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import fi.lbd.mobile.MapObjectSelectionManager;
 import fi.lbd.mobile.events.BusHandler;
 import fi.lbd.mobile.mapobjects.events.CacheObjectsInAreaEvent;
 import fi.lbd.mobile.mapobjects.events.RequestObjectsInAreaEvent;

@@ -14,25 +14,19 @@ import android.widget.Toast;
 
 import com.squareup.otto.Subscribe;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
-import fi.lbd.mobile.MessageObjectSelectionManager;
+import fi.lbd.mobile.messaging.MessageObjectSelectionManager;
 import fi.lbd.mobile.R;
-import fi.lbd.mobile.ReadMessageActivity;
-import fi.lbd.mobile.SendMessageActivity;
+import fi.lbd.mobile.messaging.ReadMessageActivity;
+import fi.lbd.mobile.messaging.SendMessageActivity;
 import fi.lbd.mobile.adapters.MessageAdapter;
 import fi.lbd.mobile.events.BusHandler;
 import fi.lbd.mobile.events.RequestFailedEvent;
-import fi.lbd.mobile.location.ImmutablePointLocation;
-import fi.lbd.mobile.mapobjects.ImmutableMapObject;
-import fi.lbd.mobile.messageobjects.events.DeleteMessageEvent;
-import fi.lbd.mobile.messageobjects.events.RequestUserMessagesEvent;
-import fi.lbd.mobile.messageobjects.events.ReturnUserMessagesEvent;
-import fi.lbd.mobile.messageobjects.MessageObject;
-import fi.lbd.mobile.messageobjects.StringMessageObject;
-import fi.lbd.mobile.messageobjects.events.SendMessageEvent;
+import fi.lbd.mobile.messaging.events.DeleteMessageFromListEvent;
+import fi.lbd.mobile.messaging.events.RequestUserMessagesEvent;
+import fi.lbd.mobile.messaging.events.ReturnUserMessagesEvent;
+import fi.lbd.mobile.messaging.messageobjects.MessageObject;
 
 
 public class MessageFragment extends ListFragment {
@@ -46,6 +40,7 @@ public class MessageFragment extends ListFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.adapter = new MessageAdapter(this.getActivity());
+        setListAdapter(this.adapter);
     }
 
     @Override
@@ -66,11 +61,10 @@ public class MessageFragment extends ListFragment {
             @Override
             public void onClick(View v) {
                 BusHandler.getBus().post(new RequestUserMessagesEvent());
-                progressDialog = ProgressDialog.show(getActivity(), "", "Downloading messages", true);
+                progressDialog = ProgressDialog.show(getActivity(), "", "Downloading messages...", true);
+                progressDialog.setCancelable(true);
             }
         });
-
-        BusHandler.getBus().post(new RequestUserMessagesEvent());
 
         return view;
     }
@@ -78,7 +72,6 @@ public class MessageFragment extends ListFragment {
     @Override
     public void onResume() {
         super.onResume();
-        setListAdapter(this.adapter);
         BusHandler.getBus().register(this);
     }
 
@@ -86,24 +79,40 @@ public class MessageFragment extends ListFragment {
     public void onPause() {
         super.onPause();
         BusHandler.getBus().unregister(this);
+        if(progressDialog != null && progressDialog.isShowing()){
+            this.progressDialog.dismiss();
+        }
     }
 
 	@Override
     public void onListItemClick(ListView l, View v, int position, long id) {
-        MessageObjectSelectionManager.get().setSelectedMessageObject(this.adapter.get(position));
-        Intent intent = new Intent(getActivity(), ReadMessageActivity.class);
-        startActivity(intent);
+        MessageObject object = this.adapter.get(position);
+        if(object != null) {
+            MessageObjectSelectionManager.get().setSelectedMessageObject(object);
+            Intent intent = new Intent(getActivity(), ReadMessageActivity.class);
+            startActivity(intent);
+        }
 	}
 
     @Subscribe
     public void onEvent(ReturnUserMessagesEvent event) {
-        this.adapter.clear();
-        this.adapter.addAll(event.getMessageObjects());
-        for (MessageObject message : event.getMessageObjects()) {
-            Log.d(this.getClass().getSimpleName(), "Message: "+ message);
+        // TODO: More efficient way to comparison (using sets?)
+        List<MessageObject> newMessageObjects = event.getMessageObjects();
+        List<MessageObject> oldMessageObjects = adapter.getObjects();
+
+        if(!areMessageListsIdentical(oldMessageObjects, newMessageObjects)) {
+            this.adapter.clear();
+            this.adapter.addAll(event.getMessageObjects());
+            this.adapter.notifyDataSetChanged();
+            for (MessageObject message : event.getMessageObjects()) {
+                Log.d(this.getClass().getSimpleName(), "Message: " + message);
+            }
+            Context context = getActivity().getApplicationContext();
+            CharSequence dialogText = "You have a new message!";
+            int duration = Toast.LENGTH_LONG;
+            Toast.makeText(context, dialogText, duration).show();
         }
-        this.adapter.notifyDataSetChanged();
-        if(progressDialog != null && progressDialog.isShowing()) {
+        if (progressDialog != null && progressDialog.isShowing()) {
             this.progressDialog.dismiss();
         }
     }
@@ -119,5 +128,33 @@ public class MessageFragment extends ListFragment {
                 this.progressDialog.dismiss();
             }
         }
+    }
+
+    @Subscribe
+    public void onEvent(DeleteMessageFromListEvent event){
+        if(event.getMessageId() != null) {
+            Log.d("*****Deleting message with ID ", event.getMessageId());
+            adapter.deleteItem(event.getMessageId());
+            adapter.notifyDataSetChanged();
+        }
+    }
+
+    private boolean areMessageListsIdentical(List<MessageObject> oldMessageObjects,
+                                     List<MessageObject> newMessageObjects){
+        boolean areIdentical = true;
+        for(MessageObject newObject : newMessageObjects){
+            int iterator = 0;
+            for(MessageObject oldObject : oldMessageObjects){
+                if(oldObject.equals(newObject)){
+                    break;
+                }
+                ++iterator;
+            }
+            if(iterator == oldMessageObjects.size()){
+                areIdentical = false;
+                break;
+            }
+        }
+        return areIdentical;
     }
 } 

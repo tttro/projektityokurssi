@@ -1,6 +1,7 @@
 package fi.lbd.mobile.fragments;
 
 import android.app.ListFragment;
+import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -68,6 +69,7 @@ public class ObjectListFragment extends ListFragment {
     private TextView statusText;
     private String lastStatusText = EMPTY;
     private int lastStatusBackground = 0;
+    private ProgressDialog progressDialog;
 
     // Lock and boolean variables used to prevent users from flooding the backend with searches,
     // even if they tap the location button or search button repeatedly.
@@ -170,12 +172,7 @@ public class ObjectListFragment extends ListFragment {
         this.locationHandler.addListener( new GooglePlayServicesClient.ConnectionCallbacks() {
             @Override
             public void onConnected(Bundle bundle) {
-                synchronized (LOCK) {
-                    if (!searchInProgress) {
-                        LocationTask activeTask = new LocationTask();
-                        activeTask.execute();
-                    }
-                }
+                showNearestObjects();
                 locationHandler.removeListener(this);
             }
             @Override
@@ -214,6 +211,7 @@ public class ObjectListFragment extends ListFragment {
 
         // Set active location/search task as finished, clear the status bar text
         synchronized (LOCK){
+            dismissDialog();
             Log.d("________", "onPause(). Releasing lock.");
             searchInProgress = false;
         }
@@ -271,6 +269,7 @@ public class ObjectListFragment extends ListFragment {
         this.adapter.notifyDataSetChanged();
 
         synchronized (LOCK){
+            dismissDialog();
             Log.d("__________","Locationtask results received. Releasing lock.");
             searchInProgress = false;
         }
@@ -308,6 +307,7 @@ public class ObjectListFragment extends ListFragment {
         }
 
         synchronized (LOCK){
+            dismissDialog();
             Log.d("__________","Search results received. Releasing lock.");
             searchInProgress = false;
         }
@@ -331,6 +331,7 @@ public class ObjectListFragment extends ListFragment {
         }
         this.getListView().requestLayout();
         synchronized (LOCK){
+            dismissDialog();
             Log.d("__________","Error received. Releasing lock.");
             searchInProgress = false;
         }
@@ -384,7 +385,9 @@ public class ObjectListFragment extends ListFragment {
         synchronized (LOCK) {
             if(!searchInProgress) {
                 if(searchParameter != null && searchParameter.length() > 2) {
-                    Log.d("________", "New search started");
+                    progressDialog = ProgressDialog.show(getActivity(), "", "Searching objects...", true);
+                    progressDialog.setCancelable(true);
+                    Log.d("********", "New search started");
                     searchInProgress = true;
                     ArrayList list = new ArrayList<String>();
                     list.add("id");
@@ -406,6 +409,8 @@ public class ObjectListFragment extends ListFragment {
     public void showNearestObjects() {
         synchronized (LOCK){
             if(!searchInProgress) {
+                progressDialog = ProgressDialog.show(getActivity(), "", "Locating nearest objects...", true);
+                progressDialog.setCancelable(true);
                 searchInProgress = true;
                 LocationTask activeTask = new LocationTask();
                 activeTask.execute();
@@ -454,6 +459,7 @@ public class ObjectListFragment extends ListFragment {
         protected void onPostExecute(Boolean result) {
             if(!result) {
                 synchronized (LOCK) {
+                    dismissDialog();
                     Log.d("________", "Couldn't connect to locationclient. Releasing lock.");
                     searchInProgress = false;
                     statusText.setText(LOCATION_FAILED);
@@ -461,6 +467,12 @@ public class ObjectListFragment extends ListFragment {
                     lastStatusBackground = LOCATION_BACKGROUND;
                 }
             }
+        }
+    }
+
+    private void dismissDialog(){
+        if(progressDialog != null && progressDialog.isShowing()){
+            progressDialog.dismiss();
         }
     }
  }
