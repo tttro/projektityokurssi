@@ -95,11 +95,11 @@ def msg_send(request, *args, **kwargs):
                         delete_item = True
 
                 if not delete_item:
-                    try:
-                        hf = HandlerFactory(item["category"])
-                        hinterface = hf.create()
-                        hinterface.get_by_id(item["aid"])
-                    except mongoengine.DoesNotExist:
+
+                    hf = HandlerFactory(item["category"])
+                    hinterface = hf.create()
+                    result = hinterface.get_by_id(item["aid"])
+                    if result is None:
                         return HttpResponse(status=s_codes["BAD"],
                                             content='{"message": "Attachment item not found"}',
                                             content_type="application/json")
