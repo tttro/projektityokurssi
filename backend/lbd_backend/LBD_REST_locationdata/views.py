@@ -39,22 +39,32 @@ reasons unknown.
 """
 
 import json
+import time
+
 import mongoengine
 from django.shortcuts import HttpResponse
 from django.views.decorators.http import require_http_methods
 from pymongo.errors import DuplicateKeyError
-import time
 
 from lbd_backend.LBD_REST_locationdata.decorators import location_collection, this_is_a_login_wrapper_dummy
 from lbd_backend.LBD_REST_locationdata.models import MetaDocument, MetaData
 from lbd_backend.utils import s_codes, geo_json_scheme_validation
 
+
+
+
 #@this_is_a_login_wrapper_dummy
 @require_http_methods(["GET"])
 def api(request):
     from RESThandlers.HandlerInterface.Factory import HandlerFactory
-    installed_sources_json = json.dumps(HandlerFactory.get_installed())
-    return HttpResponse(content=installed_sources_json, content_type="application/json")
+    sources = HandlerFactory.get_installed()
+    temp = list()
+    for k, v in sources.iteritems():
+        v["description"] = v["name"]
+        v["name"] = k
+        temp.append(v)
+    installed_sources_json = json.dumps(temp)
+    return HttpResponse(content=installed_sources_json, content_type="application/json; charset=utf-8")
 
 
 
@@ -109,7 +119,7 @@ def single_resource(request, *args, **kwargs):
             if metatemp is not None:
                 datatemp["properties"]["metadata"] = metatemp["meta_data"]
 
-            return HttpResponse(status=s_codes["OK"], content_type="application/json", content=json.dumps(datatemp))
+            return HttpResponse(status=s_codes["OK"], content_type="application/json; charset=utf-8", content=json.dumps(datatemp))
 
     #############################################################
     #
@@ -134,13 +144,14 @@ def single_resource(request, *args, **kwargs):
     #############################################################
     elif request.method == "PUT":
         body = request.body
-
         try:
             content_json = json.loads(body)
         except ValueError:
             return HttpResponse(status=s_codes["BAD"])
 
+
         if geo_json_scheme_validation(content_json):
+            print "After Geo valid"
             try:
                 if handlerinterface.get_by_id(kwargs["resource"]) is None:
                     return HttpResponse(status=s_codes["NOTFOUND"])
@@ -226,7 +237,7 @@ def collection(request, *args, **kwargs):
         if not mini:
             items = _addmeta(items, colle)
 
-        return HttpResponse(content=json.dumps(items), status=s_codes["OK"], content_type="application/json")
+        return HttpResponse(content=json.dumps(items), status=s_codes["OK"], content_type="application/json; charset=utf-8")
 
     #############################################################
     #
@@ -372,7 +383,7 @@ def collection_near(request, *args, **kwargs):
         if items is not None:
             if not mini:
                 items = _addmeta(items, colle)
-            return HttpResponse(status=s_codes["OK"], content=json.dumps(items), content_type="application/json")
+            return HttpResponse(status=s_codes["OK"], content=json.dumps(items), content_type="application/json; charset=utf-8")
         else:
             return HttpResponse(status=s_codes["NOTFOUND"])
 
@@ -460,7 +471,7 @@ def collection_inarea(request, *args, **kwargs):
             if not mini:
                 items = _addmeta(items, colle)
 
-            return HttpResponse(status=s_codes["OK"], content=json.dumps(items), content_type="application/json")
+            return HttpResponse(status=s_codes["OK"], content=json.dumps(items), content_type="application/json; charset=utf-8")
         else:
             return HttpResponse(status=s_codes["NOTFOUND"])
 
@@ -556,36 +567,35 @@ def _addmeta(items, coll):
 
     return items
 
-
 ######################################### FOR TESTING ONLY #########################################
-
-def testing_view_popmeta(request):
-    if "HTTP_LBD_LOGIN_HEADER" not in request.META or request.META["HTTP_LBD_LOGIN_HEADER"] != "VakaVanhaVainamoinen":
-        return HttpResponse(status=403)
-
-
-    from RESThandlers.Streetlight import models as SL
-    o = SL.Streetlights.objects()
-    MetaDocument.drop_collection()
-    templist = []
-    i = 0
-    for item in o:
-        temp = MetaDocument(
-            feature_id = item.feature_id,
-            collection = "Streetlights",
-            meta_data = MetaData(status="SNAFU", modified=int(time.time()), modifier="Seppo Sähkäri")
-        )
-        templist.append(temp)
-    MetaDocument.objects.insert(templist)
-    return HttpResponse(status=200)
-
-
-def testing_view_dropmeta(request):
-    if "HTTP_LBD_LOGIN_HEADER" not in request.META or request.META["HTTP_LBD_LOGIN_HEADER"] != "VakaVanhaVainamoinen":
-        return HttpResponse(status=403)
-
-    MetaDocument.drop_collection()
-    if MetaDocument.objects.count() > 0:
-        return HttpResponse(status=500)
-    else:
-        return HttpResponse(status=200)
+#
+# def testing_view_popmeta(request):
+#     if "HTTP_LBD_LOGIN_HEADER" not in request.META or request.META["HTTP_LBD_LOGIN_HEADER"] != "VakaVanhaVainamoinen":
+#         return HttpResponse(status=403)
+#
+#
+#     from RESThandlers.Streetlight import models as SL
+#     o = SL.Streetlights.objects()
+#     MetaDocument.drop_collection()
+#     templist = []
+#     i = 0
+#     for item in o:
+#         temp = MetaDocument(
+#             feature_id = item.feature_id,
+#             collection = "Streetlights",
+#             meta_data = MetaData(status="SNAFU", modified=int(time.time()), modifier="Seppo Sähkäri")
+#         )
+#         templist.append(temp)
+#     MetaDocument.objects.insert(templist)
+#     return HttpResponse(status=200)
+#
+#
+# def testing_view_dropmeta(request):
+#     if "HTTP_LBD_LOGIN_HEADER" not in request.META or request.META["HTTP_LBD_LOGIN_HEADER"] != "VakaVanhaVainamoinen":
+#         return HttpResponse(status=403)
+#
+#     MetaDocument.drop_collection()
+#     if MetaDocument.objects.count() > 0:
+#         return HttpResponse(status=500)
+#     else:
+#         return HttpResponse(status=200)

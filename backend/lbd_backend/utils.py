@@ -11,6 +11,7 @@ __author__ = 'Aki Mäkinen'
 s_codes = {
     "OK": 200,
     "BAD": 400,
+    "UNAUTH": 401,
     "FORBIDDEN": 403,
     "NOTFOUND": 404,
     "METHODNOTALLOWED": 405,

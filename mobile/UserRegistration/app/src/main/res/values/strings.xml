@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">User Registration</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="register">Push the Google+ sign-in button to register to the LBD service</string>
+    <string name="revoke">Revoke access</string>
+    <string name="sign_out">Sign out</string>
+    <string name="rest">Rest result</string>
+    <string name="network_error">You\'re not connected to a network!</string>
+
+</resources>
