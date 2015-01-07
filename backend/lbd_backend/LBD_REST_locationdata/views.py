@@ -568,34 +568,34 @@ def _addmeta(items, coll):
     return items
 
 ######################################### FOR TESTING ONLY #########################################
-
-def testing_view_popmeta(request):
-    if "HTTP_LBD_LOGIN_HEADER" not in request.META or request.META["HTTP_LBD_LOGIN_HEADER"] != "VakaVanhaVainamoinen":
-        return HttpResponse(status=403)
-
-
-    from RESThandlers.Streetlight import models as SL
-    o = SL.Streetlights.objects()
-    MetaDocument.drop_collection()
-    templist = []
-    i = 0
-    for item in o:
-        temp = MetaDocument(
-            feature_id = item.feature_id,
-            collection = "Streetlights",
-            meta_data = MetaData(status="SNAFU", modified=int(time.time()), modifier="Seppo Sähkäri")
-        )
-        templist.append(temp)
-    MetaDocument.objects.insert(templist)
-    return HttpResponse(status=200)
-
-
-def testing_view_dropmeta(request):
-    if "HTTP_LBD_LOGIN_HEADER" not in request.META or request.META["HTTP_LBD_LOGIN_HEADER"] != "VakaVanhaVainamoinen":
-        return HttpResponse(status=403)
-
-    MetaDocument.drop_collection()
-    if MetaDocument.objects.count() > 0:
-        return HttpResponse(status=500)
-    else:
-        return HttpResponse(status=200)
+#
+# def testing_view_popmeta(request):
+#     if "HTTP_LBD_LOGIN_HEADER" not in request.META or request.META["HTTP_LBD_LOGIN_HEADER"] != "VakaVanhaVainamoinen":
+#         return HttpResponse(status=403)
+#
+#
+#     from RESThandlers.Streetlight import models as SL
+#     o = SL.Streetlights.objects()
+#     MetaDocument.drop_collection()
+#     templist = []
+#     i = 0
+#     for item in o:
+#         temp = MetaDocument(
+#             feature_id = item.feature_id,
+#             collection = "Streetlights",
+#             meta_data = MetaData(status="SNAFU", modified=int(time.time()), modifier="Seppo Sähkäri")
+#         )
+#         templist.append(temp)
+#     MetaDocument.objects.insert(templist)
+#     return HttpResponse(status=200)
+#
+#
+# def testing_view_dropmeta(request):
+#     if "HTTP_LBD_LOGIN_HEADER" not in request.META or request.META["HTTP_LBD_LOGIN_HEADER"] != "VakaVanhaVainamoinen":
+#         return HttpResponse(status=403)
+#
+#     MetaDocument.drop_collection()
+#     if MetaDocument.objects.count() > 0:
+#         return HttpResponse(status=500)
+#     else:
+#         return HttpResponse(status=200)

@@ -12,7 +12,7 @@ from django.contrib import admin
 from django.conf import settings
 
 from lbd_backend.LBD_REST_locationdata.views import single_resource, collection, \
-    collection_near, collection_inarea, testing_view_popmeta, testing_view_dropmeta, search_from_rest, api
+    collection_near, collection_inarea, search_from_rest, api
 from lbd_backend.LBD_REST_messagedata.views import msg_general, msg_send
 from lbd_backend.LBD_REST_users.views import list_users, user_exists, add_user, index
 
@@ -38,8 +38,8 @@ urlpatterns = patterns('',
 
 if settings.TESTING_URLS:
     testpatterns = patterns('',
-        url(r'^locationdata/api/SL/testing/popmeta$', testing_view_popmeta),
-        url(r'^locationdata/api/SL/testing/dropmeta$', testing_view_dropmeta),
+        # url(r'^locationdata/api/SL/testing/popmeta$', testing_view_popmeta),
+        # url(r'^locationdata/api/SL/testing/dropmeta$', testing_view_dropmeta),
         url(r'^$', index),
         url(r'^add_user/$', add_user),
         url(r'^user_exists/$', user_exists),

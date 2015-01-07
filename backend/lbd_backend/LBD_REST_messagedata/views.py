@@ -156,32 +156,36 @@ def msg_send(request, *args, **kwargs):
         if "attachments" in content_json:
             if not isinstance(content_json["attachments"], list):
                 return HttpResponse(status=s_codes["BAD"],
-                                            content='{"message": "Malformed MessageJSON"}',
+                                            content='{"message": "Malformed MessageJSON."}',
                                             content_type="application/json; charset=utf-8")
 
             attlist = list()
             for item in content_json["attachments"]:
                 temp = dict()
                 try:
+                    if item["category"] != content_json["category"]:
+                        return HttpResponse(status=s_codes["BAD"],
+                                            content='{"message": "Attachment item and message categories do not match."}',
+                                            content_type="application/json; charset=utf-8")
                     hf = HandlerFactory(item["category"])
                     hinterface = hf.create()
                     result = hinterface.get_by_id(item["id"])
 
                     if result is None:
                         return HttpResponse(status=s_codes["BAD"],
-                                            content='{"message": "Attachment item not found"}',
+                                            content='{"message": "Attachment item not found."}',
                                             content_type="application/json; charset=utf-8")
 
                     temp["aid"] = item["id"]
                     temp["category"] = item["category"]
                 except KeyError:
                     return HttpResponse(status=s_codes["BAD"],
-                                            content='{"message": "Malformed MessageJSON"}',
+                                            content='{"message": "Malformed MessageJSON."}',
                                             content_type="application/json; charset=utf-8")
 
                 except CollectionNotInstalled:
                     return HttpResponse(status=s_codes["BAD"],
-                                            content='{"message": "Malformed MessageJSON"}',
+                                            content='{"message": "Location collection not found."}',
                                             content_type="application/json; charset=utf-8")
 
 
@@ -194,7 +198,7 @@ def msg_send(request, *args, **kwargs):
         try:
             recipientdata = User.objects.get(email=content_json["recipient"])
         except mongoengine.DoesNotExist:
-            return HttpResponse(content='{"message": "Recipient does not exist"}', status=s_codes["BAD"],
+            return HttpResponse(content='{"message": "Recipient not found."}', status=s_codes["BAD"],
                                 content_type="application/json; charset=utf-8")
 
         if True: # PLACEHOLDER
@@ -220,6 +224,9 @@ def _beautify_message(msg):
     msg.pop("_id")
     msg["id"] = msg.pop("mid")
     if "attachments" in msg:
-        for item in msg["attachments"]:
-            item["id"] = item.pop("aid")
+        if len(msg["attachments"]) > 0:
+            for item in msg["attachments"]:
+                item["id"] = item.pop("aid")
+        elif len(msg["attachments"]) == 0:
+            del msg["attachment"]
     return msg
