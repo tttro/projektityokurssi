@@ -42,7 +42,6 @@ public class SettingsActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
-        BusHandler.getBus().register(this);
         BACKEND_URL = getResources().getString(R.string.backend_url);
         OBJECT_COLLECTION = getResources().getString(R.string.object_collection);
 
@@ -71,6 +70,7 @@ public class SettingsActivity extends Activity {
     @Override
     public void onResume(){
         super.onResume();
+        BusHandler.getBus().register(this);
         hideSoftKeyboard();
 
         // Restore settings that were last selected
@@ -79,6 +79,12 @@ public class SettingsActivity extends Activity {
             urlText.setText(url);
             BusHandler.getBus().post(new RequestCollectionsEvent(url));
         }
+    }
+
+    @Override
+    public void onPause(){
+        super.onPause();
+        BusHandler.getBus().unregister(this);
     }
 
     public void onLoadClick(View view){
@@ -101,7 +107,6 @@ public class SettingsActivity extends Activity {
             ApplicationDetails.get().setCurrentBackendUrl(url);
 
             Log.d(getClass().getSimpleName(), " Saving settings to SharedPreferences");
-            Log.d("****** checked button is ", checkedCollection);
             SharedPreferences settings = getSharedPreferences(getString(R.string.shared_preferences), MODE_PRIVATE);
             SharedPreferences.Editor editor = settings.edit();
             editor.putString(BACKEND_URL, url);
@@ -133,7 +138,6 @@ public class SettingsActivity extends Activity {
 
         // If a radiobutton was selected before, select it
         String collection = ApplicationDetails.get().getCurrentCollection();
-        Log.d("****** checked button retrieved ", collection);
         if(collection != null) {
             int count = radioGroup.getChildCount();
             for (int j=0;j<count;j++) {

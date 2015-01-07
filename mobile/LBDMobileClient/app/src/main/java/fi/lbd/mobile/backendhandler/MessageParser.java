@@ -75,6 +75,7 @@ public class MessageParser {
         check(topicNode, "Topic");
         String topic = topicNode.asText();
 
+        /*
         JsonNode attachmentsNode = rootNode.path("attachements");
         if (!attachmentsNode.isMissingNode()) {
             Log.i(MessageParser.class.getSimpleName(), "HAS ATTACHMENTS: "+ attachmentsNode.toString());
@@ -85,6 +86,7 @@ public class MessageParser {
                 // TODO: Parse attachments
             }
         }
+        */
 
         JsonNode messageNode = rootNode.path("message");
         check(messageNode, "Message");

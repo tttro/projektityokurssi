@@ -66,7 +66,7 @@ public class SendMessageActivity extends Activity {
         BusHandler.getBus().post(new RequestUsersEvent());
     }
 
-    // TODO: fix send
+    // TODO: Fix send
     public void onSendClick(View view){
         View rootView = findViewById(android.R.id.content);
         String receiver = (String)(((TextView)rootView.findViewById(R.id.textViewReceiver)).getText());
@@ -94,6 +94,7 @@ public class SendMessageActivity extends Activity {
         CharSequence dialogText = "Message sent";
         int duration = Toast.LENGTH_SHORT;
         Toast.makeText(context, dialogText, duration).show();
+        onBackPressed();
     }
 
     @Subscribe

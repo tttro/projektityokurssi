@@ -282,12 +282,13 @@ public class BasicBackendHandler implements BackendHandler {
                 .put("topic", topic);
         addMessageToObjectNode(message, objNode);
 
+        /*
         if (attachedObjectIds.size() > 0) {
             ArrayNode arrayNode = objNode.putArray("attachements");
             for (String object : attachedObjectIds) {
                 arrayNode.addObject().put("category", dataSource).put("id", object);
             }
-        }
+        }*/
 
         Log.d(this.getClass().getSimpleName(), "Send message: " + objNode.toString());
         Log.d(this.getClass().getSimpleName(), "Send to url: "+ urlBuilder.toString());
