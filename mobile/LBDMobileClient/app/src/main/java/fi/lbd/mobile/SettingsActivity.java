@@ -97,18 +97,11 @@ public class SettingsActivity extends Activity {
 
             String url = urlText.getText().toString();
             Log.d(getClass().getSimpleName(), " Saving settings to ApplicationDetails");
-            if (checkedCollection != null && url != null) {
-                // TODO: selvitä
-                if (checkedCollection.equals("Ring around the rosie")) {
-                    checkedCollection = "Playgrounds";
-                } else if (checkedCollection.equals("Tampere Streetlights")) {
-                    checkedCollection = "Streetlights";
-                }
-            }
             ApplicationDetails.get().setCurrentCollection(checkedCollection);
             ApplicationDetails.get().setCurrentBackendUrl(url);
 
             Log.d(getClass().getSimpleName(), " Saving settings to SharedPreferences");
+            Log.d("****** checked button is ", checkedCollection);
             SharedPreferences settings = getSharedPreferences(getString(R.string.shared_preferences), MODE_PRIVATE);
             SharedPreferences.Editor editor = settings.edit();
             editor.putString(BACKEND_URL, url);
@@ -140,18 +133,8 @@ public class SettingsActivity extends Activity {
 
         // If a radiobutton was selected before, select it
         String collection = ApplicationDetails.get().getCurrentCollection();
+        Log.d("****** checked button retrieved ", collection);
         if(collection != null) {
-
-            //TODO: Selvitä
-            if(collection.equals("Streetlights")){
-                collection = "Tampere Streetlights";
-            }
-            else if(collection.equals("Playgrounds")){
-                collection = "Ring around the rosie";
-            }
-
-
-
             int count = radioGroup.getChildCount();
             for (int j=0;j<count;j++) {
                 View o = radioGroup.getChildAt(j);
@@ -202,6 +185,7 @@ public class SettingsActivity extends Activity {
             radioButton.setId(0);
             layoutParams = new RadioGroup.LayoutParams(RadioGroup.LayoutParams.WRAP_CONTENT, RadioGroup.LayoutParams.WRAP_CONTENT);
             radioGroup.addView(radioButton, layoutParams);
+            radioGroup.check(radioButton.getId());
         }
     }
 
