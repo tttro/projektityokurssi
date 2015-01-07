@@ -64,7 +64,7 @@ public class SettingsActivity extends Activity {
                 selectCollectionText.setVisibility(View.INVISIBLE);
             }
         });
-        // When user clicks "Done" on keyboard, the keyboard is closed
+        // When user clicks "Done" on keyboard, close the keyboard
         urlText.setOnKeyListener(onSoftKeyboardDonePress);
     }
 

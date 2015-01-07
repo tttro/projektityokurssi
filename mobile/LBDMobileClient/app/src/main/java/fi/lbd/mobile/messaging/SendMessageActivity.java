@@ -79,10 +79,6 @@ public class SendMessageActivity extends Activity {
                     new ImmutableMapObject(false, "TEST_ID_1231", new ImmutablePointLocation(10, 10),
                             new HashMap<String, String>(), new HashMap<String, String>()));
             BusHandler.getBus().post(sendMessageEvent);
-            Log.d("********", "Sending message");
-            Log.d("******** Receiver", receiver);
-            Log.d("******** Title", title);
-            Log.d("******** Message", message);
         }
         else {
             Context context = getApplicationContext();
