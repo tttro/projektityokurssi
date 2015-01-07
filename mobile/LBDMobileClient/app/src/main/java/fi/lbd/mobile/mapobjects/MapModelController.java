@@ -53,6 +53,14 @@ public class MapModelController<T> implements MapTableModelListener<T>, CameraCh
         this.hideMarkersZoom = hideMarkersZoom;
     }
 
+    public void clear() {
+        this.tableModel.removeListener( this );
+        this.tableModel = new MapTableModel<>(DIVIDE_GRID_LAT, DIVIDE_GRID_LON);
+        this.tableModel.addListener( this );
+        this.markerObjectMap = HashBiMap.create();
+        this.activeMarker = null;
+    }
+
     public void addProgressListener(ProgressListener listener) {
         this.progressListeners.add(listener);
     }

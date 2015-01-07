@@ -130,6 +130,15 @@ public class MapTableModel<T> {
         this.listeners.add(listener);
     }
 
+    /**
+     * Removes a listener.
+     *
+     * @param listener  Listener.
+     */
+    public void removeListener(MapTableModelListener<T> listener) {
+        this.listeners.remove(listener);
+    }
+
     private void notifyRemovedObject(T obj) {
         for (MapTableModelListener<T> l : this.listeners) {
             l.objectRemoved(obj);
