@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import fi.lbd.mobile.mapobjects.MapObject;
 import fi.lbd.mobile.messaging.messageobjects.MessageObject;
 import fi.lbd.mobile.messaging.messageobjects.StringMessageObject;
 
@@ -33,23 +34,31 @@ public class MessageParser {
     private static List<MessageObject> parseCollection(JsonNode rootNode) throws IOException, JSONException {
         List<MessageObject> messages = new ArrayList<>();
 
-        Log.d(MessageParser.class.getSimpleName(), "parse collection node NODE: "+ messages.toString());
-        Log.d(MessageParser.class.getSimpleName(), "parse collection node NODE size: "+ messages.size());
-        Iterator<JsonNode> iter = rootNode.elements();
+        JsonNode totalMessages = rootNode.path("totalMessages");
+        int intTotalMessages = totalMessages.asInt();
+        JsonNode type = rootNode.path("type");
+
+        JsonNode messagesNode = rootNode.path("messages");
+        check(messagesNode, "Messages");
+
+        Iterator<JsonNode> iter = messagesNode.elements();
         while (iter.hasNext()) {
             JsonNode node = iter.next();
             messages.add(parseMessage(node));
+        }
+
+        if (intTotalMessages != messages.size()) {
+            Log.e(MessageParser.class.getSimpleName(),
+                    "Amount of items in json feature set differs from the amount of parsed items."+
+                            " Feature count: "+ intTotalMessages +
+                            " Parsed count"+ messages.size());
         }
 
         return messages;
     }
 
     private static MessageObject parseMessage(JsonNode rootNode) throws IOException, JSONException {
-        //List<MessageObject> messages = new ArrayList<>();
-
-        Log.d(MessageParser.class.getSimpleName(), "parseMessage node NODE: "+ rootNode);
-        Log.d(MessageParser.class.getSimpleName(), "parseMessage node NODE size: "+ rootNode.size());
-
+//        Log.d(MessageParser.class.getSimpleName(), "parse message node json: "+ rootNode);
         JsonNode categoryNode = rootNode.path("category");
 //        check(categoryNode, "Category");
         String category = categoryNode.asText();
@@ -58,22 +67,22 @@ public class MessageParser {
         check(senderNode, "Sender");
         String sender = senderNode.asText();
 
-        JsonNode midNode = rootNode.path("mid");
-        check(midNode, "MID");
+        JsonNode midNode = rootNode.path("id");
+        check(midNode, "ID");
         String messageId = midNode.asText();
 
         JsonNode topicNode = rootNode.path("topic");
         check(topicNode, "Topic");
         String topic = topicNode.asText();
 
-        JsonNode attachmentsNode = rootNode.path("attachments");
-//        check(attachmentsNode, "Attachments");
+        JsonNode attachmentsNode = rootNode.path("attachements");
         if (!attachmentsNode.isMissingNode()) {
             Log.i(MessageParser.class.getSimpleName(), "HAS ATTACHMENTS: "+ attachmentsNode.toString());
             Log.i(MessageParser.class.getSimpleName(), "HAS ATTACHMENTS, IS ARRAY: "+ attachmentsNode.isArray());
             for (Iterator<JsonNode> iter = attachmentsNode.elements(); iter.hasNext(); ) {
                 JsonNode node = iter.next();
                 Log.i(MessageParser.class.getSimpleName(), "attachment Node: "+ node.toString());
+                // TODO: Parse attachments
             }
         }
 
