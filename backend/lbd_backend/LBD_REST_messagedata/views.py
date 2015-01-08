@@ -228,5 +228,5 @@ def _beautify_message(msg):
             for item in msg["attachments"]:
                 item["id"] = item.pop("aid")
         elif len(msg["attachments"]) == 0:
-            del msg["attachment"]
+            del msg["attachments"]
     return msg
