@@ -10,8 +10,10 @@ import org.robolectric.shadows.ShadowLog;
 import fi.lbd.mobile.CustomRobolectricTestRunner;
 import fi.lbd.mobile.backendhandler.BackendHandler;
 import fi.lbd.mobile.backendhandler.BasicBackendHandler;
+import fi.lbd.mobile.backendhandler.BasicUrlReader;
 import fi.lbd.mobile.backendhandler.CachingBackendHandler;
 import fi.lbd.mobile.backendhandler.HandlerResponse;
+import fi.lbd.mobile.backendhandler.UrlReader;
 import fi.lbd.mobile.location.ImmutablePointLocation;
 import fi.lbd.mobile.location.PointLocation;
 import fi.lbd.mobile.utils.TestData;
@@ -37,7 +39,8 @@ public class CachingBackendHandlerTest {
         System.out.println("_____________________________________________________________________");
         System.out.println("TESTING: "+testName);
         System.out.println("---------------------------------------------------------------------");
-        CachingBackendHandler handler = new CachingBackendHandler("", "", 100);
+        UrlReader urlreader = new BasicUrlReader();
+        CachingBackendHandler handler = new CachingBackendHandler(urlreader, "", "", 100);
 
         PointLocation point1 = new ImmutablePointLocation(10, 10);
         PointLocation point2 = new ImmutablePointLocation(20, 20);
@@ -45,14 +48,14 @@ public class CachingBackendHandlerTest {
         Robolectric.addPendingHttpResponse(200, TestData.testJson);
         HandlerResponse response;
 
-        response = handler.getObjectsInArea(point1, point2, false);
+        response = handler.getObjectsInArea("Streetlights", point1, point2, false);
         assertThat(response.getStatus()).isEqualTo(HandlerResponse.Status.Succeeded);
         assertThat(response.isOk()).isEqualTo(true);
         assertThat(response.getObjects()).hasSize(2);
         assertThat(response.getObjects().get(0).getAdditionalProperties()).hasSize(5);
         assertThat(response.getObjects().get(0).getPointLocation()).isEqualTo(new ImmutablePointLocation(61.5192743640121, 23.64941278370676));
 
-        response = handler.getObjectsInArea(point1, point2, false);
+        response = handler.getObjectsInArea("Streetlights", point1, point2, false);
         assertThat(response.getStatus()).isEqualTo(HandlerResponse.Status.Cached);
         assertThat(response.isOk()).isEqualTo(true);
         assertThat(response.getObjects()).hasSize(2);
@@ -63,7 +66,7 @@ public class CachingBackendHandlerTest {
         handler.checkForOutdatedCaches();
 
         Robolectric.addPendingHttpResponse(200, TestData.testJson);
-        response = handler.getObjectsInArea(point1, point2, false);
+        response = handler.getObjectsInArea("Streetlights", point1, point2, false);
         assertThat(response.getStatus()).isEqualTo(HandlerResponse.Status.Succeeded);
         assertThat(response.isOk()).isEqualTo(true);
         assertThat(response.getObjects()).hasSize(2);
@@ -73,7 +76,7 @@ public class CachingBackendHandlerTest {
         Thread.sleep(50);
         handler.checkForOutdatedCaches();
 
-        response = handler.getObjectsInArea(point1, point2, false);
+        response = handler.getObjectsInArea("Streetlights", point1, point2, false);
         assertThat(response.getStatus()).isEqualTo(HandlerResponse.Status.Cached);
         assertThat(response.isOk()).isEqualTo(true);
         assertThat(response.getObjects()).hasSize(2);
@@ -82,7 +85,7 @@ public class CachingBackendHandlerTest {
 
         handler.checkForOutdatedCaches();
 
-        response = handler.getObjectsInArea(point1, point2, false);
+        response = handler.getObjectsInArea("Streetlights", point1, point2, false);
         assertThat(response.getStatus()).isEqualTo(HandlerResponse.Status.Cached);
         assertThat(response.isOk()).isEqualTo(true);
         assertThat(response.getObjects()).hasSize(2);
@@ -102,7 +105,8 @@ public class CachingBackendHandlerTest {
         System.out.println("_____________________________________________________________________");
         System.out.println("TESTING: "+testName);
         System.out.println("---------------------------------------------------------------------");
-        CachingBackendHandler handler = new CachingBackendHandler("", "", 100);
+        UrlReader urlreader = new BasicUrlReader();
+        CachingBackendHandler handler = new CachingBackendHandler(urlreader, "", "", 100);
 
         PointLocation point1 = new ImmutablePointLocation(10, 10);
         PointLocation point2 = new ImmutablePointLocation(20, 20);
@@ -110,7 +114,7 @@ public class CachingBackendHandlerTest {
         Robolectric.addPendingHttpResponse(200, TestData.testJson);
         HandlerResponse response;
 
-        response = handler.getObjectsInArea(point1, point2, false);
+        response = handler.getObjectsInArea("Streetlights", point1, point2, false);
         assertThat(response.getStatus()).isEqualTo(HandlerResponse.Status.Succeeded);
         assertThat(response.isOk()).isEqualTo(true);
         assertThat(response.getObjects()).hasSize(2);
@@ -118,21 +122,21 @@ public class CachingBackendHandlerTest {
         assertThat(response.getObjects().get(0).getPointLocation()).isEqualTo(new ImmutablePointLocation(61.5192743640121, 23.64941278370676));
 
         Robolectric.addPendingHttpResponse(200, TestData.testJsonMini);
-        response = handler.getObjectsInArea(point1, point2, true);
+        response = handler.getObjectsInArea("Streetlights", point1, point2, true);
         assertThat(response.getStatus()).isEqualTo(HandlerResponse.Status.Succeeded);
         assertThat(response.isOk()).isEqualTo(true);
         assertThat(response.getObjects()).hasSize(2);
         assertThat(response.getObjects().get(0).getAdditionalProperties()).hasSize(0);
         assertThat(response.getObjects().get(0).getPointLocation()).isEqualTo(new ImmutablePointLocation(61.5192743640121, 23.64941278370676));
 
-        response = handler.getObjectsInArea(point1, point2, false);
+        response = handler.getObjectsInArea("Streetlights", point1, point2, false);
         assertThat(response.getStatus()).isEqualTo(HandlerResponse.Status.Cached);
         assertThat(response.isOk()).isEqualTo(true);
         assertThat(response.getObjects()).hasSize(2);
         assertThat(response.getObjects().get(0).getAdditionalProperties()).hasSize(5);
         assertThat(response.getObjects().get(0).getPointLocation()).isEqualTo(new ImmutablePointLocation(61.5192743640121, 23.64941278370676));
 
-        response = handler.getObjectsInArea(point1, point2, true);
+        response = handler.getObjectsInArea("Streetlights", point1, point2, true);
         assertThat(response.getStatus()).isEqualTo(HandlerResponse.Status.Cached);
         assertThat(response.isOk()).isEqualTo(true);
         assertThat(response.getObjects()).hasSize(2);

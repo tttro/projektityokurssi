@@ -11,10 +11,16 @@ import org.robolectric.shadows.ShadowLog;
 import fi.lbd.mobile.CustomRobolectricTestRunner;
 import fi.lbd.mobile.backendhandler.BackendHandler;
 import fi.lbd.mobile.backendhandler.BasicBackendHandler;
+import fi.lbd.mobile.backendhandler.BasicUrlReader;
 import fi.lbd.mobile.backendhandler.HandlerResponse;
 import fi.lbd.mobile.backendhandler.MapObjectParser;
+
+import fi.lbd.mobile.backendhandler.UrlReader;
+import fi.lbd.mobile.backendhandler.UrlResponse;
 import fi.lbd.mobile.location.ImmutablePointLocation;
 import fi.lbd.mobile.utils.TestData;
+import fi.lbd.mobile.mapobjects.ImmutableMapObject;
+import fi.lbd.mobile.mapobjects.MapObject;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
@@ -38,10 +44,11 @@ public class BackendHandlerTest {
         System.out.println("_____________________________________________________________________");
         System.out.println("TESTING: "+testName);
         System.out.println("---------------------------------------------------------------------");
-        BackendHandler handler = new BasicBackendHandler("", "");
+        UrlReader urlreader = new BasicUrlReader();
+        BackendHandler handler = new BasicBackendHandler(urlreader, "", "");
 
         Robolectric.addPendingHttpResponse(200, TestData.testJson);
-        HandlerResponse response = handler.getObjectsInArea(mock(ImmutablePointLocation.class), mock(ImmutablePointLocation.class), false);
+        HandlerResponse response = handler.getObjectsInArea("Streetlights", mock(ImmutablePointLocation.class), mock(ImmutablePointLocation.class), false);
 
         assertThat(response.getStatus()).isEqualTo(HandlerResponse.Status.Succeeded);
         assertThat(response.isOk()).isEqualTo(true);
@@ -51,7 +58,7 @@ public class BackendHandlerTest {
 
         System.out.println("Test minimized.");
         Robolectric.addPendingHttpResponse(200, TestData.testJsonMini);
-        HandlerResponse responseMini = handler.getObjectsInArea(mock(ImmutablePointLocation.class), mock(ImmutablePointLocation.class), true);
+        HandlerResponse responseMini = handler.getObjectsInArea("Streetlights", mock(ImmutablePointLocation.class), mock(ImmutablePointLocation.class), true);
 
         assertThat(responseMini.getStatus()).isEqualTo(HandlerResponse.Status.Succeeded);
         assertThat(responseMini.isOk()).isEqualTo(true);
@@ -71,17 +78,19 @@ public class BackendHandlerTest {
         System.out.println("_____________________________________________________________________");
         System.out.println("TESTING: "+testName);
         System.out.println("---------------------------------------------------------------------");
-        BackendHandler handler = new BasicBackendHandler("", "");
+        UrlReader urlreader = new BasicUrlReader();
+
+        BackendHandler handler = new BasicBackendHandler(urlreader, "", "");
 
         Robolectric.addPendingHttpResponse(200, TestData.testInvalidJson1);
-        HandlerResponse response1 = handler.getObjectsInArea(mock(ImmutablePointLocation.class), mock(ImmutablePointLocation.class), false);
+        HandlerResponse response1 = handler.getObjectsInArea("Streetlights", mock(ImmutablePointLocation.class), mock(ImmutablePointLocation.class), false);
 
         assertThat(response1.getStatus()).isEqualTo(HandlerResponse.Status.Failed);
         assertThat(response1.isOk()).isEqualTo(false);
         assertThat(response1.getObjects()).isNull();
 
         Robolectric.addPendingHttpResponse(200, TestData.testInvalidJson2);
-        HandlerResponse response2 = handler.getObjectsInArea(mock(ImmutablePointLocation.class), mock(ImmutablePointLocation.class), false);
+        HandlerResponse response2 = handler.getObjectsInArea("Streetlights", mock(ImmutablePointLocation.class), mock(ImmutablePointLocation.class), false);
 
         assertThat(response2.getStatus()).isEqualTo(HandlerResponse.Status.Failed);
         assertThat(response2.isOk()).isEqualTo(false);
@@ -99,10 +108,12 @@ public class BackendHandlerTest {
         System.out.println("_____________________________________________________________________");
         System.out.println("TESTING: "+testName);
         System.out.println("---------------------------------------------------------------------");
-        BackendHandler handler = new BasicBackendHandler("", "");
+        UrlReader urlreader = new BasicUrlReader();
+
+        BackendHandler handler = new BasicBackendHandler(urlreader, "", "");
 
         Robolectric.addPendingHttpResponse(200, TestData.testJson);
-        HandlerResponse response = handler.getObjectsNearLocation(mock(ImmutablePointLocation.class), 0.001, false);
+        HandlerResponse response = handler.getObjectsNearLocation("Streetlights", mock(ImmutablePointLocation.class), 0.001, false);
 
         assertThat(response.getStatus()).isEqualTo(HandlerResponse.Status.Succeeded);
         assertThat(response.isOk()).isEqualTo(true);
@@ -112,7 +123,7 @@ public class BackendHandlerTest {
 
         System.out.println("Test minimized.");
         Robolectric.addPendingHttpResponse(200, TestData.testJsonMini);
-        HandlerResponse responseMini = handler.getObjectsNearLocation(mock(ImmutablePointLocation.class), 0.001, true);
+        HandlerResponse responseMini = handler.getObjectsNearLocation("Streetlights", mock(ImmutablePointLocation.class), 0.001, true);
 
         assertThat(responseMini.getStatus()).isEqualTo(HandlerResponse.Status.Succeeded);
         assertThat(responseMini.isOk()).isEqualTo(true);
@@ -132,17 +143,19 @@ public class BackendHandlerTest {
         System.out.println("_____________________________________________________________________");
         System.out.println("TESTING: "+testName);
         System.out.println("---------------------------------------------------------------------");
-        BackendHandler handler = new BasicBackendHandler("", "");
+        UrlReader urlreader = new BasicUrlReader();
+
+        BackendHandler handler = new BasicBackendHandler(urlreader, "", "");
 
         Robolectric.addPendingHttpResponse(200, TestData.testInvalidJson1);
-        HandlerResponse response1 = handler.getObjectsNearLocation(mock(ImmutablePointLocation.class), 0.001, false);
+        HandlerResponse response1 = handler.getObjectsNearLocation("Streetlights", mock(ImmutablePointLocation.class), 0.001, false);
 
         assertThat(response1.getStatus()).isEqualTo(HandlerResponse.Status.Failed);
         assertThat(response1.isOk()).isEqualTo(false);
         assertThat(response1.getObjects()).isNull();
 
         Robolectric.addPendingHttpResponse(200, TestData.testInvalidJson2);
-        HandlerResponse response2 = handler.getObjectsNearLocation(mock(ImmutablePointLocation.class), 0.001, false);
+        HandlerResponse response2 = handler.getObjectsNearLocation("Streetlights", mock(ImmutablePointLocation.class), 0.001, false);
 
         assertThat(response2.getStatus()).isEqualTo(HandlerResponse.Status.Failed);
         assertThat(response2.isOk()).isEqualTo(false);
@@ -160,10 +173,12 @@ public class BackendHandlerTest {
         System.out.println("_____________________________________________________________________");
         System.out.println("TESTING: "+testName);
         System.out.println("---------------------------------------------------------------------");
-        BackendHandler handler = new BasicBackendHandler("", "");
+        UrlReader urlreader = new BasicUrlReader();
+
+        BackendHandler handler = new BasicBackendHandler(urlreader, "", "");
 
         Robolectric.addPendingHttpResponse(200, TestData.testSingleJson);
-        HandlerResponse response = handler.getMapObject("");
+        HandlerResponse response = handler.getMapObject("Streetlights", "");
 
         assertThat(response.getStatus()).isEqualTo(HandlerResponse.Status.Succeeded);
         assertThat(response.isOk()).isEqualTo(true);
@@ -183,17 +198,17 @@ public class BackendHandlerTest {
         System.out.println("_____________________________________________________________________");
         System.out.println("TESTING: "+testName);
         System.out.println("---------------------------------------------------------------------");
-        BackendHandler handler = new BasicBackendHandler("", "");
+        BackendHandler handler = new BasicBackendHandler(urlreader, "", "");
 
         Robolectric.addPendingHttpResponse(200, TestData.testInvalidSingleJson1);
-        HandlerResponse response1 = handler.getMapObject("");
+        HandlerResponse response1 = handler.getMapObject("Streetlights", "");
 
         assertThat(response1.getStatus()).isEqualTo(HandlerResponse.Status.Failed);
         assertThat(response1.isOk()).isEqualTo(false);
         assertThat(response1.getObjects()).isNull();
 
         Robolectric.addPendingHttpResponse(200, TestData.testInvalidSingleJson2);
-        HandlerResponse response2 = handler.getMapObject("");
+        HandlerResponse response2 = handler.getMapObject("Streetlights", "");
 
         assertThat(response2.getStatus()).isEqualTo(HandlerResponse.Status.Failed);
         assertThat(response2.isOk()).isEqualTo(false);
@@ -212,39 +227,41 @@ public class BackendHandlerTest {
         System.out.println("_____________________________________________________________________");
         System.out.println("TESTING: "+testName);
         System.out.println("---------------------------------------------------------------------");
-        BackendHandler handler = new BasicBackendHandler("", "");
+        UrlReader urlreader = new BasicUrlReader();
+
+        BackendHandler handler = new BasicBackendHandler(urlreader, "", "");
         HandlerResponse response;
 
         Robolectric.addPendingHttpResponse(403, TestData.testSingleJson);
-        response = handler.getMapObject("");
+        response = handler.getMapObject("Streetlights", "");
         assertThat(response.getStatus()).isEqualTo(HandlerResponse.Status.Failed);
         assertThat(response.getObjects()).isNull();
 
         Robolectric.addPendingHttpResponse(405, TestData.testSingleJson);
-        response = handler.getMapObject("");
+        response = handler.getMapObject("Streetlights", "");
         assertThat(response.getStatus()).isEqualTo(HandlerResponse.Status.Failed);
         assertThat(response.getObjects()).isNull();
 
         Robolectric.addPendingHttpResponse(418, TestData.testSingleJson);
-        response = handler.getMapObject("");
+        response = handler.getMapObject("Streetlights", "");
         assertThat(response.getStatus()).isEqualTo(HandlerResponse.Status.Failed);
         assertThat(response.getObjects()).isNull();
 
         Robolectric.addPendingHttpResponse(500, TestData.testSingleJson);
         Robolectric.addPendingHttpResponse(500, TestData.testSingleJson);
-        response = handler.getMapObject("");
+        response = handler.getMapObject("Streetlights", "");
         assertThat(response.getStatus()).isEqualTo(HandlerResponse.Status.Failed);
         assertThat(response.getObjects()).isNull();
 
         Robolectric.addPendingHttpResponse(500, TestData.testSingleJson);
         Robolectric.addPendingHttpResponse(200, TestData.testSingleJson);
-        response = handler.getMapObject("");
+        response = handler.getMapObject("Streetlights", "");
         assertThat(response.getStatus()).isEqualTo(HandlerResponse.Status.Succeeded);
         assertThat(response.getObjects()).hasSize(1);
 
         Robolectric.addPendingHttpResponse(404, TestData.testSingleJson);
         Robolectric.addPendingHttpResponse(404, TestData.testSingleJson);
-        response = handler.getMapObject("");
+        response = handler.getMapObject("Streetlights", "");
         assertThat(response.getStatus()).isEqualTo(HandlerResponse.Status.Failed);
         assertThat(response.getObjects()).isNull();
 
@@ -261,39 +278,41 @@ public class BackendHandlerTest {
         System.out.println("_____________________________________________________________________");
         System.out.println("TESTING: "+testName);
         System.out.println("---------------------------------------------------------------------");
-        BackendHandler handler = new BasicBackendHandler("", "");
+        UrlReader urlreader = new BasicUrlReader();
+
+        BackendHandler handler = new BasicBackendHandler(urlreader, "", "");
         HandlerResponse response;
 
         Robolectric.addPendingHttpResponse(403, TestData.testJson);
-        response = handler.getObjectsInArea(mock(ImmutablePointLocation.class), mock(ImmutablePointLocation.class), false);
+        response = handler.getObjectsInArea("Streetlights", mock(ImmutablePointLocation.class), mock(ImmutablePointLocation.class), false);
         assertThat(response.getStatus()).isEqualTo(HandlerResponse.Status.Failed);
         assertThat(response.getObjects()).isNull();
 
         Robolectric.addPendingHttpResponse(405, TestData.testJson);
-        response = handler.getObjectsInArea(mock(ImmutablePointLocation.class), mock(ImmutablePointLocation.class), false);
+        response = handler.getObjectsInArea("Streetlights", mock(ImmutablePointLocation.class), mock(ImmutablePointLocation.class), false);
         assertThat(response.getStatus()).isEqualTo(HandlerResponse.Status.Failed);
         assertThat(response.getObjects()).isNull();
 
         Robolectric.addPendingHttpResponse(418, TestData.testJson);
-        response = handler.getObjectsInArea(mock(ImmutablePointLocation.class), mock(ImmutablePointLocation.class), false);
+        response = handler.getObjectsInArea("Streetlights", mock(ImmutablePointLocation.class), mock(ImmutablePointLocation.class), false);
         assertThat(response.getStatus()).isEqualTo(HandlerResponse.Status.Failed);
         assertThat(response.getObjects()).isNull();
 
         Robolectric.addPendingHttpResponse(500, TestData.testJson);
         Robolectric.addPendingHttpResponse(500, TestData.testJson);
-        response = handler.getObjectsInArea(mock(ImmutablePointLocation.class), mock(ImmutablePointLocation.class), false);
+        response = handler.getObjectsInArea("Streetlights", mock(ImmutablePointLocation.class), mock(ImmutablePointLocation.class), false);
         assertThat(response.getStatus()).isEqualTo(HandlerResponse.Status.Failed);
         assertThat(response.getObjects()).isNull();
 
         Robolectric.addPendingHttpResponse(500, TestData.testJson);
         Robolectric.addPendingHttpResponse(200, TestData.testJson);
-        response = handler.getObjectsInArea(mock(ImmutablePointLocation.class), mock(ImmutablePointLocation.class), false);
+        response = handler.getObjectsInArea("Streetlights", mock(ImmutablePointLocation.class), mock(ImmutablePointLocation.class), false);
         assertThat(response.getStatus()).isEqualTo(HandlerResponse.Status.Succeeded);
         assertThat(response.getObjects()).hasSize(2);
 
         Robolectric.addPendingHttpResponse(404, TestData.testJson);
         Robolectric.addPendingHttpResponse(404, TestData.testJson);
-        response = handler.getObjectsInArea(mock(ImmutablePointLocation.class), mock(ImmutablePointLocation.class), false);
+        response = handler.getObjectsInArea("Streetlights", mock(ImmutablePointLocation.class), mock(ImmutablePointLocation.class), false);
         assertThat(response.getStatus()).isEqualTo(HandlerResponse.Status.Failed);
         assertThat(response.getObjects()).isNull();
 
@@ -310,39 +329,41 @@ public class BackendHandlerTest {
         System.out.println("_____________________________________________________________________");
         System.out.println("TESTING: "+testName);
         System.out.println("---------------------------------------------------------------------");
-        BackendHandler handler = new BasicBackendHandler("", "");
+        UrlReader urlreader = new BasicUrlReader();
+
+        BackendHandler handler = new BasicBackendHandler(urlreader, "", "");
         HandlerResponse response;
 
         Robolectric.addPendingHttpResponse(403, TestData.testJson);
-        response = handler.getObjectsNearLocation(mock(ImmutablePointLocation.class), 0.001, false);
+        response = handler.getObjectsNearLocation("Streetlights", mock(ImmutablePointLocation.class), 0.001, false);
         assertThat(response.getStatus()).isEqualTo(HandlerResponse.Status.Failed);
         assertThat(response.getObjects()).isNull();
 
         Robolectric.addPendingHttpResponse(405, TestData.testJson);
-        response = handler.getObjectsNearLocation(mock(ImmutablePointLocation.class), 0.001, false);
+        response = handler.getObjectsNearLocation("Streetlights", mock(ImmutablePointLocation.class), 0.001, false);
         assertThat(response.getStatus()).isEqualTo(HandlerResponse.Status.Failed);
         assertThat(response.getObjects()).isNull();
 
         Robolectric.addPendingHttpResponse(418, TestData.testJson);
-        response = handler.getObjectsNearLocation(mock(ImmutablePointLocation.class), 0.001, false);
+        response = handler.getObjectsNearLocation("Streetlights", mock(ImmutablePointLocation.class), 0.001, false);
         assertThat(response.getStatus()).isEqualTo(HandlerResponse.Status.Failed);
         assertThat(response.getObjects()).isNull();
 
         Robolectric.addPendingHttpResponse(500, TestData.testJson);
         Robolectric.addPendingHttpResponse(500, TestData.testJson);
-        response = handler.getObjectsNearLocation(mock(ImmutablePointLocation.class), 0.001, false);
+        response = handler.getObjectsNearLocation("Streetlights", mock(ImmutablePointLocation.class), 0.001, false);
         assertThat(response.getStatus()).isEqualTo(HandlerResponse.Status.Failed);
         assertThat(response.getObjects()).isNull();
 
         Robolectric.addPendingHttpResponse(500, TestData.testJson);
         Robolectric.addPendingHttpResponse(200, TestData.testJson);
-        response = handler.getObjectsNearLocation(mock(ImmutablePointLocation.class), 0.001, false);
+        response = handler.getObjectsNearLocation("Streetlights", mock(ImmutablePointLocation.class), 0.001, false);
         assertThat(response.getStatus()).isEqualTo(HandlerResponse.Status.Succeeded);
         assertThat(response.getObjects()).hasSize(2);
 
         Robolectric.addPendingHttpResponse(404, TestData.testJson);
         Robolectric.addPendingHttpResponse(404, TestData.testJson);
-        response = handler.getObjectsNearLocation(mock(ImmutablePointLocation.class), 0.001, false);
+        response = handler.getObjectsNearLocation("Streetlights", mock(ImmutablePointLocation.class), 0.001, false);
         assertThat(response.getStatus()).isEqualTo(HandlerResponse.Status.Failed);
         assertThat(response.getObjects()).isNull();
 
