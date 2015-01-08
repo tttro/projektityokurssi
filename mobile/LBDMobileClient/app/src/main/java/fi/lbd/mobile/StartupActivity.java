@@ -37,13 +37,6 @@ public class StartupActivity extends Activity {
         }
         // Else go straight to ListActivity
         else {
-            // TODO: selvitä
-            if(collection.equals("Ring around the rosie")){
-                collection = "Playgrounds";
-            }
-            else if(collection.equals("Tampere Streetlights")){
-                collection = "Streetlights";
-            }
             ApplicationDetails.get().setCurrentCollection(collection);
             ApplicationDetails.get().setCurrentBackendUrl(url);
             Intent intent = new Intent(this, ListActivity.class);

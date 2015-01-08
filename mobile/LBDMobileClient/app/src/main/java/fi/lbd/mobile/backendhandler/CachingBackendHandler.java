@@ -4,6 +4,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
+import fi.lbd.mobile.ApplicationDetails;
 import fi.lbd.mobile.mapobjects.MapObject;
 import fi.lbd.mobile.location.PointLocation;
 
@@ -13,7 +14,7 @@ import fi.lbd.mobile.location.PointLocation;
  *
  * Created by Tommi.
  */
-public class CachingBackendHandler extends BasicBackendHandler {
+public class CachingBackendHandler extends BasicBackendHandler implements ApplicationDetails.ApplicationDetailListener {
 
     private static class CachedQuery {
         private long cacheTime;
@@ -80,5 +81,10 @@ public class CachingBackendHandler extends BasicBackendHandler {
                 iter.remove();
             }
         }
+    }
+
+    @Override
+    public void notifyApplicationChange(EventType eventType, String newValue) {
+        this.cachedQueries.clear();
     }
 }

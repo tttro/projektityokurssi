@@ -97,6 +97,7 @@ public class BasicUrlReader implements UrlReader {
 
     private void setHeaders(AbstractHttpMessage message) {
         if(message != null) {
+            Log.i(this.getClass().getSimpleName(), "USER ID: "+ ApplicationDetails.get().getUserId());
             message.addHeader("LBD_LOGIN_HEADER", "asdasd"); // TODO: Access token
             message.addHeader("LBD_OAUTH_ID", ApplicationDetails.get().getUserId()); // Google id
         }

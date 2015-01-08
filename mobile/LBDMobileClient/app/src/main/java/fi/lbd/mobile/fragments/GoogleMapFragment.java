@@ -34,21 +34,22 @@ import com.squareup.otto.Subscribe;
 import java.util.List;
 import java.util.Locale;
 
+import fi.lbd.mobile.ApplicationDetails;
 import fi.lbd.mobile.DetailsActivity;
-import fi.lbd.mobile.messaging.MessageObjectSelectionManager;
 import fi.lbd.mobile.R;
-import fi.lbd.mobile.mapobjects.MapObjectSelectionManager;
 import fi.lbd.mobile.events.BusHandler;
-import fi.lbd.mobile.mapobjects.events.ReturnObjectsInAreaEvent;
-import fi.lbd.mobile.mapobjects.events.SelectMapObjectEvent;
 import fi.lbd.mobile.location.ImmutablePointLocation;
 import fi.lbd.mobile.location.LocationHandler;
 import fi.lbd.mobile.location.LocationUtils;
 import fi.lbd.mobile.location.PointLocation;
 import fi.lbd.mobile.mapobjects.MapModelController;
 import fi.lbd.mobile.mapobjects.MapObject;
+import fi.lbd.mobile.mapobjects.MapObjectSelectionManager;
 import fi.lbd.mobile.mapobjects.MarkerProducer;
 import fi.lbd.mobile.mapobjects.ProgressListener;
+import fi.lbd.mobile.mapobjects.events.ReturnObjectsInAreaEvent;
+import fi.lbd.mobile.mapobjects.events.SelectMapObjectEvent;
+import fi.lbd.mobile.messaging.MessageObjectSelectionManager;
 
 
 /**
@@ -57,7 +58,7 @@ import fi.lbd.mobile.mapobjects.ProgressListener;
  * Created by Tommi & Ossi
  */
 public class GoogleMapFragment extends MapFragment implements OnInfoWindowClickListener,
-        GoogleMap.OnMarkerClickListener, GoogleMap.OnMapClickListener {
+        GoogleMap.OnMarkerClickListener, GoogleMap.OnMapClickListener, ApplicationDetails.ApplicationDetailListener {
 
     private LatLng defaultLocation;
 
@@ -339,6 +340,7 @@ public class GoogleMapFragment extends MapFragment implements OnInfoWindowClickL
         this.mapView.onResume();
         super.onResume();
         BusHandler.getBus().register(this);
+        ApplicationDetails.get().registerChangeListener(this);
     }
 
     @Override
@@ -348,6 +350,7 @@ public class GoogleMapFragment extends MapFragment implements OnInfoWindowClickL
         BusHandler.getBus().unregister(this);
         hideCursor();
         hideKeyBoard();
+        ApplicationDetails.get().unregisterChangeListener(this);
     }
 
     @Override
@@ -360,6 +363,11 @@ public class GoogleMapFragment extends MapFragment implements OnInfoWindowClickL
     public void onLowMemory() {
         super.onLowMemory();
         mapView.onLowMemory();
+    }
+
+    @Override
+    public void notifyApplicationChange(EventType eventType, String newValue) {
+        this.modelController.clear();
     }
 
     /**

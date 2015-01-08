@@ -42,7 +42,6 @@ public class SettingsActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
-        BusHandler.getBus().register(this);
         BACKEND_URL = getResources().getString(R.string.backend_url);
         OBJECT_COLLECTION = getResources().getString(R.string.object_collection);
 
@@ -64,13 +63,14 @@ public class SettingsActivity extends Activity {
                 selectCollectionText.setVisibility(View.INVISIBLE);
             }
         });
-        // When user clicks "Done" on keyboard, the keyboard is closed
+        // When user clicks "Done" on keyboard, close the keyboard
         urlText.setOnKeyListener(onSoftKeyboardDonePress);
     }
 
     @Override
     public void onResume(){
         super.onResume();
+        BusHandler.getBus().register(this);
         hideSoftKeyboard();
 
         // Restore settings that were last selected
@@ -79,6 +79,12 @@ public class SettingsActivity extends Activity {
             urlText.setText(url);
             BusHandler.getBus().post(new RequestCollectionsEvent(url));
         }
+    }
+
+    @Override
+    public void onPause(){
+        super.onPause();
+        BusHandler.getBus().unregister(this);
     }
 
     public void onLoadClick(View view){
@@ -97,14 +103,6 @@ public class SettingsActivity extends Activity {
 
             String url = urlText.getText().toString();
             Log.d(getClass().getSimpleName(), " Saving settings to ApplicationDetails");
-            if (checkedCollection != null && url != null) {
-                // TODO: selvitä
-                if (checkedCollection.equals("Ring around the rosie")) {
-                    checkedCollection = "Playgrounds";
-                } else if (checkedCollection.equals("Tampere Streetlights")) {
-                    checkedCollection = "Streetlights";
-                }
-            }
             ApplicationDetails.get().setCurrentCollection(checkedCollection);
             ApplicationDetails.get().setCurrentBackendUrl(url);
 
@@ -141,17 +139,6 @@ public class SettingsActivity extends Activity {
         // If a radiobutton was selected before, select it
         String collection = ApplicationDetails.get().getCurrentCollection();
         if(collection != null) {
-
-            //TODO: Selvitä
-            if(collection.equals("Streetlights")){
-                collection = "Tampere Streetlights";
-            }
-            else if(collection.equals("Playgrounds")){
-                collection = "Ring around the rosie";
-            }
-
-
-
             int count = radioGroup.getChildCount();
             for (int j=0;j<count;j++) {
                 View o = radioGroup.getChildAt(j);
@@ -202,6 +189,7 @@ public class SettingsActivity extends Activity {
             radioButton.setId(0);
             layoutParams = new RadioGroup.LayoutParams(RadioGroup.LayoutParams.WRAP_CONTENT, RadioGroup.LayoutParams.WRAP_CONTENT);
             radioGroup.addView(radioButton, layoutParams);
+            radioGroup.check(radioButton.getId());
         }
     }
 
