@@ -19,8 +19,7 @@ import fi.lbd.mobile.messaging.events.SelectReceiverEvent;
  * Created by Ossi on 4.1.2015.
  */
 public class SelectReceiverDialogFragment extends DialogFragment{
-
-    List<String> users;
+    private List<String> users;
 
     public static SelectReceiverDialogFragment newInstance(List<String> users) {
         SelectReceiverDialogFragment fragment = new SelectReceiverDialogFragment();
@@ -61,13 +60,15 @@ public class SelectReceiverDialogFragment extends DialogFragment{
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 // When button is clicked, call up to owning activity.
+                String selectedUser = null;
                 int checkedIndex = radioGroup.getCheckedRadioButtonId();
-                String selectedUser = users.get(checkedIndex);
+                if(checkedIndex != -1) {
+                    selectedUser = users.get(checkedIndex);
+                }
                 BusHandler.getBus().post(new SelectReceiverEvent(selectedUser));
             }
         });
 
         return v;
     }
-
 }

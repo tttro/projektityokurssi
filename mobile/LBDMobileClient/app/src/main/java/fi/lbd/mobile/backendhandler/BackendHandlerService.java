@@ -115,6 +115,9 @@ public class BackendHandlerService extends Service {
 
         this.backendHandler = new CachingBackendHandler(urlReader, getString(R.string.source_objects_base_url),
                 getString(R.string.source_messages_base_url), MAX_CACHE_TIME);
+        if (this.backendHandler instanceof ApplicationDetails.ApplicationDetailListener) {
+            ApplicationDetails.get().registerChangeListener((ApplicationDetails.ApplicationDetailListener)this.backendHandler);
+        }
 
         // Start the repeating check for outdated caches.
         this.scheduledExecutor.scheduleAtFixedRate(new Runnable() {
@@ -154,6 +157,10 @@ public class BackendHandlerService extends Service {
         BusHandler.getBus().unregister(this);
         this.executorPool.shutdownNow();
         this.scheduledExecutor.shutdownNow();
+
+        if (this.backendHandler instanceof ApplicationDetails.ApplicationDetailListener) {
+            ApplicationDetails.get().unregisterChangeListener((ApplicationDetails.ApplicationDetailListener)this.backendHandler);
+        }
     }
 
     /**

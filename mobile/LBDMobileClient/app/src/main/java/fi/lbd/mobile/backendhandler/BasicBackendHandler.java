@@ -27,7 +27,6 @@ public class BasicBackendHandler implements BackendHandler {
     protected static final int RETRY_AMOUNT = 1;
     protected final String baseObjectUrl;
     protected final String baseMessageUrl;
-//    protected final String dataSource;
     protected final UrlReader urlReader;
 
     /**
@@ -40,7 +39,6 @@ public class BasicBackendHandler implements BackendHandler {
         this.urlReader = urlReader;
         this.baseObjectUrl = baseObjectUrl;
         this.baseMessageUrl = baseMessageUrl;
-//        this.dataSource = dataSource;
     }
 
     @Override
@@ -284,13 +282,13 @@ public class BasicBackendHandler implements BackendHandler {
                 .put("topic", topic);
         addMessageToObjectNode(message, objNode);
 
-        // TODO: Attachments
+        /*
         if (attachedObjectIds.size() > 0) {
-            ArrayNode arrayNode = objNode.putArray("attachments");
+            ArrayNode arrayNode = objNode.putArray("attachements");
             for (String object : attachedObjectIds) {
-                arrayNode.addObject().put("category", dataSource).put("aid", object);
+                arrayNode.addObject().put("category", dataSource).put("id", object);
             }
-        }
+        }*/
 
         Log.d(this.getClass().getSimpleName(), "Send message: " + objNode.toString());
         Log.d(this.getClass().getSimpleName(), "Send to url: "+ urlBuilder.toString());
@@ -305,7 +303,7 @@ public class BasicBackendHandler implements BackendHandler {
 
     @Override
     public HandlerResponse<MessageObject> deleteMessage(String dataSource, String messageId) {
-        String url = this.baseMessageUrl +dataSource +"/"+ messageId;
+        String url = this.baseMessageUrl + "messages/" + /*dataSource +"/"+*/ messageId;
         UrlResponse response = this.urlReader.delete(url);
 
         Log.d(BasicBackendHandler.class.getSimpleName(), "deleteMessage from url: " + url);
@@ -340,7 +338,7 @@ public class BasicBackendHandler implements BackendHandler {
             if (response != null) {
                 if (shouldRetry(response.getStatus())) {
                     Log.e(BasicBackendHandler.class.getSimpleName(), "Retrying request on url: "+url+", response was: "+ response);
-                    return null; // Got a response object but the returned status code was not OK.
+                    return response; // Got a response object but the returned status code was not OK.
                 } else {
                     return response; // Response was valid. Return it.
                 }
