@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import time
 
 __author__ = 'Aki Mäkinen'
 
@@ -12,7 +13,7 @@ from RESThandlers.HandlerInterface.Factory import HandlerFactory
 from lbd_backend.LBD_REST_messagedata.models import Message, Attachment
 from lbd_backend.LBD_REST_users.models import User
 from lbd_backend.utils import s_codes
-from lbd_backend.LBD_REST_locationdata.decorators import this_is_a_login_wrapper_dummy
+from lbd_backend.LBD_REST_locationdata.decorators import lbd_require_login
 
 
 _messagecollection = {
@@ -22,7 +23,7 @@ _messagecollection = {
 }
 
 
-@this_is_a_login_wrapper_dummy
+@lbd_require_login
 @require_http_methods(["GET", "DELETE"])
 def msg_single(request, *args, **kwargs):
     userdata = User.objects.get(user_id=kwargs["lbduser"].user_id)
@@ -55,7 +56,7 @@ def msg_single(request, *args, **kwargs):
                                         'trying to delete the message"}')
 
 
-@this_is_a_login_wrapper_dummy
+@lbd_require_login
 @require_http_methods(["GET", "DELETE"])
 def msg_general(request, *args, **kwargs):
     userdata = User.objects.get(user_id=kwargs["lbduser"].user_id)
@@ -122,7 +123,7 @@ def msg_general(request, *args, **kwargs):
             return HttpResponse(status=s_codes["INTERNALERROR"])
 
 
-@this_is_a_login_wrapper_dummy
+@lbd_require_login
 @require_http_methods(["POST"])
 def msg_send(request, *args, **kwargs):
     userdata = User.objects.get(user_id=kwargs["lbduser"].user_id)
@@ -137,7 +138,11 @@ def msg_send(request, *args, **kwargs):
         att_fields = ["category", "id"]
 
         body = request.body
-        content_json = json.loads(body)
+        try:
+            content_json = json.loads(body)
+        except ValueError:
+            return HttpResponse(status=s_codes["INTERNALERROR"])
+
         if not ("recipient" in content_json and "topic" in content_json and "message" in content_json):
             return HttpResponse(status=s_codes["BAD"], content='{"message": "Malformed MessageJSON"}',
                                 content_type="application/json; charset=utf-8")
@@ -209,6 +214,7 @@ def msg_send(request, *args, **kwargs):
                     for att in content_json["attachments"]:
                         attlist.append(Attachment(**att))
                     temp.attachments = attlist
+                temp.timestamp = int(time.time())
                 temp.save()
             except mongoengine.NotUniqueError:
                 return HttpResponse(status=s_codes["INTERNALERROR"])
@@ -218,6 +224,33 @@ def msg_send(request, *args, **kwargs):
             return HttpResponse(status=s_codes["OK"])
         else:
             return HttpResponse(status=s_codes["BAD"])
+
+
+@lbd_require_login
+@require_http_methods(["GET"])
+def mark_as_read(request, *args, **kwargs):
+    userdata = User.objects.get(user_id=kwargs["lbduser"].user_id)
+    print userdata.email
+
+    query = dict()
+    query["recipient"] = userdata.email.lower()
+    if "message" in kwargs:
+        try:
+            query["mid"] = int(kwargs["message"])
+        except ValueError:
+            return HttpResponse(status=s_codes["BAD"], content_type="application/json; charset=utf-8",
+                            content='{"message": "Invalid message id."}')
+    try:
+        item = Message.objects.get(**query)
+    except mongoengine.DoesNotExist:
+        return HttpResponse(status=s_codes["NOTFOUND"], content_type="application/json; charset=utf-8",
+                            content='{"message": "Message not found."}')
+
+    item.messageread = True
+    item.save()
+
+    return HttpResponse(status=s_codes["OK"])
+
 
 def _beautify_message(msg):
     msg["type"] = "Message"

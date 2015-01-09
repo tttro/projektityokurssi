@@ -6,12 +6,12 @@ from django.shortcuts import render, render_to_response
 from django.views.decorators.http import require_http_methods
 import httplib2
 import mongoengine
-from lbd_backend.LBD_REST_locationdata.decorators import this_is_a_login_wrapper_dummy
+from lbd_backend.LBD_REST_locationdata.decorators import lbd_require_login
 from lbd_backend.LBD_REST_users.models import User
 from lbd_backend.utils import s_codes
 
 
-@this_is_a_login_wrapper_dummy
+@lbd_require_login
 @require_http_methods(["GET"])
 def list_users(request, *args, **kwargs):
     items = User.objects.as_pymongo()
@@ -38,7 +38,10 @@ def add_user(request, *args, **kwargs):
     url = ('https://www.googleapis.com/oauth2/v1/tokeninfo?access_token=%s' % access_token)
     h = httplib2.Http()
     resp, content = h.request(url, 'GET')
-    res = json.loads(content)
+    try:
+        res = json.loads(content)
+    except ValueError:
+        return HttpResponse(status=s_codes["INTERNALERROR"])
 
     # If there was an error in the access token info, abort.
     try:
@@ -56,9 +59,11 @@ def add_user(request, *args, **kwargs):
     else:
         return HttpResponse(content='{"message": "Error. ID mismatch."}', status=s_codes["BAD"],
                             content_type="application/json; charset=utf-8")
-
-    result = json.loads(h.request('https://www.googleapis.com/oauth2/v2/userinfo',
-                                  headers={"Authorization": "Bearer "+ request.META["HTTP_LBD_LOGIN_HEADER"]})[1])
+    try:
+        result = json.loads(h.request('https://www.googleapis.com/oauth2/v2/userinfo',
+                                      headers={"Authorization": "Bearer "+ request.META["HTTP_LBD_LOGIN_HEADER"]})[1])
+    except ValueError:
+        return HttpResponse(status=s_codes["INTERNALERROR"])
 
     try:
         user = User()

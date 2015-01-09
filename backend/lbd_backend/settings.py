@@ -60,6 +60,7 @@ SESSION_ENGINE = 'mongoengine.django.sessions'
 
 TEST_RUNNER = 'lbd_backend.LBD_REST_locationdata.testrunner.NoSQLTestRunner'
 
+APPEND_SLASH = False
 
 SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SECURE = True

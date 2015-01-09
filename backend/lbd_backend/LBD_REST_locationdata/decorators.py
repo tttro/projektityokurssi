@@ -49,7 +49,7 @@ def location_collection(func):
     return wrapper
 
 
-def this_is_a_login_wrapper_dummy(func):
+def lbd_require_login(func):
     """
     *Wrapper*
 
@@ -69,7 +69,10 @@ def this_is_a_login_wrapper_dummy(func):
             h.request("GET", '/oauth2/v1/tokeninfo?access_token=' + access_token)
             response = h.getresponse()
             res_content = response.read()
-            result = json.loads(res_content)
+            try:
+                result = json.loads(res_content)
+            except ValueError:
+                return HttpResponse(status=s_codes["INTERNALERROR"])
             if True:
             #if response.status == 200 and userid == result["user_id"]:
                 print result

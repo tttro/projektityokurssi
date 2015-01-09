@@ -16,4 +16,5 @@ class Message(Document):
     attachments = ListField(EmbeddedDocumentField(Attachment))
     topic = StringField(required=True)
     message = StringField(required=True)
-    timestamp =
+    timestamp = IntField()
+    messageread = BooleanField(default=False)
