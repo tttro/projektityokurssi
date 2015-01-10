@@ -2,38 +2,79 @@
 
 var messageController = angular.module('messageController', []);
 
-messageController.controller('messageController', function($scope, MessageService){
+messageController.controller('messageController', function($scope, $filter, $timeout,MessageService, notify){
 
 
+    var messageModel = [];
+    var orginalMessageList = [];
+
+    var messageSend = {
+        to:{
+            email:''
+        },
+        topic:'',
+        message:''
+    }
+
+    messageModel.messageSend = messageSend;
+
+
+    /*** Logic ***/
+
+    $scope.showLoadingIcon = true;
+    // Get user's messages
     MessageService.get(function(messages){
-        $scope.messageList = messages;
+        messageModel.messageList = messages;
+        orginalMessageList = messages;
         $scope.showLoadingIcon = false;
+        console.log(messages);
     });
 
-    var dummyData = [
-        {
-            'topic':'This is a message title',
-            'date':'11.11.2014',
-            'message': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla eget eros sed metus cursus tristique. In finibus purus sit amet mauris rutrum, nec lacinia nunc pulvinar. Fusce diam lorem, ultricies at arcu vel, vestibulum hendrerit libero. Nunc sit amet est eget lorem imperdiet auctor feugiat eget mauris.'
-        },
-        {
-            'topic':'Lorem ipsum dolor sit amet',
-            'date':'1.11.2014',
-            'message': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla eget eros sed metus cursus tristique. In finibus purus sit amet mauris rutrum, nec lacinia nunc pulvinar. Fusce diam lorem, ultricies at arcu vel, vestibulum hendrerit libero. Nunc sit amet est eget lorem imperdiet auctor feugiat eget mauris.'
-        },
-        {
-
-            'topic':'Test test',
-            'date':'5.10.2014',
-            'message': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla eget eros sed metus cursus tristique. In finibus purus sit amet mauris rutrum, nec lacinia nunc pulvinar. Fusce diam lorem, ultricies at arcu vel, vestibulum hendrerit libero. Nunc sit amet est eget lorem imperdiet auctor feugiat eget mauris.'
-        }
-
-    ];
 
 
+    // Get user of application
+    MessageService.getUsers(function(users){
+        messageModel.userList = users;
+    });
 
     $scope.selectedItem = null;
 
+    $scope.messageModel = messageModel;
+
+    /*** Button click handlers ***/
+
+    $scope.send = function(){
+
+        var messageModel = $scope.messageModel.messageSend;
+        if(messageModel.to.email == '' || messageModel.topic == '' || messageModel.message == '')
+        {
+            notify('Please fill out all fields before sending');
+        }
+        else
+        {
+            MessageService.send(messageModel);
+
+            $scope.messageModel.messageSend.topic = '';
+            $scope.messageModel.messageSend.message = '';
+
+        }
+
+    }
+
+    $scope.delete = function(id){
+        MessageService.delete(id,function(){
+
+        });
+        $scope.showLoadingIcon = true;
+
+
+        MessageService.get(function(messages){
+            messageModel.messageList = messages;
+            orginalMessageList = messages;
+            $scope.showLoadingIcon = false;
+        });
+
+    }
     /* Accordion */
     $scope.click = function(message){
 
@@ -52,5 +93,18 @@ messageController.controller('messageController', function($scope, MessageServic
         return $scope.selectedItem === message;
     }
 
+
+    // Search
+    $scope.messageSearch = function(searchQuery) {
+        $scope.messageList = getFilteredObjectList(searchQuery);
+    }
+
+
+    var getFilteredObjectList = function(searchQuery){
+
+        var filteredList = $filter('filter')(orginalMessageList,{$:searchQuery},false);
+
+        return filteredList;
+    }
 
 });

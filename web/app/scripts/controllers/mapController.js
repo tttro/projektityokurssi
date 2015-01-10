@@ -2,7 +2,7 @@
 
 var mapController = angular.module('mapController', []);
 
-mapController.controller('mapController', function($scope, $window,$rootScope, $timeout, ObjectsService, ObjectsLocal, appConfig){
+mapController.controller('mapController', function($scope, $window,$rootScope, $timeout, ObjectsService, ObjectsLocal, notify, appConfig){
 
     // Init
     var currentPosition = new google.maps.LatLng(appConfig.defaultPosition[0], appConfig.defaultPosition[1]); // Tampere
@@ -247,10 +247,10 @@ mapController.controller('mapController', function($scope, $window,$rootScope, $
     // An error handler for user's geolocation button
     var handleNoGeolocation = function (error) {
         if(error) {
-            alert("Geolocation service failed.");
+            notify("Geolocation service failed.");
         }
         else {
-            alert("Your browser doesn't support geolocation.");
+            notify("Your browser doesn't support geolocation.");
         }
     }
 
@@ -412,7 +412,7 @@ mapController.controller('mapController', function($scope, $window,$rootScope, $
 
             }
             else {
-                alert("StreetView is not available at this marker");
+                notify("StreetView is not available at this marker");
             }
         });
     }
