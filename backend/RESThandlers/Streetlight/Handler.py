@@ -68,7 +68,11 @@ class StreetlightHandler(HandlerBase):
             'http://tampere.navici.com/tampere_wfs_geoserver/opendata/ows?service=WFS&version=1.0.0&request=GetFeature'
             '&typeName=opendata:WFS_KATUVALO&outputFormat=json&srsName=EPSG:4326',
             proxies={})
-        jsonitem = json.loads(req.read())
+        try:
+            jsonitem = json.loads(req.read())
+        except ValueError:
+            return
+
         current_result = self.modelobject._get_collection().aggregate([
             {"$project": {"feature_id": 1,
                           "_id": 0}}

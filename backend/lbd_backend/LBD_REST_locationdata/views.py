@@ -46,14 +46,12 @@ from django.shortcuts import HttpResponse
 from django.views.decorators.http import require_http_methods
 from pymongo.errors import DuplicateKeyError
 
-from lbd_backend.LBD_REST_locationdata.decorators import location_collection, this_is_a_login_wrapper_dummy
+from lbd_backend.LBD_REST_locationdata.decorators import location_collection, lbd_require_login
 from lbd_backend.LBD_REST_locationdata.models import MetaDocument, MetaData
 from lbd_backend.utils import s_codes, geo_json_scheme_validation
 
 
-
-
-#@this_is_a_login_wrapper_dummy
+# @this_is_a_login_wrapper_dummy
 @require_http_methods(["GET"])
 def api(request):
     from RESThandlers.HandlerInterface.Factory import HandlerFactory
@@ -69,7 +67,7 @@ def api(request):
 
 
 @location_collection
-@this_is_a_login_wrapper_dummy
+@lbd_require_login
 @require_http_methods(["GET", "DELETE", "PUT"])
 def single_resource(request, *args, **kwargs):
     """
@@ -189,7 +187,7 @@ def single_resource(request, *args, **kwargs):
 
 
 @location_collection
-@this_is_a_login_wrapper_dummy
+@lbd_require_login
 @require_http_methods(["GET", "DELETE", "PUT", "POST"])
 def collection(request, *args, **kwargs):
     """
@@ -301,7 +299,10 @@ def collection(request, *args, **kwargs):
     #############################################################
     elif request.method == "POST":
         body = request.body
-        content_json = json.loads(body)
+        try:
+            content_json = json.loads(body)
+        except ValueError:
+            return HttpResponse(status=s_codes["INTERNALERROR"])
         if geo_json_scheme_validation(content_json):
             try:
                 temp = MetaDocument(feature_id=content_json["id"], collection=kwargs["collection"],
@@ -321,7 +322,7 @@ def collection(request, *args, **kwargs):
 
 
 @location_collection
-@this_is_a_login_wrapper_dummy
+@lbd_require_login
 @require_http_methods(["GET", "DELETE"])
 def collection_near(request, *args, **kwargs):
     """
@@ -413,7 +414,7 @@ def collection_near(request, *args, **kwargs):
 
 
 @location_collection
-@this_is_a_login_wrapper_dummy
+@lbd_require_login
 @require_http_methods(["GET", "DELETE"])
 def collection_inarea(request, *args, **kwargs):
     """
@@ -498,7 +499,7 @@ def collection_inarea(request, *args, **kwargs):
 
 
 @location_collection
-@this_is_a_login_wrapper_dummy
+@lbd_require_login
 @require_http_methods(["POST"])
 def search_from_rest(request, *args, **kwargs):
     try:
