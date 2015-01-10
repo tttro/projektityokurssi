@@ -149,8 +149,8 @@ public class ListActivity extends Activity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        stopService(new Intent(this, BackendHandlerService.class)); // TODO: Missä pysäytys?
-        stopService(new Intent(this, MessageUpdateService.class));
+        //stopService(new Intent(this, BackendHandlerService.class)); // TODO: Missä pysäytys?
+       // stopService(new Intent(this, MessageUpdateService.class));
     }
 
     @Override

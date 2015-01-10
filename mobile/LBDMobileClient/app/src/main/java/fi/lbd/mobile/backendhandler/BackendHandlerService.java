@@ -2,6 +2,7 @@ package fi.lbd.mobile.backendhandler;
 
 import android.app.Service;
 import android.content.Intent;
+import android.os.Binder;
 import android.os.IBinder;
 import android.util.Log;
 import android.util.Pair;
@@ -75,14 +76,25 @@ public class BackendHandlerService extends Service {
     private ScheduledExecutorService scheduledExecutor = Executors.newScheduledThreadPool(1);
     private BackendHandler backendHandler;
 
+    // Binder given to clients
+    private final IBinder mBinder = new BackendBinder();
+
+    public class BackendBinder extends Binder {
+        BackendHandlerService getService() {
+            // Return this instance of LocalService so clients can call public methods
+            return BackendHandlerService.this;
+        }
+    }
+
+
     @Override
     public IBinder onBind(Intent arg0) {
-        return null;
+        Log.d("-------", "onBind");
+        return mBinder;
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-
         // Read backend certificate from file
         Certificate certificate = null;
         InputStream certificateInput = null;
@@ -113,8 +125,9 @@ public class BackendHandlerService extends Service {
             throw new RuntimeException(ex.getOriginalException());
         }
 
-        this.backendHandler = new CachingBackendHandler(urlReader, getString(R.string.source_objects_base_url),
-                getString(R.string.source_messages_base_url), MAX_CACHE_TIME);
+        String objectsBaseUrl = ApplicationDetails.get().getCurrentBackendUrl() + "locationdata/api/";
+        String messagesBaseUrl = ApplicationDetails.get().getCurrentBackendUrl() + "messagedata/api/";
+        this.backendHandler = new CachingBackendHandler(urlReader, objectsBaseUrl,messagesBaseUrl, MAX_CACHE_TIME);
         if (this.backendHandler instanceof ApplicationDetails.ApplicationDetailListener) {
             ApplicationDetails.get().registerChangeListener((ApplicationDetails.ApplicationDetailListener)this.backendHandler);
         }
@@ -147,12 +160,14 @@ public class BackendHandlerService extends Service {
 
     @Override
     public void onCreate() {
+        Log.d("---------", "Starting new BackendService");
         super.onCreate();
         BusHandler.getBus().register(this);
     }
 
     @Override
     public void onDestroy() {
+        Log.d("---------", "Destroying BackendService");
         super.onDestroy();
         BusHandler.getBus().unregister(this);
         this.executorPool.shutdownNow();

@@ -20,8 +20,8 @@ public class StartupActivity extends Activity {
         super.onCreate(savedInstanceState);
 
         // Start the object repository service. // TODO: Missä käynnistys?
-        startService(new Intent(this, BackendHandlerService.class));
-        startService(new Intent(this, MessageUpdateService.class));
+        //startService(new Intent(this, BackendHandlerService.class));
+       // startService(new Intent(this, MessageUpdateService.class));
 
         BACKEND_URL = getResources().getString(R.string.backend_url);
         OBJECT_COLLECTION = getResources().getString(R.string.object_collection);
