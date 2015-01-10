@@ -106,6 +106,14 @@ itemController.controller('itemController', function($scope, $http, $rootScope, 
         $scope.searchResultText = '';
     }
 
+    $scope.saveNote = function(item){
+
+        item.properties.metadata['status'] = '';
+        console.log(item);
+
+        ObjectsService.put(item);
+    }
+
     function getAddressByCoords(item){
 
         var latlng = new google.maps.LatLng(

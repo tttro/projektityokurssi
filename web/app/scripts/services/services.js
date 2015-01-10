@@ -6,8 +6,18 @@ var dataSet = null;
 dataServices.factory('ObjectsService', function($http, appConfig, notify){
     return {
 
-        getSingle : function(itemId, callback){
-            //TODO fetch single data
+        put : function(item){
+            $http({
+                method: 'PUT',
+                url: appConfig.baseApiUrl + appConfig.dataTypeUrl + appConfig.dataCollectionUrl +'/'+ item.id,
+                data: item
+            })
+                .success(function(data){
+                    notify('Note saved');
+                })
+                .error(function(data,status,header,config){
+                    notify('Failed to save metadata');
+                });
         },
         getNear: function(lat, lng, callback){
             var retData = null;
