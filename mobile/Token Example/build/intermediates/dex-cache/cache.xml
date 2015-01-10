@@ -9,6 +9,27 @@
         <dex dex="D:\Code\projektityokurssi\mobile\Login-test\app\build\intermediates\pre-dexed\debug\google-api-client-android-1.17.0-rc-619fe56d848a9b3cd35f0af08255c7496a6b5c2c.jar" />
     </item>
     <item
+        jar="C:\Users\ritsu_000\.gradle\caches\modules-2\files-2.1\com.google.http-client\google-http-client-android\1.17.0-rc\f3fc9acc57c2a55fd17a421710f564b73dabda21\google-http-client-android-1.17.0-rc.jar"
+        jumboMode="false"
+        revision="20.0.0"
+        sha1="f3fc9acc57c2a55fd17a421710f564b73dabda21">
+        <dex dex="D:\Code\projektityokurssi\mobile\Login-test\app\build\intermediates\pre-dexed\debug\google-http-client-android-1.17.0-rc-5aa4a30911fbaa4144bf9a8e80b29eece23c97a1.jar" />
+    </item>
+    <item
+        jar="C:\Users\ritsu_000\.gradle\caches\modules-2\files-2.1\com.google.code.gson\gson\2.1\2e66da15851f9f5b5079228f856c2f090ba98c38\gson-2.1.jar"
+        jumboMode="false"
+        revision="20.0.0"
+        sha1="2e66da15851f9f5b5079228f856c2f090ba98c38">
+        <dex dex="D:\Code\projektityokurssi\mobile\Login-test\app\build\intermediates\pre-dexed\debug\gson-2.1-844e2f14509143899443481a450fba9dc126d34d.jar" />
+    </item>
+    <item
+        jar="D:\Code\projektityokurssi\mobile\Token Example\app\build\intermediates\exploded-aar\com.android.support\support-v4\20.0.0\libs\internal_impl-20.0.0.jar"
+        jumboMode="false"
+        revision="20.0.0"
+        sha1="e40b3078e3fbd353c9f44da8df25a8fc0078209d">
+        <dex dex="D:\Code\projektityokurssi\mobile\Token Example\app\build\intermediates\pre-dexed\debug\internal_impl-20.0.0-1d58c4687efebf5a5371a1afd8dc5eb5a2c8e92e.jar" />
+    </item>
+    <item
         jar="D:\Code\projektityokurssi\mobile\Login-test\app\build\intermediates\exploded-aar\com.google.android.gms\play-services\6.1.71\classes.jar"
         jumboMode="false"
         revision="20.0.0"
@@ -28,13 +49,6 @@
         revision="20.0.0"
         sha1="8694693636ab36910c8100ce527c258ff3ebece0">
         <dex dex="D:\Code\projektityokurssi\mobile\Login-test\app\build\intermediates\pre-dexed\debug\classes-1254ee965e5126463f5be30ce9c46ee2a9f4e307.jar" />
-    </item>
-    <item
-        jar="C:\Users\ritsu_000\.gradle\caches\modules-2\files-2.1\com.google.http-client\google-http-client-android\1.17.0-rc\f3fc9acc57c2a55fd17a421710f564b73dabda21\google-http-client-android-1.17.0-rc.jar"
-        jumboMode="false"
-        revision="20.0.0"
-        sha1="f3fc9acc57c2a55fd17a421710f564b73dabda21">
-        <dex dex="D:\Code\projektityokurssi\mobile\Login-test\app\build\intermediates\pre-dexed\debug\google-http-client-android-1.17.0-rc-5aa4a30911fbaa4144bf9a8e80b29eece23c97a1.jar" />
     </item>
     <item
         jar="D:\Programs\sdk\extras\android\m2repository\com\android\support\support-annotations\20.0.0\support-annotations-20.0.0.jar"
@@ -72,6 +86,13 @@
         <dex dex="D:\Code\projektityokurssi\mobile\Login-test\app\build\intermediates\pre-dexed\debug\google-api-client-1.17.0-rc-2c877d1fb1676de5c86c3d7d7ab50f9344324df8.jar" />
     </item>
     <item
+        jar="D:\Code\projektityokurssi\mobile\Token Example\app\build\intermediates\exploded-aar\com.google.android.gms\play-services\6.1.71\classes.jar"
+        jumboMode="false"
+        revision="20.0.0"
+        sha1="0f6d5c1ef2e982c3b7858408e3df389cf5d202da">
+        <dex dex="D:\Code\projektityokurssi\mobile\Token Example\app\build\intermediates\pre-dexed\debug\classes-cb28a41267df98fcb9105fb049d986a99974a2b4.jar" />
+    </item>
+    <item
         jar="C:\Users\ritsu_000\.gradle\caches\modules-2\files-2.1\com.google.oauth-client\google-oauth-client\1.17.0-rc\76bcfba455c5a053d532bbac2cf30a2b2c341cf3\google-oauth-client-1.17.0-rc.jar"
         jumboMode="false"
         revision="20.0.0"
@@ -93,18 +114,18 @@
         <dex dex="D:\Code\projektityokurssi\mobile\Login-test\app\build\intermediates\pre-dexed\debug\google-api-services-drive-v2-rev105-1.17.0-rc-15f9543ae6ec727a8e890743a067d5e3c110b812.jar" />
     </item>
     <item
-        jar="C:\Users\ritsu_000\.gradle\caches\modules-2\files-2.1\com.google.code.gson\gson\2.1\2e66da15851f9f5b5079228f856c2f090ba98c38\gson-2.1.jar"
-        jumboMode="false"
-        revision="20.0.0"
-        sha1="2e66da15851f9f5b5079228f856c2f090ba98c38">
-        <dex dex="D:\Code\projektityokurssi\mobile\Login-test\app\build\intermediates\pre-dexed\debug\gson-2.1-844e2f14509143899443481a450fba9dc126d34d.jar" />
-    </item>
-    <item
         jar="C:\Users\ritsu_000\.gradle\caches\modules-2\files-2.1\com.google.api-client\google-api-client-xml\1.17.0-rc\62de2de564686d5ae4be9191d7728dfe30c79790\google-api-client-xml-1.17.0-rc.jar"
         jumboMode="false"
         revision="20.0.0"
         sha1="62de2de564686d5ae4be9191d7728dfe30c79790">
         <dex dex="D:\Code\projektityokurssi\mobile\Login-test\app\build\intermediates\pre-dexed\debug\google-api-client-xml-1.17.0-rc-3ca98863f94b0d9c382a07afe24fa6efc6cccd91.jar" />
+    </item>
+    <item
+        jar="D:\Code\projektityokurssi\mobile\Token Example\app\build\intermediates\exploded-aar\com.android.support\support-v4\20.0.0\classes.jar"
+        jumboMode="false"
+        revision="20.0.0"
+        sha1="8694693636ab36910c8100ce527c258ff3ebece0">
+        <dex dex="D:\Code\projektityokurssi\mobile\Token Example\app\build\intermediates\pre-dexed\debug\classes-bca10b238e507277cc88e5830a559f3b3f9bd110.jar" />
     </item>
 
 </items>
