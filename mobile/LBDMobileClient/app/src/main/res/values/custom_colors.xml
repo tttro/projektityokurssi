@@ -6,5 +6,6 @@
     <color name="near_objects_background">#7391BA</color>
     <color name="locate_button_background">#1B2831</color>
     <color name="white_text">#ffffff</color>
+    <color name="navigation_bar_background">#2F3A41</color>
 
 </resources>

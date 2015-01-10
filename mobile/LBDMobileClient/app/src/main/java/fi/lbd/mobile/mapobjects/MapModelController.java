@@ -10,10 +10,9 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import fi.lbd.mobile.SelectionManager;
 import fi.lbd.mobile.events.BusHandler;
-import fi.lbd.mobile.events.CacheObjectsInAreaEvent;
-import fi.lbd.mobile.events.RequestObjectsInAreaEvent;
+import fi.lbd.mobile.mapobjects.events.CacheObjectsInAreaEvent;
+import fi.lbd.mobile.mapobjects.events.RequestObjectsInAreaEvent;
 import fi.lbd.mobile.location.ImmutablePointLocation;
 
 /**
@@ -52,6 +51,14 @@ public class MapModelController<T> implements MapTableModelListener<T>, CameraCh
         this.markerObjectMap = HashBiMap.create();
         this.activeMarker = null;
         this.hideMarkersZoom = hideMarkersZoom;
+    }
+
+    public void clear() {
+        this.tableModel.removeListener( this );
+        this.tableModel = new MapTableModel<>(DIVIDE_GRID_LAT, DIVIDE_GRID_LON);
+        this.tableModel.addListener( this );
+        this.markerObjectMap = HashBiMap.create();
+        this.activeMarker = null;
     }
 
     public void addProgressListener(ProgressListener listener) {
@@ -188,8 +195,8 @@ public class MapModelController<T> implements MapTableModelListener<T>, CameraCh
                 markers.add(obj);
                 this.markerObjectMap.put(obj, mapObject);
 
-                if(SelectionManager.get().getSelectedObject() != null &&
-                        mapObject.getId().equals(SelectionManager.get().getSelectedObject().getId())){
+                if(MapObjectSelectionManager.get().getSelectedMapObject() != null &&
+                        mapObject.getId().equals(MapObjectSelectionManager.get().getSelectedMapObject().getId())){
                     setActiveMarker(obj);
                     this.markerProducer.event(obj, MarkerProducer.Event.SHOW_INFO);
                 } else {

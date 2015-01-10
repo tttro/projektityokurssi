@@ -1,13 +1,15 @@
 package fi.lbd.mobile;
 
 import android.app.Application;
-import android.content.res.AssetManager;
+import android.content.Intent;
 import android.util.Log;
 
-import java.io.IOException;
-import java.io.InputStream;
-
+import fi.lbd.mobile.backendhandler.BackendHandlerService;
 import fi.lbd.mobile.events.BusHandler;
+import fi.lbd.mobile.mapobjects.MapObjectSelectionManager;
+import fi.lbd.mobile.messaging.MessageObjectDeletionManager;
+import fi.lbd.mobile.messaging.MessageObjectSelectionManager;
+import fi.lbd.mobile.messaging.MessageUpdateService;
 
 /**
  * Created by Tommi.
@@ -24,9 +26,14 @@ public class LBDApplication extends Application {
         // TODO: Dependency injection?
         //"the static variables instances are bound to the class loader of the class that first initialized them"
         BusHandler.initialize();
-        SelectionManager.initialize();
+        MapObjectSelectionManager.initialize();
+        MessageObjectSelectionManager.initialize();
+        MessageObjectDeletionManager.initialize();
+        ApplicationDetails.initialize();
+        ApplicationDetails.get().setUserId("108363990223992898018"); // TODO: FIXME
+        //ApplicationDetails.get().setCurrentCollection(getString(R.string.streetlights)); // TODO: FIXME
+
         Log.d("MAIN APPLICATION CONTEXT-----------", "ALL INITIALIZED");
     }
-
 }
 

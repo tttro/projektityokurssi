@@ -1,16 +1,23 @@
 package fi.lbd.mobile;
 
 import android.app.Activity;
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.View;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.squareup.otto.Subscribe;
 
 import fi.lbd.mobile.adapters.ListDetailsAdapter;
 import fi.lbd.mobile.events.BusHandler;
-import fi.lbd.mobile.events.RequestMapObjectEvent;
-import fi.lbd.mobile.events.ReturnMapObjectEvent;
+import fi.lbd.mobile.mapobjects.MapObjectSelectionManager;
+import fi.lbd.mobile.mapobjects.events.RequestMapObjectEvent;
+import fi.lbd.mobile.mapobjects.events.ReturnMapObjectEvent;
 import fi.lbd.mobile.mapobjects.MapObject;
 
 
@@ -23,7 +30,7 @@ public class DetailsActivity extends Activity {
         super.onCreate(savedInstanceState);
 
         BusHandler.getBus().register(this);
-        BusHandler.getBus().post(new RequestMapObjectEvent(SelectionManager.get().getSelectedObject().getId()));
+        BusHandler.getBus().post(new RequestMapObjectEvent(MapObjectSelectionManager.get().getSelectedMapObject().getId()));
     }
 
     @Override
@@ -50,13 +57,45 @@ public class DetailsActivity extends Activity {
 
     @Subscribe
     public void onEvent (ReturnMapObjectEvent event){
-            MapObject obj = event.getMapObject();
+            final MapObject obj = event.getMapObject();
             if (obj != null){
                 this.adapter = new ListDetailsAdapter(this, obj, obj
                         .getAdditionalProperties().size(), 1, 1);
                 setContentView(R.layout.activity_details);
                 ListView list = (ListView)findViewById(android.R.id.list);
                 list.setAdapter(this.adapter);
+
+                // Listen to edit button press
+                findViewById(R.id.editNoteButton).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        editNote();
+                    }
+                });
+
+                // Listen to copy button press
+                findViewById(R.id.copyButton).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        copyId(obj.getId());
+                    }
+                });
             }
+    }
+
+    private void editNote(){
+        Intent intent = new Intent(this, EditNoteActivity.class);
+        startActivity(intent);
+    }
+
+    private void copyId(String id){
+        ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+        ClipData clip = ClipData.newPlainText("ID", id);
+        clipboard.setPrimaryClip(clip);
+
+        Context context = getApplicationContext();
+        CharSequence dialogText = "Object id copied to clipboard";
+        int duration = Toast.LENGTH_SHORT;
+        Toast.makeText(context, dialogText, duration).show();
     }
 }

@@ -10,8 +10,45 @@
         android:cacheColorHint="@android:color/transparent"
         android:id="@id/android:list"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:drawSelectorOnTop="false" >
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:drawSelectorOnTop="false"
+        android:background="#FFF">
     </ListView>
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="47dp"
+        android:background="#2F3A41">
+
+        <ImageButton
+            android:id="@+id/newMessageButton"
+            android:layout_width="60dp"
+            android:layout_height="match_parent"
+            android:src="@drawable/ic_menu_compose"
+            android:paddingLeft="15dip"
+            android:paddingRight="15dip"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp"
+            android:background="@color/locate_button_background"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
+
+        <ImageButton
+            android:id="@+id/refreshButton"
+            android:layout_width="60dp"
+            android:layout_height="match_parent"
+            android:src="@drawable/ic_popup_sync_3"
+            android:paddingLeft="15dip"
+            android:paddingRight="15dip"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp"
+            android:background="@color/locate_button_background"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+
+    </RelativeLayout>
 
 </LinearLayout>

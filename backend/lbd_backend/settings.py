@@ -59,3 +59,24 @@ AUTHENTICATION_BACKENDS = (
 SESSION_ENGINE = 'mongoengine.django.sessions'
 
 TEST_RUNNER = 'lbd_backend.LBD_REST_locationdata.testrunner.NoSQLTestRunner'
+
+APPEND_SLASH = False
+
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTOCOL', 'https')
+
+TEMPLATE_LOADERS = (
+    'django.template.loaders.filesystem.Loader',
+    'django.template.loaders.app_directories.Loader',
+    'django.template.loaders.eggs.Loader',
+)
+
+root_path = os.path.abspath(os.path.dirname(__file__))
+
+TEMPLATE_DIRS = (
+    os.path.normpath(root_path+"/templates"),
+)
+

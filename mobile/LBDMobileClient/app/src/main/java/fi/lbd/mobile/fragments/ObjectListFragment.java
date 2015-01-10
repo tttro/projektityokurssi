@@ -1,7 +1,7 @@
 package fi.lbd.mobile.fragments;
 
 import android.app.ListFragment;
-import android.graphics.Color;
+import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -20,16 +20,15 @@ import com.google.android.gms.common.GooglePlayServicesClient;
 import com.squareup.otto.Subscribe;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import fi.lbd.mobile.adapters.ListExpandableAdapter;
 import fi.lbd.mobile.events.BusHandler;
 import fi.lbd.mobile.R;
 import fi.lbd.mobile.events.RequestFailedEvent;
-import fi.lbd.mobile.events.RequestNearObjectsEvent;
-import fi.lbd.mobile.events.ReturnNearObjectsEvent;
-import fi.lbd.mobile.events.ReturnSearchResultEvent;
-import fi.lbd.mobile.events.SearchObjectsEvent;
+import fi.lbd.mobile.mapobjects.events.RequestNearObjectsEvent;
+import fi.lbd.mobile.mapobjects.events.ReturnNearObjectsEvent;
+import fi.lbd.mobile.mapobjects.events.ReturnSearchResultEvent;
+import fi.lbd.mobile.mapobjects.events.SearchObjectsEvent;
 import fi.lbd.mobile.location.ImmutablePointLocation;
 import fi.lbd.mobile.location.LocationHandler;
 import fi.lbd.mobile.mapobjects.MapObject;
@@ -50,6 +49,7 @@ public class ObjectListFragment extends ListFragment {
     private String LOCATION_FAILED;
     private String SHOWING_NEAREST;
     private String NO_NEAREST;
+    private String SEARCH_FAILED;
     private String SEARCH_RESULTS;
     private String NO_RESULTS;
     private String MAX_RESULTS;
@@ -69,6 +69,7 @@ public class ObjectListFragment extends ListFragment {
     private TextView statusText;
     private String lastStatusText = EMPTY;
     private int lastStatusBackground = 0;
+    private ProgressDialog progressDialog;
 
     // Lock and boolean variables used to prevent users from flooding the backend with searches,
     // even if they tap the location button or search button repeatedly.
@@ -105,6 +106,7 @@ public class ObjectListFragment extends ListFragment {
         LOCATION_FAILED = getActivity().getString(R.string.location_failed);
         SHOWING_NEAREST = getActivity().getString(R.string.showing_nearest);
         NO_NEAREST = getActivity().getString(R.string.no_nearest_found);
+        SEARCH_FAILED = getActivity().getString(R.string.search_failed);
         SEARCH_RESULTS = getActivity().getString(R.string.showing_results);
         NO_RESULTS = getActivity().getString(R.string.no_results);
         MAX_RESULTS = getActivity().getString(R.string.max_results);
@@ -170,12 +172,7 @@ public class ObjectListFragment extends ListFragment {
         this.locationHandler.addListener( new GooglePlayServicesClient.ConnectionCallbacks() {
             @Override
             public void onConnected(Bundle bundle) {
-                synchronized (LOCK) {
-                    if (!searchInProgress) {
-                        LocationTask activeTask = new LocationTask();
-                        activeTask.execute();
-                    }
-                }
+                showNearestObjects();
                 locationHandler.removeListener(this);
             }
             @Override
@@ -214,6 +211,7 @@ public class ObjectListFragment extends ListFragment {
 
         // Set active location/search task as finished, clear the status bar text
         synchronized (LOCK){
+            dismissDialog();
             Log.d("________", "onPause(). Releasing lock.");
             searchInProgress = false;
         }
@@ -271,6 +269,7 @@ public class ObjectListFragment extends ListFragment {
         this.adapter.notifyDataSetChanged();
 
         synchronized (LOCK){
+            dismissDialog();
             Log.d("__________","Locationtask results received. Releasing lock.");
             searchInProgress = false;
         }
@@ -283,11 +282,11 @@ public class ObjectListFragment extends ListFragment {
      */
     @Subscribe
     public void onEvent (ReturnSearchResultEvent event){
-        this.adapter.clear();
         statusText.setBackgroundColor(SEARCH_BACKGROUND);
         lastStatusBackground = SEARCH_BACKGROUND;
 
         if (event.getMapObjects() != null && event.getMapObjects().size() > 0) {
+            this.adapter.clear();
             if(event.getMapObjects().size() == MAX_RESULTS_AMOUNT) {
                 statusText.setText(String.format(MAX_RESULTS, MAX_RESULTS_AMOUNT));
             }
@@ -308,6 +307,7 @@ public class ObjectListFragment extends ListFragment {
         }
 
         synchronized (LOCK){
+            dismissDialog();
             Log.d("__________","Search results received. Releasing lock.");
             searchInProgress = false;
         }
@@ -319,16 +319,21 @@ public class ObjectListFragment extends ListFragment {
      */
     @Subscribe
     public void onEvent(RequestFailedEvent event) {
+        statusText.setBackgroundColor(lastStatusBackground);
+
         if (event.getFailedEvent() instanceof RequestNearObjectsEvent) {
-            statusText.setBackgroundColor(lastStatusBackground);
             statusText.setText(LOCATION_FAILED);
             lastStatusText = LOCATION_FAILED;
-            this.getListView().requestLayout();
-
-            synchronized (LOCK){
-                Log.d("__________","Error received. Releasing lock.");
-                searchInProgress = false;
-            }
+        }
+        else if (event.getFailedEvent() instanceof SearchObjectsEvent) {
+            statusText.setText(SEARCH_FAILED);
+            lastStatusText = SEARCH_FAILED;
+        }
+        this.getListView().requestLayout();
+        synchronized (LOCK){
+            dismissDialog();
+            Log.d("__________","Error received. Releasing lock.");
+            searchInProgress = false;
         }
     }
 
@@ -380,7 +385,9 @@ public class ObjectListFragment extends ListFragment {
         synchronized (LOCK) {
             if(!searchInProgress) {
                 if(searchParameter != null && searchParameter.length() > 2) {
-                    Log.d("________", "New search started");
+                    progressDialog = ProgressDialog.show(getActivity(), "", "Searching objects...", true);
+                    progressDialog.setCancelable(true);
+                    Log.d("********", "New search started");
                     searchInProgress = true;
                     ArrayList list = new ArrayList<String>();
                     list.add("id");
@@ -402,6 +409,8 @@ public class ObjectListFragment extends ListFragment {
     public void showNearestObjects() {
         synchronized (LOCK){
             if(!searchInProgress) {
+                progressDialog = ProgressDialog.show(getActivity(), "", "Locating nearest objects...", true);
+                progressDialog.setCancelable(true);
                 searchInProgress = true;
                 LocationTask activeTask = new LocationTask();
                 activeTask.execute();
@@ -450,6 +459,7 @@ public class ObjectListFragment extends ListFragment {
         protected void onPostExecute(Boolean result) {
             if(!result) {
                 synchronized (LOCK) {
+                    dismissDialog();
                     Log.d("________", "Couldn't connect to locationclient. Releasing lock.");
                     searchInProgress = false;
                     statusText.setText(LOCATION_FAILED);
@@ -457,6 +467,12 @@ public class ObjectListFragment extends ListFragment {
                     lastStatusBackground = LOCATION_BACKGROUND;
                 }
             }
+        }
+    }
+
+    private void dismissDialog(){
+        if(progressDialog != null && progressDialog.isShowing()){
+            progressDialog.dismiss();
         }
     }
  }

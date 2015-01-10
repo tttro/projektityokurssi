@@ -1,7 +1,5 @@
 package fi.lbd.mobile.mapobject.test;
 
-import android.support.annotation.NonNull;
-
 import com.squareup.otto.Subscribe;
 
 import org.junit.After;
@@ -14,13 +12,12 @@ import org.robolectric.shadows.ShadowLog;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import fi.lbd.mobile.CustomRobolectricTestRunner;
-import fi.lbd.mobile.SelectionManager;
+import fi.lbd.mobile.mapobjects.MapObjectSelectionManager;
 import fi.lbd.mobile.events.BusHandler;
-import fi.lbd.mobile.events.CacheObjectsInAreaEvent;
-import fi.lbd.mobile.events.RequestObjectsInAreaEvent;
+import fi.lbd.mobile.mapobjects.events.CacheObjectsInAreaEvent;
+import fi.lbd.mobile.mapobjects.events.RequestObjectsInAreaEvent;
 import fi.lbd.mobile.location.ImmutablePointLocation;
 import fi.lbd.mobile.mapobjects.ImmutableMapObject;
 import fi.lbd.mobile.mapobjects.MapModelController;
@@ -242,7 +239,7 @@ public class MapModelControllerTest {
                 new HashMap<String,String>(),
                 new HashMap<String,String>());
 
-        SelectionManager.get().setSelection(selectedObject);
+        MapObjectSelectionManager.get().setSelectedMapObject(selectedObject);
         controller.cameraChanged(14,
                 1.0, 1.0,
                 1.0+MapModelController.DIVIDE_GRID_LAT-MapModelController.DIVIDE_GRID_LAT*0.1,

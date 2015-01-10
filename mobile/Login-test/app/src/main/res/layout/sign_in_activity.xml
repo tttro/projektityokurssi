@@ -15,6 +15,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/token" />
+    <TextView
+        android:text="@string/rest"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/rest_result" />
 
     <com.google.android.gms.common.SignInButton
     android:id="@+id/sign_in_button"
