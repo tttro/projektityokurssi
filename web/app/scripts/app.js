@@ -4,6 +4,7 @@
 // Init main application and used modules
 var app = angular.module('app',[
     'ngRoute',
+    'ngSanitize',
     'mainController',
     'dataServices',
     'cgNotify',

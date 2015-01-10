@@ -1,12 +1,7 @@
 <!-- item.partial.html -->
 <div id="itemSearch" class="search-form">
-    <div class="input-group">
-        <input id="searchBox" type="text" class="form-control" ng-model="searchQuery" placeholder="search items..." ng-change="checkEmpty(searchQuery)">
-      <span class="input-group-btn">
-        <button id="searchBtn" class="btn btn-default" ng-click="itemSearch(searchQuery)" type="button"><span class="glyphicon glyphicon-search" aria-hidden="false"></span></button>
-      </span>
-    </div>
     <div class="input-group radio">
+        <label class="radio-inline" style="padding: 0 10px 0 0;" >Search from:</label>
         <label class="radio-inline">
             <input type="radio"  ng-model="searchMethod" value="map" id="radioMap" ng-click="setSelectedValue('map')"> Map
         </label>
@@ -14,6 +9,13 @@
             <input type="radio"  ng-model="searchMethod" value="all" id="radioAll" ng-click="setSelectedValue('all')"> All
         </label>
     </div>
+    <div class="input-group">
+        <input id="searchBox" type="text" class="form-control" ng-model="searchQuery" placeholder="search items..." ng-change="checkEmpty(searchQuery)">
+      <span class="input-group-btn">
+        <button id="searchBtn" class="btn btn-default" ng-click="itemSearch(searchQuery)" type="button"><span class="glyphicon glyphicon-search" aria-hidden="false"></span></button>
+      </span>
+    </div>
+
 </div>
 
 <div class="tab-content-inner">

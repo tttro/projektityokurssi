@@ -2,43 +2,78 @@
 
 var messageController = angular.module('messageController', []);
 
-messageController.controller('messageController', function($scope, $filter, MessageService, notify){
+messageController.controller('messageController', function($scope, $filter, $timeout,MessageService, notify){
 
-    var message = {
-        to:'tero.taipale@lbd.net',
+
+    var messageModel = [];
+    var orginalMessageList = [];
+
+    var messageSend = {
+        to:{
+            email:''
+        },
         topic:'',
         message:''
     }
 
-    var orginalMessageList = [];
+    messageModel.messageSend = messageSend;
+
+
+    /*** Logic ***/
 
     $scope.showLoadingIcon = true;
-    $scope.messageModel = message;
-
+    // Get user's messages
     MessageService.get(function(messages){
-        console.log(messages);
-        $scope.messageList = messages;
+        messageModel.messageList = messages;
         orginalMessageList = messages;
         $scope.showLoadingIcon = false;
+        console.log(messages);
+    });
+
+
+
+    // Get user of application
+    MessageService.getUsers(function(users){
+        messageModel.userList = users;
     });
 
     $scope.selectedItem = null;
 
-    $scope.send = function(){
-        var messageModel = $scope.messageModel;
+    $scope.messageModel = messageModel;
 
-        if(messageModel.to == '' || messageModel.topic == '' || messageModel.message == '')
+    /*** Button click handlers ***/
+
+    $scope.send = function(){
+
+        var messageModel = $scope.messageModel.messageSend;
+        if(messageModel.to.email == '' || messageModel.topic == '' || messageModel.message == '')
         {
             notify('Please fill out all fields before sending');
         }
         else
         {
             MessageService.send(messageModel);
+
+            $scope.messageModel.messageSend.topic = '';
+            $scope.messageModel.messageSend.message = '';
+
         }
 
     }
+
     $scope.delete = function(id){
-        //MessageService.delete(id);
+        MessageService.delete(id,function(){
+
+        });
+        $scope.showLoadingIcon = true;
+
+
+        MessageService.get(function(messages){
+            messageModel.messageList = messages;
+            orginalMessageList = messages;
+            $scope.showLoadingIcon = false;
+        });
+
     }
     /* Accordion */
     $scope.click = function(message){
@@ -58,9 +93,12 @@ messageController.controller('messageController', function($scope, $filter, Mess
         return $scope.selectedItem === message;
     }
 
+
+    // Search
     $scope.messageSearch = function(searchQuery) {
         $scope.messageList = getFilteredObjectList(searchQuery);
     }
+
 
     var getFilteredObjectList = function(searchQuery){
 

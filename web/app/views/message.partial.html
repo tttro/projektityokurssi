@@ -11,25 +11,27 @@
     <div class="sendmsg-form">
         <div class="form-group">
             <label for="messageTo">To</label>
-            <input type="text" class="form-control" id="messageTo" ng-model="messageModel.to" ng-value="messageModel.to" placeholder="Enter title">
+            <select id="messageTo" class="form-control" ng-model="messageModel.messageSend.to" ng-options="user.email for user in messageModel.userList">
+                <option value="">-- choose receiver --</option>
+            </select>
         </div>
         <div class="form-group">
             <label for="messageTitle">Title</label>
-            <input type="text" class="form-control" id="messageTitle" ng-model="messageModel.topic" placeholder="Enter title">
+            <input type="text" class="form-control" id="messageTitle" ng-model="messageModel.messageSend.topic" placeholder="Enter title">
         </div>
         <div class="form-group">
             <label for="messageContent">Message</label>
-            <textarea class="form-control" rows="3" ng-model="messageModel.message" id="messageContent"></textarea>
+            <textarea class="form-control" rows="3" ng-model="messageModel.messageSend.message" id="messageContent"></textarea>
         </div>
         <button class="btn btn-primary" ng-click="send()">Send</button>
     </div>
     <div ng-show="showLoadingIcon" class="loading"><img src="./img/ajax-loader_2.gif"></div>
     <ul>
         <!-- Details -->
-        <li ng-repeat="message in messageList" ng-class="{'open': isSelected(message)}">
+        <li ng-repeat="message in messageModel.messageList.messages | orderBy:timestamp" ng-class="{'open': isSelected(message)}">
             <div class="accord-title clearfix" is-open="open" ng-click="click(message)">
                 <div class="fleft">
-                    <div class="from">{{message.sender}}</div>
+                    <div class="from">{{message.sender}} <br>{{message.timestamp * 1000 | date:'dd.MM.yyyy HH:mm'}} </div>
                     <div class="title">{{message.topic}}</div>
                 </div>
                 <div class="fright">
@@ -38,10 +40,8 @@
                 </div>
             </div>
             <div class="accord-content" style="clear: both">
-                <div class="list-item">
-                    {{message.message}}
-                </div>
-                <button class="btn btn-danger" ng-click="delete(message.mid)">Delete</button>
+                <div class="list-item" ng-bind-html="message.message | linky:'_blank'"></div>
+                <button class="btn btn-danger" ng-click="delete(message.id)">Delete</button>
             </div>
         </li>
     </ul>

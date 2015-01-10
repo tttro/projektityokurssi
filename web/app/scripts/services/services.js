@@ -73,7 +73,7 @@ dataServices.factory('ObjectsService', function($http, appConfig, notify){
                     callback(data);
                 })
                 .error(function(data){
-                    errorHandler(data,'playground',appConfig.dataTypeUrl,notify);
+                    errorHandler(data,'collection',appConfig.dataTypeUrl,notify);
                 });
         }
 
@@ -111,7 +111,7 @@ dataServices.factory('MessageService', function($http, appConfig,notify){
 
             var message = {
                 'type':'Message',
-                'recipient': messageObject.to,
+                'recipient': messageObject.to.email,
                 'topic': messageObject.topic,
                 'message': messageObject.message,
                 'category': appConfig.dataCollectionUrl
@@ -123,25 +123,34 @@ dataServices.factory('MessageService', function($http, appConfig,notify){
                 data: message
             })
             .success(function(data){
-                notify('A message has been sent to ' + messageObject.to);
+                notify('A message has been sent to ' + messageObject.to.email);
             })
             .error(function(data,status,header,config){
-                notify('A message failed to send to ' + messageObject.to);
+                notify('A message failed to send to ' +  messageObject.to.email);
             });
         },
         delete: function(id){
             $http({
                 method: 'DELETE',
-                url: appConfig.baseApiUrl + 'messagedata/api/messages/',
-                data: {
-                    'mid':id
-                }
+                url: appConfig.baseApiUrl + 'messagedata/api/messages/'+id
             })
             .success(function(data){
                 notify('Message has been deleted');
             })
             .error(function(data,status,header,config){
                 notify('Failed to delete message');
+            });
+        },
+        getUsers: function(callback){
+            $http({
+                method: 'GET',
+                url: appConfig.baseApiUrl + 'messagedata/api/users/list/'
+            })
+            .success(function(data){
+                callback(data);
+            })
+            .error(function(data,status,header,config){
+                notify('Failed to get users');
             });
         }
     }
@@ -168,8 +177,7 @@ dataServices.factory('AuthService', function($rootScope,$http,notify,appConfig){
                 url: 'https://www.googleapis.com/oauth2/v2/userinfo',
                 headers: {
                     'Authorization': 'Bearer '+authResult.access_token
-                },
-                data: authResult
+                }
             }).success(function(userinfo){
                 user = {
                     id: userinfo.id,
