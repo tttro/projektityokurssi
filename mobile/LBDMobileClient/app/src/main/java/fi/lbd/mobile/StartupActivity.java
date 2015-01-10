@@ -32,11 +32,13 @@ public class StartupActivity extends Activity {
 
         // If no previous settings were found, move the user to SettingsActivity
         if(url == null || collection == null){
+            finish();
             Intent intent = new Intent(this, SettingsActivity.class);
             startActivity(intent);
         }
         // Else go straight to ListActivity
         else {
+            finish();
             ApplicationDetails.get().setCurrentCollection(collection);
             ApplicationDetails.get().setCurrentBackendUrl(url);
             Intent intent = new Intent(this, ListActivity.class);
