@@ -199,6 +199,8 @@ public class BasicUrlReader implements UrlReader {
             Log.e(BasicUrlReader.class.getSimpleName(), "Reading url encountered I/O error!", e);
         } catch (IllegalArgumentException e) {
             Log.e(BasicUrlReader.class.getSimpleName(), "Given url is not in valid format!", e);
+        } catch (IllegalStateException e){
+            Log.e(BasicUrlReader.class.getSimpleName(), "Given url is not in valid format!", e);
         } finally {
             if (bufferedReader != null) {
                 try {

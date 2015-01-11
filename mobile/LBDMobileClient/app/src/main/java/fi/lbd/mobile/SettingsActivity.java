@@ -1,6 +1,7 @@
 package fi.lbd.mobile;
 
 import android.app.Activity;
+import android.app.Service;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -30,6 +31,7 @@ import fi.lbd.mobile.events.BusHandler;
 import fi.lbd.mobile.events.RequestCollectionsEvent;
 import fi.lbd.mobile.events.RequestFailedEvent;
 import fi.lbd.mobile.events.ReturnCollectionsEvent;
+import fi.lbd.mobile.messaging.events.RequestUserMessagesEvent;
 
 
 public class SettingsActivity extends Activity {
@@ -75,14 +77,10 @@ public class SettingsActivity extends Activity {
             @Override
             public void onServiceConnected(ComponentName className,
                                            IBinder service) {
-                Log.d("--------", "posting new requestcollectionsevent");
                 BusHandler.getBus().post(new RequestCollectionsEvent(ApplicationDetails.get().getCurrentBackendUrl()));
             }
-
             @Override
-            public void onServiceDisconnected(ComponentName name) {
-                Log.d("----------","Backendhandler disonnected from Connection");
-            }
+            public void onServiceDisconnected(ComponentName name) {}
         };
     }
 
@@ -101,10 +99,22 @@ public class SettingsActivity extends Activity {
     }
 
     @Override
+    public void onStart(){
+        super.onStart();
+        ActiveActivitiesTracker.activityStarted();
+    }
+
+    @Override
+    public void onStop(){
+        super.onStop();
+        ActiveActivitiesTracker.activityStopped();
+    }
+
+    @Override
     public void onPause(){
         Log.d(this.getClass().getSimpleName(), "-----Pausing and unbinding SettingsActivity");
         super.onPause();
-        // Unbind binded service to prevent from losing a bind
+        // Unbind binded service to prevent from losing a bind while on pause
         try {
             unbindService(backendHandlerConnection);
         } catch (Exception e){
@@ -124,13 +134,12 @@ public class SettingsActivity extends Activity {
                // Log.d("------", e.getCause().toString());
                 Log.d(this.getClass().getSimpleName(), "----onLoadClick trying to unbind a nonexisting service.");
             }
-            stopService(new Intent(this, BackendHandlerService.class));
+            ServiceManager.stopBackendService();
 
             // Attempt to create a new service with the new URL
             ApplicationDetails.get().setCurrentBackendUrl(url);
-            startService(new Intent(this, BackendHandlerService.class));
+            ServiceManager.startBackendService();
             bindService(new Intent(this, BackendHandlerService.class), backendHandlerConnection, Context.BIND_AUTO_CREATE);
-
         }
     }
 
@@ -153,6 +162,7 @@ public class SettingsActivity extends Activity {
             editor.putString(OBJECT_COLLECTION, checkedCollection);
             editor.apply();
 
+            BusHandler.getBus().post(new RequestUserMessagesEvent());
             Intent intent = new Intent(this, ListActivity.class);
             startActivity(intent);
         }
@@ -200,15 +210,6 @@ public class SettingsActivity extends Activity {
         if(event.getFailedEvent() instanceof RequestCollectionsEvent){
             Log.d("--------", "RequestFailedEvent");
             makeShortToast("Please check URL");
-
-            // Stop and unbind old service
-            try {
-                unbindService(backendHandlerConnection);
-            } catch (Exception e){
-                Log.d(this.getClass().getSimpleName(), "-----onEvent(RequestFailedEvent) " +
-                        "trying to unbind a nonexisting service.");
-            }
-            stopService(new Intent(this, BackendHandlerService.class));
 
             // Clear the radiogroup and add a radiobutton with "empty" text
             clearRadioGroup();

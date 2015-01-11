@@ -57,21 +57,25 @@
         <activity
             android:name=".DetailsActivity"
             android:label="@string/title_activity_details"
+            android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Holo.Light.NoActionBar" >
         </activity>
         <activity
             android:name=".messaging.ReadMessageActivity"
             android:label="@string/title_activity_read_message"
+            android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Holo.Light.NoActionBar" >
         </activity>
         <activity
             android:name=".messaging.SendMessageActivity"
             android:label="@string/title_activity_send_message"
+            android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Holo.Light.NoActionBar" >
         </activity>
         <activity
             android:name=".EditNoteActivity"
             android:label="@string/title_activity_edit_note"
+            android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Holo.Light.NoActionBar" >
         </activity>
 
@@ -84,6 +88,7 @@
         <activity
             android:name=".SettingsActivity"
             android:label="@string/title_activity_settings"
+            android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Holo.Light.NoActionBar"
             android:windowSoftInputMode="stateHidden|adjustResize">
         </activity>

@@ -17,7 +17,6 @@ import android.view.inputmethod.InputMethodManager;
 import java.util.ArrayDeque;
 import java.util.Locale;
 
-import fi.lbd.mobile.backendhandler.BackendHandlerService;
 import fi.lbd.mobile.events.BusHandler;
 import fi.lbd.mobile.mapobjects.MapObjectSelectionManager;
 import fi.lbd.mobile.mapobjects.events.SelectMapObjectEvent;
@@ -26,7 +25,6 @@ import fi.lbd.mobile.fragments.MessageFragment;
 import fi.lbd.mobile.fragments.ObjectListFragment;
 import fi.lbd.mobile.location.LocationHandler;
 import fi.lbd.mobile.mapobjects.MapObject;
-import fi.lbd.mobile.messaging.MessageUpdateService;
 
 
 public class ListActivity extends Activity {
@@ -149,8 +147,6 @@ public class ListActivity extends Activity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        //stopService(new Intent(this, BackendHandlerService.class)); // TODO: Missä pysäytys?
-       // stopService(new Intent(this, MessageUpdateService.class));
     }
 
     @Override
@@ -159,6 +155,7 @@ public class ListActivity extends Activity {
         this.locationHandler.start();
         BusHandler.getBus().register(this);
         overridePendingTransition(R.anim.fadein, R.anim.fadeout);
+        ServiceManager.startMessageService();
     }
 
     @Override
@@ -167,6 +164,18 @@ public class ListActivity extends Activity {
         this.locationHandler.stop();
         BusHandler.getBus().unregister(this);
         overridePendingTransition(R.anim.fadein, R.anim.fadeout);
+    }
+
+    @Override
+    public void onStart(){
+        super.onStart();
+        ActiveActivitiesTracker.activityStarted();
+    }
+
+    @Override
+    public void onStop(){
+        super.onStop();
+        ActiveActivitiesTracker.activityStopped();
     }
 
     public void onDetailsClick(View view){

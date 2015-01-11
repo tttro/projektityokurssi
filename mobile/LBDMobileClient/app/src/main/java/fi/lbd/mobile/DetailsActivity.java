@@ -51,6 +51,18 @@ public class DetailsActivity extends Activity {
     }
 
     @Override
+    public void onStart(){
+        super.onStart();
+        ActiveActivitiesTracker.activityStarted();
+    }
+
+    @Override
+    public void onStop(){
+        super.onStop();
+        ActiveActivitiesTracker.activityStopped();
+    }
+
+    @Override
     protected void onDestroy() {
         super.onDestroy();
     }

@@ -6,10 +6,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 
-import fi.lbd.mobile.backendhandler.BackendHandlerService;
-import fi.lbd.mobile.events.BusHandler;
-import fi.lbd.mobile.messaging.MessageUpdateService;
-
 
 public class StartupActivity extends Activity {
     private String BACKEND_URL = "";
