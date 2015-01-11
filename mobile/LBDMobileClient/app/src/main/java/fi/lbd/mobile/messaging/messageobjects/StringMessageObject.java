@@ -45,7 +45,8 @@ public class StringMessageObject extends MessageObject<String> {
                 && newObject.getId().equals(this.getId())
                 && newObject.getMessage().equals(this.getMessage())
                 && newObject.getSender().equals(this.getSender())
-                && newObject.getTopic().equals(this.getTopic())){
+                && newObject.getTopic().equals(this.getTopic())
+                && newObject.getTimestamp() == this.getTimestamp()){
             return true;
         }
         else {

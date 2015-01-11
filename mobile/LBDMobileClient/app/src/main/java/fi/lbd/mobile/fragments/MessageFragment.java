@@ -14,6 +14,8 @@ import android.widget.Toast;
 
 import com.squareup.otto.Subscribe;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import fi.lbd.mobile.messaging.MessageObjectSelectionManager;
@@ -102,9 +104,10 @@ public class MessageFragment extends ListFragment {
 
         if(!areMessageListsIdentical(oldMessageObjects, newMessageObjects)) {
             this.adapter.clear();
-            this.adapter.addAll(event.getMessageObjects());
+            Collections.sort(newMessageObjects, new MessageTimeStampComparator());
+            this.adapter.addAll(newMessageObjects);
             this.adapter.notifyDataSetChanged();
-            for (MessageObject message : event.getMessageObjects()) {
+            for (MessageObject message : newMessageObjects) {
                 Log.d(this.getClass().getSimpleName(), "Message: " + message);
             }
             Context context = getActivity().getApplicationContext();
@@ -156,5 +159,17 @@ public class MessageFragment extends ListFragment {
             }
         }
         return areIdentical;
+    }
+
+    private class MessageTimeStampComparator implements Comparator<MessageObject>{
+        @Override
+        public int compare(MessageObject o1, MessageObject o2){
+            long t1 = o1.getTimestamp();
+            long t2 = o2.getTimestamp();
+            if(t1 == t2){
+                return 0;
+            }
+            return t1 < t2 ? 1 : -1;
+        }
     }
 } 

@@ -55,7 +55,8 @@ public abstract class MessageObject<T> {
 
     @Override
     public String toString(){
-        return "MessageObject: id("+ this.id +") receiver("+ this.receiver +") sender("+ this.sender +") topic("+ this.topic +") isRead("+ this.isRead +")";
+        return "MessageObject: id("+ this.id +") timestamp("+this.timestamp+") " +
+                "receiver("+ this.receiver +") sender("+ this.sender +") topic("+ this.topic +") isRead("+ this.isRead +")";
     }
 
     @Override

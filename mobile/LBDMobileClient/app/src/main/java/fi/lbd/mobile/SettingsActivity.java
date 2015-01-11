@@ -1,7 +1,6 @@
 package fi.lbd.mobile;
 
 import android.app.Activity;
-import android.app.Service;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -9,12 +8,8 @@ import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.IBinder;
-import android.support.annotation.NonNull;
-import android.util.AttributeSet;
 import android.util.Log;
 import android.view.KeyEvent;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -72,11 +67,14 @@ public class SettingsActivity extends Activity {
                 selectCollectionText.setVisibility(View.INVISIBLE);
             }
         });
+
         // When user clicks "Done" on keyboard, close the keyboard
         urlText.setOnKeyListener(onSoftKeyboardDonePress);
 
-        // Connection that represents binding to BackendHandlerService.
-        // Only used to provide onServiceConnected callback.
+        /*
+        //  Connection that represents binding to BackendHandlerService.
+        //  Only used to provide onServiceConnected callback.
+         */
         backendHandlerConnection = new ServiceConnection() {
             @Override
             public void onServiceConnected(ComponentName className,
@@ -126,7 +124,7 @@ public class SettingsActivity extends Activity {
         try {
             unbindService(backendHandlerConnection);
         } catch (Exception e){
-            Log.d(this.getClass().getSimpleName(), "-----onDestroy trying to unbind a nonexisting bind.");
+            Log.d(this.getClass().getSimpleName(), "-----onPause trying to unbind a nonexisting bind.");
         }
     }
 
@@ -178,8 +176,9 @@ public class SettingsActivity extends Activity {
 
     @Subscribe
     public void onEvent(ReturnCollectionsEvent event){
-        Log.d("------", "ReturnCollectionsEvent");
+
         // Clear the radiogroup and load new radiobuttons to view
+        Log.d("------", "ReturnCollectionsEvent");
         clearRadioGroup();
         RadioGroup.LayoutParams layoutParams;
         int i = 0;

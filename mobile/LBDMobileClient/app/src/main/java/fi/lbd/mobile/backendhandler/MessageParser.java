@@ -77,7 +77,7 @@ public class MessageParser {
 
         JsonNode timestampNode = rootNode.path("timestamp");
         check(topicNode, "Timestamp");
-        long timestamp = topicNode.asLong() * 1000; // In ms
+        long timestamp = timestampNode.asLong(); // In ms
         /*
         JsonNode attachmentsNode = rootNode.path("attachements");
         if (!attachmentsNode.isMissingNode()) {

@@ -294,7 +294,6 @@ public class BasicBackendHandler implements BackendHandler {
 
         // Only if the url returns code 200, we can parse the results.
         if (response != null && response.getStatus() == UrlResponse.ResponseStatus.STATUS_200) {
-            Log.d(",,,,,,,", "response !=null");
             List<String> collections;
             try {
                 collections = CollectionParser.parseCollection(response.getContents());
