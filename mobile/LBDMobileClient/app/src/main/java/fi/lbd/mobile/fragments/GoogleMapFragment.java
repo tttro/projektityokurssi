@@ -340,7 +340,7 @@ public class GoogleMapFragment extends MapFragment implements OnInfoWindowClickL
         this.mapView.onResume();
         super.onResume();
         BusHandler.getBus().register(this);
-        ApplicationDetails.get().registerChangeListener(this);
+        ApplicationDetails.get().registerApiChangeListener(this);
     }
 
     @Override
@@ -350,7 +350,7 @@ public class GoogleMapFragment extends MapFragment implements OnInfoWindowClickL
         BusHandler.getBus().unregister(this);
         hideCursor();
         hideKeyBoard();
-        ApplicationDetails.get().unregisterChangeListener(this);
+        ApplicationDetails.get().unregisterApiChangeListener(this);
     }
 
     @Override
@@ -366,7 +366,12 @@ public class GoogleMapFragment extends MapFragment implements OnInfoWindowClickL
     }
 
     @Override
-    public void notifyApplicationChange(EventType eventType, String newValue) {
+    public void notifyApiUrlChange(String newBaseUrl, String newMessageApiUrl, String newObjectApiUrl) {
+        this.modelController.clear();
+    }
+
+    @Override
+    public void notifyCollectionChange(String newCollection) {
         this.modelController.clear();
     }
 

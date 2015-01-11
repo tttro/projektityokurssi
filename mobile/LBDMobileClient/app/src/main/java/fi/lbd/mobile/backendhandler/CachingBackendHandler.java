@@ -37,8 +37,8 @@ public class CachingBackendHandler extends BasicBackendHandler implements Applic
     private ConcurrentHashMap<String, CachedQuery> cachedQueries = new ConcurrentHashMap<>();
     private final long maxCacheTime;
 
-    public CachingBackendHandler(UrlReader urlReader, String baseObjectsUrl, String baseMessagesUrl, long cacheTimeMs) {
-        super(urlReader, baseObjectsUrl, baseMessagesUrl);
+    public CachingBackendHandler(UrlReader urlReader, UrlProvider urlProvider, long cacheTimeMs) {
+        super(urlReader, urlProvider);
         this.maxCacheTime = cacheTimeMs;
     }
 
@@ -46,18 +46,17 @@ public class CachingBackendHandler extends BasicBackendHandler implements Applic
     /**
      * Returns the objects inside the area from the backend or as a cached result.
      *
-     * @param dataSource Data source which should be used.
      * @param southWest Start point.
      * @param northEast End point.
      * @param mini  Should the results be in minimized format.
      * @return
      */
     @Override
-    public HandlerResponse getObjectsInArea(String dataSource, PointLocation southWest, PointLocation northEast, boolean mini) {
+    public HandlerResponse getObjectsInArea(PointLocation southWest, PointLocation northEast, boolean mini) {
         String hash = "inarea/"+southWest.getLongitude()+","+southWest.getLatitude()+","+northEast.getLatitude()+","+northEast.getLongitude()+"&m:"+mini;
         CachedQuery cached = this.cachedQueries.get(hash);
         if (cached == null) {
-            HandlerResponse response = super.getObjectsInArea(dataSource, southWest, northEast, mini);
+            HandlerResponse response = super.getObjectsInArea(southWest, northEast, mini);
 
             // If the connection succeeded, cache the results.
             if (response.isOk()) {
@@ -84,7 +83,12 @@ public class CachingBackendHandler extends BasicBackendHandler implements Applic
     }
 
     @Override
-    public void notifyApplicationChange(EventType eventType, String newValue) {
+    public void notifyApiUrlChange(String newBaseUrl, String newMessageApiUrl, String newObjectApiUrl) {
+        this.cachedQueries.clear();
+    }
+
+    @Override
+    public void notifyCollectionChange(String newCollection) {
         this.cachedQueries.clear();
     }
 }

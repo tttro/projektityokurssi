@@ -14,11 +14,13 @@ public abstract class MessageObject<T> {
     private final String receiver;
     private final String sender;
     private final String topic;
+    private final long timestamp;
     private boolean isRead;
 
-    public MessageObject(String id, @NonNull String receiver, @NonNull String sender,
+    public MessageObject(String id, long timestamp, @NonNull String receiver, @NonNull String sender,
                          @NonNull String topic, @NonNull boolean isRead){
         this.id = id;
+        this.timestamp = timestamp;
         this.receiver = receiver;
         this.sender = sender;
         this.topic = topic;
@@ -27,6 +29,10 @@ public abstract class MessageObject<T> {
 
     public String getId(){
         return this.id;
+    }
+
+    public long getTimestamp(){
+        return this.timestamp;
     }
 
     public String getReceiver(){
