@@ -48,6 +48,7 @@ public class SettingsActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.d(this.getClass().getSimpleName(), "----- Creating SettingsActivity");
         setContentView(R.layout.activity_settings);
         BACKEND_URL = getResources().getString(R.string.backend_url);
         OBJECT_COLLECTION = getResources().getString(R.string.object_collection);
@@ -77,7 +78,7 @@ public class SettingsActivity extends Activity {
             @Override
             public void onServiceConnected(ComponentName className,
                                            IBinder service) {
-                BusHandler.getBus().post(new RequestCollectionsEvent(ApplicationDetails.get().getCurrentBackendUrl()));
+                BusHandler.getBus().post(new RequestCollectionsEvent(ApplicationDetails.get().getCurrentBaseApiUrl()));
             }
             @Override
             public void onServiceDisconnected(ComponentName name) {}
@@ -87,11 +88,12 @@ public class SettingsActivity extends Activity {
     @Override
     public void onResume(){
         super.onResume();
+        Log.d(this.getClass().getSimpleName(), "----- Resuming SettingsActivity");
         BusHandler.getBus().register(this);
         hideSoftKeyboard();
 
         // Restore settings that were last selected
-        String url = ApplicationDetails.get().getCurrentBackendUrl();
+        String url = ApplicationDetails.get().getCurrentBaseApiUrl();
         if(url != null){
             urlText.setText(url);
             BusHandler.getBus().post(new RequestCollectionsEvent(url));
@@ -127,18 +129,18 @@ public class SettingsActivity extends Activity {
         String url = urlText.getText().toString();
         if(url != null){
             // Stop and unbind old service if it exists
-            try {
-                unbindService(backendHandlerConnection);
-            } catch (Exception e){
-                Log.d("------", e.getMessage());
-               // Log.d("------", e.getCause().toString());
-                Log.d(this.getClass().getSimpleName(), "----onLoadClick trying to unbind a nonexisting service.");
-            }
-            ServiceManager.stopBackendService();
+//            try {
+//                unbindService(backendHandlerConnection);
+//            } catch (Exception e){
+//                Log.d("------", e.getMessage());
+//               // Log.d("------", e.getCause().toString());
+//                Log.d(this.getClass().getSimpleName(), "----onLoadClick trying to unbind a nonexisting service.");
+//            }
+//            ServiceManager.stopBackendService();
 
             // Attempt to create a new service with the new URL
-            ApplicationDetails.get().setCurrentBackendUrl(url);
-            ServiceManager.startBackendService();
+            ApplicationDetails.get().setCurrentBaseApiUrl(url);
+//            ServiceManager.startBackendService();
             bindService(new Intent(this, BackendHandlerService.class), backendHandlerConnection, Context.BIND_AUTO_CREATE);
         }
     }
@@ -151,9 +153,9 @@ public class SettingsActivity extends Activity {
             checkedCollection = checkedButton.getText().toString();
 
             String url = urlText.getText().toString();
-            Log.d(getClass().getSimpleName(), " Saving settings to ApplicationDetails");
+            Log.d(getClass().getSimpleName(), " Saving settings to ApplicationDetails url: "+ url);
             ApplicationDetails.get().setCurrentCollection(checkedCollection);
-            ApplicationDetails.get().setCurrentBackendUrl(url);
+            ApplicationDetails.get().setCurrentBaseApiUrl(url);
 
             Log.d(getClass().getSimpleName(), " Saving settings to SharedPreferences");
             SharedPreferences settings = getSharedPreferences(getString(R.string.shared_preferences), MODE_PRIVATE);

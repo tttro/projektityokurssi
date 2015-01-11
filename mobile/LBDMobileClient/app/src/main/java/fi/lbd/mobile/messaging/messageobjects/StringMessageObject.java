@@ -13,9 +13,9 @@ public class StringMessageObject extends MessageObject<String> {
 
     private final String message;
 
-    public StringMessageObject(String id, @NonNull String receiver, @NonNull String sender,
+    public StringMessageObject(String id, long timestamp, @NonNull String receiver, @NonNull String sender,
                          @NonNull String topic, @NonNull boolean isRead, @NonNull String message){
-        super(id, receiver, sender, topic, isRead);
+        super(id, timestamp, receiver, sender, topic, isRead);
         this.message = message;
     }
 

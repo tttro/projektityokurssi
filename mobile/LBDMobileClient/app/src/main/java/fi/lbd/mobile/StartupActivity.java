@@ -36,7 +36,7 @@ public class StartupActivity extends Activity {
         else {
             finish();
             ApplicationDetails.get().setCurrentCollection(collection);
-            ApplicationDetails.get().setCurrentBackendUrl(url);
+            ApplicationDetails.get().setCurrentBaseApiUrl(url);
             Intent intent = new Intent(this, ListActivity.class);
             startActivity(intent);
         }

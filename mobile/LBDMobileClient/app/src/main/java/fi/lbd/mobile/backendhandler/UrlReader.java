@@ -23,6 +23,14 @@ public interface UrlReader {
     UrlResponse postJson(String url, String jsonContents);
 
     /**
+     * PUT command for the rest api.
+     * @param url
+     * @param jsonContents
+     * @return
+     */
+    UrlResponse putJson(String url, String jsonContents);
+
+    /**
      * DELETE command for the rest api.
      *
      * @param url

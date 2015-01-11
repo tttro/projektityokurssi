@@ -1,10 +1,12 @@
 package fi.lbd.mobile.fragments;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -36,6 +38,7 @@ import java.util.Locale;
 
 import fi.lbd.mobile.ApplicationDetails;
 import fi.lbd.mobile.DetailsActivity;
+import fi.lbd.mobile.ListActivity;
 import fi.lbd.mobile.R;
 import fi.lbd.mobile.events.BusHandler;
 import fi.lbd.mobile.location.ImmutablePointLocation;
@@ -88,6 +91,11 @@ public class GoogleMapFragment extends MapFragment implements OnInfoWindowClickL
     @Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.googlemap_fragment, container, false);
+
+        if (this.getActivity() instanceof ListActivity) {
+            ListActivity listActivity = (ListActivity)this.getActivity();
+            this.setLocationHandler(listActivity.getLocationHandler());
+        }
 
         this.progressBar = (ProgressBar)view.findViewById(R.id.mapProgressBar);
 		this.mapView = (MapView)view.findViewById(R.id.mapview);
@@ -340,7 +348,7 @@ public class GoogleMapFragment extends MapFragment implements OnInfoWindowClickL
         this.mapView.onResume();
         super.onResume();
         BusHandler.getBus().register(this);
-        ApplicationDetails.get().registerChangeListener(this);
+        ApplicationDetails.get().registerApiChangeListener(this);
     }
 
     @Override
@@ -350,7 +358,7 @@ public class GoogleMapFragment extends MapFragment implements OnInfoWindowClickL
         BusHandler.getBus().unregister(this);
         hideCursor();
         hideKeyBoard();
-        ApplicationDetails.get().unregisterChangeListener(this);
+        ApplicationDetails.get().unregisterApiChangeListener(this);
     }
 
     @Override
@@ -366,9 +374,15 @@ public class GoogleMapFragment extends MapFragment implements OnInfoWindowClickL
     }
 
     @Override
-    public void notifyApplicationChange(EventType eventType, String newValue) {
+    public void notifyApiUrlChange(String newBaseUrl, String newMessageApiUrl, String newObjectApiUrl) {
         this.modelController.clear();
     }
+
+    @Override
+    public void notifyCollectionChange(String newCollection) {
+        this.modelController.clear();
+    }
+
 
     /**
      * Custom info window for the markers which are displayed on the map.

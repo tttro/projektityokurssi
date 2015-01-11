@@ -82,7 +82,7 @@
         <service
             android:name=".messaging.MessageUpdateService"
             android:enabled="true"
-            android:exported="true" >
+            android:exported="false" >
         </service>
 
         <activity
