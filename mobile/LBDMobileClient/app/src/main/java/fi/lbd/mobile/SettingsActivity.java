@@ -53,6 +53,7 @@ public class SettingsActivity extends Activity {
         BACKEND_URL = getResources().getString(R.string.backend_url);
         OBJECT_COLLECTION = getResources().getString(R.string.object_collection);
 
+        // Find UI elements
         this.rootView = this.findViewById(android.R.id.content);
         this.urlText = ((EditText)rootView.findViewById(R.id.backendUrlText));
         this.selectCollectionText = (TextView)rootView.findViewById(R.id.collectionText);
@@ -74,11 +75,15 @@ public class SettingsActivity extends Activity {
         // When user clicks "Done" on keyboard, close the keyboard
         urlText.setOnKeyListener(onSoftKeyboardDonePress);
 
+        // Connection that represents binding to BackendHandlerService.
+        // Only used to provide onServiceConnected callback.
         backendHandlerConnection = new ServiceConnection() {
             @Override
             public void onServiceConnected(ComponentName className,
                                            IBinder service) {
+                Log.d("--------", "onServiceConnected, sending RequestCollectionsEvent, and unbinding");
                 BusHandler.getBus().post(new RequestCollectionsEvent(ApplicationDetails.get().getCurrentBaseApiUrl()));
+                unbindService(this);
             }
             @Override
             public void onServiceDisconnected(ComponentName name) {}
@@ -114,37 +119,35 @@ public class SettingsActivity extends Activity {
 
     @Override
     public void onPause(){
-        Log.d(this.getClass().getSimpleName(), "-----Pausing and unbinding SettingsActivity");
         super.onPause();
-        // Unbind binded service to prevent from losing a bind while on pause
+        BusHandler.getBus().unregister(this);
+
+        // Try to unbind binded service to ensure no binds are leaked when going to pause
         try {
             unbindService(backendHandlerConnection);
         } catch (Exception e){
-            Log.d(this.getClass().getSimpleName(), "-----onDestroy trying to unbind a nonexisting service.");
+            Log.d(this.getClass().getSimpleName(), "-----onDestroy trying to unbind a nonexisting bind.");
         }
-        BusHandler.getBus().unregister(this);
     }
 
+   /*
+    //  Clicking the load button updates new url for BackendHandlerService.
+    //
+    //  Also binds to BackendHandlerService to get a callback when the Service is connected with
+    //  its new URL.
+     */
     public void onLoadClick(View view){
         String url = urlText.getText().toString();
         if(url != null){
-            // Stop and unbind old service if it exists
-//            try {
-//                unbindService(backendHandlerConnection);
-//            } catch (Exception e){
-//                Log.d("------", e.getMessage());
-//               // Log.d("------", e.getCause().toString());
-//                Log.d(this.getClass().getSimpleName(), "----onLoadClick trying to unbind a nonexisting service.");
-//            }
-//            ServiceManager.stopBackendService();
-
-            // Attempt to create a new service with the new URL
             ApplicationDetails.get().setCurrentBaseApiUrl(url);
-//            ServiceManager.startBackendService();
             bindService(new Intent(this, BackendHandlerService.class), backendHandlerConnection, Context.BIND_AUTO_CREATE);
         }
     }
 
+    /*
+    //  Clicking the Accept button saves new settings and starts ListActivity
+    //
+     */
     public void onAcceptClick(View view){
         String checkedCollection = null;
 

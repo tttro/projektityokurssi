@@ -14,10 +14,7 @@ public class StartupActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        // Start the object repository service. // TODO: Missä käynnistys?
-        //startService(new Intent(this, BackendHandlerService.class));
-       // startService(new Intent(this, MessageUpdateService.class));
+        Log.d("******", "StartupActivity onCreate()");
 
         BACKEND_URL = getResources().getString(R.string.backend_url);
         OBJECT_COLLECTION = getResources().getString(R.string.object_collection);
