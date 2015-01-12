@@ -33,7 +33,7 @@
     <string name="showing_results">Search resulted in %d objects</string>
     <string name="no_results">No results, please check search parameters</string>
     <string name="max_results">Too many results - showing first %d</string>
-    <string name="more_characters">Please search using at least 3 characters</string>
+    <string name="more_characters">Please enter more search parameters</string>
     <string name="search_id">Search by object ID..</string>
     <string name="search_address">Search by address..</string>
     <string name="unknown_distance">Unknown</string>
