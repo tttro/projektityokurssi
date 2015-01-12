@@ -10,6 +10,7 @@ import android.widget.Toast;
 
 import com.squareup.otto.Subscribe;
 
+import fi.lbd.mobile.ActiveActivitiesTracker;
 import fi.lbd.mobile.R;
 import fi.lbd.mobile.events.BusHandler;
 import fi.lbd.mobile.events.RequestFailedEvent;
@@ -46,6 +47,18 @@ public class ReadMessageActivity extends Activity {
     public void onPause(){
         super.onPause();
         BusHandler.getBus().unregister(this);
+    }
+
+    @Override
+    public void onStart(){
+        super.onStart();
+        ActiveActivitiesTracker.activityStarted();
+    }
+
+    @Override
+    public void onStop(){
+        super.onStop();
+        ActiveActivitiesTracker.activityStopped();
     }
 
     public void onDeleteClick(View view){

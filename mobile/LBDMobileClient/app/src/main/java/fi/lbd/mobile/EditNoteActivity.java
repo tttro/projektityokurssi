@@ -15,6 +15,18 @@ public class EditNoteActivity extends Activity {
         setContentView(R.layout.activity_edit_note);
     }
 
+    @Override
+    public void onStart(){
+        super.onStart();
+        ActiveActivitiesTracker.activityStarted();
+    }
+
+    @Override
+    public void onStop(){
+        super.onStop();
+        ActiveActivitiesTracker.activityStopped();
+    }
+
     public void onAcceptClick(View view){
 
     }

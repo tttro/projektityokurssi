@@ -1,12 +1,9 @@
 <!-- item.partial.html -->
 <div id="itemSearch" class="search-form">
-    <div class="input-group">
-        <input id="searchBox" type="text" class="form-control" ng-model="searchQuery" placeholder="search items..." ng-change="checkEmpty(searchQuery)">
-      <span class="input-group-btn">
-        <button id="searchBtn" class="btn btn-default" ng-click="itemSearch(searchQuery)" type="button"><span class="glyphicon glyphicon-search" aria-hidden="false"></span></button>
-      </span>
-    </div>
     <div class="input-group radio">
+        <label class="radio-inline" style="padding-left: 0">
+            Search from:
+        </label>
         <label class="radio-inline">
             <input type="radio"  ng-model="searchMethod" value="map" id="radioMap" ng-click="setSelectedValue('map')"> Map
         </label>
@@ -14,6 +11,13 @@
             <input type="radio"  ng-model="searchMethod" value="all" id="radioAll" ng-click="setSelectedValue('all')"> All
         </label>
     </div>
+    <div class="input-group">
+        <input id="searchBox" type="text" class="form-control" ng-model="searchQuery" placeholder="search items..." ng-change="checkEmpty(searchQuery)">
+      <span class="input-group-btn">
+        <button id="searchBtn" class="btn btn-default" ng-click="itemSearch(searchQuery)" type="button"><span class="glyphicon glyphicon-search" aria-hidden="false"></span></button>
+      </span>
+    </div>
+
 </div>
 
 <div class="tab-content-inner">
@@ -34,18 +38,23 @@
                 <div class="address"><div ng-show="showLoadingIcon"><img src="img/ajax-loader_min.gif"></div>{{address}}</div>
                 <div class="list-item">
                     <div ng-repeat="(key, val) in item.properties">
-
-                        <div ng-if="key == 'metadata'">
+                        <!-- Metadata -->
+                        <!--<div ng-if="key == 'metadata'">
                             <div ng-repeat="(key2,val2) in val" class="item-row">
                                 <strong>{{key2}}</strong> <br>{{val2}}
                             </div>
-                        </div>
+                        </div>-->
 
-                        <div ng-if="key != 'metadata'">
+                       <div ng-if="key != 'metadata'">
                             <div class="item-row">
                                 <strong>{{key}}</strong> <br>{{val}}
                             </div>
                         </div>
+                    </div>
+                    <div class="note">
+                        <label>Note</label>
+                        <textarea class="note form-control" rows="3" ng-model="item.properties.metadata.info"></textarea>
+                        <button class="btn btn-default save" ng-click="saveNote(item)"><span class="glyphicon glyphicon-floppy-disk" aria-hidden="false"></span></button>
                     </div>
                     <button class="btn btn-primary" ng-click="showMarker(item.id)">Show on map</button>
                 </div>

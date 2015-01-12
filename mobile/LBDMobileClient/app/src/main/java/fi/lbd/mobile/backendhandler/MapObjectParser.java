@@ -4,6 +4,9 @@ import android.util.Log;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.JsonNodeFactory;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import org.json.JSONException;
 
@@ -164,10 +167,10 @@ public final class MapObjectParser {
                 Iterator<Map.Entry<String, JsonNode>> metaNodeIter = metaNode.fields();
                 while (metaNodeIter.hasNext()) {
                     Map.Entry<String, JsonNode> metaNodeEntry = metaNodeIter.next();
-                    metadataProperties.put(metaNodeEntry.getKey(), metaNodeEntry.getValue().asText()); // TODO: Voiko olla muitakin kuin txt propertyjä?
+                    metadataProperties.put(metaNodeEntry.getKey(), metaNodeEntry.getValue().asText()); // TODO: Other than text properties?
                 }
             } else {
-                additionalProperties.put(entry.getKey(), entry.getValue().asText()); // TODO: Voiko olla muitakin kuin txt propertyjä?
+                additionalProperties.put(entry.getKey(), entry.getValue().asText()); // TODO: Other than text properties?
             }
         }
 
@@ -190,5 +193,30 @@ public final class MapObjectParser {
         if (node.isMissingNode()) {
             throw new JSONException("Json is in invalid format! "+nodeName+" node is missing.");
         }
+    }
+
+    public static String createJsonFromObject(MapObject mapObject) {
+        JsonNodeFactory factory = JsonNodeFactory.instance;
+        ObjectNode jsonObj = factory.objectNode();
+
+        jsonObj.putObject("geometry").put("type", "Point").putArray("coordinates")
+                .add(mapObject.getPointLocation().getLongitude())
+                .add(mapObject.getPointLocation().getLatitude());
+        jsonObj.put("id", mapObject.getId()).put("type", "Feature");
+
+        ObjectNode propertiesNode = jsonObj.putObject("properties");
+        for (Map.Entry<String, String> entry : mapObject.getAdditionalProperties().entrySet()) {
+            propertiesNode.put(entry.getKey(), entry.getValue());
+        }
+
+        if (!mapObject.getMetadataProperties().isEmpty()) {
+            ObjectNode metadataNode = propertiesNode.putObject("metadata");
+            for (Map.Entry<String, String> entry : mapObject.getMetadataProperties().entrySet()) {
+                metadataNode.put(entry.getKey(), entry.getValue());
+            }
+        }
+
+        jsonObj.put("geometry_name", "GEOLOC");
+        return jsonObj.toString();
     }
 }

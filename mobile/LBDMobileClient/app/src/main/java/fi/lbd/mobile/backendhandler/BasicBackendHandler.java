@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import fi.lbd.mobile.location.PointLocation;
 import fi.lbd.mobile.mapobjects.MapObject;
@@ -25,27 +26,25 @@ import fi.lbd.mobile.messaging.messageobjects.MessageObject;
  */
 public class BasicBackendHandler implements BackendHandler {
     protected static final int RETRY_AMOUNT = 1;
-    protected final String baseObjectUrl;
-    protected final String baseMessageUrl;
+    protected final UrlProvider urlProvider;
     protected final UrlReader urlReader;
 
     /**
      * Handles the map objects. Fetches the requested objects from backend service.
      *
-     * @param baseObjectUrl   Base url for the object REST api.
-     * @param baseMessageUrl   Base url for the message REST api.
+     * @param urlReader
+     * @param urlProvider
      */
-    public BasicBackendHandler(UrlReader urlReader, String baseObjectUrl, String baseMessageUrl) {
+    public BasicBackendHandler(UrlReader urlReader, UrlProvider urlProvider) {
         this.urlReader = urlReader;
-        this.baseObjectUrl = baseObjectUrl;
-        this.baseMessageUrl = baseMessageUrl;
+        this.urlProvider = urlProvider;
     }
 
     @Override
-	public HandlerResponse<MapObject> getObjectsNearLocation(String dataSource, PointLocation location, double range, boolean mini) {
+	public HandlerResponse<MapObject> getObjectsNearLocation(PointLocation location, double range, boolean mini) {
         StringBuilder str = new StringBuilder();
-        str.append(this.baseObjectUrl);
-        str.append(dataSource);
+        str.append(this.urlProvider.getBaseObjectUrl());
+        str.append(this.urlProvider.getObjectCollection());
         str.append("/");
         str.append("near/");
         str.append("?latitude=");
@@ -81,11 +80,11 @@ public class BasicBackendHandler implements BackendHandler {
 	}
 
     @Override
-    public HandlerResponse<MapObject> getObjectsFromSearch(String dataSource, @NonNull List<String> fromFields, @NonNull String searchString,
+    public HandlerResponse<MapObject> getObjectsFromSearch(@NonNull List<String> fromFields, @NonNull String searchString,
                                                 int limit, boolean mini) {
         StringBuilder str = new StringBuilder();
-        str.append(this.baseObjectUrl);
-        str.append(dataSource);
+        str.append(this.urlProvider.getBaseObjectUrl());
+        str.append(this.urlProvider.getObjectCollection());
         str.append("/");
         str.append("search/");
         if (mini) {
@@ -128,11 +127,12 @@ public class BasicBackendHandler implements BackendHandler {
         return new HandlerResponse<>(null, HandlerResponse.Status.Failed, "Failed to get objects from search, response: "+ response);
     }
 
+
     @Override
-    public HandlerResponse<MapObject> getObjectsInArea(String dataSource, PointLocation southWest, PointLocation northEast, boolean mini) {
+    public HandlerResponse<MapObject> getObjectsInArea(PointLocation southWest, PointLocation northEast, boolean mini) {
         StringBuilder str = new StringBuilder();
-        str.append(this.baseObjectUrl);
-        str.append(dataSource);
+        str.append(this.urlProvider.getBaseObjectUrl());
+        str.append(this.urlProvider.getObjectCollection());
         str.append("/");
         str.append("inarea/");
         str.append("?xbottomleft=");
@@ -168,13 +168,14 @@ public class BasicBackendHandler implements BackendHandler {
     }
 
     @Override
-    public HandlerResponse<MapObject> getMapObject(String dataSource, String id) {
-        String url = this.baseObjectUrl + dataSource+ "/"+ id;
+    public HandlerResponse<MapObject> getMapObject(String id) {
+        String url = this.urlProvider.getBaseObjectUrl() + this.urlProvider.getObjectCollection() + "/"+ id;
         UrlResponse response = this.getUrl(url, RETRY_AMOUNT);
 
         // Only if the url returns code 200, we can parse the results.
         if (response != null && response.getStatus() == UrlResponse.ResponseStatus.STATUS_200) {
             MapObject mapObject;
+
             try {
                 mapObject = MapObjectParser.parse(response.getContents());
             } catch (JSONException e){
@@ -186,15 +187,86 @@ public class BasicBackendHandler implements BackendHandler {
             }
             List<MapObject> list = new ArrayList<>();
             list.add(mapObject);
+
+
             return new HandlerResponse<>(list, HandlerResponse.Status.Succeeded);
         }
         Log.e(BasicBackendHandler.class.getSimpleName(), "Failed to get object, response: "+ response);
         return new HandlerResponse<>(null, HandlerResponse.Status.Failed, "Failed to get object, response: "+ response);
     }
 
+    /**
+     * Updates the given map object to the backend, gets the object with the updated object if from
+     * the backed and checks if the update has succeeded.
+     *
+     * @param updatedMapObject  Object which should be updated.
+     * @return
+     */
+    @Override
+    public HandlerResponse<MapObject> updateMapObject(@NonNull MapObject updatedMapObject) {
+        String url = this.urlProvider.getBaseObjectUrl() + this.urlProvider.getObjectCollection() +"/"+ updatedMapObject.getId();
+
+        String objectJson = MapObjectParser.createJsonFromObject(updatedMapObject);
+
+//        Log.d(this.getClass().getSimpleName(), "SENDING URL: "+ url);
+//        Log.d(this.getClass().getSimpleName(), "SENDING JSON: "+ objectJson);
+        // Update object to backend
+        UrlResponse response = this.urlReader.putJson(url, objectJson);
+
+        if (response != null && response.getStatus() == UrlResponse.ResponseStatus.STATUS_200) {
+            // If the update operation succeeded, fetch object with the id from backend
+            HandlerResponse<MapObject> handlerResponse = this.getMapObject(updatedMapObject.getId());
+
+            // If a single object was not found or the get operation failed, return error response.
+            if (!handlerResponse.isOk() || handlerResponse.getObjects() == null || handlerResponse.getObjects().size() != 1) {
+                Log.e(this.getClass().getSimpleName(), "Failed to update map object!");
+                return new HandlerResponse<>(null, HandlerResponse.Status.Failed, "Failed to update map object! Backend couldn't receive single object with given id.");
+            }
+
+            // Check if the object returned from the backend matches the object which was sent to the backend.
+            MapObject returnedObject = handlerResponse.getObjects().get(0);
+            if (!BasicBackendHandler.matchingMapObjects(updatedMapObject, returnedObject)) {
+                return new HandlerResponse<>(null, HandlerResponse.Status.Failed, "Failed to update map object! Returned object and sent object didn't match!");
+            }
+
+            List<MapObject> list = new ArrayList<>();
+            list.add(returnedObject);
+            return new HandlerResponse<>(list, HandlerResponse.Status.Succeeded);
+        }
+        Log.e(BasicBackendHandler.class.getSimpleName(), "Failed to update object, response: "+ response);
+        return new HandlerResponse<>(null, HandlerResponse.Status.Failed, "Failed to update object, response: "+ response);
+    }
+
+    private static boolean matchingMapObjects(MapObject obj1, MapObject obj2) {
+        if (!obj1.getId().equals(obj2.getId())) {
+            Log.d(BasicBackendHandler.class.getSimpleName(), "matchingMapObjects id:s didn't match");
+            return false;
+        }
+
+        if (!obj1.getPointLocation().equals(obj2.getPointLocation())) {
+            Log.d(BasicBackendHandler.class.getSimpleName(), "matchingMapObjects locations didn't match");
+            return false;
+        }
+
+        for (Map.Entry<String, String> entry : obj1.getAdditionalProperties().entrySet()) {
+            if (!obj2.getAdditionalProperties().get(entry.getKey()).equals(entry.getValue())) {
+                Log.d(BasicBackendHandler.class.getSimpleName(), "matchingMapObjects AdditionalProperties entry didn't match: "+ entry.getKey() + " value: "+ entry.getValue());
+                return false;
+            }
+        }
+
+        for (Map.Entry<String, String> entry : obj1.getMetadataProperties().entrySet()) {
+            if (!obj2.getMetadataProperties().get(entry.getKey()).equals(entry.getValue())) {
+                Log.d(BasicBackendHandler.class.getSimpleName(), "matchingMapObjects MetadataProperties entry didn't match: "+ entry.getKey() + " value: "+ entry.getValue());
+                return false;
+            }
+        }
+        return true;
+    }
+
     @Override
     public HandlerResponse<String> getUsers(){
-        String url = this.baseMessageUrl + "users/list/";
+        String url = this.urlProvider.getBaseMessageUrl() + "users/list/";
         UrlResponse response = this.getUrl(url, RETRY_AMOUNT);
 
         // Only if the url returns code 200, we can parse the results.
@@ -240,7 +312,7 @@ public class BasicBackendHandler implements BackendHandler {
 
     @Override
     public HandlerResponse<MessageObject> getMessages() {
-        String url = this.baseMessageUrl + "messages/";
+        String url = this.urlProvider.getBaseMessageUrl() + "messages/";
         UrlResponse response = this.getUrl(url, RETRY_AMOUNT);
 
         // Only if the url returns code 200, we can parse the results.
@@ -262,8 +334,7 @@ public class BasicBackendHandler implements BackendHandler {
     }
 
     @Override
-    public HandlerResponse<MessageObject> postMessage(String dataSource,
-                                                      String receiver,
+    public HandlerResponse<MessageObject> postMessage(String receiver,
                                                       String topic,
                                                       Object message,
                                                       List<String> attachedObjectIds) {
@@ -273,11 +344,11 @@ public class BasicBackendHandler implements BackendHandler {
 
         JsonNodeFactory factory = JsonNodeFactory.instance;
         StringBuilder urlBuilder = new StringBuilder();
-        urlBuilder.append(this.baseMessageUrl);
+        urlBuilder.append(this.urlProvider.getBaseMessageUrl());
         urlBuilder.append("send/");
 
         ObjectNode objNode = factory.objectNode()
-                .put("category", dataSource)
+                .put("category", this.urlProvider.getBaseMessageUrl())
                 .put("recipient", receiver)
                 .put("topic", topic);
         addMessageToObjectNode(message, objNode);
@@ -302,8 +373,8 @@ public class BasicBackendHandler implements BackendHandler {
     }
 
     @Override
-    public HandlerResponse<MessageObject> deleteMessage(String dataSource, String messageId) {
-        String url = this.baseMessageUrl + "messages/" + /*dataSource +"/"+*/ messageId;
+    public HandlerResponse<MessageObject> deleteMessage(String messageId) {
+        String url = this.urlProvider.getBaseMessageUrl() + "messages/" + /*dataSource +"/"+*/ messageId;
         UrlResponse response = this.urlReader.delete(url);
 
         Log.d(BasicBackendHandler.class.getSimpleName(), "deleteMessage from url: " + url);

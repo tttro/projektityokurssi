@@ -17,6 +17,7 @@ import com.squareup.otto.Subscribe;
 import java.util.HashMap;
 import java.util.List;
 
+import fi.lbd.mobile.ActiveActivitiesTracker;
 import fi.lbd.mobile.R;
 import fi.lbd.mobile.events.BusHandler;
 import fi.lbd.mobile.events.RequestFailedEvent;
@@ -60,6 +61,18 @@ public class SendMessageActivity extends Activity {
     public void onPause(){
         super.onPause();
         BusHandler.getBus().unregister(this);
+    }
+
+    @Override
+    public void onStart(){
+        super.onStart();
+        ActiveActivitiesTracker.activityStarted();
+    }
+
+    @Override
+    public void onStop(){
+        super.onStop();
+        ActiveActivitiesTracker.activityStopped();
     }
 
     public void onSelectReceiverClick(View view){

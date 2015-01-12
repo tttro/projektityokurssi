@@ -4,20 +4,24 @@
 // Init main application and used modules
 var app = angular.module('app',[
     'ngRoute',
+    'ngSanitize',
     'mainController',
     'dataServices',
+    'cgNotify',
     'itemController',
     'mapController',
     'messageController',
     'loginController',
+    'settingsController',
     'appDirectives'
 ])
 // Configs
 .constant('appConfig', {
     defaultPosition: [61.51241, 23.634931],
-    baseApiUrl: 'http://lbdbackend.ignorelist.com/',
+    baseApiUrl: 'https://lbdbackend.ignorelist.com/',
     dataTypeUrl:'locationdata/api/',
     dataCollectionUrl:'Streetlights',
+    dataPlaygroundsUrl: 'https://lbdbackend.ignorelist.com/locationdata/api/',
     googleToken: 'ABCDEFG',
     googleId: '',
     nearRange: '0.0001',
@@ -43,9 +47,6 @@ var app = angular.module('app',[
         .otherwise({
             redirectTo: '/'
         });
-
-    // configure html5 to get links working on jsfiddle
-   // $locationProvider.html5Mode(true);
 
 });
 

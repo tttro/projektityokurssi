@@ -13,9 +13,9 @@ public class StringMessageObject extends MessageObject<String> {
 
     private final String message;
 
-    public StringMessageObject(String id, @NonNull String receiver, @NonNull String sender,
+    public StringMessageObject(String id, long timestamp, @NonNull String receiver, @NonNull String sender,
                          @NonNull String topic, @NonNull boolean isRead, @NonNull String message){
-        super(id, receiver, sender, topic, isRead);
+        super(id, timestamp, receiver, sender, topic, isRead);
         this.message = message;
     }
 
@@ -45,7 +45,8 @@ public class StringMessageObject extends MessageObject<String> {
                 && newObject.getId().equals(this.getId())
                 && newObject.getMessage().equals(this.getMessage())
                 && newObject.getSender().equals(this.getSender())
-                && newObject.getTopic().equals(this.getTopic())){
+                && newObject.getTopic().equals(this.getTopic())
+                && newObject.getTimestamp() == this.getTimestamp()){
             return true;
         }
         else {

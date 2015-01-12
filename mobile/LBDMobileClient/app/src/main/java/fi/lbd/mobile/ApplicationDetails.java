@@ -1,5 +1,7 @@
 package fi.lbd.mobile;
 
+import android.util.Log;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,12 +9,18 @@ import java.util.List;
  * Created by Tommi on 3.1.2015.
  */
 public class ApplicationDetails {
+    private final static String LOCATIONDATA_URL = "locationdata/api/";
+    private final static String MESSAGEDATA_URL = "messagedata/api/";
+
     private static ApplicationDetails singleton;
-    private List<ApplicationDetailListener> listeners;
+    private List<ApplicationDetailListener> apiListeners;
 
     private String userId;
     private String currentCollection;
-    private String currentBackendUrl;
+    private String currentBaseUrl;
+    private String currentObjectApiUrl;
+    private String currentMessageApiUrl;
+
 
     public static void initialize() {
         if (ApplicationDetails.singleton == null) {
@@ -25,7 +33,7 @@ public class ApplicationDetails {
     }
 
     private ApplicationDetails() {
-        this.listeners = new ArrayList<>();
+        this.apiListeners = new ArrayList<>();
     }
 
     public String getUserId() {
@@ -35,12 +43,25 @@ public class ApplicationDetails {
         this.userId = userId;
     }
 
-    public String getCurrentBackendUrl(){
-        return this.currentBackendUrl;
+    public void setCurrentBaseApiUrl(String currentBaseUrl){
+        Log.e(ApplicationDetails.class.getSimpleName(), "Change currentBaseUrl: " + currentBaseUrl);
+        this.currentBaseUrl = currentBaseUrl;
+        this.currentObjectApiUrl = currentBaseUrl + LOCATIONDATA_URL;
+        this.currentMessageApiUrl = currentBaseUrl + MESSAGEDATA_URL;
+        this.notifyListenersApiUrlChange(this.currentBaseUrl, this.currentMessageApiUrl, this.currentObjectApiUrl);
     }
-    public void setCurrentBackendUrl(String currentBackendUrl){
-        this.currentBackendUrl = currentBackendUrl;
-        this.notifyListeners(ApplicationDetailListener.EventType.URL_CHANGED, this.currentBackendUrl);
+
+
+    public String getCurrentBaseApiUrl(){
+        return this.currentBaseUrl;
+    }
+
+    public String getCurrentObjectApiUrl(){
+        return this.currentObjectApiUrl;
+    }
+
+    public String getCurrentMessageApiUrl(){
+        return this.currentMessageApiUrl;
     }
 
     public String getCurrentCollection() {
@@ -48,25 +69,31 @@ public class ApplicationDetails {
     }
     public void setCurrentCollection(String currentCollection) {
         this.currentCollection = currentCollection;
-        this.notifyListeners(ApplicationDetailListener.EventType.COLLECTION_CHANGED, this.currentCollection);
+        this.notifyCollectionChange(this.currentCollection);
     }
 
-    public void registerChangeListener(ApplicationDetailListener listener) {
-        this.listeners.add(listener);
+    public void registerApiChangeListener(ApplicationDetailListener listener) {
+        this.apiListeners.add(listener);
     }
 
-    public void unregisterChangeListener(ApplicationDetailListener listener) {
-        this.listeners.remove(listener);
+    public void unregisterApiChangeListener(ApplicationDetailListener listener) {
+        this.apiListeners.remove(listener);
     }
 
-    private void notifyListeners(ApplicationDetailListener.EventType eventType, String newValue) {
-        for (ApplicationDetailListener listener : this.listeners) {
-            listener.notifyApplicationChange(eventType, newValue);
+    private void notifyListenersApiUrlChange(String newBaseUrl, String newMessageApiUrl, String newObjectApiUrl) {
+        for (ApplicationDetailListener listener : this.apiListeners) {
+            listener.notifyApiUrlChange( newBaseUrl, newMessageApiUrl, newObjectApiUrl);
+        }
+    }
+
+    private void notifyCollectionChange(String newCollection) {
+        for (ApplicationDetailListener listener : this.apiListeners) {
+            listener.notifyCollectionChange(newCollection);
         }
     }
 
     public static interface ApplicationDetailListener {
-        public enum EventType {COLLECTION_CHANGED, URL_CHANGED}
-        public void notifyApplicationChange(EventType eventType, String newValue);
+        public void notifyApiUrlChange(String newBaseUrl, String newMessageApiUrl, String newObjectApiUrl);
+        public void notifyCollectionChange(String newCollection);
     }
 }
