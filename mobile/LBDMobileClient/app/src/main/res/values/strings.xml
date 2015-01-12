@@ -38,7 +38,7 @@
     <string name="search_address">Search by address..</string>
     <string name="unknown_distance">Unknown</string>
     <string name="item">ITEM</string>
-    <string name="additional_notes">Additional notes</string>
+    <string name="object_info">Object info</string>
     <string name="title_activity_settings">SettingsActivity</string>
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_startup">StartupActivity</string>

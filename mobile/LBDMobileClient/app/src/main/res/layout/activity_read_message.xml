@@ -64,6 +64,24 @@
         android:textStyle="italic"
         android:textIsSelectable="true"/>
 
+        <TextView
+            android:id="@+id/textView5"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:text="Date:"
+            android:textAllCaps="true"
+            android:textSize="14dp" />
+
+        <TextView
+            android:id="@+id/textViewDate"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="0000"
+            android:textIsSelectable="true"
+            android:textSize="14dp"
+            android:textStyle="italic" />
+
     <TextView
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
