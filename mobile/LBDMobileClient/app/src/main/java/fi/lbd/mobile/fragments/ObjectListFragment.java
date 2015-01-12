@@ -393,7 +393,7 @@ public class ObjectListFragment extends ListFragment {
     public void performSearch(CharSequence searchParameter){
         synchronized (LOCK) {
             if(!searchInProgress) {
-                if(searchParameter != null && searchParameter.length() > 2) {
+                if(searchParameter != null && searchParameter.length() > 0) {
                     progressDialog = ProgressDialog.show(getActivity(), "", "Searching objects...", true);
                     progressDialog.setCancelable(true);
                     Log.d("********", "New search started");

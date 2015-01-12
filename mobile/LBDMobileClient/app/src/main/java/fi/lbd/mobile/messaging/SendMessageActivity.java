@@ -34,6 +34,8 @@ import fi.lbd.mobile.messaging.events.SendMessageSucceededEvent;
 public class SendMessageActivity extends Activity {
 
     private DialogFragment selectReceiverDialog = null;
+    private boolean sendInProgress = false;
+    private boolean selectReceiverInProgress = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,10 +75,15 @@ public class SendMessageActivity extends Activity {
     public void onStop(){
         super.onStop();
         ActiveActivitiesTracker.activityStopped();
+        this.selectReceiverInProgress = false;
+        this.sendInProgress = false;
     }
 
     public void onSelectReceiverClick(View view){
-        BusHandler.getBus().post(new RequestUsersEvent());
+        if(!this.selectReceiverInProgress) {
+            this.selectReceiverInProgress = true;
+            BusHandler.getBus().post(new RequestUsersEvent());
+        }
     }
 
     // TODO: Fix send
@@ -86,18 +93,20 @@ public class SendMessageActivity extends Activity {
         String title = ((EditText)rootView.findViewById(R.id.textViewTitle)).getText().toString();
         String message = ((EditText)rootView.findViewById(R.id.textViewMessage)).getText().toString();
 
-        if(receiver != null && title != null && message != null && receiver.length()>0
-             && title.length()>0 && message.length() > 0){
-            SendMessageEvent<String> sendMessageEvent = new SendMessageEvent<>(receiver, title, message,
-                    new ImmutableMapObject(false, "TEST_ID_1231", new ImmutablePointLocation(10, 10),
-                            new HashMap<String, String>(), new HashMap<String, String>()));
-            BusHandler.getBus().post(sendMessageEvent);
-        }
-        else {
-            Context context = getApplicationContext();
-            CharSequence dialogText = "Please check message parameters";
-            int duration = Toast.LENGTH_SHORT;
-            Toast.makeText(context, dialogText, duration).show();
+        if(!this.sendInProgress) {
+            if (receiver != null && title != null && message != null && receiver.length() > 0
+                    && title.length() > 0 && message.length() > 0) {
+                this.sendInProgress = true;
+                SendMessageEvent<String> sendMessageEvent = new SendMessageEvent<>(receiver, title, message,
+                        new ImmutableMapObject(false, "TEST_ID_1231", new ImmutablePointLocation(10, 10),
+                                new HashMap<String, String>(), new HashMap<String, String>()));
+                BusHandler.getBus().post(sendMessageEvent);
+            } else {
+                Context context = getApplicationContext();
+                CharSequence dialogText = "Please check message parameters";
+                int duration = Toast.LENGTH_SHORT;
+                Toast.makeText(context, dialogText, duration).show();
+            }
         }
     }
 
@@ -107,6 +116,7 @@ public class SendMessageActivity extends Activity {
         CharSequence dialogText = "Message sent";
         int duration = Toast.LENGTH_SHORT;
         Toast.makeText(context, dialogText, duration).show();
+        this.sendInProgress = false;
         onBackPressed();
     }
 
@@ -117,9 +127,10 @@ public class SendMessageActivity extends Activity {
             CharSequence dialogText = "Failed to send message";
             int duration = Toast.LENGTH_SHORT;
             Toast.makeText(context, dialogText, duration).show();
-            Log.d("*********", event.getReason());
+            this.sendInProgress = false;
         }
         else if(event.getFailedEvent() instanceof RequestUsersEvent){
+            this.selectReceiverInProgress = false;
             Context context = getApplicationContext();
             CharSequence dialogText = "Loading users failed";
             int duration = Toast.LENGTH_SHORT;
@@ -134,6 +145,7 @@ public class SendMessageActivity extends Activity {
             showDialog(users);
         }
         else {
+            this.selectReceiverInProgress = false;
             Context context = getApplicationContext();
             CharSequence dialogText = "No users found";
             int duration = Toast.LENGTH_SHORT;
@@ -168,5 +180,9 @@ public class SendMessageActivity extends Activity {
             View rootView = findViewById(android.R.id.content);
             ((TextView)rootView.findViewById(R.id.textViewReceiver)).setText(receiver);
         }
+    }
+
+    protected void setSelectReceiverInProgress(boolean isInProgress){
+        this.selectReceiverInProgress = isInProgress;
     }
 }
