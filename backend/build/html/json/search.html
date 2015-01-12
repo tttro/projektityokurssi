@@ -1,0 +1,202 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Search &mdash; LBD Backend Dev documentation</title>
+    
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     'Dev',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="LBD Backend Dev documentation" href="../index.html" />
+    <link rel="up" title="JSON Formats" href="jsondoc.html" />
+    <link rel="next" title="REST documentation" href="../restdoc.html" />
+    <link rel="prev" title="Message" href="messagejson.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="../restdoc.html" title="REST documentation"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="messagejson.html" title="Message"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">LBD Backend Dev documentation</a> &raquo;</li>
+          <li><a href="jsondoc.html" accesskey="U">JSON Formats</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="search">
+<span id="searchjson"></span><h1>Search<a class="headerlink" href="#search" title="Permalink to this headline">¶</a></h1>
+<p>Search from the back-end is done by posting a JSON document to the back-end (see:
+<a class="reference internal" href="../restdoc.html#locationrest"><em>REST documentation</em></a>).</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="17%" />
+<col width="17%" />
+<col width="14%" />
+<col width="52%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Field&#8217;s name</th>
+<th class="head">Required</th>
+<th class="head">Value type</th>
+<th class="head">Notes</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>from</td>
+<td>True</td>
+<td>String</td>
+<td>Only allowed value currently is &#8220;ALL&#8221;</td>
+</tr>
+<tr class="row-odd"><td>search</td>
+<td>True</td>
+<td>String</td>
+<td>Search phrase</td>
+</tr>
+<tr class="row-even"><td>limit</td>
+<td>True</td>
+<td>Integer</td>
+<td>Maximum number of results returned.</td>
+</tr>
+</tbody>
+</table>
+<p>Result format:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="14%" />
+<col width="14%" />
+<col width="12%" />
+<col width="59%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Field&#8217;s name</th>
+<th class="head">Required</th>
+<th class="head">Value type</th>
+<th class="head">Notes</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>totalresults</td>
+<td>True</td>
+<td>Integer</td>
+<td>The total amount of results.</td>
+</tr>
+<tr class="row-odd"><td>limit</td>
+<td>True</td>
+<td>Integer</td>
+<td>The defined limit of the results.</td>
+</tr>
+<tr class="row-even"><td>results</td>
+<td>True</td>
+<td>JSON</td>
+<td>GeoJSON FeatureCollection containing the results.</td>
+</tr>
+</tbody>
+</table>
+<p>Example:</p>
+<div class="highlight-python"><div class="highlight"><pre>SEARCH:
+{
+    &quot;from&quot;: &quot;ALL&quot;,
+    &quot;search&quot;: &quot;42&quot;,
+    &quot;limit&quot;: 21
+}
+
+RESULT:
+{
+    &quot;totalresults&quot;: 1138,
+    &quot;limit&quot;: 42,
+    &quot;results&quot;: { ...GeoJSON FeatureCollection... }
+}
+</pre></div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="messagejson.html"
+                        title="previous chapter">Message</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="../restdoc.html"
+                        title="next chapter">REST documentation</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../_sources/json/search.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="../restdoc.html" title="REST documentation"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="messagejson.html" title="Message"
+             >previous</a> |</li>
+        <li><a href="../index.html">LBD Backend Dev documentation</a> &raquo;</li>
+          <li><a href="jsondoc.html" >JSON Formats</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2014, LBD Development.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+    </div>
+  </body>
+</html>

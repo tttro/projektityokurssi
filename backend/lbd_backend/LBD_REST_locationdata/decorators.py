@@ -9,7 +9,6 @@ Decorators for location data REST
 .. moduleauthor:: Aki Mäkinen <aki.makinen@outlook.com>
 
 """
-from lbd_backend.utils import s_codes
 
 __author__ = 'Aki Mäkinen'
 
@@ -19,6 +18,7 @@ import json
 from functools import wraps
 from django.http import HttpResponse
 
+from lbd_backend.utils import s_codes
 from lbd_backend.LBD_REST_users.models import User
 from RESThandlers.HandlerInterface.Exceptions import CollectionNotInstalled
 from RESThandlers.HandlerInterface.Factory import HandlerFactory
@@ -53,9 +53,7 @@ def lbd_require_login(func):
     """
     *Wrapper*
 
-    .. note::
-
-        A dummy wrapper for user login. For demo purposes only
+    This wrapper is used for authenticating the user with Google OAuth2.
 
     """
     @wraps(func)

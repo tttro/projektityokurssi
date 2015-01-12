@@ -61,10 +61,14 @@ def geo_json_scheme_validation(jsondict):
     A simple GeoJSON validator.
 
     Uses the GeoJSON definitions described in LBD JSON Formats document.
+    JSON format is described as python dictionary, where the key specifies the name of a JSON field and
+    value describes if the field/value is required and what is the type of the value. There are some special
+    key values: _self_ (if the value is list or embedded document), _elements_ (if the value is a list, this describes
+    the element type) and _elementcount_ (restricts how many elements list can have).
 
     .. note::
 
-        This function is a if-else hell...
+        This function is a if-else hell... and the JSON format document is outdated.
 
     :param jsondict: GeoJSON formatted Python dictionary containing either GeoJSON Feature or FeatureCollection.
     :return Boolean: True or False depending on the result of the validation
@@ -144,7 +148,16 @@ def geo_json_scheme_validation(jsondict):
 
 
 def flattener(dicti, parent):
-   for k, v in dicti.iteritems():
+    """
+    Dictionary flattener
+
+    Flattens a dictionary and... Ok I don't remember what this is for.
+    Creates once iterable list.
+
+    :param dicti: Dictionary to be flattened
+    :param parent: Parent element of the dictionary
+    """
+    for k, v in dicti.iteritems():
         if isinstance(v, dict):
             if parent is None:
                 father = k

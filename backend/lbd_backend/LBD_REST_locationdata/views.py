@@ -38,6 +38,9 @@ reasons unknown.
 
 """
 
+__author__ = 'Aki Mäkinen'
+
+
 import json
 import time
 
@@ -51,7 +54,6 @@ from lbd_backend.LBD_REST_locationdata.models import MetaDocument, MetaData
 from lbd_backend.utils import s_codes, geo_json_scheme_validation
 
 
-# @this_is_a_login_wrapper_dummy
 @require_http_methods(["GET"])
 def api(request):
     from RESThandlers.HandlerInterface.Factory import HandlerFactory
@@ -88,7 +90,7 @@ def single_resource(request, *args, **kwargs):
     * collection (String)
     * resource (String)
     * handlerinterface (Handler object)
-    * lbduser (String) (dummy user login)
+    * lbduser (User)
 
     :return: HTTP response. Possible statuses are listed in module documentation
 
@@ -208,7 +210,7 @@ def collection(request, *args, **kwargs):
 
     * collection (String)
     * handlerinterface (Handler object)
-    * lbduser (String) (dummy user login)
+    * lbduser (User)
 
     **Supported URL parameter:**
 
@@ -341,7 +343,7 @@ def collection_near(request, *args, **kwargs):
 
     * collection (String)
     * handlerinterface (Handler object)
-    * lbduser (String) (dummy user login)
+    * lbduser (User)
 
     **Supported URL parameter:**
 
@@ -433,7 +435,7 @@ def collection_inarea(request, *args, **kwargs):
 
     * collection (String)
     * handlerinterface (Handler object)
-    * lbduser (String) (dummy user login)
+    * lbduser (User)
 
     **Supported URL parameter:**
 
@@ -507,7 +509,7 @@ def search_from_rest(request, *args, **kwargs):
     except ValueError:
         return HttpResponse(status=400)
 
-    if not all (key in contentjson for key in("from", "search", "limit")):
+    if not all (key in contentjson for key in ("from", "search", "limit")):
         return HttpResponse(status=400)
 
     if  not (isinstance(contentjson["search"], str) or isinstance(contentjson["search"], unicode)) or \
@@ -552,7 +554,8 @@ def _addmeta(items, coll):
               "meta_data":
                   {"status": 1,
                    "modified": 1,
-                   "modifier": 1
+                   "modifier": 1,
+                   "info": 1
                   }
              }
         }
