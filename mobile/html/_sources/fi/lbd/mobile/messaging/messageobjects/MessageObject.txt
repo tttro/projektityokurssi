@@ -1,0 +1,78 @@
+.. java:import:: android.support.annotation NonNull
+
+.. java:import:: android.util Log
+
+MessageObject
+=============
+
+.. java:package:: fi.lbd.mobile.messaging.messageobjects
+   :noindex:
+
+.. java:type:: public abstract class MessageObject<T>
+
+   Abstract class for MessageObjects. Created by Ossi on 29.12.2014.
+
+Constructors
+------------
+MessageObject
+^^^^^^^^^^^^^
+
+.. java:constructor:: public MessageObject(String id, long timestamp, String receiver, String sender, String topic, boolean isRead)
+   :outertype: MessageObject
+
+Methods
+-------
+equals
+^^^^^^
+
+.. java:method:: @Override public abstract boolean equals(Object object)
+   :outertype: MessageObject
+
+getId
+^^^^^
+
+.. java:method:: public String getId()
+   :outertype: MessageObject
+
+getMessage
+^^^^^^^^^^
+
+.. java:method:: public abstract T getMessage()
+   :outertype: MessageObject
+
+getReceiver
+^^^^^^^^^^^
+
+.. java:method:: public String getReceiver()
+   :outertype: MessageObject
+
+getSender
+^^^^^^^^^
+
+.. java:method:: public String getSender()
+   :outertype: MessageObject
+
+getTimestamp
+^^^^^^^^^^^^
+
+.. java:method:: public long getTimestamp()
+   :outertype: MessageObject
+
+getTopic
+^^^^^^^^
+
+.. java:method:: public String getTopic()
+   :outertype: MessageObject
+
+isRead
+^^^^^^
+
+.. java:method:: public boolean isRead()
+   :outertype: MessageObject
+
+toString
+^^^^^^^^
+
+.. java:method:: @Override public String toString()
+   :outertype: MessageObject
+

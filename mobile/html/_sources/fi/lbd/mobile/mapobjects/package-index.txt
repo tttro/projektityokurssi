@@ -1,0 +1,19 @@
+fi.lbd.mobile.mapobjects
+========================
+
+.. java:package:: fi.lbd.mobile.mapobjects
+
+.. toctree::
+   :maxdepth: 1
+
+   CameraChangeListener
+   ImmutableMapObject
+   MapModelController
+   MapObject
+   MapObjectSelectionManager
+   MapTableModel
+   MapTableModelListener
+   MarkerProducer
+   MarkerProducer-Event
+   ProgressListener
+

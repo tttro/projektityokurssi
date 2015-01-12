@@ -1,0 +1,215 @@
+R.color
+=======
+
+.. java:package:: fi.lbd.mobile
+   :noindex:
+
+.. java:type:: public static final class color
+   :outertype: R
+
+Fields
+------
+button_background
+^^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int button_background
+   :outertype: R.color
+
+common_action_bar_splitter
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int common_action_bar_splitter
+   :outertype: R.color
+
+common_signin_btn_dark_text_default
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int common_signin_btn_dark_text_default
+   :outertype: R.color
+
+common_signin_btn_dark_text_disabled
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int common_signin_btn_dark_text_disabled
+   :outertype: R.color
+
+common_signin_btn_dark_text_focused
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int common_signin_btn_dark_text_focused
+   :outertype: R.color
+
+common_signin_btn_dark_text_pressed
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int common_signin_btn_dark_text_pressed
+   :outertype: R.color
+
+common_signin_btn_default_background
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int common_signin_btn_default_background
+   :outertype: R.color
+
+common_signin_btn_light_text_default
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int common_signin_btn_light_text_default
+   :outertype: R.color
+
+common_signin_btn_light_text_disabled
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int common_signin_btn_light_text_disabled
+   :outertype: R.color
+
+common_signin_btn_light_text_focused
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int common_signin_btn_light_text_focused
+   :outertype: R.color
+
+common_signin_btn_light_text_pressed
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int common_signin_btn_light_text_pressed
+   :outertype: R.color
+
+common_signin_btn_text_dark
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int common_signin_btn_text_dark
+   :outertype: R.color
+
+common_signin_btn_text_light
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int common_signin_btn_text_light
+   :outertype: R.color
+
+exp_background
+^^^^^^^^^^^^^^
+
+.. java:field:: public static final int exp_background
+   :outertype: R.color
+
+locate_button_background
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int locate_button_background
+   :outertype: R.color
+
+navigation_bar_background
+^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int navigation_bar_background
+   :outertype: R.color
+
+near_objects_background
+^^^^^^^^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int near_objects_background
+   :outertype: R.color
+
+search_results_background
+^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int search_results_background
+   :outertype: R.color
+
+wallet_bright_foreground_disabled_holo_light
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int wallet_bright_foreground_disabled_holo_light
+   :outertype: R.color
+
+wallet_bright_foreground_holo_dark
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int wallet_bright_foreground_holo_dark
+   :outertype: R.color
+
+wallet_bright_foreground_holo_light
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int wallet_bright_foreground_holo_light
+   :outertype: R.color
+
+wallet_dim_foreground_disabled_holo_dark
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int wallet_dim_foreground_disabled_holo_dark
+   :outertype: R.color
+
+wallet_dim_foreground_holo_dark
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int wallet_dim_foreground_holo_dark
+   :outertype: R.color
+
+wallet_dim_foreground_inverse_disabled_holo_dark
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int wallet_dim_foreground_inverse_disabled_holo_dark
+   :outertype: R.color
+
+wallet_dim_foreground_inverse_holo_dark
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int wallet_dim_foreground_inverse_holo_dark
+   :outertype: R.color
+
+wallet_highlighted_text_holo_dark
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int wallet_highlighted_text_holo_dark
+   :outertype: R.color
+
+wallet_highlighted_text_holo_light
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int wallet_highlighted_text_holo_light
+   :outertype: R.color
+
+wallet_hint_foreground_holo_dark
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int wallet_hint_foreground_holo_dark
+   :outertype: R.color
+
+wallet_hint_foreground_holo_light
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int wallet_hint_foreground_holo_light
+   :outertype: R.color
+
+wallet_holo_blue_light
+^^^^^^^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int wallet_holo_blue_light
+   :outertype: R.color
+
+wallet_link_text_light
+^^^^^^^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int wallet_link_text_light
+   :outertype: R.color
+
+wallet_primary_text_holo_light
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int wallet_primary_text_holo_light
+   :outertype: R.color
+
+wallet_secondary_text_holo_dark
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int wallet_secondary_text_holo_dark
+   :outertype: R.color
+
+white_text
+^^^^^^^^^^
+
+.. java:field:: public static final int white_text
+   :outertype: R.color
+

@@ -1,0 +1,12 @@
+fi.lbd.mobile.mapobject.test
+============================
+
+.. java:package:: fi.lbd.mobile.mapobject.test
+
+.. toctree::
+   :maxdepth: 1
+
+   ImmutableMapObjectTest
+   MapModelControllerTest
+   MapTableModelTest
+

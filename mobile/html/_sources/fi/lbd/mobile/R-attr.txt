@@ -1,0 +1,397 @@
+R.attr
+======
+
+.. java:package:: fi.lbd.mobile
+   :noindex:
+
+.. java:type:: public static final class attr
+   :outertype: R
+
+Fields
+------
+adSize
+^^^^^^
+
+.. java:field:: public static final int adSize
+   :outertype: R.attr
+
+   Must be a string value, using '\\;' to escape characters such as '\\n' or '\\uxxxx' for a unicode character.
+
+   This may also be a reference to a resource (in the form "\ ``@[package:]type:name``\ ") or theme attribute (in the form "\ ``?[package:][type:]name``\ ") containing a value of this type.
+
+adSizes
+^^^^^^^
+
+.. java:field:: public static final int adSizes
+   :outertype: R.attr
+
+   Must be a string value, using '\\;' to escape characters such as '\\n' or '\\uxxxx' for a unicode character.
+
+   This may also be a reference to a resource (in the form "\ ``@[package:]type:name``\ ") or theme attribute (in the form "\ ``?[package:][type:]name``\ ") containing a value of this type.
+
+adUnitId
+^^^^^^^^
+
+.. java:field:: public static final int adUnitId
+   :outertype: R.attr
+
+   Must be a string value, using '\\;' to escape characters such as '\\n' or '\\uxxxx' for a unicode character.
+
+   This may also be a reference to a resource (in the form "\ ``@[package:]type:name``\ ") or theme attribute (in the form "\ ``?[package:][type:]name``\ ") containing a value of this type.
+
+appTheme
+^^^^^^^^
+
+.. java:field:: public static final int appTheme
+   :outertype: R.attr
+
+   Must be one of the following constant values.
+
+   +-------------------+-------+-------------+
+   | Constant          | Value | Description |
+   +===================+=======+=============+
+   | \ ``holo_dark``\  | 0     |             |
+   +-------------------+-------+-------------+
+   | \ ``holo_light``\ | 1     |             |
+   +-------------------+-------+-------------+
+
+buyButtonAppearance
+^^^^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int buyButtonAppearance
+   :outertype: R.attr
+
+   Must be one of the following constant values.
+
+   +-------------------+-------+-------------+
+   | Constant          | Value | Description |
+   +===================+=======+=============+
+   | \ ``classic``\    | 1     |             |
+   +-------------------+-------+-------------+
+   | \ ``grayscale``\  | 2     |             |
+   +-------------------+-------+-------------+
+   | \ ``monochrome``\ | 3     |             |
+   +-------------------+-------+-------------+
+
+buyButtonHeight
+^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int buyButtonHeight
+   :outertype: R.attr
+
+   May be a dimension value, which is a floating point number appended with a unit such as "\ ``14.5sp``\ ". Available units are: px (pixels), dp (density-independent pixels), sp (scaled pixels based on preferred font size), in (inches), mm (millimeters).
+
+   This may also be a reference to a resource (in the form "\ ``@[package:]type:name``\ ") or theme attribute (in the form "\ ``?[package:][type:]name``\ ") containing a value of this type.
+
+   May be one of the following constant values.
+
+   +---------------------+-------+-------------+
+   | Constant            | Value | Description |
+   +=====================+=======+=============+
+   | \ ``match_parent``\ | -1    |             |
+   +---------------------+-------+-------------+
+   | \ ``wrap_content``\ | -2    |             |
+   +---------------------+-------+-------------+
+
+buyButtonText
+^^^^^^^^^^^^^
+
+.. java:field:: public static final int buyButtonText
+   :outertype: R.attr
+
+   Must be one of the following constant values.
+
+   +------------------------+-------+-------------+
+   | Constant               | Value | Description |
+   +========================+=======+=============+
+   | \ ``buy_with_google``\ | 1     |             |
+   +------------------------+-------+-------------+
+   | \ ``buy_now``\         | 2     |             |
+   +------------------------+-------+-------------+
+   | \ ``book_now``\        | 3     |             |
+   +------------------------+-------+-------------+
+
+buyButtonWidth
+^^^^^^^^^^^^^^
+
+.. java:field:: public static final int buyButtonWidth
+   :outertype: R.attr
+
+   May be a dimension value, which is a floating point number appended with a unit such as "\ ``14.5sp``\ ". Available units are: px (pixels), dp (density-independent pixels), sp (scaled pixels based on preferred font size), in (inches), mm (millimeters).
+
+   This may also be a reference to a resource (in the form "\ ``@[package:]type:name``\ ") or theme attribute (in the form "\ ``?[package:][type:]name``\ ") containing a value of this type.
+
+   May be one of the following constant values.
+
+   +---------------------+-------+-------------+
+   | Constant            | Value | Description |
+   +=====================+=======+=============+
+   | \ ``match_parent``\ | -1    |             |
+   +---------------------+-------+-------------+
+   | \ ``wrap_content``\ | -2    |             |
+   +---------------------+-------+-------------+
+
+cameraBearing
+^^^^^^^^^^^^^
+
+.. java:field:: public static final int cameraBearing
+   :outertype: R.attr
+
+   Must be a floating point value, such as "\ ``1.2``\ ".
+
+   This may also be a reference to a resource (in the form "\ ``@[package:]type:name``\ ") or theme attribute (in the form "\ ``?[package:][type:]name``\ ") containing a value of this type.
+
+cameraTargetLat
+^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int cameraTargetLat
+   :outertype: R.attr
+
+   Must be a floating point value, such as "\ ``1.2``\ ".
+
+   This may also be a reference to a resource (in the form "\ ``@[package:]type:name``\ ") or theme attribute (in the form "\ ``?[package:][type:]name``\ ") containing a value of this type.
+
+cameraTargetLng
+^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int cameraTargetLng
+   :outertype: R.attr
+
+   Must be a floating point value, such as "\ ``1.2``\ ".
+
+   This may also be a reference to a resource (in the form "\ ``@[package:]type:name``\ ") or theme attribute (in the form "\ ``?[package:][type:]name``\ ") containing a value of this type.
+
+cameraTilt
+^^^^^^^^^^
+
+.. java:field:: public static final int cameraTilt
+   :outertype: R.attr
+
+   Must be a floating point value, such as "\ ``1.2``\ ".
+
+   This may also be a reference to a resource (in the form "\ ``@[package:]type:name``\ ") or theme attribute (in the form "\ ``?[package:][type:]name``\ ") containing a value of this type.
+
+cameraZoom
+^^^^^^^^^^
+
+.. java:field:: public static final int cameraZoom
+   :outertype: R.attr
+
+   Must be a floating point value, such as "\ ``1.2``\ ".
+
+   This may also be a reference to a resource (in the form "\ ``@[package:]type:name``\ ") or theme attribute (in the form "\ ``?[package:][type:]name``\ ") containing a value of this type.
+
+environment
+^^^^^^^^^^^
+
+.. java:field:: public static final int environment
+   :outertype: R.attr
+
+   Must be one of the following constant values.
+
+   +-----------------------+-------+-------------+
+   | Constant              | Value | Description |
+   +=======================+=======+=============+
+   | \ ``production``\     | 1     |             |
+   +-----------------------+-------+-------------+
+   | \ ``sandbox``\        | 0     |             |
+   +-----------------------+-------+-------------+
+   | \ ``strict_sandbox``\ | 2     |             |
+   +-----------------------+-------+-------------+
+
+fragmentMode
+^^^^^^^^^^^^
+
+.. java:field:: public static final int fragmentMode
+   :outertype: R.attr
+
+   Must be one of the following constant values.
+
+   +-------------------------+-------+-------------+
+   | Constant                | Value | Description |
+   +=========================+=======+=============+
+   | \ ``buyButton``\        | 1     |             |
+   +-------------------------+-------+-------------+
+   | \ ``selectionDetails``\ | 2     |             |
+   +-------------------------+-------+-------------+
+
+fragmentStyle
+^^^^^^^^^^^^^
+
+.. java:field:: public static final int fragmentStyle
+   :outertype: R.attr
+
+   Must be a reference to another resource, in the form "\ ``@[+][package:]type:name``\ " or to a theme attribute in the form "\ ``?[package:][type:]name``\ ".
+
+mapType
+^^^^^^^
+
+.. java:field:: public static final int mapType
+   :outertype: R.attr
+
+   Must be one of the following constant values.
+
+   +------------------+-------+-------------+
+   | Constant         | Value | Description |
+   +==================+=======+=============+
+   | \ ``none``\      | 0     |             |
+   +------------------+-------+-------------+
+   | \ ``normal``\    | 1     |             |
+   +------------------+-------+-------------+
+   | \ ``satellite``\ | 2     |             |
+   +------------------+-------+-------------+
+   | \ ``terrain``\   | 3     |             |
+   +------------------+-------+-------------+
+   | \ ``hybrid``\    | 4     |             |
+   +------------------+-------+-------------+
+
+maskedWalletDetailsBackground
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int maskedWalletDetailsBackground
+   :outertype: R.attr
+
+   May be a reference to another resource, in the form "\ ``@[+][package:]type:name``\ " or to a theme attribute in the form "\ ``?[package:][type:]name``\ ".
+
+   May be a color value, in the form of "\ ``#rgb``\ ", "\ ``#argb``\ ", "\ ``#rrggbb``\ ", or "\ ``#aarrggbb``\ ".
+
+maskedWalletDetailsButtonBackground
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int maskedWalletDetailsButtonBackground
+   :outertype: R.attr
+
+   May be a reference to another resource, in the form "\ ``@[+][package:]type:name``\ " or to a theme attribute in the form "\ ``?[package:][type:]name``\ ".
+
+   May be a color value, in the form of "\ ``#rgb``\ ", "\ ``#argb``\ ", "\ ``#rrggbb``\ ", or "\ ``#aarrggbb``\ ".
+
+maskedWalletDetailsButtonTextAppearance
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int maskedWalletDetailsButtonTextAppearance
+   :outertype: R.attr
+
+   Must be a reference to another resource, in the form "\ ``@[+][package:]type:name``\ " or to a theme attribute in the form "\ ``?[package:][type:]name``\ ".
+
+maskedWalletDetailsHeaderTextAppearance
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int maskedWalletDetailsHeaderTextAppearance
+   :outertype: R.attr
+
+   Must be a reference to another resource, in the form "\ ``@[+][package:]type:name``\ " or to a theme attribute in the form "\ ``?[package:][type:]name``\ ".
+
+maskedWalletDetailsLogoImageType
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int maskedWalletDetailsLogoImageType
+   :outertype: R.attr
+
+   Must be one of the following constant values.
+
+   +-------------------+-------+-------------+
+   | Constant          | Value | Description |
+   +===================+=======+=============+
+   | \ ``classic``\    | 1     |             |
+   +-------------------+-------+-------------+
+   | \ ``monochrome``\ | 2     |             |
+   +-------------------+-------+-------------+
+
+maskedWalletDetailsLogoTextColor
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int maskedWalletDetailsLogoTextColor
+   :outertype: R.attr
+
+   Must be a color value, in the form of "\ ``#rgb``\ ", "\ ``#argb``\ ", "\ ``#rrggbb``\ ", or "\ ``#aarrggbb``\ ".
+
+   This may also be a reference to a resource (in the form "\ ``@[package:]type:name``\ ") or theme attribute (in the form "\ ``?[package:][type:]name``\ ") containing a value of this type.
+
+maskedWalletDetailsTextAppearance
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int maskedWalletDetailsTextAppearance
+   :outertype: R.attr
+
+   Must be a reference to another resource, in the form "\ ``@[+][package:]type:name``\ " or to a theme attribute in the form "\ ``?[package:][type:]name``\ ".
+
+uiCompass
+^^^^^^^^^
+
+.. java:field:: public static final int uiCompass
+   :outertype: R.attr
+
+   Must be a boolean value, either "\ ``true``\ " or "\ ``false``\ ".
+
+   This may also be a reference to a resource (in the form "\ ``@[package:]type:name``\ ") or theme attribute (in the form "\ ``?[package:][type:]name``\ ") containing a value of this type.
+
+uiRotateGestures
+^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int uiRotateGestures
+   :outertype: R.attr
+
+   Must be a boolean value, either "\ ``true``\ " or "\ ``false``\ ".
+
+   This may also be a reference to a resource (in the form "\ ``@[package:]type:name``\ ") or theme attribute (in the form "\ ``?[package:][type:]name``\ ") containing a value of this type.
+
+uiScrollGestures
+^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int uiScrollGestures
+   :outertype: R.attr
+
+   Must be a boolean value, either "\ ``true``\ " or "\ ``false``\ ".
+
+   This may also be a reference to a resource (in the form "\ ``@[package:]type:name``\ ") or theme attribute (in the form "\ ``?[package:][type:]name``\ ") containing a value of this type.
+
+uiTiltGestures
+^^^^^^^^^^^^^^
+
+.. java:field:: public static final int uiTiltGestures
+   :outertype: R.attr
+
+   Must be a boolean value, either "\ ``true``\ " or "\ ``false``\ ".
+
+   This may also be a reference to a resource (in the form "\ ``@[package:]type:name``\ ") or theme attribute (in the form "\ ``?[package:][type:]name``\ ") containing a value of this type.
+
+uiZoomControls
+^^^^^^^^^^^^^^
+
+.. java:field:: public static final int uiZoomControls
+   :outertype: R.attr
+
+   Must be a boolean value, either "\ ``true``\ " or "\ ``false``\ ".
+
+   This may also be a reference to a resource (in the form "\ ``@[package:]type:name``\ ") or theme attribute (in the form "\ ``?[package:][type:]name``\ ") containing a value of this type.
+
+uiZoomGestures
+^^^^^^^^^^^^^^
+
+.. java:field:: public static final int uiZoomGestures
+   :outertype: R.attr
+
+   Must be a boolean value, either "\ ``true``\ " or "\ ``false``\ ".
+
+   This may also be a reference to a resource (in the form "\ ``@[package:]type:name``\ ") or theme attribute (in the form "\ ``?[package:][type:]name``\ ") containing a value of this type.
+
+useViewLifecycle
+^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int useViewLifecycle
+   :outertype: R.attr
+
+   Must be a boolean value, either "\ ``true``\ " or "\ ``false``\ ".
+
+   This may also be a reference to a resource (in the form "\ ``@[package:]type:name``\ ") or theme attribute (in the form "\ ``?[package:][type:]name``\ ") containing a value of this type.
+
+zOrderOnTop
+^^^^^^^^^^^
+
+.. java:field:: public static final int zOrderOnTop
+   :outertype: R.attr
+
+   Must be a boolean value, either "\ ``true``\ " or "\ ``false``\ ".
+
+   This may also be a reference to a resource (in the form "\ ``@[package:]type:name``\ ") or theme attribute (in the form "\ ``?[package:][type:]name``\ ") containing a value of this type.
+

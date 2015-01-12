@@ -1,0 +1,20 @@
+.. java:import:: fi.lbd.mobile.location PointLocation
+
+CameraChangeListener
+====================
+
+.. java:package:: fi.lbd.mobile.mapobjects
+   :noindex:
+
+.. java:type:: public interface CameraChangeListener
+
+   Created by Tommi.
+
+Methods
+-------
+cameraChanged
+^^^^^^^^^^^^^
+
+.. java:method::  void cameraChanged(double zoom, double startLat, double startLon, double endtLat, double endLon)
+   :outertype: CameraChangeListener
+

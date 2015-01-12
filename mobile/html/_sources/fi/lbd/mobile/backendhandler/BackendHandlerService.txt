@@ -1,0 +1,254 @@
+.. java:import:: android.app Service
+
+.. java:import:: android.content Intent
+
+.. java:import:: android.os Binder
+
+.. java:import:: android.os IBinder
+
+.. java:import:: android.util Log
+
+.. java:import:: android.util Pair
+
+.. java:import:: android.widget Toast
+
+.. java:import:: com.squareup.otto Subscribe
+
+.. java:import:: java.io BufferedInputStream
+
+.. java:import:: java.io IOException
+
+.. java:import:: java.io InputStream
+
+.. java:import:: java.security.cert Certificate
+
+.. java:import:: java.security.cert CertificateException
+
+.. java:import:: java.security.cert CertificateFactory
+
+.. java:import:: java.util.concurrent BlockingQueue
+
+.. java:import:: java.util.concurrent Executors
+
+.. java:import:: java.util.concurrent LinkedBlockingQueue
+
+.. java:import:: java.util.concurrent ScheduledExecutorService
+
+.. java:import:: java.util.concurrent ThreadPoolExecutor
+
+.. java:import:: java.util.concurrent TimeUnit
+
+.. java:import:: fi.lbd.mobile ApplicationDetails
+
+.. java:import:: fi.lbd.mobile.events BusHandler
+
+.. java:import:: fi.lbd.mobile.events RequestFailedEvent
+
+.. java:import:: fi.lbd.mobile.mapobjects MapObject
+
+.. java:import:: fi.lbd.mobile.mapobjects.events CacheObjectsInAreaEvent
+
+.. java:import:: fi.lbd.mobile.mapobjects.events RequestMapObjectEvent
+
+.. java:import:: fi.lbd.mobile.mapobjects.events RequestNearObjectsEvent
+
+.. java:import:: fi.lbd.mobile.mapobjects.events RequestObjectsInAreaEvent
+
+.. java:import:: fi.lbd.mobile.mapobjects.events ReturnMapObjectEvent
+
+.. java:import:: fi.lbd.mobile.mapobjects.events ReturnNearObjectsEvent
+
+.. java:import:: fi.lbd.mobile.mapobjects.events ReturnObjectsInAreaEvent
+
+.. java:import:: fi.lbd.mobile.mapobjects.events ReturnSearchResultEvent
+
+.. java:import:: fi.lbd.mobile.mapobjects.events SearchObjectsEvent
+
+.. java:import:: fi.lbd.mobile.mapobjects.events UpdateMapObjectEvent
+
+.. java:import:: fi.lbd.mobile.mapobjects.events UpdateMapObjectSucceededEvent
+
+.. java:import:: fi.lbd.mobile.messaging.messageobjects MessageObject
+
+.. java:import:: fi.lbd.mobile.messaging.events DeleteMessageEvent
+
+.. java:import:: fi.lbd.mobile.messaging.events DeleteMessageSucceededEvent
+
+.. java:import:: fi.lbd.mobile.events RequestCollectionsEvent
+
+.. java:import:: fi.lbd.mobile.messaging.events RequestUserMessagesEvent
+
+.. java:import:: fi.lbd.mobile.events RequestUsersEvent
+
+.. java:import:: fi.lbd.mobile.events ReturnCollectionsEvent
+
+.. java:import:: fi.lbd.mobile.messaging.events ReturnUserMessagesEvent
+
+.. java:import:: fi.lbd.mobile.events ReturnUsersEvent
+
+.. java:import:: fi.lbd.mobile.messaging.events SendMessageEvent
+
+.. java:import:: fi.lbd.mobile.messaging.events SendMessageSucceededEvent
+
+BackendHandlerService
+=====================
+
+.. java:package:: fi.lbd.mobile.backendhandler
+   :noindex:
+
+.. java:type:: public class BackendHandlerService extends Service
+
+   Service which interacts with the backend handler. Communication is done through OTTO-bus. Created by Tommi.
+
+Methods
+-------
+awaitTermination
+^^^^^^^^^^^^^^^^
+
+.. java:method:: public boolean awaitTermination() throws InterruptedException
+   :outertype: BackendHandlerService
+
+   Required for unit testing.
+
+onBind
+^^^^^^
+
+.. java:method:: @Override public IBinder onBind(Intent arg0)
+   :outertype: BackendHandlerService
+
+onCreate
+^^^^^^^^
+
+.. java:method:: @Override public void onCreate()
+   :outertype: BackendHandlerService
+
+onDestroy
+^^^^^^^^^
+
+.. java:method:: @Override public void onDestroy()
+   :outertype: BackendHandlerService
+
+onEvent
+^^^^^^^
+
+.. java:method:: @SuppressWarnings @Subscribe public void onEvent(RequestNearObjectsEvent event)
+   :outertype: BackendHandlerService
+
+   Event for near objects. Returns objects near request location as an ReturnNearObjectsEvent.
+
+   :param event: Request event.
+
+onEvent
+^^^^^^^
+
+.. java:method:: @SuppressWarnings @Subscribe public void onEvent(RequestObjectsInAreaEvent event)
+   :outertype: BackendHandlerService
+
+   Event for objects in area. Returns objects in area as an ReturnObjectsInAreaEvent.
+
+   :param event: Request event.
+
+onEvent
+^^^^^^^
+
+.. java:method:: @SuppressWarnings @Subscribe public void onEvent(CacheObjectsInAreaEvent event)
+   :outertype: BackendHandlerService
+
+   Event for objects in area. Doesn't create a return event.
+
+   :param event: Request event.
+
+onEvent
+^^^^^^^
+
+.. java:method:: @SuppressWarnings @Subscribe public void onEvent(RequestMapObjectEvent event)
+   :outertype: BackendHandlerService
+
+   Event for requesting detailed information about object. Returns detailed object as ReturnMapObjectEvent.
+
+   :param event: Request event.
+
+onEvent
+^^^^^^^
+
+.. java:method:: @SuppressWarnings @Subscribe public void onEvent(UpdateMapObjectEvent event)
+   :outertype: BackendHandlerService
+
+   Event for updating map object events
+
+   :param event: Update event.
+
+onEvent
+^^^^^^^
+
+.. java:method:: @SuppressWarnings @Subscribe public void onEvent(SearchObjectsEvent event)
+   :outertype: BackendHandlerService
+
+   Event for searching objects.
+
+   :param event: Search event.
+
+onEvent
+^^^^^^^
+
+.. java:method:: @SuppressWarnings @Subscribe public void onEvent(RequestUsersEvent event)
+   :outertype: BackendHandlerService
+
+   Event for fetching list of authorized users.
+
+   :param event: Request event.
+
+onEvent
+^^^^^^^
+
+.. java:method:: @SuppressWarnings @Subscribe public void onEvent(RequestCollectionsEvent event)
+   :outertype: BackendHandlerService
+
+   Event for fetching list of object collections in the database.
+
+   :param event: Request event.
+
+onEvent
+^^^^^^^
+
+.. java:method:: @SuppressWarnings @Subscribe public void onEvent(RequestUserMessagesEvent event)
+   :outertype: BackendHandlerService
+
+   Event for fetching user messages.
+
+   :param event: Request event.
+
+onEvent
+^^^^^^^
+
+.. java:method:: @SuppressWarnings @Subscribe public void onEvent(SendMessageEvent<String> event)
+   :outertype: BackendHandlerService
+
+   Event for sending messages which are string type.
+
+   :param event: Send event.
+
+onEvent
+^^^^^^^
+
+.. java:method:: @SuppressWarnings @Subscribe public void onEvent(DeleteMessageEvent event)
+   :outertype: BackendHandlerService
+
+   Event for deleting messages
+
+   :param event: Send event.
+
+onStartCommand
+^^^^^^^^^^^^^^
+
+.. java:method:: @Override public int onStartCommand(Intent intent, int flags, int startId)
+   :outertype: BackendHandlerService
+
+shutdown
+^^^^^^^^
+
+.. java:method:: public void shutdown()
+   :outertype: BackendHandlerService
+
+   Required for unit testing.
+

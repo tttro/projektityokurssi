@@ -1,0 +1,28 @@
+.. java:import:: android.support.annotation NonNull
+
+.. java:import:: fi.lbd.mobile.events AbstractEvent
+
+RequestMapObjectEvent
+=====================
+
+.. java:package:: fi.lbd.mobile.mapobjects.events
+   :noindex:
+
+.. java:type:: public class RequestMapObjectEvent extends AbstractEvent
+
+Constructors
+------------
+RequestMapObjectEvent
+^^^^^^^^^^^^^^^^^^^^^
+
+.. java:constructor:: public RequestMapObjectEvent(String id)
+   :outertype: RequestMapObjectEvent
+
+Methods
+-------
+getId
+^^^^^
+
+.. java:method:: public String getId()
+   :outertype: RequestMapObjectEvent
+

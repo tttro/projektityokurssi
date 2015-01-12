@@ -1,0 +1,32 @@
+.. java:import:: android.support.annotation Nullable
+
+.. java:import:: java.util List
+
+.. java:import:: fi.lbd.mobile.events AbstractEvent
+
+.. java:import:: fi.lbd.mobile.mapobjects MapObject
+
+ReturnMapObjectEvent
+====================
+
+.. java:package:: fi.lbd.mobile.mapobjects.events
+   :noindex:
+
+.. java:type:: public class ReturnMapObjectEvent extends AbstractEvent
+
+Constructors
+------------
+ReturnMapObjectEvent
+^^^^^^^^^^^^^^^^^^^^
+
+.. java:constructor:: public ReturnMapObjectEvent(MapObject mapObject)
+   :outertype: ReturnMapObjectEvent
+
+Methods
+-------
+getMapObject
+^^^^^^^^^^^^
+
+.. java:method:: public MapObject getMapObject()
+   :outertype: ReturnMapObjectEvent
+

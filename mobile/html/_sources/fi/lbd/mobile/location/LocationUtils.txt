@@ -1,0 +1,63 @@
+.. java:import:: android.location Location
+
+.. java:import:: java.text DecimalFormat
+
+.. java:import:: fi.lbd.mobile.mapobjects MapObject
+
+LocationUtils
+=============
+
+.. java:package:: fi.lbd.mobile.location
+   :noindex:
+
+.. java:type:: public class LocationUtils
+
+   Contains utility methods for locations. Created by Tommi.
+
+Methods
+-------
+distanceBetween
+^^^^^^^^^^^^^^^
+
+.. java:method:: public static double distanceBetween(double lat1, double lon1, double lat2, double lon2)
+   :outertype: LocationUtils
+
+   Returns distance between two points in meters.
+
+   :param lat1:
+   :param lon1:
+   :param lat2:
+   :param lon2:
+
+distanceBetween
+^^^^^^^^^^^^^^^
+
+.. java:method:: public static double distanceBetween(PointLocation loc1, PointLocation loc2)
+   :outertype: LocationUtils
+
+   Returns distance between two points in meters.
+
+   :param loc1:
+   :param loc2:
+
+distanceBetween
+^^^^^^^^^^^^^^^
+
+.. java:method:: public static double distanceBetween(MapObject obj1, MapObject obj2)
+   :outertype: LocationUtils
+
+   Returns distance between two map objects in meters.
+
+   :param obj1:
+   :param obj2:
+
+formatDistance
+^^^^^^^^^^^^^^
+
+.. java:method:: public static String formatDistance(double distanceInMeters)
+   :outertype: LocationUtils
+
+   Formats the given distance into string.
+
+   :param distanceInMeters: For example 123m if distanceInMeters 1000m.
+

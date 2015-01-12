@@ -1,0 +1,70 @@
+.. java:import:: android.support.annotation NonNull
+
+.. java:import:: android.support.annotation Nullable
+
+.. java:import:: com.google.common.collect ImmutableList
+
+.. java:import:: java.util ArrayList
+
+.. java:import:: java.util List
+
+.. java:import:: fi.lbd.mobile.events AbstractEvent
+
+.. java:import:: fi.lbd.mobile.mapobjects MapObject
+
+SendMessageEvent
+================
+
+.. java:package:: fi.lbd.mobile.messaging.events
+   :noindex:
+
+.. java:type:: public class SendMessageEvent<T> extends AbstractEvent
+
+   Created by Tommi on 3.1.2015.
+
+Constructors
+------------
+SendMessageEvent
+^^^^^^^^^^^^^^^^
+
+.. java:constructor:: public SendMessageEvent(String receiver, String topic, T message, MapObject... objects)
+   :outertype: SendMessageEvent
+
+SendMessageEvent
+^^^^^^^^^^^^^^^^
+
+.. java:constructor:: public SendMessageEvent(String receiver, String topic, T message, List<MapObject> objects)
+   :outertype: SendMessageEvent
+
+SendMessageEvent
+^^^^^^^^^^^^^^^^
+
+.. java:constructor:: public SendMessageEvent(String receiver, String topic, T message, String... objectIds)
+   :outertype: SendMessageEvent
+
+Methods
+-------
+getMessage
+^^^^^^^^^^
+
+.. java:method:: public T getMessage()
+   :outertype: SendMessageEvent
+
+getObjectAttachments
+^^^^^^^^^^^^^^^^^^^^
+
+.. java:method:: public List<String> getObjectAttachments()
+   :outertype: SendMessageEvent
+
+getReceiver
+^^^^^^^^^^^
+
+.. java:method:: public String getReceiver()
+   :outertype: SendMessageEvent
+
+getTopic
+^^^^^^^^
+
+.. java:method:: public String getTopic()
+   :outertype: SendMessageEvent
+

@@ -1,0 +1,112 @@
+.. java:import:: com.squareup.otto Subscribe
+
+.. java:import:: org.junit After
+
+.. java:import:: org.junit Before
+
+.. java:import:: org.junit Test
+
+.. java:import:: org.junit.runner RunWith
+
+.. java:import:: org.robolectric Robolectric
+
+.. java:import:: org.robolectric.shadows ShadowLog
+
+.. java:import:: java.util ArrayList
+
+.. java:import:: java.util HashMap
+
+.. java:import:: java.util List
+
+.. java:import:: fi.lbd.mobile CustomRobolectricTestRunner
+
+.. java:import:: fi.lbd.mobile.mapobjects MapObjectSelectionManager
+
+.. java:import:: fi.lbd.mobile.events BusHandler
+
+.. java:import:: fi.lbd.mobile.mapobjects.events CacheObjectsInAreaEvent
+
+.. java:import:: fi.lbd.mobile.mapobjects.events RequestObjectsInAreaEvent
+
+.. java:import:: fi.lbd.mobile.location ImmutablePointLocation
+
+.. java:import:: fi.lbd.mobile.mapobjects ImmutableMapObject
+
+.. java:import:: fi.lbd.mobile.mapobjects MapModelController
+
+.. java:import:: fi.lbd.mobile.mapobjects MapObject
+
+.. java:import:: fi.lbd.mobile.mapobjects MarkerProducer
+
+.. java:import:: fi.lbd.mobile.mapobjects ProgressListener
+
+.. java:import:: fi.lbd.mobile.utils DummyMarker
+
+.. java:import:: fi.lbd.mobile.utils Area
+
+MapModelControllerTest
+======================
+
+.. java:package:: fi.lbd.mobile.mapobject.test
+   :noindex:
+
+.. java:type:: @RunWith public class MapModelControllerTest
+
+   Tests for MapModelController. Created by Tommi.
+
+Methods
+-------
+onEvent
+^^^^^^^
+
+.. java:method:: @Subscribe public void onEvent(RequestObjectsInAreaEvent event)
+   :outertype: MapModelControllerTest
+
+onEvent
+^^^^^^^
+
+.. java:method:: @Subscribe public void onEvent(CacheObjectsInAreaEvent event)
+   :outertype: MapModelControllerTest
+
+setUp
+^^^^^
+
+.. java:method:: @Before public void setUp() throws Exception
+   :outertype: MapModelControllerTest
+
+tearDown
+^^^^^^^^
+
+.. java:method:: @After public void tearDown()
+   :outertype: MapModelControllerTest
+
+testActiveMarkers
+^^^^^^^^^^^^^^^^^
+
+.. java:method:: @Test public void testActiveMarkers() throws Exception
+   :outertype: MapModelControllerTest
+
+testMarkerCreateDeleteFind
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. java:method:: @Test public void testMarkerCreateDeleteFind() throws Exception
+   :outertype: MapModelControllerTest
+
+testMarkerProgress
+^^^^^^^^^^^^^^^^^^
+
+.. java:method:: @Test public void testMarkerProgress() throws Exception
+   :outertype: MapModelControllerTest
+
+testMarkerZoom
+^^^^^^^^^^^^^^
+
+.. java:method:: @Test public void testMarkerZoom() throws Exception
+   :outertype: MapModelControllerTest
+
+testNullValues
+^^^^^^^^^^^^^^
+
+.. java:method:: @Test public void testNullValues() throws Exception
+   :outertype: MapModelControllerTest
+

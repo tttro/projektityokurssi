@@ -1,0 +1,50 @@
+.. java:import:: android.support.annotation NonNull
+
+.. java:import:: fi.lbd.mobile.events AbstractEvent
+
+.. java:import:: fi.lbd.mobile.location PointLocation
+
+RequestNearObjectsEvent
+=======================
+
+.. java:package:: fi.lbd.mobile.mapobjects.events
+   :noindex:
+
+.. java:type:: public class RequestNearObjectsEvent extends AbstractEvent
+
+   Event for OTTO-bus. Requests nearby objects from object repository service. Created by tommi on 19.10.2014.
+
+Constructors
+------------
+RequestNearObjectsEvent
+^^^^^^^^^^^^^^^^^^^^^^^
+
+.. java:constructor:: public RequestNearObjectsEvent(PointLocation location, double range)
+   :outertype: RequestNearObjectsEvent
+
+RequestNearObjectsEvent
+^^^^^^^^^^^^^^^^^^^^^^^
+
+.. java:constructor:: public RequestNearObjectsEvent(PointLocation location, double range, boolean minimized)
+   :outertype: RequestNearObjectsEvent
+
+Methods
+-------
+getLocation
+^^^^^^^^^^^
+
+.. java:method:: public PointLocation getLocation()
+   :outertype: RequestNearObjectsEvent
+
+getRange
+^^^^^^^^
+
+.. java:method:: public double getRange()
+   :outertype: RequestNearObjectsEvent
+
+isMinimized
+^^^^^^^^^^^
+
+.. java:method:: public boolean isMinimized()
+   :outertype: RequestNearObjectsEvent
+

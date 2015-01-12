@@ -1,0 +1,10 @@
+AbstractEvent
+=============
+
+.. java:package:: fi.lbd.mobile.events
+   :noindex:
+
+.. java:type:: public class AbstractEvent
+
+   Abstract type for the OTTO-bus events. Created by tommi on 22.10.2014.
+

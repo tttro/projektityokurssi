@@ -1,0 +1,60 @@
+TestData
+========
+
+.. java:package:: fi.lbd.mobile.utils
+   :noindex:
+
+.. java:type:: public class TestData
+
+   Helper data for REST api requests. Created by Tommi.
+
+Fields
+------
+testInvalidJson1
+^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final String testInvalidJson1
+   :outertype: TestData
+
+testInvalidJson2
+^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final String testInvalidJson2
+   :outertype: TestData
+
+testInvalidSingleJson1
+^^^^^^^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final String testInvalidSingleJson1
+   :outertype: TestData
+
+testInvalidSingleJson2
+^^^^^^^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final String testInvalidSingleJson2
+   :outertype: TestData
+
+testJson
+^^^^^^^^
+
+.. java:field:: public static final String testJson
+   :outertype: TestData
+
+testJsonMini
+^^^^^^^^^^^^
+
+.. java:field:: public static final String testJsonMini
+   :outertype: TestData
+
+testSearchResult
+^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final String testSearchResult
+   :outertype: TestData
+
+testSingleJson
+^^^^^^^^^^^^^^
+
+.. java:field:: public static final String testSingleJson
+   :outertype: TestData
+

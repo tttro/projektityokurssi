@@ -1,0 +1,83 @@
+.. java:import:: android.util Log
+
+.. java:import:: com.fasterxml.jackson.databind JsonNode
+
+.. java:import:: com.fasterxml.jackson.databind ObjectMapper
+
+.. java:import:: com.fasterxml.jackson.databind.node ArrayNode
+
+.. java:import:: com.fasterxml.jackson.databind.node JsonNodeFactory
+
+.. java:import:: com.fasterxml.jackson.databind.node ObjectNode
+
+.. java:import:: org.json JSONException
+
+.. java:import:: java.io IOException
+
+.. java:import:: java.util ArrayList
+
+.. java:import:: java.util HashMap
+
+.. java:import:: java.util Iterator
+
+.. java:import:: java.util List
+
+.. java:import:: java.util Map
+
+.. java:import:: fi.lbd.mobile.mapobjects ImmutableMapObject
+
+.. java:import:: fi.lbd.mobile.location ImmutablePointLocation
+
+.. java:import:: fi.lbd.mobile.mapobjects MapObject
+
+MapObjectParser
+===============
+
+.. java:package:: fi.lbd.mobile.backendhandler
+   :noindex:
+
+.. java:type:: public final class MapObjectParser
+
+   Parses MapObjects from JSONObjects Created by Tommi.
+
+Methods
+-------
+createJsonFromObject
+^^^^^^^^^^^^^^^^^^^^
+
+.. java:method:: public static String createJsonFromObject(MapObject mapObject)
+   :outertype: MapObjectParser
+
+parse
+^^^^^
+
+.. java:method:: public static MapObject parse(String json) throws IOException, JSONException
+   :outertype: MapObjectParser
+
+   Parses a string of json which contains a single elements.
+
+   :param json: String to be parsed.
+   :throws JSONException:
+   :throws IOException:
+   :return: Single parsed object.
+
+parseCollection
+^^^^^^^^^^^^^^^
+
+.. java:method:: public static List<MapObject> parseCollection(String json, boolean minimized) throws IOException, JSONException
+   :outertype: MapObjectParser
+
+   Parses a string of json which contains multiple elements.
+
+   :param json: String to be parsed.
+   :param minimized: Is the text in minimized format.
+   :throws JSONException:
+   :throws IOException:
+   :return: List of parsed objects.
+
+parseSearchResult
+^^^^^^^^^^^^^^^^^
+
+.. java:method:: public static List<MapObject> parseSearchResult(String json, boolean minimized) throws IOException, JSONException
+   :outertype: MapObjectParser
+

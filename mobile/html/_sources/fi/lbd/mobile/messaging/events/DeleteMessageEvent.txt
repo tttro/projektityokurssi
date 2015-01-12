@@ -1,0 +1,28 @@
+.. java:import:: fi.lbd.mobile.events AbstractEvent
+
+DeleteMessageEvent
+==================
+
+.. java:package:: fi.lbd.mobile.messaging.events
+   :noindex:
+
+.. java:type:: public class DeleteMessageEvent extends AbstractEvent
+
+   Created by Tommi on 3.1.2015.
+
+Constructors
+------------
+DeleteMessageEvent
+^^^^^^^^^^^^^^^^^^
+
+.. java:constructor:: public DeleteMessageEvent(String messageId)
+   :outertype: DeleteMessageEvent
+
+Methods
+-------
+getMessageId
+^^^^^^^^^^^^
+
+.. java:method:: public String getMessageId()
+   :outertype: DeleteMessageEvent
+

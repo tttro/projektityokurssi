@@ -1,0 +1,15 @@
+fi.lbd.mobile.messaging
+=======================
+
+.. java:package:: fi.lbd.mobile.messaging
+
+.. toctree::
+   :maxdepth: 1
+
+   MessageObjectDeletionManager
+   MessageObjectSelectionManager
+   MessageUpdateService
+   ReadMessageActivity
+   SelectReceiverDialogFragment
+   SendMessageActivity
+

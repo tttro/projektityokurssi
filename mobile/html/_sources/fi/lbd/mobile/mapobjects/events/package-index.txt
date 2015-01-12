@@ -1,0 +1,21 @@
+fi.lbd.mobile.mapobjects.events
+===============================
+
+.. java:package:: fi.lbd.mobile.mapobjects.events
+
+.. toctree::
+   :maxdepth: 1
+
+   CacheObjectsInAreaEvent
+   RequestMapObjectEvent
+   RequestNearObjectsEvent
+   RequestObjectsInAreaEvent
+   ReturnMapObjectEvent
+   ReturnNearObjectsEvent
+   ReturnObjectsInAreaEvent
+   ReturnSearchResultEvent
+   SearchObjectsEvent
+   SelectMapObjectEvent
+   UpdateMapObjectEvent
+   UpdateMapObjectSucceededEvent
+

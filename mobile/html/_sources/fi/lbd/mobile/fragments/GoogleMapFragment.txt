@@ -1,0 +1,232 @@
+.. java:import:: android.app Activity
+
+.. java:import:: android.content Intent
+
+.. java:import:: android.content.res Resources
+
+.. java:import:: android.location Address
+
+.. java:import:: android.location Geocoder
+
+.. java:import:: android.os Bundle
+
+.. java:import:: android.util Log
+
+.. java:import:: android.view KeyEvent
+
+.. java:import:: android.view LayoutInflater
+
+.. java:import:: android.view View
+
+.. java:import:: android.view ViewGroup
+
+.. java:import:: android.view.inputmethod EditorInfo
+
+.. java:import:: android.view.inputmethod InputMethodManager
+
+.. java:import:: android.widget EditText
+
+.. java:import:: android.widget ProgressBar
+
+.. java:import:: android.widget TextView
+
+.. java:import:: com.google.android.gms.common GooglePlayServicesClient
+
+.. java:import:: com.google.android.gms.maps CameraUpdate
+
+.. java:import:: com.google.android.gms.maps CameraUpdateFactory
+
+.. java:import:: com.google.android.gms.maps GoogleMap
+
+.. java:import:: com.google.android.gms.maps GoogleMap.OnInfoWindowClickListener
+
+.. java:import:: com.google.android.gms.maps MapView
+
+.. java:import:: com.google.android.gms.maps MapsInitializer
+
+.. java:import:: com.google.android.gms.maps.model BitmapDescriptor
+
+.. java:import:: com.google.android.gms.maps.model BitmapDescriptorFactory
+
+.. java:import:: com.google.android.gms.maps.model CameraPosition
+
+.. java:import:: com.google.android.gms.maps.model LatLng
+
+.. java:import:: com.google.android.gms.maps.model LatLngBounds
+
+.. java:import:: com.google.android.gms.maps.model Marker
+
+.. java:import:: com.google.android.gms.maps.model MarkerOptions
+
+.. java:import:: com.squareup.otto Subscribe
+
+.. java:import:: java.util List
+
+.. java:import:: java.util Locale
+
+.. java:import:: fi.lbd.mobile ApplicationDetails
+
+.. java:import:: fi.lbd.mobile DetailsActivity
+
+.. java:import:: fi.lbd.mobile ListActivity
+
+.. java:import:: fi.lbd.mobile R
+
+.. java:import:: fi.lbd.mobile.events BusHandler
+
+.. java:import:: fi.lbd.mobile.location ImmutablePointLocation
+
+.. java:import:: fi.lbd.mobile.location LocationHandler
+
+.. java:import:: fi.lbd.mobile.location LocationUtils
+
+.. java:import:: fi.lbd.mobile.location PointLocation
+
+.. java:import:: fi.lbd.mobile.mapobjects MapModelController
+
+.. java:import:: fi.lbd.mobile.mapobjects MapObject
+
+.. java:import:: fi.lbd.mobile.mapobjects MapObjectSelectionManager
+
+.. java:import:: fi.lbd.mobile.mapobjects MarkerProducer
+
+.. java:import:: fi.lbd.mobile.mapobjects ProgressListener
+
+.. java:import:: fi.lbd.mobile.mapobjects.events ReturnObjectsInAreaEvent
+
+.. java:import:: fi.lbd.mobile.mapobjects.events SelectMapObjectEvent
+
+.. java:import:: fi.lbd.mobile.messaging MessageObjectSelectionManager
+
+GoogleMapFragment
+=================
+
+.. java:package:: fi.lbd.mobile.fragments
+   :noindex:
+
+.. java:type:: public class GoogleMapFragment extends MapFragment implements OnInfoWindowClickListener, GoogleMap.OnMarkerClickListener, GoogleMap.OnMapClickListener, ApplicationDetails.ApplicationDetailListener
+
+   Fragment which handles the google map view. Created by Tommi & Ossi
+
+Methods
+-------
+hideCursor
+^^^^^^^^^^
+
+.. java:method:: protected void hideCursor()
+   :outertype: GoogleMapFragment
+
+hideKeyBoard
+^^^^^^^^^^^^
+
+.. java:method:: protected void hideKeyBoard()
+   :outertype: GoogleMapFragment
+
+newInstance
+^^^^^^^^^^^
+
+.. java:method:: public static GoogleMapFragment newInstance(LocationHandler locationHandler)
+   :outertype: GoogleMapFragment
+
+   Should be used to instantiate this class instead of new-statement.
+
+   :return: Returns a new instance of this class.
+
+notifyApiUrlChange
+^^^^^^^^^^^^^^^^^^
+
+.. java:method:: @Override public void notifyApiUrlChange(String newBaseUrl, String newMessageApiUrl, String newObjectApiUrl)
+   :outertype: GoogleMapFragment
+
+notifyCollectionChange
+^^^^^^^^^^^^^^^^^^^^^^
+
+.. java:method:: @Override public void notifyCollectionChange(String newCollection)
+   :outertype: GoogleMapFragment
+
+onCreateView
+^^^^^^^^^^^^
+
+.. java:method:: @Override public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
+   :outertype: GoogleMapFragment
+
+onDestroy
+^^^^^^^^^
+
+.. java:method:: @Override public void onDestroy()
+   :outertype: GoogleMapFragment
+
+onEvent
+^^^^^^^
+
+.. java:method:: @Subscribe public void onEvent(SelectMapObjectEvent event)
+   :outertype: GoogleMapFragment
+
+onEvent
+^^^^^^^
+
+.. java:method:: @Subscribe public void onEvent(ReturnObjectsInAreaEvent event)
+   :outertype: GoogleMapFragment
+
+   Handles the response event with the map objects for a certain region.
+
+   :param event: Returned event.
+
+onInfoWindowClick
+^^^^^^^^^^^^^^^^^
+
+.. java:method:: @Override public void onInfoWindowClick(Marker marker)
+   :outertype: GoogleMapFragment
+
+onLowMemory
+^^^^^^^^^^^
+
+.. java:method:: @Override public void onLowMemory()
+   :outertype: GoogleMapFragment
+
+onMapClick
+^^^^^^^^^^
+
+.. java:method:: @Override public void onMapClick(LatLng point)
+   :outertype: GoogleMapFragment
+
+onMarkerClick
+^^^^^^^^^^^^^
+
+.. java:method:: @Override public boolean onMarkerClick(Marker marker)
+   :outertype: GoogleMapFragment
+
+onPause
+^^^^^^^
+
+.. java:method:: @Override public void onPause()
+   :outertype: GoogleMapFragment
+
+onResume
+^^^^^^^^
+
+.. java:method:: @Override public void onResume()
+   :outertype: GoogleMapFragment
+
+performLocationSearch
+^^^^^^^^^^^^^^^^^^^^^
+
+.. java:method:: protected void performLocationSearch()
+   :outertype: GoogleMapFragment
+
+   Searches the address defined in the search box and moves the camera to the found location.
+
+setLocationHandler
+^^^^^^^^^^^^^^^^^^
+
+.. java:method:: public void setLocationHandler(LocationHandler locationHandler)
+   :outertype: GoogleMapFragment
+
+setMapLocationToSelectedObject
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. java:method:: protected void setMapLocationToSelectedObject()
+   :outertype: GoogleMapFragment
+
+   Sets the maps location to the map object which is currently selected in selection manager. If selection manager doesn't have any object selected, sets map view to users current location.
+

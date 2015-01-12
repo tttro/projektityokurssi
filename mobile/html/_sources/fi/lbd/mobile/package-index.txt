@@ -1,0 +1,35 @@
+fi.lbd.mobile
+=============
+
+.. java:package:: fi.lbd.mobile
+
+.. toctree::
+   :maxdepth: 1
+
+   ActiveActivitiesTracker
+   ApplicationDetails
+   ApplicationDetails-ApplicationDetailListener
+   BuildConfig
+   CustomRobolectricTestRunner
+   DetailsActivity
+   EditNoteActivity
+   LBDApplication
+   ListActivity
+   ListActivity-SectionsPagerAdapter
+   R
+   R-anim
+   R-attr
+   R-color
+   R-dimen
+   R-drawable
+   R-id
+   R-integer
+   R-layout
+   R-menu
+   R-string
+   R-style
+   R-styleable
+   ServiceManager
+   SettingsActivity
+   StartupActivity
+

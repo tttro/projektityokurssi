@@ -1,0 +1,38 @@
+.. java:import:: fi.lbd.mobile.messaging.messageobjects MessageObject
+
+MapObjectSelectionManager
+=========================
+
+.. java:package:: fi.lbd.mobile.mapobjects
+   :noindex:
+
+.. java:type:: public final class MapObjectSelectionManager
+
+   TODO: Ennemmin dependency injectionilla? Dagger tms. Created by tommi on 22.10.2014.
+
+Methods
+-------
+get
+^^^
+
+.. java:method:: public static MapObjectSelectionManager get()
+   :outertype: MapObjectSelectionManager
+
+getSelectedMapObject
+^^^^^^^^^^^^^^^^^^^^
+
+.. java:method:: public MapObject getSelectedMapObject()
+   :outertype: MapObjectSelectionManager
+
+initialize
+^^^^^^^^^^
+
+.. java:method:: public static void initialize()
+   :outertype: MapObjectSelectionManager
+
+setSelectedMapObject
+^^^^^^^^^^^^^^^^^^^^
+
+.. java:method:: public void setSelectedMapObject(MapObject selectedMapObject)
+   :outertype: MapObjectSelectionManager
+

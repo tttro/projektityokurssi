@@ -1,0 +1,69 @@
+.. java:import:: java.util HashMap
+
+.. java:import:: java.util Map
+
+UrlResponse.ResponseStatus
+==========================
+
+.. java:package:: fi.lbd.mobile.backendhandler
+   :noindex:
+
+.. java:type:: public enum ResponseStatus
+   :outertype: UrlResponse
+
+Enum Constants
+--------------
+STATUS_200
+^^^^^^^^^^
+
+.. java:field:: public static final UrlResponse.ResponseStatus STATUS_200
+   :outertype: UrlResponse.ResponseStatus
+
+STATUS_400
+^^^^^^^^^^
+
+.. java:field:: public static final UrlResponse.ResponseStatus STATUS_400
+   :outertype: UrlResponse.ResponseStatus
+
+STATUS_401
+^^^^^^^^^^
+
+.. java:field:: public static final UrlResponse.ResponseStatus STATUS_401
+   :outertype: UrlResponse.ResponseStatus
+
+STATUS_403
+^^^^^^^^^^
+
+.. java:field:: public static final UrlResponse.ResponseStatus STATUS_403
+   :outertype: UrlResponse.ResponseStatus
+
+STATUS_404
+^^^^^^^^^^
+
+.. java:field:: public static final UrlResponse.ResponseStatus STATUS_404
+   :outertype: UrlResponse.ResponseStatus
+
+STATUS_405
+^^^^^^^^^^
+
+.. java:field:: public static final UrlResponse.ResponseStatus STATUS_405
+   :outertype: UrlResponse.ResponseStatus
+
+STATUS_418
+^^^^^^^^^^
+
+.. java:field:: public static final UrlResponse.ResponseStatus STATUS_418
+   :outertype: UrlResponse.ResponseStatus
+
+STATUS_500
+^^^^^^^^^^
+
+.. java:field:: public static final UrlResponse.ResponseStatus STATUS_500
+   :outertype: UrlResponse.ResponseStatus
+
+STATUS_NOT_FOUND
+^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final UrlResponse.ResponseStatus STATUS_NOT_FOUND
+   :outertype: UrlResponse.ResponseStatus
+

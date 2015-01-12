@@ -1,0 +1,42 @@
+.. java:import:: android.support.annotation NonNull
+
+.. java:import:: android.util Log
+
+StringMessageObject
+===================
+
+.. java:package:: fi.lbd.mobile.messaging.messageobjects
+   :noindex:
+
+.. java:type:: public class StringMessageObject extends MessageObject<String>
+
+   Concrete class representing a MessageObject that has a simple String as a message. Created by Ossi on 29.12.2014.
+
+Constructors
+------------
+StringMessageObject
+^^^^^^^^^^^^^^^^^^^
+
+.. java:constructor:: public StringMessageObject(String id, long timestamp, String receiver, String sender, String topic, boolean isRead, String message)
+   :outertype: StringMessageObject
+
+Methods
+-------
+equals
+^^^^^^
+
+.. java:method:: @Override public boolean equals(Object object)
+   :outertype: StringMessageObject
+
+getMessage
+^^^^^^^^^^
+
+.. java:method:: public String getMessage()
+   :outertype: StringMessageObject
+
+toString
+^^^^^^^^
+
+.. java:method:: @Override public String toString()
+   :outertype: StringMessageObject
+

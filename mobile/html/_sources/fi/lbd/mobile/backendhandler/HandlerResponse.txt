@@ -1,0 +1,73 @@
+.. java:import:: java.util List
+
+.. java:import:: java.util.logging Handler
+
+.. java:import:: fi.lbd.mobile.mapobjects MapObject
+
+HandlerResponse
+===============
+
+.. java:package:: fi.lbd.mobile.backendhandler
+   :noindex:
+
+.. java:type:: public class HandlerResponse<T>
+
+   Used as a response object from the BackendHandlers. Created by Tommi.
+
+Constructors
+------------
+HandlerResponse
+^^^^^^^^^^^^^^^
+
+.. java:constructor:: public HandlerResponse(List<T> objects, Status status)
+   :outertype: HandlerResponse
+
+   Used as a response object from the BackendHandlers.
+
+   :param objects: Response objects.
+   :param status: Response status.
+
+HandlerResponse
+^^^^^^^^^^^^^^^
+
+.. java:constructor:: public HandlerResponse(List<T> objects, Status status, String reason)
+   :outertype: HandlerResponse
+
+   Used as a response object from the BackendHandlers.
+
+   :param objects: Response objects.
+   :param status: Response status.
+   :param reason: Response reason.
+
+Methods
+-------
+getObjects
+^^^^^^^^^^
+
+.. java:method:: public List<T> getObjects()
+   :outertype: HandlerResponse
+
+getReason
+^^^^^^^^^
+
+.. java:method:: public String getReason()
+   :outertype: HandlerResponse
+
+getStatus
+^^^^^^^^^
+
+.. java:method:: public Status getStatus()
+   :outertype: HandlerResponse
+
+isOk
+^^^^
+
+.. java:method:: public boolean isOk()
+   :outertype: HandlerResponse
+
+toString
+^^^^^^^^
+
+.. java:method:: @Override public String toString()
+   :outertype: HandlerResponse
+

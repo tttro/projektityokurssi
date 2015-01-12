@@ -1,0 +1,26 @@
+.. java:import:: android.util Log
+
+ActiveActivitiesTracker
+=======================
+
+.. java:package:: fi.lbd.mobile
+   :noindex:
+
+.. java:type:: public class ActiveActivitiesTracker
+
+   Created by Ossi on 11.1.2015. Class that tracks whether the whole application is moved to background or foreground, and starts and stops services accordingly.
+
+Methods
+-------
+activityStarted
+^^^^^^^^^^^^^^^
+
+.. java:method:: public static void activityStarted()
+   :outertype: ActiveActivitiesTracker
+
+activityStopped
+^^^^^^^^^^^^^^^
+
+.. java:method:: public static void activityStopped()
+   :outertype: ActiveActivitiesTracker
+

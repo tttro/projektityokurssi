@@ -1,0 +1,12 @@
+fi.lbd.mobile.utils
+===================
+
+.. java:package:: fi.lbd.mobile.utils
+
+.. toctree::
+   :maxdepth: 1
+
+   Area
+   DummyMarker
+   TestData
+

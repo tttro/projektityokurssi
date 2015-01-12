@@ -1,0 +1,198 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>CachingBackendHandler &mdash; LBD Mobile client Alpha documentation</title>
+    
+    <link rel="stylesheet" href="../../../../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../',
+        VERSION:     'Alpha',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <link rel="top" title="LBD Mobile client Alpha documentation" href="../../../../index.html" />
+    <link rel="up" title="fi.lbd.mobile.backendhandler" href="package-index.html" />
+    <link rel="next" title="CollectionParser" href="CollectionParser.html" />
+    <link rel="prev" title="BasicUrlReader" href="BasicUrlReader.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="CollectionParser.html" title="CollectionParser"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="BasicUrlReader.html" title="BasicUrlReader"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../../../../packages.html">LBD Mobile client Alpha documentation</a> &raquo;</li>
+          <li><a href="package-index.html" accesskey="U">fi.lbd.mobile.backendhandler</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="cachingbackendhandler">
+<h1>CachingBackendHandler<a class="headerlink" href="#cachingbackendhandler" title="Permalink to this headline">¶</a></h1>
+<dl class="type">
+<dt id="fi.lbd.mobile.backendhandler.CachingBackendHandler">
+public class <tt class="descname">CachingBackendHandler</tt> extends <a class="reference internal" href="BasicBackendHandler.html#fi.lbd.mobile.backendhandler.BasicBackendHandler" title="fi.lbd.mobile.backendhandler.BasicBackendHandler">BasicBackendHandler</a> implements <a class="reference internal" href="../ApplicationDetails.html#fi.lbd.mobile.ApplicationDetails" title="fi.lbd.mobile.ApplicationDetails">ApplicationDetails</a>.<a class="reference internal" href="../ApplicationDetails-ApplicationDetailListener.html#fi.lbd.mobile.ApplicationDetails.ApplicationDetailListener" title="fi.lbd.mobile.ApplicationDetails.ApplicationDetailListener">ApplicationDetailListener</a><a class="headerlink" href="#fi.lbd.mobile.backendhandler.CachingBackendHandler" title="Permalink to this definition">¶</a></dt>
+<dd><p>Caches the method invocations so that we don&#8217;t need to fetch new data from the backend if the same method is invoked multiple times inside a short time period. Created by Tommi.</p>
+</dd></dl>
+
+<div class="section" id="constructors">
+<h2>Constructors<a class="headerlink" href="#constructors" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id1">
+<h3>CachingBackendHandler<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+<dl class="constructor">
+<dt id="fi.lbd.mobile.backendhandler.CachingBackendHandler.CachingBackendHandler(UrlReader, UrlProvider, long)">
+public <tt class="descname">CachingBackendHandler</tt><big>(</big><a class="reference internal" href="UrlReader.html#fi.lbd.mobile.backendhandler.UrlReader" title="fi.lbd.mobile.backendhandler.UrlReader">UrlReader</a><em> urlReader</em>, <a class="reference internal" href="UrlProvider.html#fi.lbd.mobile.backendhandler.UrlProvider" title="fi.lbd.mobile.backendhandler.UrlProvider">UrlProvider</a><em> urlProvider</em>, long<em> cacheTimeMs</em><big>)</big><a class="headerlink" href="#fi.lbd.mobile.backendhandler.CachingBackendHandler.CachingBackendHandler(UrlReader, UrlProvider, long)" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+</div>
+<div class="section" id="methods">
+<h2>Methods<a class="headerlink" href="#methods" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="checkforoutdatedcaches">
+<h3>checkForOutdatedCaches<a class="headerlink" href="#checkforoutdatedcaches" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="fi.lbd.mobile.backendhandler.CachingBackendHandler.checkForOutdatedCaches()">
+public void <tt class="descname">checkForOutdatedCaches</tt><big>(</big><big>)</big><a class="headerlink" href="#fi.lbd.mobile.backendhandler.CachingBackendHandler.checkForOutdatedCaches()" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method which should be invoked frequently to check for outdated caches.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="getobjectsinarea">
+<h3>getObjectsInArea<a class="headerlink" href="#getobjectsinarea" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="fi.lbd.mobile.backendhandler.CachingBackendHandler.getObjectsInArea(PointLocation, PointLocation, boolean)">
+public <a class="reference internal" href="HandlerResponse.html#fi.lbd.mobile.backendhandler.HandlerResponse" title="fi.lbd.mobile.backendhandler.HandlerResponse">HandlerResponse</a> <tt class="descname">getObjectsInArea</tt><big>(</big><a class="reference internal" href="../location/PointLocation.html#fi.lbd.mobile.location.PointLocation" title="fi.lbd.mobile.location.PointLocation">PointLocation</a><em> southWest</em>, <a class="reference internal" href="../location/PointLocation.html#fi.lbd.mobile.location.PointLocation" title="fi.lbd.mobile.location.PointLocation">PointLocation</a><em> northEast</em>, boolean<em> mini</em><big>)</big><a class="headerlink" href="#fi.lbd.mobile.backendhandler.CachingBackendHandler.getObjectsInArea(PointLocation, PointLocation, boolean)" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the objects inside the area from the backend or as a cached result.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>southWest</strong> &#8211; Start point.</li>
+<li><strong>northEast</strong> &#8211; End point.</li>
+<li><strong>mini</strong> &#8211; Should the results be in minimized format.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="notifyapiurlchange">
+<h3>notifyApiUrlChange<a class="headerlink" href="#notifyapiurlchange" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="fi.lbd.mobile.backendhandler.CachingBackendHandler.notifyApiUrlChange(String, String, String)">
+public void <tt class="descname">notifyApiUrlChange</tt><big>(</big><a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a><em> newBaseUrl</em>, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a><em> newMessageApiUrl</em>, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a><em> newObjectApiUrl</em><big>)</big><a class="headerlink" href="#fi.lbd.mobile.backendhandler.CachingBackendHandler.notifyApiUrlChange(String, String, String)" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="notifycollectionchange">
+<h3>notifyCollectionChange<a class="headerlink" href="#notifycollectionchange" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="fi.lbd.mobile.backendhandler.CachingBackendHandler.notifyCollectionChange(String)">
+public void <tt class="descname">notifyCollectionChange</tt><big>(</big><a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a><em> newCollection</em><big>)</big><a class="headerlink" href="#fi.lbd.mobile.backendhandler.CachingBackendHandler.notifyCollectionChange(String)" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../../../packages.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">CachingBackendHandler</a><ul>
+<li><a class="reference internal" href="#constructors">Constructors</a><ul>
+<li><a class="reference internal" href="#id1">CachingBackendHandler</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#methods">Methods</a><ul>
+<li><a class="reference internal" href="#checkforoutdatedcaches">checkForOutdatedCaches</a></li>
+<li><a class="reference internal" href="#getobjectsinarea">getObjectsInArea</a></li>
+<li><a class="reference internal" href="#notifyapiurlchange">notifyApiUrlChange</a></li>
+<li><a class="reference internal" href="#notifycollectionchange">notifyCollectionChange</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="BasicUrlReader.html"
+                        title="previous chapter">BasicUrlReader</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="CollectionParser.html"
+                        title="next chapter">CollectionParser</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../../../../_sources/fi/lbd/mobile/backendhandler/CachingBackendHandler.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="CollectionParser.html" title="CollectionParser"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="BasicUrlReader.html" title="BasicUrlReader"
+             >previous</a> |</li>
+        <li><a href="../../../../packages.html">LBD Mobile client Alpha documentation</a> &raquo;</li>
+          <li><a href="package-index.html" >fi.lbd.mobile.backendhandler</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2015, Tommi und Ossi.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+    </div>
+  </body>
+</html>

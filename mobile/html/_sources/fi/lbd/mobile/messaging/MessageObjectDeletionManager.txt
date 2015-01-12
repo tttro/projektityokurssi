@@ -1,0 +1,48 @@
+.. java:import:: com.squareup.otto Produce
+
+.. java:import:: fi.lbd.mobile.events BusHandler
+
+.. java:import:: fi.lbd.mobile.messaging.events DeleteMessageFromListEvent
+
+MessageObjectDeletionManager
+============================
+
+.. java:package:: fi.lbd.mobile.messaging
+   :noindex:
+
+.. java:type:: public class MessageObjectDeletionManager
+
+   Created by Ossi on 5.1.2014 Singleton to communicate, from ReadMessageActivity to MessageFragment, which message was successfully removed, so that MessageFragment can remove the message from UI.
+
+Methods
+-------
+deleteMessageFromList
+^^^^^^^^^^^^^^^^^^^^^
+
+.. java:method:: @Produce public DeleteMessageFromListEvent deleteMessageFromList()
+   :outertype: MessageObjectDeletionManager
+
+get
+^^^
+
+.. java:method:: public static MessageObjectDeletionManager get()
+   :outertype: MessageObjectDeletionManager
+
+getDeletedMessageObject
+^^^^^^^^^^^^^^^^^^^^^^^
+
+.. java:method:: public String getDeletedMessageObject()
+   :outertype: MessageObjectDeletionManager
+
+initialize
+^^^^^^^^^^
+
+.. java:method:: public static void initialize()
+   :outertype: MessageObjectDeletionManager
+
+setDeletedMessageObject
+^^^^^^^^^^^^^^^^^^^^^^^
+
+.. java:method:: public void setDeletedMessageObject(String deletedObject)
+   :outertype: MessageObjectDeletionManager
+

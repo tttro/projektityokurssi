@@ -1,0 +1,140 @@
+.. java:import:: android.app Activity
+
+.. java:import:: android.content Context
+
+.. java:import:: android.graphics Color
+
+.. java:import:: android.util Pair
+
+.. java:import:: android.view LayoutInflater
+
+.. java:import:: android.view View
+
+.. java:import:: android.view ViewGroup
+
+.. java:import:: android.widget Adapter
+
+.. java:import:: android.widget BaseExpandableListAdapter
+
+.. java:import:: android.widget ListView
+
+.. java:import:: android.widget TextView
+
+.. java:import:: android.util Log
+
+.. java:import:: java.util ArrayList
+
+.. java:import:: java.util Collection
+
+.. java:import:: java.util Collections
+
+.. java:import:: java.util Comparator
+
+.. java:import:: java.util HashMap
+
+.. java:import:: java.util Map
+
+.. java:import:: java.util TreeMap
+
+.. java:import:: fi.lbd.mobile ListActivity
+
+.. java:import:: fi.lbd.mobile R
+
+.. java:import:: fi.lbd.mobile.location LocationUtils
+
+.. java:import:: fi.lbd.mobile.location PointLocation
+
+.. java:import:: fi.lbd.mobile.mapobjects MapObject
+
+ListExpandableAdapter
+=====================
+
+.. java:package:: fi.lbd.mobile.adapters
+   :noindex:
+
+.. java:type:: public class ListExpandableAdapter extends BaseExpandableListAdapter
+
+   Created by Ossi on 20.10.2014.
+
+Constructors
+------------
+ListExpandableAdapter
+^^^^^^^^^^^^^^^^^^^^^
+
+.. java:constructor:: public ListExpandableAdapter(Context context)
+   :outertype: ListExpandableAdapter
+
+Methods
+-------
+addAll
+^^^^^^
+
+.. java:method:: public void addAll(Collection<MapObject> newObjects)
+   :outertype: ListExpandableAdapter
+
+clear
+^^^^^
+
+.. java:method:: public void clear()
+   :outertype: ListExpandableAdapter
+
+getChild
+^^^^^^^^
+
+.. java:method:: @Override public Object getChild(int groupPosition, int childPosition)
+   :outertype: ListExpandableAdapter
+
+getChildId
+^^^^^^^^^^
+
+.. java:method:: @Override public long getChildId(int groupPosition, int childPosition)
+   :outertype: ListExpandableAdapter
+
+getChildView
+^^^^^^^^^^^^
+
+.. java:method:: @Override public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View view, ViewGroup parent)
+   :outertype: ListExpandableAdapter
+
+getChildrenCount
+^^^^^^^^^^^^^^^^
+
+.. java:method:: @Override public int getChildrenCount(int groupPosition)
+   :outertype: ListExpandableAdapter
+
+getGroup
+^^^^^^^^
+
+.. java:method:: @Override public Object getGroup(int groupPosition)
+   :outertype: ListExpandableAdapter
+
+getGroupCount
+^^^^^^^^^^^^^
+
+.. java:method:: @Override public int getGroupCount()
+   :outertype: ListExpandableAdapter
+
+getGroupId
+^^^^^^^^^^
+
+.. java:method:: @Override public long getGroupId(int groupPosition)
+   :outertype: ListExpandableAdapter
+
+getGroupView
+^^^^^^^^^^^^
+
+.. java:method:: @Override public View getGroupView(int groupPosition, boolean isExpanded, View view, ViewGroup parent)
+   :outertype: ListExpandableAdapter
+
+hasStableIds
+^^^^^^^^^^^^
+
+.. java:method:: @Override public boolean hasStableIds()
+   :outertype: ListExpandableAdapter
+
+isChildSelectable
+^^^^^^^^^^^^^^^^^
+
+.. java:method:: @Override public boolean isChildSelectable(int groupPosition, int childPosition)
+   :outertype: ListExpandableAdapter
+

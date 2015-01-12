@@ -1,0 +1,304 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>LocationHandler &mdash; LBD Mobile client Alpha documentation</title>
+    
+    <link rel="stylesheet" href="../../../../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../',
+        VERSION:     'Alpha',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <link rel="top" title="LBD Mobile client Alpha documentation" href="../../../../index.html" />
+    <link rel="up" title="fi.lbd.mobile.location" href="package-index.html" />
+    <link rel="next" title="LocationUtils" href="LocationUtils.html" />
+    <link rel="prev" title="ImmutablePointLocation" href="ImmutablePointLocation.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="LocationUtils.html" title="LocationUtils"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="ImmutablePointLocation.html" title="ImmutablePointLocation"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../../../../packages.html">LBD Mobile client Alpha documentation</a> &raquo;</li>
+          <li><a href="package-index.html" accesskey="U">fi.lbd.mobile.location</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="locationhandler">
+<h1>LocationHandler<a class="headerlink" href="#locationhandler" title="Permalink to this headline">¶</a></h1>
+<dl class="type">
+<dt id="fi.lbd.mobile.location.LocationHandler">
+public class <tt class="descname">LocationHandler</tt> implements GooglePlayServicesClient.ConnectionCallbacks, GooglePlayServicesClient.OnConnectionFailedListener<a class="headerlink" href="#fi.lbd.mobile.location.LocationHandler" title="Permalink to this definition">¶</a></dt>
+<dd><p>Class which handles getting the users current location. Checking if the google play services are available and displays error dialog if they are missing. Created by Tommi.</p>
+</dd></dl>
+
+<div class="section" id="constructors">
+<h2>Constructors<a class="headerlink" href="#constructors" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id1">
+<h3>LocationHandler<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+<dl class="constructor">
+<dt id="fi.lbd.mobile.location.LocationHandler.LocationHandler(Activity)">
+public <tt class="descname">LocationHandler</tt><big>(</big>Activity<em> activity</em><big>)</big><a class="headerlink" href="#fi.lbd.mobile.location.LocationHandler.LocationHandler(Activity)" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks if the google play services are available and if they are creates a location client.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>activity</strong> &#8211; </li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+</div>
+<div class="section" id="methods">
+<h2>Methods<a class="headerlink" href="#methods" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="addlistener">
+<h3>addListener<a class="headerlink" href="#addlistener" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="fi.lbd.mobile.location.LocationHandler.addListener(GooglePlayServicesClient.ConnectionCallbacks)">
+public void <tt class="descname">addListener</tt><big>(</big>GooglePlayServicesClient.ConnectionCallbacks<em> listener</em><big>)</big><a class="headerlink" href="#fi.lbd.mobile.location.LocationHandler.addListener(GooglePlayServicesClient.ConnectionCallbacks)" title="Permalink to this definition">¶</a></dt>
+<dd><p>Registers a listener which listens for connection changes in the location client.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>listener</strong> &#8211; </li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="checkplayservices">
+<h3>checkPlayServices<a class="headerlink" href="#checkplayservices" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="fi.lbd.mobile.location.LocationHandler.checkPlayServices()">
+protected boolean <tt class="descname">checkPlayServices</tt><big>(</big><big>)</big><a class="headerlink" href="#fi.lbd.mobile.location.LocationHandler.checkPlayServices()" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks if the google play services are available and if not, presents an error dialog.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">True if services are available. False otherwise.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="getcachedlocation">
+<h3>getCachedLocation<a class="headerlink" href="#getcachedlocation" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="fi.lbd.mobile.location.LocationHandler.getCachedLocation()">
+public <a class="reference internal" href="ImmutablePointLocation.html#fi.lbd.mobile.location.ImmutablePointLocation" title="fi.lbd.mobile.location.ImmutablePointLocation">ImmutablePointLocation</a> <tt class="descname">getCachedLocation</tt><big>(</big><big>)</big><a class="headerlink" href="#fi.lbd.mobile.location.LocationHandler.getCachedLocation()" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="getlastlocation">
+<h3>getLastLocation<a class="headerlink" href="#getlastlocation" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="fi.lbd.mobile.location.LocationHandler.getLastLocation()">
+public <a class="reference internal" href="ImmutablePointLocation.html#fi.lbd.mobile.location.ImmutablePointLocation" title="fi.lbd.mobile.location.ImmutablePointLocation">ImmutablePointLocation</a> <tt class="descname">getLastLocation</tt><big>(</big><big>)</big><a class="headerlink" href="#fi.lbd.mobile.location.LocationHandler.getLastLocation()" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the users current location or null if the location can&#8217;t be resolved.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="getlocationclient">
+<h3>getLocationClient<a class="headerlink" href="#getlocationclient" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="fi.lbd.mobile.location.LocationHandler.getLocationClient()">
+public LocationClient <tt class="descname">getLocationClient</tt><big>(</big><big>)</big><a class="headerlink" href="#fi.lbd.mobile.location.LocationHandler.getLocationClient()" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="onconnected">
+<h3>onConnected<a class="headerlink" href="#onconnected" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="fi.lbd.mobile.location.LocationHandler.onConnected(Bundle)">
+public void <tt class="descname">onConnected</tt><big>(</big>Bundle<em> bundle</em><big>)</big><a class="headerlink" href="#fi.lbd.mobile.location.LocationHandler.onConnected(Bundle)" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="onconnectionfailed">
+<h3>onConnectionFailed<a class="headerlink" href="#onconnectionfailed" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="fi.lbd.mobile.location.LocationHandler.onConnectionFailed(ConnectionResult)">
+public void <tt class="descname">onConnectionFailed</tt><big>(</big>ConnectionResult<em> connectionResult</em><big>)</big><a class="headerlink" href="#fi.lbd.mobile.location.LocationHandler.onConnectionFailed(ConnectionResult)" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="ondisconnected">
+<h3>onDisconnected<a class="headerlink" href="#ondisconnected" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="fi.lbd.mobile.location.LocationHandler.onDisconnected()">
+public void <tt class="descname">onDisconnected</tt><big>(</big><big>)</big><a class="headerlink" href="#fi.lbd.mobile.location.LocationHandler.onDisconnected()" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="removelistener">
+<h3>removeListener<a class="headerlink" href="#removelistener" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="fi.lbd.mobile.location.LocationHandler.removeListener(GooglePlayServicesClient.ConnectionCallbacks)">
+public void <tt class="descname">removeListener</tt><big>(</big>GooglePlayServicesClient.ConnectionCallbacks<em> listener</em><big>)</big><a class="headerlink" href="#fi.lbd.mobile.location.LocationHandler.removeListener(GooglePlayServicesClient.ConnectionCallbacks)" title="Permalink to this definition">¶</a></dt>
+<dd><p>Removes a listener which listens for connection changes in the location client.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>listener</strong> &#8211; </li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="start">
+<h3>start<a class="headerlink" href="#start" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="fi.lbd.mobile.location.LocationHandler.start()">
+public void <tt class="descname">start</tt><big>(</big><big>)</big><a class="headerlink" href="#fi.lbd.mobile.location.LocationHandler.start()" title="Permalink to this definition">¶</a></dt>
+<dd><p>Starts the location client.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="stop">
+<h3>stop<a class="headerlink" href="#stop" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="fi.lbd.mobile.location.LocationHandler.stop()">
+public void <tt class="descname">stop</tt><big>(</big><big>)</big><a class="headerlink" href="#fi.lbd.mobile.location.LocationHandler.stop()" title="Permalink to this definition">¶</a></dt>
+<dd><p>Stops the location client.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="updatecachedlocation">
+<h3>updateCachedLocation<a class="headerlink" href="#updatecachedlocation" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="fi.lbd.mobile.location.LocationHandler.updateCachedLocation()">
+public void <tt class="descname">updateCachedLocation</tt><big>(</big><big>)</big><a class="headerlink" href="#fi.lbd.mobile.location.LocationHandler.updateCachedLocation()" title="Permalink to this definition">¶</a></dt>
+<dd><p>Updates the cached user location.</p>
+</dd></dl>
+
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../../../packages.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">LocationHandler</a><ul>
+<li><a class="reference internal" href="#constructors">Constructors</a><ul>
+<li><a class="reference internal" href="#id1">LocationHandler</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#methods">Methods</a><ul>
+<li><a class="reference internal" href="#addlistener">addListener</a></li>
+<li><a class="reference internal" href="#checkplayservices">checkPlayServices</a></li>
+<li><a class="reference internal" href="#getcachedlocation">getCachedLocation</a></li>
+<li><a class="reference internal" href="#getlastlocation">getLastLocation</a></li>
+<li><a class="reference internal" href="#getlocationclient">getLocationClient</a></li>
+<li><a class="reference internal" href="#onconnected">onConnected</a></li>
+<li><a class="reference internal" href="#onconnectionfailed">onConnectionFailed</a></li>
+<li><a class="reference internal" href="#ondisconnected">onDisconnected</a></li>
+<li><a class="reference internal" href="#removelistener">removeListener</a></li>
+<li><a class="reference internal" href="#start">start</a></li>
+<li><a class="reference internal" href="#stop">stop</a></li>
+<li><a class="reference internal" href="#updatecachedlocation">updateCachedLocation</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="ImmutablePointLocation.html"
+                        title="previous chapter">ImmutablePointLocation</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="LocationUtils.html"
+                        title="next chapter">LocationUtils</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../../../../_sources/fi/lbd/mobile/location/LocationHandler.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="LocationUtils.html" title="LocationUtils"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="ImmutablePointLocation.html" title="ImmutablePointLocation"
+             >previous</a> |</li>
+        <li><a href="../../../../packages.html">LBD Mobile client Alpha documentation</a> &raquo;</li>
+          <li><a href="package-index.html" >fi.lbd.mobile.location</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2015, Tommi und Ossi.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+    </div>
+  </body>
+</html>

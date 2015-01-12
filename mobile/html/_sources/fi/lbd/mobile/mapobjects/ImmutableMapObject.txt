@@ -1,0 +1,80 @@
+.. java:import:: android.support.annotation NonNull
+
+.. java:import:: com.google.common.collect ImmutableMap
+
+.. java:import:: java.util Map
+
+.. java:import:: fi.lbd.mobile.location ImmutablePointLocation
+
+.. java:import:: fi.lbd.mobile.location PointLocation
+
+ImmutableMapObject
+==================
+
+.. java:package:: fi.lbd.mobile.mapobjects
+   :noindex:
+
+.. java:type:: public class ImmutableMapObject implements MapObject
+
+   MapObject which cannot be modified. Created by Tommi.
+
+Constructors
+------------
+ImmutableMapObject
+^^^^^^^^^^^^^^^^^^
+
+.. java:constructor:: public ImmutableMapObject(boolean minimized, String id, ImmutablePointLocation location, Map<String, String> additionalProperties, Map<String, String> metadataProperties)
+   :outertype: ImmutableMapObject
+
+   MapObject which cannot be modified.
+
+   :param minimized: Does the object contain all its information.
+   :param id: Objects id.
+   :param location: Objects location.
+   :param additionalProperties: Additional properties.
+   :param metadataProperties: Metadata properties.
+
+Methods
+-------
+equals
+^^^^^^
+
+.. java:method:: @Override public boolean equals(Object o)
+   :outertype: ImmutableMapObject
+
+getAdditionalProperties
+^^^^^^^^^^^^^^^^^^^^^^^
+
+.. java:method:: @Override public Map<String, String> getAdditionalProperties()
+   :outertype: ImmutableMapObject
+
+getId
+^^^^^
+
+.. java:method:: @Override public String getId()
+   :outertype: ImmutableMapObject
+
+getMetadataProperties
+^^^^^^^^^^^^^^^^^^^^^
+
+.. java:method:: @Override public Map<String, String> getMetadataProperties()
+   :outertype: ImmutableMapObject
+
+getPointLocation
+^^^^^^^^^^^^^^^^
+
+.. java:method:: @Override public PointLocation getPointLocation()
+   :outertype: ImmutableMapObject
+
+hashCode
+^^^^^^^^
+
+.. java:method:: @Override public int hashCode()
+   :outertype: ImmutableMapObject
+
+isMinimized
+^^^^^^^^^^^
+
+.. java:method:: @Override public boolean isMinimized()
+   :outertype: ImmutableMapObject
+

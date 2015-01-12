@@ -1,0 +1,203 @@
+R.attr
+======
+
+.. java:package:: com.google.android.gms
+   :noindex:
+
+.. java:type:: public static final class attr
+   :outertype: R
+
+Fields
+------
+adSize
+^^^^^^
+
+.. java:field:: public static final int adSize
+   :outertype: R.attr
+
+adSizes
+^^^^^^^
+
+.. java:field:: public static final int adSizes
+   :outertype: R.attr
+
+adUnitId
+^^^^^^^^
+
+.. java:field:: public static final int adUnitId
+   :outertype: R.attr
+
+appTheme
+^^^^^^^^
+
+.. java:field:: public static final int appTheme
+   :outertype: R.attr
+
+buyButtonAppearance
+^^^^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int buyButtonAppearance
+   :outertype: R.attr
+
+buyButtonHeight
+^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int buyButtonHeight
+   :outertype: R.attr
+
+buyButtonText
+^^^^^^^^^^^^^
+
+.. java:field:: public static final int buyButtonText
+   :outertype: R.attr
+
+buyButtonWidth
+^^^^^^^^^^^^^^
+
+.. java:field:: public static final int buyButtonWidth
+   :outertype: R.attr
+
+cameraBearing
+^^^^^^^^^^^^^
+
+.. java:field:: public static final int cameraBearing
+   :outertype: R.attr
+
+cameraTargetLat
+^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int cameraTargetLat
+   :outertype: R.attr
+
+cameraTargetLng
+^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int cameraTargetLng
+   :outertype: R.attr
+
+cameraTilt
+^^^^^^^^^^
+
+.. java:field:: public static final int cameraTilt
+   :outertype: R.attr
+
+cameraZoom
+^^^^^^^^^^
+
+.. java:field:: public static final int cameraZoom
+   :outertype: R.attr
+
+environment
+^^^^^^^^^^^
+
+.. java:field:: public static final int environment
+   :outertype: R.attr
+
+fragmentMode
+^^^^^^^^^^^^
+
+.. java:field:: public static final int fragmentMode
+   :outertype: R.attr
+
+fragmentStyle
+^^^^^^^^^^^^^
+
+.. java:field:: public static final int fragmentStyle
+   :outertype: R.attr
+
+mapType
+^^^^^^^
+
+.. java:field:: public static final int mapType
+   :outertype: R.attr
+
+maskedWalletDetailsBackground
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int maskedWalletDetailsBackground
+   :outertype: R.attr
+
+maskedWalletDetailsButtonBackground
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int maskedWalletDetailsButtonBackground
+   :outertype: R.attr
+
+maskedWalletDetailsButtonTextAppearance
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int maskedWalletDetailsButtonTextAppearance
+   :outertype: R.attr
+
+maskedWalletDetailsHeaderTextAppearance
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int maskedWalletDetailsHeaderTextAppearance
+   :outertype: R.attr
+
+maskedWalletDetailsLogoImageType
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int maskedWalletDetailsLogoImageType
+   :outertype: R.attr
+
+maskedWalletDetailsLogoTextColor
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int maskedWalletDetailsLogoTextColor
+   :outertype: R.attr
+
+maskedWalletDetailsTextAppearance
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int maskedWalletDetailsTextAppearance
+   :outertype: R.attr
+
+uiCompass
+^^^^^^^^^
+
+.. java:field:: public static final int uiCompass
+   :outertype: R.attr
+
+uiRotateGestures
+^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int uiRotateGestures
+   :outertype: R.attr
+
+uiScrollGestures
+^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int uiScrollGestures
+   :outertype: R.attr
+
+uiTiltGestures
+^^^^^^^^^^^^^^
+
+.. java:field:: public static final int uiTiltGestures
+   :outertype: R.attr
+
+uiZoomControls
+^^^^^^^^^^^^^^
+
+.. java:field:: public static final int uiZoomControls
+   :outertype: R.attr
+
+uiZoomGestures
+^^^^^^^^^^^^^^
+
+.. java:field:: public static final int uiZoomGestures
+   :outertype: R.attr
+
+useViewLifecycle
+^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int useViewLifecycle
+   :outertype: R.attr
+
+zOrderOnTop
+^^^^^^^^^^^
+
+.. java:field:: public static final int zOrderOnTop
+   :outertype: R.attr
+

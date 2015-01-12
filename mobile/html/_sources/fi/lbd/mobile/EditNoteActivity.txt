@@ -1,0 +1,50 @@
+.. java:import:: android.app Activity
+
+.. java:import:: android.os Bundle
+
+.. java:import:: android.view Menu
+
+.. java:import:: android.view MenuItem
+
+.. java:import:: android.view View
+
+EditNoteActivity
+================
+
+.. java:package:: fi.lbd.mobile
+   :noindex:
+
+.. java:type:: public class EditNoteActivity extends Activity
+
+Methods
+-------
+onAcceptClick
+^^^^^^^^^^^^^
+
+.. java:method:: public void onAcceptClick(View view)
+   :outertype: EditNoteActivity
+
+onCancelClick
+^^^^^^^^^^^^^
+
+.. java:method:: public void onCancelClick(View view)
+   :outertype: EditNoteActivity
+
+onCreate
+^^^^^^^^
+
+.. java:method:: @Override protected void onCreate(Bundle savedInstanceState)
+   :outertype: EditNoteActivity
+
+onStart
+^^^^^^^
+
+.. java:method:: @Override public void onStart()
+   :outertype: EditNoteActivity
+
+onStop
+^^^^^^
+
+.. java:method:: @Override public void onStop()
+   :outertype: EditNoteActivity
+

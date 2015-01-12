@@ -1,0 +1,28 @@
+ProgressListener
+================
+
+.. java:package:: fi.lbd.mobile.mapobjects
+   :noindex:
+
+.. java:type:: public interface ProgressListener
+
+   Used in the MapModelController. Notifies the listeners if the controller is currently waiting for map objects from the bus. Created by Tommi.
+
+Methods
+-------
+finishLoading
+^^^^^^^^^^^^^
+
+.. java:method::  void finishLoading()
+   :outertype: ProgressListener
+
+   Invoked when the loading of the map objects ends.
+
+startLoading
+^^^^^^^^^^^^
+
+.. java:method::  void startLoading()
+   :outertype: ProgressListener
+
+   Invoked when the loading of the map objects starts.
+

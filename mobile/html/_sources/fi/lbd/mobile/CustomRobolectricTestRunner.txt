@@ -1,0 +1,34 @@
+.. java:import:: org.robolectric AndroidManifest
+
+.. java:import:: org.robolectric RobolectricTestRunner
+
+.. java:import:: org.robolectric.annotation Config
+
+.. java:import:: org.robolectric.res Fs
+
+.. java:import:: org.junit.runners.model InitializationError
+
+CustomRobolectricTestRunner
+===========================
+
+.. java:package:: fi.lbd.mobile
+   :noindex:
+
+.. java:type:: public class CustomRobolectricTestRunner extends RobolectricTestRunner
+
+Constructors
+------------
+CustomRobolectricTestRunner
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. java:constructor:: public CustomRobolectricTestRunner(Class<?> testClass) throws InitializationError
+   :outertype: CustomRobolectricTestRunner
+
+Methods
+-------
+getAppManifest
+^^^^^^^^^^^^^^
+
+.. java:method:: @Override protected AndroidManifest getAppManifest(Config config)
+   :outertype: CustomRobolectricTestRunner
+

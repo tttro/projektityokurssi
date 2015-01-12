@@ -1,0 +1,40 @@
+.. java:import:: android.util Log
+
+.. java:import:: com.fasterxml.jackson.databind JsonNode
+
+.. java:import:: com.fasterxml.jackson.databind ObjectMapper
+
+.. java:import:: org.json JSONException
+
+.. java:import:: java.io IOException
+
+.. java:import:: java.util ArrayList
+
+.. java:import:: java.util Iterator
+
+.. java:import:: java.util List
+
+.. java:import:: fi.lbd.mobile.mapobjects MapObject
+
+.. java:import:: fi.lbd.mobile.messaging.messageobjects MessageObject
+
+.. java:import:: fi.lbd.mobile.messaging.messageobjects StringMessageObject
+
+MessageParser
+=============
+
+.. java:package:: fi.lbd.mobile.backendhandler
+   :noindex:
+
+.. java:type:: public class MessageParser
+
+   Created by Tommi on 20.12.2014.
+
+Methods
+-------
+parseCollection
+^^^^^^^^^^^^^^^
+
+.. java:method:: public static List<MessageObject> parseCollection(String json) throws IOException, JSONException
+   :outertype: MessageParser
+
