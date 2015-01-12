@@ -1,0 +1,90 @@
+.. java:import:: android.util Log
+
+.. java:import:: java.util ArrayList
+
+.. java:import:: java.util List
+
+ApplicationDetails
+==================
+
+.. java:package:: fi.lbd.mobile
+   :noindex:
+
+.. java:type:: public class ApplicationDetails
+
+   Created by Tommi on 3.1.2015.
+
+Methods
+-------
+get
+^^^
+
+.. java:method:: public static ApplicationDetails get()
+   :outertype: ApplicationDetails
+
+getCurrentBaseApiUrl
+^^^^^^^^^^^^^^^^^^^^
+
+.. java:method:: public String getCurrentBaseApiUrl()
+   :outertype: ApplicationDetails
+
+getCurrentCollection
+^^^^^^^^^^^^^^^^^^^^
+
+.. java:method:: public String getCurrentCollection()
+   :outertype: ApplicationDetails
+
+getCurrentMessageApiUrl
+^^^^^^^^^^^^^^^^^^^^^^^
+
+.. java:method:: public String getCurrentMessageApiUrl()
+   :outertype: ApplicationDetails
+
+getCurrentObjectApiUrl
+^^^^^^^^^^^^^^^^^^^^^^
+
+.. java:method:: public String getCurrentObjectApiUrl()
+   :outertype: ApplicationDetails
+
+getUserId
+^^^^^^^^^
+
+.. java:method:: public String getUserId()
+   :outertype: ApplicationDetails
+
+initialize
+^^^^^^^^^^
+
+.. java:method:: public static void initialize()
+   :outertype: ApplicationDetails
+
+registerApiChangeListener
+^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. java:method:: public void registerApiChangeListener(ApplicationDetailListener listener)
+   :outertype: ApplicationDetails
+
+setCurrentBaseApiUrl
+^^^^^^^^^^^^^^^^^^^^
+
+.. java:method:: public void setCurrentBaseApiUrl(String currentBaseUrl)
+   :outertype: ApplicationDetails
+
+setCurrentCollection
+^^^^^^^^^^^^^^^^^^^^
+
+.. java:method:: public void setCurrentCollection(String currentCollection)
+   :outertype: ApplicationDetails
+
+setUserId
+^^^^^^^^^
+
+.. java:method:: public void setUserId(String userId)
+   :outertype: ApplicationDetails
+
+unregisterApiChangeListener
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. java:method:: public void unregisterApiChangeListener(ApplicationDetailListener listener)
+   :outertype: ApplicationDetails
+

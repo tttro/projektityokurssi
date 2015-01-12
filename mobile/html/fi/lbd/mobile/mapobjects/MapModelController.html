@@ -1,0 +1,377 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>MapModelController &mdash; LBD Mobile client Alpha documentation</title>
+    
+    <link rel="stylesheet" href="../../../../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../',
+        VERSION:     'Alpha',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <link rel="top" title="LBD Mobile client Alpha documentation" href="../../../../index.html" />
+    <link rel="up" title="fi.lbd.mobile.mapobjects" href="package-index.html" />
+    <link rel="next" title="MapObject" href="MapObject.html" />
+    <link rel="prev" title="ImmutableMapObject" href="ImmutableMapObject.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="MapObject.html" title="MapObject"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="ImmutableMapObject.html" title="ImmutableMapObject"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../../../../packages.html">LBD Mobile client Alpha documentation</a> &raquo;</li>
+          <li><a href="package-index.html" accesskey="U">fi.lbd.mobile.mapobjects</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="mapmodelcontroller">
+<h1>MapModelController<a class="headerlink" href="#mapmodelcontroller" title="Permalink to this headline">¶</a></h1>
+<dl class="type">
+<dt id="fi.lbd.mobile.mapobjects.MapModelController">
+public class <tt class="descname">MapModelController</tt>&lt;T&gt; implements <a class="reference internal" href="MapTableModelListener.html#fi.lbd.mobile.mapobjects.MapTableModelListener" title="fi.lbd.mobile.mapobjects.MapTableModelListener">MapTableModelListener</a>&lt;T&gt;, <a class="reference internal" href="CameraChangeListener.html#fi.lbd.mobile.mapobjects.CameraChangeListener" title="fi.lbd.mobile.mapobjects.CameraChangeListener">CameraChangeListener</a><a class="headerlink" href="#fi.lbd.mobile.mapobjects.MapModelController" title="Permalink to this definition">¶</a></dt>
+<dd><p>Class which handles the dependencies between the map objects and markers. Class also updates the model and requests new map objects if they are required. Created by Tommi.</p>
+</dd></dl>
+
+<div class="section" id="fields">
+<h2>Fields<a class="headerlink" href="#fields" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="divide-grid-lat">
+<h3>DIVIDE_GRID_LAT<a class="headerlink" href="#divide-grid-lat" title="Permalink to this headline">¶</a></h3>
+<dl class="field">
+<dt id="fi.lbd.mobile.mapobjects.MapModelController.DIVIDE_GRID_LAT">
+public static final double <tt class="descname">DIVIDE_GRID_LAT</tt><a class="headerlink" href="#fi.lbd.mobile.mapobjects.MapModelController.DIVIDE_GRID_LAT" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="divide-grid-lon">
+<h3>DIVIDE_GRID_LON<a class="headerlink" href="#divide-grid-lon" title="Permalink to this headline">¶</a></h3>
+<dl class="field">
+<dt id="fi.lbd.mobile.mapobjects.MapModelController.DIVIDE_GRID_LON">
+public static final double <tt class="descname">DIVIDE_GRID_LON</tt><a class="headerlink" href="#fi.lbd.mobile.mapobjects.MapModelController.DIVIDE_GRID_LON" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+</div>
+<div class="section" id="constructors">
+<h2>Constructors<a class="headerlink" href="#constructors" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id1">
+<h3>MapModelController<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+<dl class="constructor">
+<dt id="fi.lbd.mobile.mapobjects.MapModelController.MapModelController(MarkerProducer, int)">
+public <tt class="descname">MapModelController</tt><big>(</big><a class="reference internal" href="MarkerProducer.html#fi.lbd.mobile.mapobjects.MarkerProducer" title="fi.lbd.mobile.mapobjects.MarkerProducer">MarkerProducer</a>&lt;T&gt;<em> markerProducer</em>, int<em> hideMarkersZoom</em><big>)</big><a class="headerlink" href="#fi.lbd.mobile.mapobjects.MapModelController.MapModelController(MarkerProducer, int)" title="Permalink to this definition">¶</a></dt>
+<dd><p>Class which handles the dependencies between the map objects and markers. Class also updates the model and requests new map objects if they are required.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>markerProducer</strong> &#8211; Instance which creates the markers, removes them and performs needed actions to them. Used to decouple the map implementation from this class.</li>
+<li><strong>hideMarkersZoom</strong> &#8211; Level at which the markers should be hidden.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+</div>
+<div class="section" id="methods">
+<h2>Methods<a class="headerlink" href="#methods" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="addprogresslistener">
+<h3>addProgressListener<a class="headerlink" href="#addprogresslistener" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="fi.lbd.mobile.mapobjects.MapModelController.addProgressListener(ProgressListener)">
+public void <tt class="descname">addProgressListener</tt><big>(</big><a class="reference internal" href="ProgressListener.html#fi.lbd.mobile.mapobjects.ProgressListener" title="fi.lbd.mobile.mapobjects.ProgressListener">ProgressListener</a><em> listener</em><big>)</big><a class="headerlink" href="#fi.lbd.mobile.mapobjects.MapModelController.addProgressListener(ProgressListener)" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="camerachanged">
+<h3>cameraChanged<a class="headerlink" href="#camerachanged" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="fi.lbd.mobile.mapobjects.MapModelController.cameraChanged(double, double, double, double, double)">
+public void <tt class="descname">cameraChanged</tt><big>(</big>double<em> zoom</em>, double<em> startLat</em>, double<em> startLon</em>, double<em> endtLat</em>, double<em> endLon</em><big>)</big><a class="headerlink" href="#fi.lbd.mobile.mapobjects.MapModelController.cameraChanged(double, double, double, double, double)" title="Permalink to this definition">¶</a></dt>
+<dd><p>Updates the model if the map camera has moved. Also checks if the map is zoomed too far away and hides the map objects if needed.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>zoom</strong> &#8211; Current zoom level.</li>
+<li><strong>startLat</strong> &#8211; Start coordinate.</li>
+<li><strong>startLon</strong> &#8211; Start coordinate.</li>
+<li><strong>endtLat</strong> &#8211; End coordinate.</li>
+<li><strong>endLon</strong> &#8211; End coordinate.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="clear">
+<h3>clear<a class="headerlink" href="#clear" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="fi.lbd.mobile.mapobjects.MapModelController.clear()">
+public void <tt class="descname">clear</tt><big>(</big><big>)</big><a class="headerlink" href="#fi.lbd.mobile.mapobjects.MapModelController.clear()" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="clearactivemarker">
+<h3>clearActiveMarker<a class="headerlink" href="#clearactivemarker" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="fi.lbd.mobile.mapobjects.MapModelController.clearActiveMarker()">
+public void <tt class="descname">clearActiveMarker</tt><big>(</big><big>)</big><a class="headerlink" href="#fi.lbd.mobile.mapobjects.MapModelController.clearActiveMarker()" title="Permalink to this definition">¶</a></dt>
+<dd><p>Clears the currently selected active marker.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="findmapobject">
+<h3>findMapObject<a class="headerlink" href="#findmapobject" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="fi.lbd.mobile.mapobjects.MapModelController.findMapObject(T)">
+public <a class="reference internal" href="MapObject.html#fi.lbd.mobile.mapobjects.MapObject" title="fi.lbd.mobile.mapobjects.MapObject">MapObject</a> <tt class="descname">findMapObject</tt><big>(</big>T<em> marker</em><big>)</big><a class="headerlink" href="#fi.lbd.mobile.mapobjects.MapModelController.findMapObject(T)" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="findmarker">
+<h3>findMarker<a class="headerlink" href="#findmarker" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="fi.lbd.mobile.mapobjects.MapModelController.findMarker(MapObject)">
+public T <tt class="descname">findMarker</tt><big>(</big><a class="reference internal" href="MapObject.html#fi.lbd.mobile.mapobjects.MapObject" title="fi.lbd.mobile.mapobjects.MapObject">MapObject</a><em> object</em><big>)</big><a class="headerlink" href="#fi.lbd.mobile.mapobjects.MapModelController.findMarker(MapObject)" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="objectremoved">
+<h3>objectRemoved<a class="headerlink" href="#objectremoved" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="fi.lbd.mobile.mapobjects.MapModelController.objectRemoved(T)">
+public void <tt class="descname">objectRemoved</tt><big>(</big>T<em> obj</em><big>)</big><a class="headerlink" href="#fi.lbd.mobile.mapobjects.MapModelController.objectRemoved(T)" title="Permalink to this definition">¶</a></dt>
+<dd><p>Invoked when a map object is removed from the model.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>obj</strong> &#8211; Map object which is being removed.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="processobjects">
+<h3>processObjects<a class="headerlink" href="#processobjects" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="fi.lbd.mobile.mapobjects.MapModelController.processObjects(List, double, double)">
+public void <tt class="descname">processObjects</tt><big>(</big><a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/util/List.html" title="java.util.List">List</a>&lt;<a class="reference internal" href="MapObject.html#fi.lbd.mobile.mapobjects.MapObject" title="fi.lbd.mobile.mapobjects.MapObject">MapObject</a>&gt;<em> objects</em>, double<em> startLat</em>, double<em> startLon</em><big>)</big><a class="headerlink" href="#fi.lbd.mobile.mapobjects.MapModelController.processObjects(List, double, double)" title="Permalink to this definition">¶</a></dt>
+<dd><p>Map objects are used to create markers which are then added to the model in the correct grid cell. If the currently selected object is added to the map, change its icon and open its info window.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>objects</strong> &#8211; Map objects to add</li>
+<li><strong>startLat</strong> &#8211; Grid cell start.</li>
+<li><strong>startLon</strong> &#8211; Grid cell start.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="removeprogresslistener">
+<h3>removeProgressListener<a class="headerlink" href="#removeprogresslistener" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="fi.lbd.mobile.mapobjects.MapModelController.removeProgressListener(ProgressListener)">
+public void <tt class="descname">removeProgressListener</tt><big>(</big><a class="reference internal" href="ProgressListener.html#fi.lbd.mobile.mapobjects.ProgressListener" title="fi.lbd.mobile.mapobjects.ProgressListener">ProgressListener</a><em> listener</em><big>)</big><a class="headerlink" href="#fi.lbd.mobile.mapobjects.MapModelController.removeProgressListener(ProgressListener)" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="requestcache">
+<h3>requestCache<a class="headerlink" href="#requestcache" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="fi.lbd.mobile.mapobjects.MapModelController.requestCache(double, double, double, double)">
+public void <tt class="descname">requestCache</tt><big>(</big>double<em> latGridStart</em>, double<em> lonGridStart</em>, double<em> latGridEnd</em>, double<em> lonGridEnd</em><big>)</big><a class="headerlink" href="#fi.lbd.mobile.mapobjects.MapModelController.requestCache(double, double, double, double)" title="Permalink to this definition">¶</a></dt>
+<dd><p>Model invokes this method if with the information about the grid which will most likely be loaded next.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>latGridStart</strong> &#8211; Grid cell start coordinate.</li>
+<li><strong>lonGridStart</strong> &#8211; Grid cell start coordinate.</li>
+<li><strong>latGridEnd</strong> &#8211; Grid cell end coordinate.</li>
+<li><strong>lonGridEnd</strong> &#8211; Grid cell end coordinate.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="requestobjects">
+<h3>requestObjects<a class="headerlink" href="#requestobjects" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="fi.lbd.mobile.mapobjects.MapModelController.requestObjects(double, double, double, double)">
+public void <tt class="descname">requestObjects</tt><big>(</big>double<em> latGridStart</em>, double<em> lonGridStart</em>, double<em> latGridEnd</em>, double<em> lonGridEnd</em><big>)</big><a class="headerlink" href="#fi.lbd.mobile.mapobjects.MapModelController.requestObjects(double, double, double, double)" title="Permalink to this definition">¶</a></dt>
+<dd><p>Model invokes this method for cells that needs to be loaded and added to the model. This method only sends an event to the background service which then responds with the objects. Respond is handled in another method and the returned objects are added to the model.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>latGridStart</strong> &#8211; Grid cell start coordinate.</li>
+<li><strong>lonGridStart</strong> &#8211; Grid cell start coordinate.</li>
+<li><strong>latGridEnd</strong> &#8211; Grid cell end coordinate.</li>
+<li><strong>lonGridEnd</strong> &#8211; Grid cell end coordinate.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="setactivemarker">
+<h3>setActiveMarker<a class="headerlink" href="#setactivemarker" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="fi.lbd.mobile.mapobjects.MapModelController.setActiveMarker(T)">
+public void <tt class="descname">setActiveMarker</tt><big>(</big>T<em> marker</em><big>)</big><a class="headerlink" href="#fi.lbd.mobile.mapobjects.MapModelController.setActiveMarker(T)" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets a current active marker.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>marker</strong> &#8211; Marker which will be set as active.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../../../packages.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">MapModelController</a><ul>
+<li><a class="reference internal" href="#fields">Fields</a><ul>
+<li><a class="reference internal" href="#divide-grid-lat">DIVIDE_GRID_LAT</a></li>
+<li><a class="reference internal" href="#divide-grid-lon">DIVIDE_GRID_LON</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#constructors">Constructors</a><ul>
+<li><a class="reference internal" href="#id1">MapModelController</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#methods">Methods</a><ul>
+<li><a class="reference internal" href="#addprogresslistener">addProgressListener</a></li>
+<li><a class="reference internal" href="#camerachanged">cameraChanged</a></li>
+<li><a class="reference internal" href="#clear">clear</a></li>
+<li><a class="reference internal" href="#clearactivemarker">clearActiveMarker</a></li>
+<li><a class="reference internal" href="#findmapobject">findMapObject</a></li>
+<li><a class="reference internal" href="#findmarker">findMarker</a></li>
+<li><a class="reference internal" href="#objectremoved">objectRemoved</a></li>
+<li><a class="reference internal" href="#processobjects">processObjects</a></li>
+<li><a class="reference internal" href="#removeprogresslistener">removeProgressListener</a></li>
+<li><a class="reference internal" href="#requestcache">requestCache</a></li>
+<li><a class="reference internal" href="#requestobjects">requestObjects</a></li>
+<li><a class="reference internal" href="#setactivemarker">setActiveMarker</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="ImmutableMapObject.html"
+                        title="previous chapter">ImmutableMapObject</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="MapObject.html"
+                        title="next chapter">MapObject</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../../../../_sources/fi/lbd/mobile/mapobjects/MapModelController.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="MapObject.html" title="MapObject"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="ImmutableMapObject.html" title="ImmutableMapObject"
+             >previous</a> |</li>
+        <li><a href="../../../../packages.html">LBD Mobile client Alpha documentation</a> &raquo;</li>
+          <li><a href="package-index.html" >fi.lbd.mobile.mapobjects</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2015, Tommi und Ossi.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+    </div>
+  </body>
+</html>

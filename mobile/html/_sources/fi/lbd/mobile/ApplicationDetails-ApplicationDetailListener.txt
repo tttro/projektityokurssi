@@ -1,0 +1,29 @@
+.. java:import:: android.util Log
+
+.. java:import:: java.util ArrayList
+
+.. java:import:: java.util List
+
+ApplicationDetails.ApplicationDetailListener
+============================================
+
+.. java:package:: fi.lbd.mobile
+   :noindex:
+
+.. java:type:: public static interface ApplicationDetailListener
+   :outertype: ApplicationDetails
+
+Methods
+-------
+notifyApiUrlChange
+^^^^^^^^^^^^^^^^^^
+
+.. java:method:: public void notifyApiUrlChange(String newBaseUrl, String newMessageApiUrl, String newObjectApiUrl)
+   :outertype: ApplicationDetails.ApplicationDetailListener
+
+notifyCollectionChange
+^^^^^^^^^^^^^^^^^^^^^^
+
+.. java:method:: public void notifyCollectionChange(String newCollection)
+   :outertype: ApplicationDetails.ApplicationDetailListener
+

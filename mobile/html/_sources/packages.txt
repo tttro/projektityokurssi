@@ -1,0 +1,24 @@
+Javadoc
+=======
+
+.. toctree::
+   :maxdepth: 2
+
+   com/google/android/gms/package-index
+   fi/lbd/mobile/package-index
+   fi/lbd/mobile/adapters/package-index
+   fi/lbd/mobile/adapters/test/package-index
+   fi/lbd/mobile/backendhandler/package-index
+   fi/lbd/mobile/backendhandler/test/package-index
+   fi/lbd/mobile/events/package-index
+   fi/lbd/mobile/fragments/package-index
+   fi/lbd/mobile/location/package-index
+   fi/lbd/mobile/mapobject/test/package-index
+   fi/lbd/mobile/mapobjects/package-index
+   fi/lbd/mobile/mapobjects/events/package-index
+   fi/lbd/mobile/messaging/package-index
+   fi/lbd/mobile/messaging/events/package-index
+   fi/lbd/mobile/messaging/messageobjects/package-index
+   fi/lbd/mobile/test/package-index
+   fi/lbd/mobile/utils/package-index
+

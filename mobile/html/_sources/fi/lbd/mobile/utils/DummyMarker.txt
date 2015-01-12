@@ -1,0 +1,60 @@
+.. java:import:: java.util EnumMap
+
+.. java:import:: fi.lbd.mobile.mapobjects MarkerProducer
+
+DummyMarker
+===========
+
+.. java:package:: fi.lbd.mobile.utils
+   :noindex:
+
+.. java:type:: public class DummyMarker
+
+   Created by Tommi.
+
+Constructors
+------------
+DummyMarker
+^^^^^^^^^^^
+
+.. java:constructor:: public DummyMarker(String id, double latitude, double longitude)
+   :outertype: DummyMarker
+
+Methods
+-------
+getEvent
+^^^^^^^^
+
+.. java:method:: public boolean getEvent(MarkerProducer.Event evt)
+   :outertype: DummyMarker
+
+getId
+^^^^^
+
+.. java:method:: public String getId()
+   :outertype: DummyMarker
+
+getLatitude
+^^^^^^^^^^^
+
+.. java:method:: public double getLatitude()
+   :outertype: DummyMarker
+
+getLongitude
+^^^^^^^^^^^^
+
+.. java:method:: public double getLongitude()
+   :outertype: DummyMarker
+
+resetEvents
+^^^^^^^^^^^
+
+.. java:method:: public void resetEvents()
+   :outertype: DummyMarker
+
+setEvent
+^^^^^^^^
+
+.. java:method:: public void setEvent(MarkerProducer.Event evt)
+   :outertype: DummyMarker
+

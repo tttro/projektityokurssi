@@ -1,0 +1,425 @@
+R.id
+====
+
+.. java:package:: fi.lbd.mobile
+   :noindex:
+
+.. java:type:: public static final class id
+   :outertype: R
+
+Fields
+------
+acceptButton
+^^^^^^^^^^^^
+
+.. java:field:: public static final int acceptButton
+   :outertype: R.id
+
+action_settings
+^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int action_settings
+   :outertype: R.id
+
+backendUrlText
+^^^^^^^^^^^^^^
+
+.. java:field:: public static final int backendUrlText
+   :outertype: R.id
+
+book_now
+^^^^^^^^
+
+.. java:field:: public static final int book_now
+   :outertype: R.id
+
+buyButton
+^^^^^^^^^
+
+.. java:field:: public static final int buyButton
+   :outertype: R.id
+
+buy_now
+^^^^^^^
+
+.. java:field:: public static final int buy_now
+   :outertype: R.id
+
+buy_with_google
+^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int buy_with_google
+   :outertype: R.id
+
+cancelButton
+^^^^^^^^^^^^
+
+.. java:field:: public static final int cancelButton
+   :outertype: R.id
+
+classic
+^^^^^^^
+
+.. java:field:: public static final int classic
+   :outertype: R.id
+
+collectionText
+^^^^^^^^^^^^^^
+
+.. java:field:: public static final int collectionText
+   :outertype: R.id
+
+copyButton
+^^^^^^^^^^
+
+.. java:field:: public static final int copyButton
+   :outertype: R.id
+
+deleteButton
+^^^^^^^^^^^^
+
+.. java:field:: public static final int deleteButton
+   :outertype: R.id
+
+detailsButton
+^^^^^^^^^^^^^
+
+.. java:field:: public static final int detailsButton
+   :outertype: R.id
+
+distance
+^^^^^^^^
+
+.. java:field:: public static final int distance
+   :outertype: R.id
+
+dummyView
+^^^^^^^^^
+
+.. java:field:: public static final int dummyView
+   :outertype: R.id
+
+editNoteButton
+^^^^^^^^^^^^^^
+
+.. java:field:: public static final int editNoteButton
+   :outertype: R.id
+
+emptyRadioButton
+^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int emptyRadioButton
+   :outertype: R.id
+
+grayscale
+^^^^^^^^^
+
+.. java:field:: public static final int grayscale
+   :outertype: R.id
+
+holo_dark
+^^^^^^^^^
+
+.. java:field:: public static final int holo_dark
+   :outertype: R.id
+
+holo_light
+^^^^^^^^^^
+
+.. java:field:: public static final int holo_light
+   :outertype: R.id
+
+hybrid
+^^^^^^
+
+.. java:field:: public static final int hybrid
+   :outertype: R.id
+
+imageView
+^^^^^^^^^
+
+.. java:field:: public static final int imageView
+   :outertype: R.id
+
+linearLayout
+^^^^^^^^^^^^
+
+.. java:field:: public static final int linearLayout
+   :outertype: R.id
+
+linearLayout2
+^^^^^^^^^^^^^
+
+.. java:field:: public static final int linearLayout2
+   :outertype: R.id
+
+linearLayout3
+^^^^^^^^^^^^^
+
+.. java:field:: public static final int linearLayout3
+   :outertype: R.id
+
+loadButton
+^^^^^^^^^^
+
+.. java:field:: public static final int loadButton
+   :outertype: R.id
+
+locationButton
+^^^^^^^^^^^^^^
+
+.. java:field:: public static final int locationButton
+   :outertype: R.id
+
+mapButton
+^^^^^^^^^
+
+.. java:field:: public static final int mapButton
+   :outertype: R.id
+
+mapProgressBar
+^^^^^^^^^^^^^^
+
+.. java:field:: public static final int mapProgressBar
+   :outertype: R.id
+
+mapview
+^^^^^^^
+
+.. java:field:: public static final int mapview
+   :outertype: R.id
+
+match_parent
+^^^^^^^^^^^^
+
+.. java:field:: public static final int match_parent
+   :outertype: R.id
+
+monochrome
+^^^^^^^^^^
+
+.. java:field:: public static final int monochrome
+   :outertype: R.id
+
+newMessageButton
+^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int newMessageButton
+   :outertype: R.id
+
+none
+^^^^
+
+.. java:field:: public static final int none
+   :outertype: R.id
+
+normal
+^^^^^^
+
+.. java:field:: public static final int normal
+   :outertype: R.id
+
+objectid
+^^^^^^^^
+
+.. java:field:: public static final int objectid
+   :outertype: R.id
+
+pager
+^^^^^
+
+.. java:field:: public static final int pager
+   :outertype: R.id
+
+pager_header
+^^^^^^^^^^^^
+
+.. java:field:: public static final int pager_header
+   :outertype: R.id
+
+production
+^^^^^^^^^^
+
+.. java:field:: public static final int production
+   :outertype: R.id
+
+radioGroup
+^^^^^^^^^^
+
+.. java:field:: public static final int radioGroup
+   :outertype: R.id
+
+receiverButton
+^^^^^^^^^^^^^^
+
+.. java:field:: public static final int receiverButton
+   :outertype: R.id
+
+refreshButton
+^^^^^^^^^^^^^
+
+.. java:field:: public static final int refreshButton
+   :outertype: R.id
+
+replyButton
+^^^^^^^^^^^
+
+.. java:field:: public static final int replyButton
+   :outertype: R.id
+
+sandbox
+^^^^^^^
+
+.. java:field:: public static final int sandbox
+   :outertype: R.id
+
+satellite
+^^^^^^^^^
+
+.. java:field:: public static final int satellite
+   :outertype: R.id
+
+scrollView
+^^^^^^^^^^
+
+.. java:field:: public static final int scrollView
+   :outertype: R.id
+
+searchText
+^^^^^^^^^^
+
+.. java:field:: public static final int searchText
+   :outertype: R.id
+
+selectButton
+^^^^^^^^^^^^
+
+.. java:field:: public static final int selectButton
+   :outertype: R.id
+
+selectionDetails
+^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int selectionDetails
+   :outertype: R.id
+
+sendButton
+^^^^^^^^^^
+
+.. java:field:: public static final int sendButton
+   :outertype: R.id
+
+strict_sandbox
+^^^^^^^^^^^^^^
+
+.. java:field:: public static final int strict_sandbox
+   :outertype: R.id
+
+terrain
+^^^^^^^
+
+.. java:field:: public static final int terrain
+   :outertype: R.id
+
+textView
+^^^^^^^^
+
+.. java:field:: public static final int textView
+   :outertype: R.id
+
+textView2
+^^^^^^^^^
+
+.. java:field:: public static final int textView2
+   :outertype: R.id
+
+textView3
+^^^^^^^^^
+
+.. java:field:: public static final int textView3
+   :outertype: R.id
+
+textView4
+^^^^^^^^^
+
+.. java:field:: public static final int textView4
+   :outertype: R.id
+
+textView6
+^^^^^^^^^
+
+.. java:field:: public static final int textView6
+   :outertype: R.id
+
+textViewDistance
+^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int textViewDistance
+   :outertype: R.id
+
+textViewMessage
+^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int textViewMessage
+   :outertype: R.id
+
+textViewMessageContents
+^^^^^^^^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int textViewMessageContents
+   :outertype: R.id
+
+textViewObjectId
+^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int textViewObjectId
+   :outertype: R.id
+
+textViewObjectLocation
+^^^^^^^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int textViewObjectLocation
+   :outertype: R.id
+
+textViewReceiver
+^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int textViewReceiver
+   :outertype: R.id
+
+textViewSender
+^^^^^^^^^^^^^^
+
+.. java:field:: public static final int textViewSender
+   :outertype: R.id
+
+textViewTitle
+^^^^^^^^^^^^^
+
+.. java:field:: public static final int textViewTitle
+   :outertype: R.id
+
+textViewTopic
+^^^^^^^^^^^^^
+
+.. java:field:: public static final int textViewTopic
+   :outertype: R.id
+
+title
+^^^^^
+
+.. java:field:: public static final int title
+   :outertype: R.id
+
+view_status_text
+^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int view_status_text
+   :outertype: R.id
+
+wrap_content
+^^^^^^^^^^^^
+
+.. java:field:: public static final int wrap_content
+   :outertype: R.id
+

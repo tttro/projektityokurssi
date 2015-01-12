@@ -1,0 +1,62 @@
+.. java:import:: java.util ArrayList
+
+.. java:import:: java.util List
+
+.. java:import:: fi.lbd.mobile.mapobjects MapObject
+
+Area
+====
+
+.. java:package:: fi.lbd.mobile.utils
+   :noindex:
+
+.. java:type:: public class Area
+
+   Helper class used in tests. Created by Tommi.
+
+Constructors
+------------
+Area
+^^^^
+
+.. java:constructor:: public Area(double latGridStart, double lonGridStart, double latGridEnd, double lonGridEnd)
+   :outertype: Area
+
+Methods
+-------
+equals
+^^^^^^
+
+.. java:method:: @Override public boolean equals(Object o)
+   :outertype: Area
+
+getLatGridEnd
+^^^^^^^^^^^^^
+
+.. java:method:: public double getLatGridEnd()
+   :outertype: Area
+
+getLatGridStart
+^^^^^^^^^^^^^^^
+
+.. java:method:: public double getLatGridStart()
+   :outertype: Area
+
+getLonGridEnd
+^^^^^^^^^^^^^
+
+.. java:method:: public double getLonGridEnd()
+   :outertype: Area
+
+getLonGridStart
+^^^^^^^^^^^^^^^
+
+.. java:method:: public double getLonGridStart()
+   :outertype: Area
+
+hashCode
+^^^^^^^^
+
+.. java:method:: @Override public int hashCode()
+   :outertype: Area
+

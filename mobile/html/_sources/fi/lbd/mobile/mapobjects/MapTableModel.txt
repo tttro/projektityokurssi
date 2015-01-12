@@ -1,0 +1,106 @@
+.. java:import:: android.support.annotation NonNull
+
+.. java:import:: android.util Log
+
+.. java:import:: com.google.common.collect HashBasedTable
+
+.. java:import:: com.google.common.collect Table
+
+.. java:import:: java.util ArrayList
+
+.. java:import:: java.util Iterator
+
+.. java:import:: java.util List
+
+MapTableModel
+=============
+
+.. java:package:: fi.lbd.mobile.mapobjects
+   :noindex:
+
+.. java:type:: public class MapTableModel<T>
+
+   Model which handles the loading and removing of its objects according to a updated region. Splits the world into grid cells and informs the listeners about regions which should be loaded or cached. Created by Tommi.
+
+Constructors
+------------
+MapTableModel
+^^^^^^^^^^^^^
+
+.. java:constructor:: public MapTableModel(double precisionLat, double precisionLon)
+   :outertype: MapTableModel
+
+   Model which handles the loading and removing of its objects according to a updated region. Splits the world into grid cells and informs the listeners about regions which should be loaded or cached.
+
+   :param precisionLat: Used while dividing latitude coordinates.
+   :param precisionLon: Used while dividing longitude coordinates.
+
+Methods
+-------
+addListener
+^^^^^^^^^^^
+
+.. java:method:: public void addListener(MapTableModelListener<T> listener)
+   :outertype: MapTableModel
+
+   Adds a listener for listening model changes and requests.
+
+   :param listener: Listener.
+
+addObjects
+^^^^^^^^^^
+
+.. java:method:: public void addObjects(double gridStartLat, double gridStartLon, List<T> objects)
+   :outertype: MapTableModel
+
+   Adds objects in the given coordinate to the corresponding grid cell. Coordinate can be any coordinate inside the cell.
+
+   :param gridStartLat: Any coordinate inside the grid cell.
+   :param gridStartLon: Any coordinate inside the grid cell.
+   :param objects: Objects to add into the cell.
+
+hasGridCellsWaitingForObjects
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. java:method:: public boolean hasGridCellsWaitingForObjects()
+   :outertype: MapTableModel
+
+   Does the model contain grid cells which have requested for objects but haven't received them yet.
+
+   :return: True if there is a cell which is waiting for objects.
+
+isEmpty
+^^^^^^^
+
+.. java:method:: public boolean isEmpty(double gridStartLat, double gridStartLon)
+   :outertype: MapTableModel
+
+   Is grid cell which contains the given position empty.
+
+   :param gridStartLat: Any coordinate inside the grid cell.
+   :param gridStartLon: Any coordinate inside the grid cell.
+   :return: True if empty, false otherwise.
+
+removeListener
+^^^^^^^^^^^^^^
+
+.. java:method:: public void removeListener(MapTableModelListener<T> listener)
+   :outertype: MapTableModel
+
+   Removes a listener.
+
+   :param listener: Listener.
+
+updateTable
+^^^^^^^^^^^
+
+.. java:method:: public void updateTable(double startLat, double startLon, double endLat, double endLon)
+   :outertype: MapTableModel
+
+   Checks if the region has changed enough so that more grid cells should be loaded.
+
+   :param startLat: Current start position.
+   :param startLon: Current start position.
+   :param endLat: Current end position.
+   :param endLon: Current end position.
+

@@ -1,0 +1,58 @@
+.. java:import:: android.app Service
+
+.. java:import:: android.content Intent
+
+.. java:import:: android.os IBinder
+
+.. java:import:: android.util Log
+
+.. java:import:: java.util Timer
+
+.. java:import:: java.util TimerTask
+
+.. java:import:: fi.lbd.mobile.events BusHandler
+
+.. java:import:: fi.lbd.mobile.messaging.events RequestUserMessagesEvent
+
+MessageUpdateService
+====================
+
+.. java:package:: fi.lbd.mobile.messaging
+   :noindex:
+
+.. java:type:: public class MessageUpdateService extends Service
+
+Constructors
+------------
+MessageUpdateService
+^^^^^^^^^^^^^^^^^^^^
+
+.. java:constructor:: public MessageUpdateService()
+   :outertype: MessageUpdateService
+
+Methods
+-------
+onBind
+^^^^^^
+
+.. java:method:: @Override public IBinder onBind(Intent intent)
+   :outertype: MessageUpdateService
+
+onCreate
+^^^^^^^^
+
+.. java:method:: @Override public void onCreate()
+   :outertype: MessageUpdateService
+
+onDestroy
+^^^^^^^^^
+
+.. java:method:: @Override public void onDestroy()
+   :outertype: MessageUpdateService
+
+onStartCommand
+^^^^^^^^^^^^^^
+
+.. java:method:: @Override public int onStartCommand(Intent intent, int flags, int startId)
+   :outertype: MessageUpdateService
+

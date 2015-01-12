@@ -1,0 +1,59 @@
+R.menu
+======
+
+.. java:package:: fi.lbd.mobile
+   :noindex:
+
+.. java:type:: public static final class menu
+   :outertype: R
+
+Fields
+------
+details
+^^^^^^^
+
+.. java:field:: public static final int details
+   :outertype: R.menu
+
+edit_note
+^^^^^^^^^
+
+.. java:field:: public static final int edit_note
+   :outertype: R.menu
+
+list
+^^^^
+
+.. java:field:: public static final int list
+   :outertype: R.menu
+
+main
+^^^^
+
+.. java:field:: public static final int main
+   :outertype: R.menu
+
+read_message
+^^^^^^^^^^^^
+
+.. java:field:: public static final int read_message
+   :outertype: R.menu
+
+send_message
+^^^^^^^^^^^^
+
+.. java:field:: public static final int send_message
+   :outertype: R.menu
+
+settings
+^^^^^^^^
+
+.. java:field:: public static final int settings
+   :outertype: R.menu
+
+startup
+^^^^^^^
+
+.. java:field:: public static final int startup
+   :outertype: R.menu
+

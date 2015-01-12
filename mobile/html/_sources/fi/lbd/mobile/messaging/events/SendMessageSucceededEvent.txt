@@ -1,0 +1,28 @@
+.. java:import:: fi.lbd.mobile.events AbstractEvent
+
+SendMessageSucceededEvent
+=========================
+
+.. java:package:: fi.lbd.mobile.messaging.events
+   :noindex:
+
+.. java:type:: public class SendMessageSucceededEvent extends AbstractEvent
+
+   Created by Tommi on 3.1.2015.
+
+Constructors
+------------
+SendMessageSucceededEvent
+^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. java:constructor:: public SendMessageSucceededEvent(SendMessageEvent originalEvent)
+   :outertype: SendMessageSucceededEvent
+
+Methods
+-------
+getOriginalEvent
+^^^^^^^^^^^^^^^^
+
+.. java:method:: public SendMessageEvent getOriginalEvent()
+   :outertype: SendMessageSucceededEvent
+

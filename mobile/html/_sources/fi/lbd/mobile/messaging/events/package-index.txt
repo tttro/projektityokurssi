@@ -1,0 +1,17 @@
+fi.lbd.mobile.messaging.events
+==============================
+
+.. java:package:: fi.lbd.mobile.messaging.events
+
+.. toctree::
+   :maxdepth: 1
+
+   DeleteMessageEvent
+   DeleteMessageFromListEvent
+   DeleteMessageSucceededEvent
+   RequestUserMessagesEvent
+   ReturnUserMessagesEvent
+   SelectReceiverEvent
+   SendMessageEvent
+   SendMessageSucceededEvent
+

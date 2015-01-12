@@ -1,0 +1,36 @@
+.. java:import:: android.support.annotation Nullable
+
+.. java:import:: java.util List
+
+.. java:import:: fi.lbd.mobile.events AbstractEvent
+
+.. java:import:: fi.lbd.mobile.location ImmutablePointLocation
+
+.. java:import:: fi.lbd.mobile.mapobjects MapObject
+
+ReturnSearchResultEvent
+=======================
+
+.. java:package:: fi.lbd.mobile.mapobjects.events
+   :noindex:
+
+.. java:type:: public class ReturnSearchResultEvent extends AbstractEvent
+
+   Event for OTTO-bus. Returns a set of map objects as a result from a request. Created by Tommi.
+
+Constructors
+------------
+ReturnSearchResultEvent
+^^^^^^^^^^^^^^^^^^^^^^^
+
+.. java:constructor:: public ReturnSearchResultEvent(List<MapObject> mapObjects)
+   :outertype: ReturnSearchResultEvent
+
+Methods
+-------
+getMapObjects
+^^^^^^^^^^^^^
+
+.. java:method:: public List<MapObject> getMapObjects()
+   :outertype: ReturnSearchResultEvent
+

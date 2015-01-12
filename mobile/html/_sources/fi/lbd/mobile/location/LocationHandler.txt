@@ -1,0 +1,134 @@
+.. java:import:: android.app Activity
+
+.. java:import:: android.content IntentSender
+
+.. java:import:: android.location Location
+
+.. java:import:: android.os Bundle
+
+.. java:import:: android.util Log
+
+.. java:import:: com.google.android.gms.common ConnectionResult
+
+.. java:import:: com.google.android.gms.common GooglePlayServicesClient
+
+.. java:import:: com.google.android.gms.common GooglePlayServicesUtil
+
+.. java:import:: com.google.android.gms.location LocationClient
+
+LocationHandler
+===============
+
+.. java:package:: fi.lbd.mobile.location
+   :noindex:
+
+.. java:type:: public class LocationHandler implements GooglePlayServicesClient.ConnectionCallbacks, GooglePlayServicesClient.OnConnectionFailedListener
+
+   Class which handles getting the users current location. Checking if the google play services are available and displays error dialog if they are missing. Created by Tommi.
+
+Constructors
+------------
+LocationHandler
+^^^^^^^^^^^^^^^
+
+.. java:constructor:: public LocationHandler(Activity activity)
+   :outertype: LocationHandler
+
+   Checks if the google play services are available and if they are creates a location client.
+
+   :param activity:
+
+Methods
+-------
+addListener
+^^^^^^^^^^^
+
+.. java:method:: public void addListener(GooglePlayServicesClient.ConnectionCallbacks listener)
+   :outertype: LocationHandler
+
+   Registers a listener which listens for connection changes in the location client.
+
+   :param listener:
+
+checkPlayServices
+^^^^^^^^^^^^^^^^^
+
+.. java:method:: protected boolean checkPlayServices()
+   :outertype: LocationHandler
+
+   Checks if the google play services are available and if not, presents an error dialog.
+
+   :return: True if services are available. False otherwise.
+
+getCachedLocation
+^^^^^^^^^^^^^^^^^
+
+.. java:method:: public ImmutablePointLocation getCachedLocation()
+   :outertype: LocationHandler
+
+getLastLocation
+^^^^^^^^^^^^^^^
+
+.. java:method:: public ImmutablePointLocation getLastLocation()
+   :outertype: LocationHandler
+
+   Gets the users current location or null if the location can't be resolved.
+
+getLocationClient
+^^^^^^^^^^^^^^^^^
+
+.. java:method:: public LocationClient getLocationClient()
+   :outertype: LocationHandler
+
+onConnected
+^^^^^^^^^^^
+
+.. java:method:: @Override public void onConnected(Bundle bundle)
+   :outertype: LocationHandler
+
+onConnectionFailed
+^^^^^^^^^^^^^^^^^^
+
+.. java:method:: @Override public void onConnectionFailed(ConnectionResult connectionResult)
+   :outertype: LocationHandler
+
+onDisconnected
+^^^^^^^^^^^^^^
+
+.. java:method:: @Override public void onDisconnected()
+   :outertype: LocationHandler
+
+removeListener
+^^^^^^^^^^^^^^
+
+.. java:method:: public void removeListener(GooglePlayServicesClient.ConnectionCallbacks listener)
+   :outertype: LocationHandler
+
+   Removes a listener which listens for connection changes in the location client.
+
+   :param listener:
+
+start
+^^^^^
+
+.. java:method:: public void start()
+   :outertype: LocationHandler
+
+   Starts the location client.
+
+stop
+^^^^
+
+.. java:method:: public void stop()
+   :outertype: LocationHandler
+
+   Stops the location client.
+
+updateCachedLocation
+^^^^^^^^^^^^^^^^^^^^
+
+.. java:method:: public void updateCachedLocation()
+   :outertype: LocationHandler
+
+   Updates the cached user location.
+

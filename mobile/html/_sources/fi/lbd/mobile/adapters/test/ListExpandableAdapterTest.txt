@@ -1,0 +1,148 @@
+.. java:import:: android.app Activity
+
+.. java:import:: android.view LayoutInflater
+
+.. java:import:: android.view ViewGroup
+
+.. java:import:: android.widget LinearLayout
+
+.. java:import:: android.widget ListView
+
+.. java:import:: android.widget TextView
+
+.. java:import:: org.junit Before
+
+.. java:import:: org.junit Test
+
+.. java:import:: org.junit.runner RunWith
+
+.. java:import:: org.mockito Mock
+
+.. java:import:: org.mockito Mockito
+
+.. java:import:: org.mockito MockitoAnnotations
+
+.. java:import:: org.robolectric Robolectric
+
+.. java:import:: org.robolectric.shadows ShadowLog
+
+.. java:import:: java.util ArrayList
+
+.. java:import:: java.util HashMap
+
+.. java:import:: java.util Map
+
+.. java:import:: fi.lbd.mobile CustomRobolectricTestRunner
+
+.. java:import:: fi.lbd.mobile ListActivity
+
+.. java:import:: fi.lbd.mobile R
+
+.. java:import:: fi.lbd.mobile.adapters ListExpandableAdapter
+
+.. java:import:: fi.lbd.mobile.location ImmutablePointLocation
+
+.. java:import:: fi.lbd.mobile.location LocationHandler
+
+.. java:import:: fi.lbd.mobile.mapobjects ImmutableMapObject
+
+.. java:import:: fi.lbd.mobile.mapobjects MapObject
+
+ListExpandableAdapterTest
+=========================
+
+.. java:package:: fi.lbd.mobile.adapters.test
+   :noindex:
+
+.. java:type:: @RunWith public class ListExpandableAdapterTest
+
+   Created by Ossi.
+
+Fields
+------
+adapter
+^^^^^^^
+
+.. java:field::  ListExpandableAdapter adapter
+   :outertype: ListExpandableAdapterTest
+
+list
+^^^^
+
+.. java:field::  ArrayList<MapObject> list
+   :outertype: ListExpandableAdapterTest
+
+location1
+^^^^^^^^^
+
+.. java:field:: @Mock  ImmutablePointLocation location1
+   :outertype: ListExpandableAdapterTest
+
+location2
+^^^^^^^^^
+
+.. java:field:: @Mock  ImmutablePointLocation location2
+   :outertype: ListExpandableAdapterTest
+
+mapObjectTest1
+^^^^^^^^^^^^^^
+
+.. java:field::  MapObject mapObjectTest1
+   :outertype: ListExpandableAdapterTest
+
+mapObjectTest2
+^^^^^^^^^^^^^^
+
+.. java:field::  MapObject mapObjectTest2
+   :outertype: ListExpandableAdapterTest
+
+metadataTest1
+^^^^^^^^^^^^^
+
+.. java:field::  Map<String, String> metadataTest1
+   :outertype: ListExpandableAdapterTest
+
+metadataTest2
+^^^^^^^^^^^^^
+
+.. java:field::  Map<String, String> metadataTest2
+   :outertype: ListExpandableAdapterTest
+
+mockActivity
+^^^^^^^^^^^^
+
+.. java:field:: @Mock  ListActivity mockActivity
+   :outertype: ListExpandableAdapterTest
+
+propertiesTest1
+^^^^^^^^^^^^^^^
+
+.. java:field::  Map<String, String> propertiesTest1
+   :outertype: ListExpandableAdapterTest
+
+propertiesTest2
+^^^^^^^^^^^^^^^
+
+.. java:field::  Map<String, String> propertiesTest2
+   :outertype: ListExpandableAdapterTest
+
+Methods
+-------
+setUp
+^^^^^
+
+.. java:method:: @Before public void setUp() throws Exception
+   :outertype: ListExpandableAdapterTest
+
+testAddAll
+^^^^^^^^^^
+
+.. java:method:: @Test public void testAddAll()
+   :outertype: ListExpandableAdapterTest
+
+testGetGroupView
+^^^^^^^^^^^^^^^^
+
+.. java:method:: @Test public void testGetGroupView()
+   :outertype: ListExpandableAdapterTest
+

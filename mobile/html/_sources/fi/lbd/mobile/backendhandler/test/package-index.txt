@@ -1,0 +1,12 @@
+fi.lbd.mobile.backendhandler.test
+=================================
+
+.. java:package:: fi.lbd.mobile.backendhandler.test
+
+.. toctree::
+   :maxdepth: 1
+
+   BackendHandlerServiceTest
+   BackendHandlerTest
+   CachingBackendHandlerTest
+

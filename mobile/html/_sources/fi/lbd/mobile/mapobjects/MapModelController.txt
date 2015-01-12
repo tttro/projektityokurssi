@@ -1,0 +1,171 @@
+.. java:import:: android.support.annotation NonNull
+
+.. java:import:: android.util Log
+
+.. java:import:: com.google.common.collect BiMap
+
+.. java:import:: com.google.common.collect HashBiMap
+
+.. java:import:: java.util ArrayList
+
+.. java:import:: java.util Iterator
+
+.. java:import:: java.util List
+
+.. java:import:: fi.lbd.mobile.events BusHandler
+
+.. java:import:: fi.lbd.mobile.mapobjects.events CacheObjectsInAreaEvent
+
+.. java:import:: fi.lbd.mobile.mapobjects.events RequestObjectsInAreaEvent
+
+.. java:import:: fi.lbd.mobile.location ImmutablePointLocation
+
+MapModelController
+==================
+
+.. java:package:: fi.lbd.mobile.mapobjects
+   :noindex:
+
+.. java:type:: public class MapModelController<T> implements MapTableModelListener<T>, CameraChangeListener
+
+   Class which handles the dependencies between the map objects and markers. Class also updates the model and requests new map objects if they are required. Created by Tommi.
+
+Fields
+------
+DIVIDE_GRID_LAT
+^^^^^^^^^^^^^^^
+
+.. java:field:: public static final double DIVIDE_GRID_LAT
+   :outertype: MapModelController
+
+DIVIDE_GRID_LON
+^^^^^^^^^^^^^^^
+
+.. java:field:: public static final double DIVIDE_GRID_LON
+   :outertype: MapModelController
+
+Constructors
+------------
+MapModelController
+^^^^^^^^^^^^^^^^^^
+
+.. java:constructor:: public MapModelController(MarkerProducer<T> markerProducer, int hideMarkersZoom)
+   :outertype: MapModelController
+
+   Class which handles the dependencies between the map objects and markers. Class also updates the model and requests new map objects if they are required.
+
+   :param markerProducer: Instance which creates the markers, removes them and performs needed actions to them. Used to decouple the map implementation from this class.
+   :param hideMarkersZoom: Level at which the markers should be hidden.
+
+Methods
+-------
+addProgressListener
+^^^^^^^^^^^^^^^^^^^
+
+.. java:method:: public void addProgressListener(ProgressListener listener)
+   :outertype: MapModelController
+
+cameraChanged
+^^^^^^^^^^^^^
+
+.. java:method:: @Override public void cameraChanged(double zoom, double startLat, double startLon, double endtLat, double endLon)
+   :outertype: MapModelController
+
+   Updates the model if the map camera has moved. Also checks if the map is zoomed too far away and hides the map objects if needed.
+
+   :param zoom: Current zoom level.
+   :param startLat: Start coordinate.
+   :param startLon: Start coordinate.
+   :param endtLat: End coordinate.
+   :param endLon: End coordinate.
+
+clear
+^^^^^
+
+.. java:method:: public void clear()
+   :outertype: MapModelController
+
+clearActiveMarker
+^^^^^^^^^^^^^^^^^
+
+.. java:method:: public void clearActiveMarker()
+   :outertype: MapModelController
+
+   Clears the currently selected active marker.
+
+findMapObject
+^^^^^^^^^^^^^
+
+.. java:method:: public MapObject findMapObject(T marker)
+   :outertype: MapModelController
+
+findMarker
+^^^^^^^^^^
+
+.. java:method:: public T findMarker(MapObject object)
+   :outertype: MapModelController
+
+objectRemoved
+^^^^^^^^^^^^^
+
+.. java:method:: @Override public void objectRemoved(T obj)
+   :outertype: MapModelController
+
+   Invoked when a map object is removed from the model.
+
+   :param obj: Map object which is being removed.
+
+processObjects
+^^^^^^^^^^^^^^
+
+.. java:method:: public void processObjects(List<MapObject> objects, double startLat, double startLon)
+   :outertype: MapModelController
+
+   Map objects are used to create markers which are then added to the model in the correct grid cell. If the currently selected object is added to the map, change its icon and open its info window.
+
+   :param objects: Map objects to add
+   :param startLat: Grid cell start.
+   :param startLon: Grid cell start.
+
+removeProgressListener
+^^^^^^^^^^^^^^^^^^^^^^
+
+.. java:method:: public void removeProgressListener(ProgressListener listener)
+   :outertype: MapModelController
+
+requestCache
+^^^^^^^^^^^^
+
+.. java:method:: @Override public void requestCache(double latGridStart, double lonGridStart, double latGridEnd, double lonGridEnd)
+   :outertype: MapModelController
+
+   Model invokes this method if with the information about the grid which will most likely be loaded next.
+
+   :param latGridStart: Grid cell start coordinate.
+   :param lonGridStart: Grid cell start coordinate.
+   :param latGridEnd: Grid cell end coordinate.
+   :param lonGridEnd: Grid cell end coordinate.
+
+requestObjects
+^^^^^^^^^^^^^^
+
+.. java:method:: @Override public void requestObjects(double latGridStart, double lonGridStart, double latGridEnd, double lonGridEnd)
+   :outertype: MapModelController
+
+   Model invokes this method for cells that needs to be loaded and added to the model. This method only sends an event to the background service which then responds with the objects. Respond is handled in another method and the returned objects are added to the model.
+
+   :param latGridStart: Grid cell start coordinate.
+   :param lonGridStart: Grid cell start coordinate.
+   :param latGridEnd: Grid cell end coordinate.
+   :param lonGridEnd: Grid cell end coordinate.
+
+setActiveMarker
+^^^^^^^^^^^^^^^
+
+.. java:method:: public void setActiveMarker(T marker)
+   :outertype: MapModelController
+
+   Sets a current active marker.
+
+   :param marker: Marker which will be set as active.
+

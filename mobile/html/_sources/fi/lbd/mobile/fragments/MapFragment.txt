@@ -1,0 +1,16 @@
+.. java:import:: android.app Fragment
+
+.. java:import:: java.util List
+
+.. java:import:: fi.lbd.mobile.mapobjects MapObject
+
+MapFragment
+===========
+
+.. java:package:: fi.lbd.mobile.fragments
+   :noindex:
+
+.. java:type:: public abstract class MapFragment extends Fragment
+
+   Abstract base class for different map fragments. Created by tommi on 19.10.2014.
+

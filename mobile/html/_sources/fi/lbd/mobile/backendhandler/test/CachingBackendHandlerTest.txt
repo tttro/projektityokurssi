@@ -1,0 +1,64 @@
+.. java:import:: org.junit After
+
+.. java:import:: org.junit Before
+
+.. java:import:: org.junit Test
+
+.. java:import:: org.junit.runner RunWith
+
+.. java:import:: org.robolectric Robolectric
+
+.. java:import:: org.robolectric.shadows ShadowLog
+
+.. java:import:: fi.lbd.mobile CustomRobolectricTestRunner
+
+.. java:import:: fi.lbd.mobile.backendhandler BackendHandler
+
+.. java:import:: fi.lbd.mobile.backendhandler BasicBackendHandler
+
+.. java:import:: fi.lbd.mobile.backendhandler CachingBackendHandler
+
+.. java:import:: fi.lbd.mobile.backendhandler HandlerResponse
+
+.. java:import:: fi.lbd.mobile.location ImmutablePointLocation
+
+.. java:import:: fi.lbd.mobile.location PointLocation
+
+.. java:import:: fi.lbd.mobile.utils TestData
+
+CachingBackendHandlerTest
+=========================
+
+.. java:package:: fi.lbd.mobile.backendhandler.test
+   :noindex:
+
+.. java:type:: @RunWith public class CachingBackendHandlerTest
+
+   Tests for the CachingBackendHandler. Created by Tommi.
+
+Methods
+-------
+setUp
+^^^^^
+
+.. java:method:: @Before public void setUp() throws Exception
+   :outertype: CachingBackendHandlerTest
+
+tearDown
+^^^^^^^^
+
+.. java:method:: @After public void tearDown()
+   :outertype: CachingBackendHandlerTest
+
+testCaching
+^^^^^^^^^^^
+
+.. java:method:: @Test public void testCaching() throws Exception
+   :outertype: CachingBackendHandlerTest
+
+testCachingMinimized
+^^^^^^^^^^^^^^^^^^^^
+
+.. java:method:: @Test public void testCachingMinimized() throws Exception
+   :outertype: CachingBackendHandlerTest
+

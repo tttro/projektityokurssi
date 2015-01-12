@@ -1,0 +1,28 @@
+.. java:import:: fi.lbd.mobile.events AbstractEvent
+
+RequestCollectionsEvent
+=======================
+
+.. java:package:: fi.lbd.mobile.events
+   :noindex:
+
+.. java:type:: public class RequestCollectionsEvent extends AbstractEvent
+
+   Created by Ossi on 4.1.2015.
+
+Constructors
+------------
+RequestCollectionsEvent
+^^^^^^^^^^^^^^^^^^^^^^^
+
+.. java:constructor:: public RequestCollectionsEvent(String url)
+   :outertype: RequestCollectionsEvent
+
+Methods
+-------
+getUrl
+^^^^^^
+
+.. java:method:: public String getUrl()
+   :outertype: RequestCollectionsEvent
+

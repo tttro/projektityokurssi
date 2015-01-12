@@ -1,0 +1,10 @@
+LocationTask
+============
+
+.. java:package:: fi.lbd.mobile.fragments
+   :noindex:
+
+.. java:type:: public class LocationTask
+
+   Created by Ossi on 4.12.2014.
+

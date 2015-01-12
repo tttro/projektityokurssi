@@ -1,0 +1,13 @@
+fi.lbd.mobile.location
+======================
+
+.. java:package:: fi.lbd.mobile.location
+
+.. toctree::
+   :maxdepth: 1
+
+   ImmutablePointLocation
+   LocationHandler
+   LocationUtils
+   PointLocation
+

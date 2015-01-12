@@ -1,0 +1,8 @@
+R
+=
+
+.. java:package:: fi.lbd.mobile
+   :noindex:
+
+.. java:type:: public final class R
+

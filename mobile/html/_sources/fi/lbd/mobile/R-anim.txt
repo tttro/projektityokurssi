@@ -1,0 +1,23 @@
+R.anim
+======
+
+.. java:package:: fi.lbd.mobile
+   :noindex:
+
+.. java:type:: public static final class anim
+   :outertype: R
+
+Fields
+------
+fadein
+^^^^^^
+
+.. java:field:: public static final int fadein
+   :outertype: R.anim
+
+fadeout
+^^^^^^^
+
+.. java:field:: public static final int fadeout
+   :outertype: R.anim
+

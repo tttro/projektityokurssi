@@ -1,0 +1,34 @@
+.. java:import:: android.support.annotation Nullable
+
+.. java:import:: java.util List
+
+.. java:import:: fi.lbd.mobile.events AbstractEvent
+
+.. java:import:: fi.lbd.mobile.messaging.messageobjects MessageObject
+
+ReturnUserMessagesEvent
+=======================
+
+.. java:package:: fi.lbd.mobile.messaging.events
+   :noindex:
+
+.. java:type:: public class ReturnUserMessagesEvent extends AbstractEvent
+
+   Created by Tommi on 3.1.2015.
+
+Constructors
+------------
+ReturnUserMessagesEvent
+^^^^^^^^^^^^^^^^^^^^^^^
+
+.. java:constructor:: public ReturnUserMessagesEvent(List<MessageObject> messageObjects)
+   :outertype: ReturnUserMessagesEvent
+
+Methods
+-------
+getMessageObjects
+^^^^^^^^^^^^^^^^^
+
+.. java:method:: public List<MessageObject> getMessageObjects()
+   :outertype: ReturnUserMessagesEvent
+

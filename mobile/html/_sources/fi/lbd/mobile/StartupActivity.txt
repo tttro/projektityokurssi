@@ -1,0 +1,38 @@
+.. java:import:: android.app Activity
+
+.. java:import:: android.content Intent
+
+.. java:import:: android.content SharedPreferences
+
+.. java:import:: android.os Bundle
+
+.. java:import:: android.util Log
+
+StartupActivity
+===============
+
+.. java:package:: fi.lbd.mobile
+   :noindex:
+
+.. java:type:: public class StartupActivity extends Activity
+
+Methods
+-------
+onCreate
+^^^^^^^^
+
+.. java:method:: @Override protected void onCreate(Bundle savedInstanceState)
+   :outertype: StartupActivity
+
+onDestroy
+^^^^^^^^^
+
+.. java:method:: @Override protected void onDestroy()
+   :outertype: StartupActivity
+
+onStop
+^^^^^^
+
+.. java:method:: @Override protected void onStop()
+   :outertype: StartupActivity
+

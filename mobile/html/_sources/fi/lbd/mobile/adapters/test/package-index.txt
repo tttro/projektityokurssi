@@ -1,0 +1,11 @@
+fi.lbd.mobile.adapters.test
+===========================
+
+.. java:package:: fi.lbd.mobile.adapters.test
+
+.. toctree::
+   :maxdepth: 1
+
+   ListDetailsAdapterTest
+   ListExpandableAdapterTest
+

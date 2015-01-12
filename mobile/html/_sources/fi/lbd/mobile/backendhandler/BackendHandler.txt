@@ -1,0 +1,126 @@
+.. java:import:: java.util List
+
+.. java:import:: fi.lbd.mobile.location PointLocation
+
+.. java:import:: fi.lbd.mobile.mapobjects MapObject
+
+.. java:import:: fi.lbd.mobile.messaging.messageobjects MessageObject
+
+BackendHandler
+==============
+
+.. java:package:: fi.lbd.mobile.backendhandler
+   :noindex:
+
+.. java:type:: public interface BackendHandler
+
+   Interface which defines the functions of the backend handlers. Created by Tommi.
+
+Methods
+-------
+deleteMessage
+^^^^^^^^^^^^^
+
+.. java:method::  HandlerResponse<MessageObject> deleteMessage(String messageId)
+   :outertype: BackendHandler
+
+   Remove message with given message id from the backend.
+
+   :param messageId: Message to remove.
+
+getCollections
+^^^^^^^^^^^^^^
+
+.. java:method::  HandlerResponse<String> getCollections(String url)
+   :outertype: BackendHandler
+
+   Requests the list of object collections in the database.
+
+   :param url: Backend url
+
+getMapObject
+^^^^^^^^^^^^
+
+.. java:method::  HandlerResponse<MapObject> getMapObject(String id)
+   :outertype: BackendHandler
+
+   Returns object with the given id.
+
+   :param id: Id of the wanted object.
+
+getMessages
+^^^^^^^^^^^
+
+.. java:method::  HandlerResponse<MessageObject> getMessages()
+   :outertype: BackendHandler
+
+   Request messages for the current user.
+
+getObjectsFromSearch
+^^^^^^^^^^^^^^^^^^^^
+
+.. java:method::  HandlerResponse<MapObject> getObjectsFromSearch(List<String> fromFields, String searchString, int limit, boolean mini)
+   :outertype: BackendHandler
+
+   Search objects which has the search string in the given fields.
+
+   :param fromFields: Fields to search from.
+   :param searchString: String to search.
+   :param limit: Limit results.
+   :param mini: Results minimized.
+
+getObjectsInArea
+^^^^^^^^^^^^^^^^
+
+.. java:method::  HandlerResponse<MapObject> getObjectsInArea(PointLocation southWest, PointLocation northEast, boolean mini)
+   :outertype: BackendHandler
+
+   Returns objects inside area.
+
+   :param southWest: Start location.
+   :param northEast: End location.
+   :param mini: Should the returned objects be minimized.
+
+getObjectsNearLocation
+^^^^^^^^^^^^^^^^^^^^^^
+
+.. java:method::  HandlerResponse<MapObject> getObjectsNearLocation(PointLocation location, double range, boolean mini)
+   :outertype: BackendHandler
+
+   Returns objects near the given location.
+
+   :param location: Objects near this location.
+   :param range: Objects inside circular area defined by this range.
+   :param mini: Should the returned objects be minimized.
+
+getUsers
+^^^^^^^^
+
+.. java:method::  HandlerResponse<String> getUsers()
+   :outertype: BackendHandler
+
+   Requests the list of authorized users.
+
+postMessage
+^^^^^^^^^^^
+
+.. java:method::  HandlerResponse<MessageObject> postMessage(String receiver, String topic, Object message, List<String> attachedObjectIds)
+   :outertype: BackendHandler
+
+   Post a message
+
+   :param receiver: Message receiver.
+   :param topic: Message topic.
+   :param message: Message contents.
+   :param attachedObjectIds: Attached object ids.
+
+updateMapObject
+^^^^^^^^^^^^^^^
+
+.. java:method::  HandlerResponse<MapObject> updateMapObject(MapObject updatedMapObject)
+   :outertype: BackendHandler
+
+   Updates the object in the backend.
+
+   :param updatedMapObject: Object which should be updated.
+

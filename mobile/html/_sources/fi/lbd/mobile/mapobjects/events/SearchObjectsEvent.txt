@@ -1,0 +1,60 @@
+.. java:import:: android.support.annotation NonNull
+
+.. java:import:: java.util ArrayList
+
+.. java:import:: java.util List
+
+.. java:import:: fi.lbd.mobile.events AbstractEvent
+
+.. java:import:: fi.lbd.mobile.location PointLocation
+
+SearchObjectsEvent
+==================
+
+.. java:package:: fi.lbd.mobile.mapobjects.events
+   :noindex:
+
+.. java:type:: public class SearchObjectsEvent extends AbstractEvent
+
+   Event for OTTO-bus. Searches for objects with string. Created by Tommi.
+
+Constructors
+------------
+SearchObjectsEvent
+^^^^^^^^^^^^^^^^^^
+
+.. java:constructor:: public SearchObjectsEvent(List<String> fromFields, String searchString, int limit, boolean mini)
+   :outertype: SearchObjectsEvent
+
+SearchObjectsEvent
+^^^^^^^^^^^^^^^^^^
+
+.. java:constructor:: public SearchObjectsEvent(String searchString, int limit, boolean mini, String... fromFields)
+   :outertype: SearchObjectsEvent
+
+Methods
+-------
+getFromFields
+^^^^^^^^^^^^^
+
+.. java:method:: public List<String> getFromFields()
+   :outertype: SearchObjectsEvent
+
+getLimit
+^^^^^^^^
+
+.. java:method:: public int getLimit()
+   :outertype: SearchObjectsEvent
+
+getSearchString
+^^^^^^^^^^^^^^^
+
+.. java:method:: public String getSearchString()
+   :outertype: SearchObjectsEvent
+
+isMini
+^^^^^^
+
+.. java:method:: public boolean isMini()
+   :outertype: SearchObjectsEvent
+

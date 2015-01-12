@@ -1,0 +1,32 @@
+.. java:import:: android.support.annotation NonNull
+
+.. java:import:: fi.lbd.mobile.events AbstractEvent
+
+.. java:import:: fi.lbd.mobile.mapobjects MapObject
+
+UpdateMapObjectSucceededEvent
+=============================
+
+.. java:package:: fi.lbd.mobile.mapobjects.events
+   :noindex:
+
+.. java:type:: public class UpdateMapObjectSucceededEvent extends AbstractEvent
+
+   Created by Tommi on 10.1.2015.
+
+Constructors
+------------
+UpdateMapObjectSucceededEvent
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. java:constructor:: public UpdateMapObjectSucceededEvent(MapObject updatedMapObject)
+   :outertype: UpdateMapObjectSucceededEvent
+
+Methods
+-------
+getUpdatedMapObject
+^^^^^^^^^^^^^^^^^^^
+
+.. java:method:: public MapObject getUpdatedMapObject()
+   :outertype: UpdateMapObjectSucceededEvent
+

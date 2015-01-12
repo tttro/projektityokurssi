@@ -1,0 +1,219 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>BasicUrlReader &mdash; LBD Mobile client Alpha documentation</title>
+    
+    <link rel="stylesheet" href="../../../../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../',
+        VERSION:     'Alpha',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <link rel="top" title="LBD Mobile client Alpha documentation" href="../../../../index.html" />
+    <link rel="up" title="fi.lbd.mobile.backendhandler" href="package-index.html" />
+    <link rel="next" title="CachingBackendHandler" href="CachingBackendHandler.html" />
+    <link rel="prev" title="BasicBackendHandler" href="BasicBackendHandler.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="CachingBackendHandler.html" title="CachingBackendHandler"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="BasicBackendHandler.html" title="BasicBackendHandler"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../../../../packages.html">LBD Mobile client Alpha documentation</a> &raquo;</li>
+          <li><a href="package-index.html" accesskey="U">fi.lbd.mobile.backendhandler</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="basicurlreader">
+<h1>BasicUrlReader<a class="headerlink" href="#basicurlreader" title="Permalink to this headline">¶</a></h1>
+<dl class="type">
+<dt id="fi.lbd.mobile.backendhandler.BasicUrlReader">
+public class <tt class="descname">BasicUrlReader</tt> implements <a class="reference internal" href="UrlReader.html#fi.lbd.mobile.backendhandler.UrlReader" title="fi.lbd.mobile.backendhandler.UrlReader">UrlReader</a><a class="headerlink" href="#fi.lbd.mobile.backendhandler.BasicUrlReader" title="Permalink to this definition">¶</a></dt>
+<dd><p>Static methods for reading an url. Created by Tommi.</p>
+</dd></dl>
+
+<div class="section" id="constructors">
+<h2>Constructors<a class="headerlink" href="#constructors" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id1">
+<h3>BasicUrlReader<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+<dl class="constructor">
+<dt id="fi.lbd.mobile.backendhandler.BasicUrlReader.BasicUrlReader()">
+public <tt class="descname">BasicUrlReader</tt><big>(</big><big>)</big><a class="headerlink" href="#fi.lbd.mobile.backendhandler.BasicUrlReader.BasicUrlReader()" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+</div>
+<div class="section" id="methods">
+<h2>Methods<a class="headerlink" href="#methods" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="delete">
+<h3>delete<a class="headerlink" href="#delete" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="fi.lbd.mobile.backendhandler.BasicUrlReader.delete(String)">
+public <a class="reference internal" href="UrlResponse.html#fi.lbd.mobile.backendhandler.UrlResponse" title="fi.lbd.mobile.backendhandler.UrlResponse">UrlResponse</a> <tt class="descname">delete</tt><big>(</big><a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a><em> url</em><big>)</big><a class="headerlink" href="#fi.lbd.mobile.backendhandler.BasicUrlReader.delete(String)" title="Permalink to this definition">¶</a></dt>
+<dd><p>Tries to remove the contents in the given url.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>url</strong> &#8211; </li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="get">
+<h3>get<a class="headerlink" href="#get" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="fi.lbd.mobile.backendhandler.BasicUrlReader.get(String)">
+public <a class="reference internal" href="UrlResponse.html#fi.lbd.mobile.backendhandler.UrlResponse" title="fi.lbd.mobile.backendhandler.UrlResponse">UrlResponse</a> <tt class="descname">get</tt><big>(</big><a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a><em> url</em><big>)</big><a class="headerlink" href="#fi.lbd.mobile.backendhandler.BasicUrlReader.get(String)" title="Permalink to this definition">¶</a></dt>
+<dd><p>Opens the given url and returns an URLResponse object if the connection succeeds and the contents in the given url can be read.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>url</strong> &#8211; URL to read</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">URLResponse-object with results from the URL.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="initialize">
+<h3>initialize<a class="headerlink" href="#initialize" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="fi.lbd.mobile.backendhandler.BasicUrlReader.initialize(Pair, Pair)">
+public void <tt class="descname">initialize</tt><big>(</big>Pair&lt;<a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a>, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/security/cert/Certificate.html" title="java.security.cert.Certificate">Certificate</a>&gt;<em> firstCertificate</em>, Pair&lt;<a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a>, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/security/cert/Certificate.html" title="java.security.cert.Certificate">Certificate</a>&gt;...<em> certificates</em><big>)</big><a class="headerlink" href="#fi.lbd.mobile.backendhandler.BasicUrlReader.initialize(Pair, Pair)" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="postjson">
+<h3>postJson<a class="headerlink" href="#postjson" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="fi.lbd.mobile.backendhandler.BasicUrlReader.postJson(String, String)">
+public <a class="reference internal" href="UrlResponse.html#fi.lbd.mobile.backendhandler.UrlResponse" title="fi.lbd.mobile.backendhandler.UrlResponse">UrlResponse</a> <tt class="descname">postJson</tt><big>(</big><a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a><em> url</em>, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a><em> jsonContents</em><big>)</big><a class="headerlink" href="#fi.lbd.mobile.backendhandler.BasicUrlReader.postJson(String, String)" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="putjson">
+<h3>putJson<a class="headerlink" href="#putjson" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="fi.lbd.mobile.backendhandler.BasicUrlReader.putJson(String, String)">
+public <a class="reference internal" href="UrlResponse.html#fi.lbd.mobile.backendhandler.UrlResponse" title="fi.lbd.mobile.backendhandler.UrlResponse">UrlResponse</a> <tt class="descname">putJson</tt><big>(</big><a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a><em> url</em>, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a><em> jsonContents</em><big>)</big><a class="headerlink" href="#fi.lbd.mobile.backendhandler.BasicUrlReader.putJson(String, String)" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../../../packages.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">BasicUrlReader</a><ul>
+<li><a class="reference internal" href="#constructors">Constructors</a><ul>
+<li><a class="reference internal" href="#id1">BasicUrlReader</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#methods">Methods</a><ul>
+<li><a class="reference internal" href="#delete">delete</a></li>
+<li><a class="reference internal" href="#get">get</a></li>
+<li><a class="reference internal" href="#initialize">initialize</a></li>
+<li><a class="reference internal" href="#postjson">postJson</a></li>
+<li><a class="reference internal" href="#putjson">putJson</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="BasicBackendHandler.html"
+                        title="previous chapter">BasicBackendHandler</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="CachingBackendHandler.html"
+                        title="next chapter">CachingBackendHandler</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../../../../_sources/fi/lbd/mobile/backendhandler/BasicUrlReader.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="CachingBackendHandler.html" title="CachingBackendHandler"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="BasicBackendHandler.html" title="BasicBackendHandler"
+             >previous</a> |</li>
+        <li><a href="../../../../packages.html">LBD Mobile client Alpha documentation</a> &raquo;</li>
+          <li><a href="package-index.html" >fi.lbd.mobile.backendhandler</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2015, Tommi und Ossi.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+    </div>
+  </body>
+</html>

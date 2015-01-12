@@ -1,0 +1,317 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>GoogleMapFragment &mdash; LBD Mobile client Alpha documentation</title>
+    
+    <link rel="stylesheet" href="../../../../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../',
+        VERSION:     'Alpha',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <link rel="top" title="LBD Mobile client Alpha documentation" href="../../../../index.html" />
+    <link rel="up" title="fi.lbd.mobile.fragments" href="package-index.html" />
+    <link rel="next" title="LocationTask" href="LocationTask.html" />
+    <link rel="prev" title="fi.lbd.mobile.fragments" href="package-index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="LocationTask.html" title="LocationTask"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="package-index.html" title="fi.lbd.mobile.fragments"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../../../../packages.html">LBD Mobile client Alpha documentation</a> &raquo;</li>
+          <li><a href="package-index.html" accesskey="U">fi.lbd.mobile.fragments</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="googlemapfragment">
+<h1>GoogleMapFragment<a class="headerlink" href="#googlemapfragment" title="Permalink to this headline">¶</a></h1>
+<dl class="type">
+<dt id="fi.lbd.mobile.fragments.GoogleMapFragment">
+public class <tt class="descname">GoogleMapFragment</tt> extends <a class="reference internal" href="MapFragment.html#fi.lbd.mobile.fragments.MapFragment" title="fi.lbd.mobile.fragments.MapFragment">MapFragment</a> implements OnInfoWindowClickListener, GoogleMap.OnMarkerClickListener, GoogleMap.OnMapClickListener, <a class="reference internal" href="../ApplicationDetails.html#fi.lbd.mobile.ApplicationDetails" title="fi.lbd.mobile.ApplicationDetails">ApplicationDetails</a>.<a class="reference internal" href="../ApplicationDetails-ApplicationDetailListener.html#fi.lbd.mobile.ApplicationDetails.ApplicationDetailListener" title="fi.lbd.mobile.ApplicationDetails.ApplicationDetailListener">ApplicationDetailListener</a><a class="headerlink" href="#fi.lbd.mobile.fragments.GoogleMapFragment" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fragment which handles the google map view. Created by Tommi &amp; Ossi</p>
+</dd></dl>
+
+<div class="section" id="methods">
+<h2>Methods<a class="headerlink" href="#methods" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="hidecursor">
+<h3>hideCursor<a class="headerlink" href="#hidecursor" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="fi.lbd.mobile.fragments.GoogleMapFragment.hideCursor()">
+protected void <tt class="descname">hideCursor</tt><big>(</big><big>)</big><a class="headerlink" href="#fi.lbd.mobile.fragments.GoogleMapFragment.hideCursor()" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="hidekeyboard">
+<h3>hideKeyBoard<a class="headerlink" href="#hidekeyboard" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="fi.lbd.mobile.fragments.GoogleMapFragment.hideKeyBoard()">
+protected void <tt class="descname">hideKeyBoard</tt><big>(</big><big>)</big><a class="headerlink" href="#fi.lbd.mobile.fragments.GoogleMapFragment.hideKeyBoard()" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="newinstance">
+<h3>newInstance<a class="headerlink" href="#newinstance" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="fi.lbd.mobile.fragments.GoogleMapFragment.newInstance(LocationHandler)">
+public static <a class="reference internal" href="#fi.lbd.mobile.fragments.GoogleMapFragment" title="fi.lbd.mobile.fragments.GoogleMapFragment">GoogleMapFragment</a> <tt class="descname">newInstance</tt><big>(</big><a class="reference internal" href="../location/LocationHandler.html#fi.lbd.mobile.location.LocationHandler" title="fi.lbd.mobile.location.LocationHandler">LocationHandler</a><em> locationHandler</em><big>)</big><a class="headerlink" href="#fi.lbd.mobile.fragments.GoogleMapFragment.newInstance(LocationHandler)" title="Permalink to this definition">¶</a></dt>
+<dd><p>Should be used to instantiate this class instead of new-statement.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Returns a new instance of this class.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="notifyapiurlchange">
+<h3>notifyApiUrlChange<a class="headerlink" href="#notifyapiurlchange" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="fi.lbd.mobile.fragments.GoogleMapFragment.notifyApiUrlChange(String, String, String)">
+public void <tt class="descname">notifyApiUrlChange</tt><big>(</big><a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a><em> newBaseUrl</em>, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a><em> newMessageApiUrl</em>, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a><em> newObjectApiUrl</em><big>)</big><a class="headerlink" href="#fi.lbd.mobile.fragments.GoogleMapFragment.notifyApiUrlChange(String, String, String)" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="notifycollectionchange">
+<h3>notifyCollectionChange<a class="headerlink" href="#notifycollectionchange" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="fi.lbd.mobile.fragments.GoogleMapFragment.notifyCollectionChange(String)">
+public void <tt class="descname">notifyCollectionChange</tt><big>(</big><a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a><em> newCollection</em><big>)</big><a class="headerlink" href="#fi.lbd.mobile.fragments.GoogleMapFragment.notifyCollectionChange(String)" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="oncreateview">
+<h3>onCreateView<a class="headerlink" href="#oncreateview" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="fi.lbd.mobile.fragments.GoogleMapFragment.onCreateView(LayoutInflater, ViewGroup, Bundle)">
+public View <tt class="descname">onCreateView</tt><big>(</big>LayoutInflater<em> inflater</em>, ViewGroup<em> container</em>, Bundle<em> savedInstanceState</em><big>)</big><a class="headerlink" href="#fi.lbd.mobile.fragments.GoogleMapFragment.onCreateView(LayoutInflater, ViewGroup, Bundle)" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="ondestroy">
+<h3>onDestroy<a class="headerlink" href="#ondestroy" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="fi.lbd.mobile.fragments.GoogleMapFragment.onDestroy()">
+public void <tt class="descname">onDestroy</tt><big>(</big><big>)</big><a class="headerlink" href="#fi.lbd.mobile.fragments.GoogleMapFragment.onDestroy()" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="onevent">
+<h3>onEvent<a class="headerlink" href="#onevent" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="fi.lbd.mobile.fragments.GoogleMapFragment.onEvent(SelectMapObjectEvent)">
+public void <tt class="descname">onEvent</tt><big>(</big><a class="reference internal" href="../mapobjects/events/SelectMapObjectEvent.html#fi.lbd.mobile.mapobjects.events.SelectMapObjectEvent" title="fi.lbd.mobile.mapobjects.events.SelectMapObjectEvent">SelectMapObjectEvent</a><em> event</em><big>)</big><a class="headerlink" href="#fi.lbd.mobile.fragments.GoogleMapFragment.onEvent(SelectMapObjectEvent)" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="id1">
+<h3>onEvent<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="fi.lbd.mobile.fragments.GoogleMapFragment.onEvent(ReturnObjectsInAreaEvent)">
+public void <tt class="descname">onEvent</tt><big>(</big><a class="reference internal" href="../mapobjects/events/ReturnObjectsInAreaEvent.html#fi.lbd.mobile.mapobjects.events.ReturnObjectsInAreaEvent" title="fi.lbd.mobile.mapobjects.events.ReturnObjectsInAreaEvent">ReturnObjectsInAreaEvent</a><em> event</em><big>)</big><a class="headerlink" href="#fi.lbd.mobile.fragments.GoogleMapFragment.onEvent(ReturnObjectsInAreaEvent)" title="Permalink to this definition">¶</a></dt>
+<dd><p>Handles the response event with the map objects for a certain region.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>event</strong> &#8211; Returned event.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="oninfowindowclick">
+<h3>onInfoWindowClick<a class="headerlink" href="#oninfowindowclick" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="fi.lbd.mobile.fragments.GoogleMapFragment.onInfoWindowClick(Marker)">
+public void <tt class="descname">onInfoWindowClick</tt><big>(</big>Marker<em> marker</em><big>)</big><a class="headerlink" href="#fi.lbd.mobile.fragments.GoogleMapFragment.onInfoWindowClick(Marker)" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="onlowmemory">
+<h3>onLowMemory<a class="headerlink" href="#onlowmemory" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="fi.lbd.mobile.fragments.GoogleMapFragment.onLowMemory()">
+public void <tt class="descname">onLowMemory</tt><big>(</big><big>)</big><a class="headerlink" href="#fi.lbd.mobile.fragments.GoogleMapFragment.onLowMemory()" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="onmapclick">
+<h3>onMapClick<a class="headerlink" href="#onmapclick" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="fi.lbd.mobile.fragments.GoogleMapFragment.onMapClick(LatLng)">
+public void <tt class="descname">onMapClick</tt><big>(</big>LatLng<em> point</em><big>)</big><a class="headerlink" href="#fi.lbd.mobile.fragments.GoogleMapFragment.onMapClick(LatLng)" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="onmarkerclick">
+<h3>onMarkerClick<a class="headerlink" href="#onmarkerclick" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="fi.lbd.mobile.fragments.GoogleMapFragment.onMarkerClick(Marker)">
+public boolean <tt class="descname">onMarkerClick</tt><big>(</big>Marker<em> marker</em><big>)</big><a class="headerlink" href="#fi.lbd.mobile.fragments.GoogleMapFragment.onMarkerClick(Marker)" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="onpause">
+<h3>onPause<a class="headerlink" href="#onpause" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="fi.lbd.mobile.fragments.GoogleMapFragment.onPause()">
+public void <tt class="descname">onPause</tt><big>(</big><big>)</big><a class="headerlink" href="#fi.lbd.mobile.fragments.GoogleMapFragment.onPause()" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="onresume">
+<h3>onResume<a class="headerlink" href="#onresume" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="fi.lbd.mobile.fragments.GoogleMapFragment.onResume()">
+public void <tt class="descname">onResume</tt><big>(</big><big>)</big><a class="headerlink" href="#fi.lbd.mobile.fragments.GoogleMapFragment.onResume()" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="performlocationsearch">
+<h3>performLocationSearch<a class="headerlink" href="#performlocationsearch" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="fi.lbd.mobile.fragments.GoogleMapFragment.performLocationSearch()">
+protected void <tt class="descname">performLocationSearch</tt><big>(</big><big>)</big><a class="headerlink" href="#fi.lbd.mobile.fragments.GoogleMapFragment.performLocationSearch()" title="Permalink to this definition">¶</a></dt>
+<dd><p>Searches the address defined in the search box and moves the camera to the found location.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="setlocationhandler">
+<h3>setLocationHandler<a class="headerlink" href="#setlocationhandler" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="fi.lbd.mobile.fragments.GoogleMapFragment.setLocationHandler(LocationHandler)">
+public void <tt class="descname">setLocationHandler</tt><big>(</big><a class="reference internal" href="../location/LocationHandler.html#fi.lbd.mobile.location.LocationHandler" title="fi.lbd.mobile.location.LocationHandler">LocationHandler</a><em> locationHandler</em><big>)</big><a class="headerlink" href="#fi.lbd.mobile.fragments.GoogleMapFragment.setLocationHandler(LocationHandler)" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="setmaplocationtoselectedobject">
+<h3>setMapLocationToSelectedObject<a class="headerlink" href="#setmaplocationtoselectedobject" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="fi.lbd.mobile.fragments.GoogleMapFragment.setMapLocationToSelectedObject()">
+protected void <tt class="descname">setMapLocationToSelectedObject</tt><big>(</big><big>)</big><a class="headerlink" href="#fi.lbd.mobile.fragments.GoogleMapFragment.setMapLocationToSelectedObject()" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the maps location to the map object which is currently selected in selection manager. If selection manager doesn&#8217;t have any object selected, sets map view to users current location.</p>
+</dd></dl>
+
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../../../packages.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">GoogleMapFragment</a><ul>
+<li><a class="reference internal" href="#methods">Methods</a><ul>
+<li><a class="reference internal" href="#hidecursor">hideCursor</a></li>
+<li><a class="reference internal" href="#hidekeyboard">hideKeyBoard</a></li>
+<li><a class="reference internal" href="#newinstance">newInstance</a></li>
+<li><a class="reference internal" href="#notifyapiurlchange">notifyApiUrlChange</a></li>
+<li><a class="reference internal" href="#notifycollectionchange">notifyCollectionChange</a></li>
+<li><a class="reference internal" href="#oncreateview">onCreateView</a></li>
+<li><a class="reference internal" href="#ondestroy">onDestroy</a></li>
+<li><a class="reference internal" href="#onevent">onEvent</a></li>
+<li><a class="reference internal" href="#id1">onEvent</a></li>
+<li><a class="reference internal" href="#oninfowindowclick">onInfoWindowClick</a></li>
+<li><a class="reference internal" href="#onlowmemory">onLowMemory</a></li>
+<li><a class="reference internal" href="#onmapclick">onMapClick</a></li>
+<li><a class="reference internal" href="#onmarkerclick">onMarkerClick</a></li>
+<li><a class="reference internal" href="#onpause">onPause</a></li>
+<li><a class="reference internal" href="#onresume">onResume</a></li>
+<li><a class="reference internal" href="#performlocationsearch">performLocationSearch</a></li>
+<li><a class="reference internal" href="#setlocationhandler">setLocationHandler</a></li>
+<li><a class="reference internal" href="#setmaplocationtoselectedobject">setMapLocationToSelectedObject</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="package-index.html"
+                        title="previous chapter">fi.lbd.mobile.fragments</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="LocationTask.html"
+                        title="next chapter">LocationTask</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../../../../_sources/fi/lbd/mobile/fragments/GoogleMapFragment.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="LocationTask.html" title="LocationTask"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="package-index.html" title="fi.lbd.mobile.fragments"
+             >previous</a> |</li>
+        <li><a href="../../../../packages.html">LBD Mobile client Alpha documentation</a> &raquo;</li>
+          <li><a href="package-index.html" >fi.lbd.mobile.fragments</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2015, Tommi und Ossi.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+    </div>
+  </body>
+</html>

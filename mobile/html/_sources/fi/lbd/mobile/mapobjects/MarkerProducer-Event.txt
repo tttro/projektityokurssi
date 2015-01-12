@@ -1,0 +1,41 @@
+MarkerProducer.Event
+====================
+
+.. java:package:: fi.lbd.mobile.mapobjects
+   :noindex:
+
+.. java:type::  enum Event
+   :outertype: MarkerProducer
+
+Enum Constants
+--------------
+ACTIVE
+^^^^^^
+
+.. java:field:: public static final MarkerProducer.Event ACTIVE
+   :outertype: MarkerProducer.Event
+
+HIDE
+^^^^
+
+.. java:field:: public static final MarkerProducer.Event HIDE
+   :outertype: MarkerProducer.Event
+
+INACTIVE
+^^^^^^^^
+
+.. java:field:: public static final MarkerProducer.Event INACTIVE
+   :outertype: MarkerProducer.Event
+
+SHOW
+^^^^
+
+.. java:field:: public static final MarkerProducer.Event SHOW
+   :outertype: MarkerProducer.Event
+
+SHOW_INFO
+^^^^^^^^^
+
+.. java:field:: public static final MarkerProducer.Event SHOW_INFO
+   :outertype: MarkerProducer.Event
+

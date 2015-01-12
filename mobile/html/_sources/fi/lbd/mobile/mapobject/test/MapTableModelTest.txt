@@ -1,0 +1,98 @@
+.. java:import:: android.util Log
+
+.. java:import:: org.hamcrest CoreMatchers
+
+.. java:import:: org.junit Before
+
+.. java:import:: org.junit Test
+
+.. java:import:: org.junit.runner RunWith
+
+.. java:import:: org.robolectric Robolectric
+
+.. java:import:: org.robolectric.shadows ShadowLog
+
+.. java:import:: java.util ArrayList
+
+.. java:import:: java.util List
+
+.. java:import:: fi.lbd.mobile CustomRobolectricTestRunner
+
+.. java:import:: fi.lbd.mobile R
+
+.. java:import:: fi.lbd.mobile.mapobjects ImmutableMapObject
+
+.. java:import:: fi.lbd.mobile.mapobjects MapObject
+
+.. java:import:: fi.lbd.mobile.mapobjects MapTableModel
+
+.. java:import:: fi.lbd.mobile.mapobjects MapTableModelListener
+
+.. java:import:: fi.lbd.mobile.utils Area
+
+MapTableModelTest
+=================
+
+.. java:package:: fi.lbd.mobile.mapobject.test
+   :noindex:
+
+.. java:type:: @RunWith public class MapTableModelTest
+
+   Tests for MapTableModel. Created by Tommi.
+
+Methods
+-------
+setUp
+^^^^^
+
+.. java:method:: @Before public void setUp() throws Exception
+   :outertype: MapTableModelTest
+
+testModelAddToUnknownToCell
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. java:method:: @Test public void testModelAddToUnknownToCell() throws Exception
+   :outertype: MapTableModelTest
+
+testModelAddTwiceToCell
+^^^^^^^^^^^^^^^^^^^^^^^
+
+.. java:method:: @Test public void testModelAddTwiceToCell() throws Exception
+   :outertype: MapTableModelTest
+
+testModelBasic
+^^^^^^^^^^^^^^
+
+.. java:method:: @Test public void testModelBasic() throws Exception
+   :outertype: MapTableModelTest
+
+testModelJumpToAnotherPlace
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. java:method:: @Test public void testModelJumpToAnotherPlace() throws Exception
+   :outertype: MapTableModelTest
+
+testModelMoveDown
+^^^^^^^^^^^^^^^^^
+
+.. java:method:: @Test public void testModelMoveDown() throws Exception
+   :outertype: MapTableModelTest
+
+testModelMoveLeft
+^^^^^^^^^^^^^^^^^
+
+.. java:method:: @Test public void testModelMoveLeft() throws Exception
+   :outertype: MapTableModelTest
+
+testModelMoveRight
+^^^^^^^^^^^^^^^^^^
+
+.. java:method:: @Test public void testModelMoveRight() throws Exception
+   :outertype: MapTableModelTest
+
+testModelMoveUp
+^^^^^^^^^^^^^^^
+
+.. java:method:: @Test public void testModelMoveUp() throws Exception
+   :outertype: MapTableModelTest
+
