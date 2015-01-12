@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -21,6 +22,7 @@ import fi.lbd.mobile.messaging.messageobjects.StringMessageObject;
 
 
 public class ReadMessageActivity extends Activity {
+    private boolean deleteInProgress = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,14 +61,18 @@ public class ReadMessageActivity extends Activity {
     public void onStop(){
         super.onStop();
         ActiveActivitiesTracker.activityStopped();
+        this.deleteInProgress = false;
     }
 
     public void onDeleteClick(View view){
-        StringMessageObject object = (StringMessageObject) MessageObjectSelectionManager.get()
-                .getSelectedMessageObject();
-        if(object != null && object.getId() != null && object.getId().length()>0) {
-            DeleteMessageEvent deleteMessageEvent = new DeleteMessageEvent(object.getId());
-            BusHandler.getBus().post(deleteMessageEvent);
+        if(!this.deleteInProgress) {
+            StringMessageObject object = (StringMessageObject) MessageObjectSelectionManager.get()
+                    .getSelectedMessageObject();
+            if (object != null && object.getId() != null && object.getId().length() > 0) {
+                this.deleteInProgress = true;
+                DeleteMessageEvent deleteMessageEvent = new DeleteMessageEvent(object.getId());
+                BusHandler.getBus().post(deleteMessageEvent);
+            }
         }
     }
 
@@ -78,7 +84,6 @@ public class ReadMessageActivity extends Activity {
 
     @Subscribe
     public void onEvent(DeleteMessageSucceededEvent event){
-     //   BusHandler.getBus().post(new RequestUserMessagesEvent());
         Context context = getApplicationContext();
         CharSequence dialogText = "Message deleted";
         int duration = Toast.LENGTH_SHORT;
@@ -87,12 +92,14 @@ public class ReadMessageActivity extends Activity {
         MessageObjectDeletionManager manager = MessageObjectDeletionManager.get();
         manager.setDeletedMessageObject(event.getOriginalEvent().getMessageId());
         manager.deleteMessageFromList();
+        this.deleteInProgress = false;
         onBackPressed();
     }
 
     @Subscribe
     public void onEvent(RequestFailedEvent event){
         if(event.getFailedEvent() instanceof DeleteMessageEvent) {
+            this.deleteInProgress = false;
             Context context = getApplicationContext();
             CharSequence dialogText = "Failed to delete message";
             int duration = Toast.LENGTH_SHORT;

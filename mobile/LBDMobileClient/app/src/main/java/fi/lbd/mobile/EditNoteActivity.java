@@ -8,6 +8,7 @@ import android.view.View;
 
 
 public class EditNoteActivity extends Activity {
+    private boolean acceptButtonPressed = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,7 +29,7 @@ public class EditNoteActivity extends Activity {
     }
 
     public void onAcceptClick(View view){
-
+        
     }
 
     public void onCancelClick(View view){
