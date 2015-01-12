@@ -1,3 +1,5 @@
+.. _restdoc:
+
 REST documentation
 ==================
 

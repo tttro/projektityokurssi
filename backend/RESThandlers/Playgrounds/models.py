@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-.. module:: Handlers.Streetlight.models
+.. module:: Handlers.Playgrounds.models
     :platform: Unix, Windows
 .. moduleauthor:: Aki Mäkinen <aki.makinen@outlook.com>
 

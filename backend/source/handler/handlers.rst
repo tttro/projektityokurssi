@@ -1,23 +1,3 @@
-Open data handlers
-==================
-
-:mod:`RESThandlers.HandlerInterface` REST Handlers
---------------------------------------------------
-
-.. automodule:: RESThandlers.HandlerInterface.Exceptions
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-.. automodule:: RESThandlers.HandlerInterface.Factory
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-.. automodule:: RESThandlers.HandlerInterface.HandlerBaseClass
-   :members:
-   :undoc-members:
-   :show-inheritance:
 
 :mod:`RESThandlers.Streetlight` Streetlight REST handler
 --------------------------------------------------------

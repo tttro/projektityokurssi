@@ -10,19 +10,10 @@ View for handling the backend REST locationdata requests
 
 **This module handles http requests related to location data.**
 
-Possible HTTP response status codes are:
+For all possible HTTP statuses, see :ref:`REST documentation <restdoc>`.
 
-.. code-block:: none
-
-       OK: 200
-       BAD REQUEST: 400
-       FORBIDDEN: 403
-       NOT FOUND: 404
-       METHOD NOT ALLOWED: 405
-       INTERNAL SERVER ERROR: 500
-
-Status 200 is returned when request is valid and handled successfully while 400 is returned when the request
-does not match the defined format or there is some other inconsistency in the query.
+Status 200 is returned when request is valid and handled successfully while 400 is returned when the request conten
+is malformed or there is some other issues with the request..
 
 .. note::
 
@@ -35,6 +26,9 @@ Status 500 means that something went wrong when handling the request.
 
 Client should be able to handle these responses and should not crash in case some undefined status is returned for
 reasons unknown.
+
+.. note::
+   For kwargs added by the decorators, see :ref:`the decorator documentation <locdecos>`.
 
 """
 
@@ -56,6 +50,15 @@ from lbd_backend.utils import s_codes, geo_json_scheme_validation
 
 @require_http_methods(["GET"])
 def api(request):
+    """
+    This view returns the installed open data sources as JSON.
+
+    **Supported HTTP methods:**
+
+    * GET
+
+    :return: HTTP response.
+    """
     from RESThandlers.HandlerInterface.Factory import HandlerFactory
     sources = HandlerFactory.get_installed()
     temp = list()
@@ -85,12 +88,15 @@ def single_resource(request, *args, **kwargs):
     :param args: arguments
     :param kwargs: Dictionary (keyword arguments). Known kwargs listed below.
 
-    **The method uses the following kwargs:**
+    **In addition to the kwargs added by the decorators, this view uses the following:**
 
     * collection (String)
+
+        * Location data collection name
+
     * resource (String)
-    * handlerinterface (Handler object)
-    * lbduser (User)
+
+        * Resource id
 
     :return: HTTP response. Possible statuses are listed in module documentation
 
@@ -206,11 +212,11 @@ def collection(request, *args, **kwargs):
     :param args: arguments
     :param kwargs: Dictionary (keyword arguments). Known kwargs listed below.
 
-    **The method uses the following kwargs:**
+    **In addition to the kwargs added by the decorators, this view uses the following:**
 
     * collection (String)
-    * handlerinterface (Handler object)
-    * lbduser (User)
+
+        * Location data collection name
 
     **Supported URL parameter:**
 
@@ -339,11 +345,11 @@ def collection_near(request, *args, **kwargs):
     :param args: arguments
     :param kwargs: Dictionary (keyword arguments). Known kwargs listed below.
 
-    **The method uses the following kwargs:**
+    **In addition to the kwargs added by the decorators, this view uses the following:**
 
     * collection (String)
-    * handlerinterface (Handler object)
-    * lbduser (User)
+
+        * Location data collection name
 
     **Supported URL parameter:**
 
@@ -431,11 +437,11 @@ def collection_inarea(request, *args, **kwargs):
     :param args: arguments
     :param kwargs: Dictionary (keyword arguments). Known kwargs listed below.
 
-    **The method uses the following kwargs:**
+    **In addition to the kwargs added by the decorators, this view uses the following:**
 
     * collection (String)
-    * handlerinterface (Handler object)
-    * lbduser (User)
+
+        * Location data collection name
 
     **Supported URL parameter:**
 
@@ -504,6 +510,19 @@ def collection_inarea(request, *args, **kwargs):
 @lbd_require_login
 @require_http_methods(["POST"])
 def search_from_rest(request, *args, **kwargs):
+    """
+    This view searches for the given search phrase from the database. Currently only search from id field is supported.
+    For json format, see :ref:`Search <searchjson>`.
+
+    **Supported HTTP methods:**
+
+    * POST
+
+    :param request: Request object
+    :param args: Arguments
+    :param kwargs: Keyword arguments
+    :return: HTTP response
+    """
     try:
         contentjson = json.loads(request.body)
     except ValueError:
@@ -543,6 +562,13 @@ def search_from_rest(request, *args, **kwargs):
     return HttpResponse(json.dumps(resultjson))
 
 def _addmeta(items, coll):
+    """
+    This function adds metadata to an open data object.
+
+    :param items: Open data objects as dictionaries
+    :param coll: Open data collection
+    :return: Open data with metadata added to it.
+    """
     metaitems = MetaDocument._get_collection().aggregate([
         {"$match":
              {"collection": coll}

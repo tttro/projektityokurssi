@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Code documentation: REST &mdash; LBD Backend Dev documentation</title>
+    <title>Code documentation: Handlers &mdash; LBD Backend Dev documentation</title>
     
     <link rel="stylesheet" href="_static/default.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -24,8 +24,8 @@
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
     <link rel="top" title="LBD Backend Dev documentation" href="index.html" />
-    <link rel="next" title="lbd_backend.LBD_REST_locationdata.decorators Location data decorators" href="codedoc/decdoc.html" />
-    <link rel="prev" title="REST documentation" href="restdoc.html" /> 
+    <link rel="next" title="RESThandlers.HandlerInterface REST Handler Interface" href="handler/interface.html" />
+    <link rel="prev" title="lbd_backend.LBD_REST_messagedata Message data REST" href="codedoc/msgdoc.html" /> 
   </head>
   <body>
     <div class="related">
@@ -38,10 +38,10 @@
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="codedoc/decdoc.html" title="lbd_backend.LBD_REST_locationdata.decorators Location data decorators"
+          <a href="handler/interface.html" title="RESThandlers.HandlerInterface REST Handler Interface"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="restdoc.html" title="REST documentation"
+          <a href="codedoc/msgdoc.html" title="lbd_backend.LBD_REST_messagedata Message data REST"
              accesskey="P">previous</a> |</li>
         <li><a href="index.html">LBD Backend Dev documentation</a> &raquo;</li> 
       </ul>
@@ -52,24 +52,14 @@
         <div class="bodywrapper">
           <div class="body">
             
-  <div class="section" id="code-documentation-rest">
-<h1>Code documentation: REST<a class="headerlink" href="#code-documentation-rest" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="code-documentation-handlers">
+<h1>Code documentation: Handlers<a class="headerlink" href="#code-documentation-handlers" title="Permalink to this headline">¶</a></h1>
 <div class="toctree-wrapper compound">
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="codedoc/decdoc.html"><tt class="docutils literal"><span class="pre">lbd_backend.LBD_REST_locationdata.decorators</span></tt> Location data decorators</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="codedoc/decdoc.html#decorators-for-location-data-rest">Decorators for location data REST</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="codedoc/locdoc.html"><tt class="docutils literal"><span class="pre">lbd_backend.LBD_REST_locationdata</span></tt> Location data REST</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="codedoc/locdoc.html#module-LocationdataREST.views">View for handling the backend REST locationdata requests</a></li>
-<li class="toctree-l2"><a class="reference internal" href="codedoc/locdoc.html#module-LocationdataREST.models">Model containing the metadata database structure</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="codedoc/msgdoc.html"><tt class="docutils literal"><span class="pre">lbd_backend.LBD_REST_messagedata</span></tt> Message data REST</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="codedoc/msgdoc.html#module-MessagedataREST.views">View for handling messages</a></li>
-<li class="toctree-l2"><a class="reference internal" href="codedoc/msgdoc.html#module-MessagedataREST.models">Model for message</a></li>
-</ul>
-</li>
+<li class="toctree-l1"><a class="reference internal" href="handler/interface.html"><tt class="docutils literal"><span class="pre">RESThandlers.HandlerInterface</span></tt> REST Handler Interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="handler/factory.html"><tt class="docutils literal"><span class="pre">RESThandlers.HandlerInterface.Factory</span></tt> Handler Factory</a></li>
+<li class="toctree-l1"><a class="reference internal" href="handler/handlers.html"><tt class="docutils literal"><span class="pre">RESThandlers.Streetlight</span></tt> Streetlight REST handler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="handler/handlers.html#module-RESThandlers.Playgrounds.Handler"><tt class="docutils literal"><span class="pre">RESThandlers.Playgrounds</span></tt> Playgrounds REST handler</a></li>
 </ul>
 </div>
 </div>
@@ -81,14 +71,14 @@
       <div class="sphinxsidebar">
         <div class="sphinxsidebarwrapper">
   <h4>Previous topic</h4>
-  <p class="topless"><a href="restdoc.html"
-                        title="previous chapter">REST documentation</a></p>
+  <p class="topless"><a href="codedoc/msgdoc.html"
+                        title="previous chapter"><tt class="docutils literal"><span class="pre">lbd_backend.LBD_REST_messagedata</span></tt> Message data REST</a></p>
   <h4>Next topic</h4>
-  <p class="topless"><a href="codedoc/decdoc.html"
-                        title="next chapter"><tt class="docutils literal"><span class="pre">lbd_backend.LBD_REST_locationdata.decorators</span></tt> Location data decorators</a></p>
+  <p class="topless"><a href="handler/interface.html"
+                        title="next chapter"><tt class="docutils literal"><span class="pre">RESThandlers.HandlerInterface</span></tt> REST Handler Interface</a></p>
   <h3>This Page</h3>
   <ul class="this-page-menu">
-    <li><a href="_sources/codedoc.txt"
+    <li><a href="_sources/hand.txt"
            rel="nofollow">Show Source</a></li>
   </ul>
 <div id="searchbox" style="display: none">
@@ -118,10 +108,10 @@
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="codedoc/decdoc.html" title="lbd_backend.LBD_REST_locationdata.decorators Location data decorators"
+          <a href="handler/interface.html" title="RESThandlers.HandlerInterface REST Handler Interface"
              >next</a> |</li>
         <li class="right" >
-          <a href="restdoc.html" title="REST documentation"
+          <a href="codedoc/msgdoc.html" title="lbd_backend.LBD_REST_messagedata Message data REST"
              >previous</a> |</li>
         <li><a href="index.html">LBD Backend Dev documentation</a> &raquo;</li> 
       </ul>

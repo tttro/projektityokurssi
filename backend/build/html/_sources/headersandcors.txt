@@ -1,7 +1,10 @@
 .. headersandcors:
 
+Headers and CORS
+================
+
 Headers
-=======
+-------
 
 The back-end uses two un-standard headers for user authentication and authorization. Both of these are required for most
 functionalities.
@@ -15,7 +18,7 @@ LBD_OAUTH_ID     Google id.
 
 
 CORS
-====
+----
 
 CORS or Cross-origin resource sharing mechanism allows resources to be requested from other domains. In order to be able to
 use the back-end for example with AngularJS from another domain, some headers needed to be added. This is done in cors-middleware.

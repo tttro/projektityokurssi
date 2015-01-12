@@ -1,0 +1,286 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>lbd_backend.LBD_REST_messagedata Message data REST &mdash; LBD Backend Dev documentation</title>
+    
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     'Dev',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="LBD Backend Dev documentation" href="../index.html" />
+    <link rel="up" title="Code documentation: REST" href="../codedoc.html" />
+    <link rel="next" title="Code documentation: Open data handlers" href="../opendata.html" />
+    <link rel="prev" title="lbd_backend.LBD_REST_locationdata Location data REST" href="locdoc.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="../opendata.html" title="Code documentation: Open data handlers"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="locdoc.html" title="lbd_backend.LBD_REST_locationdata Location data REST"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">LBD Backend Dev documentation</a> &raquo;</li>
+          <li><a href="../codedoc.html" accesskey="U">Code documentation: REST</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="module-lbd_backend.LBD_REST_messagedata.views">
+<span id="lbd-backend-lbd-rest-messagedata-message-data-rest"></span><h1><tt class="xref py py-mod docutils literal"><span class="pre">lbd_backend.LBD_REST_messagedata</span></tt> Message data REST<a class="headerlink" href="#module-lbd_backend.LBD_REST_messagedata.views" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="module-MessagedataREST.views">
+<span id="view-for-handling-messages"></span><h2>View for handling messages<a class="headerlink" href="#module-MessagedataREST.views" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="lbd_backend.LBD_REST_messagedata.views.mark_as_read">
+<tt class="descclassname">lbd_backend.LBD_REST_messagedata.views.</tt><tt class="descname">mark_as_read</tt><big>(</big><em>request</em>, <em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#lbd_backend.LBD_REST_messagedata.views.mark_as_read" title="Permalink to this definition">¶</a></dt>
+<dd><p>View for marking a message read.</p>
+<p><strong>Supported HTTP methods:</strong></p>
+<ul class="simple">
+<li>GET</li>
+</ul>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>request</strong> &#8211; Request object</li>
+<li><strong>args</strong> &#8211; arguments</li>
+<li><strong>kwargs</strong> &#8211; Dictionary (keyword arguments). Known kwargs listed below.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p><strong>The method uses the following kwargs:</strong></p>
+<ul class="simple">
+<li>message (Integer)</li>
+<li>lbduser (User)</li>
+</ul>
+<p><em>Message</em> specifies the message id. Required.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">HTTP response. Possible statuses are listed in module documentation</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="lbd_backend.LBD_REST_messagedata.views.msg_general">
+<tt class="descclassname">lbd_backend.LBD_REST_messagedata.views.</tt><tt class="descname">msg_general</tt><big>(</big><em>request</em>, <em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#lbd_backend.LBD_REST_messagedata.views.msg_general" title="Permalink to this definition">¶</a></dt>
+<dd><p>Handles all message requests (both to single and multiple messages).</p>
+<p><strong>Supported HTTP methods:</strong></p>
+<ul class="simple">
+<li>GET</li>
+<li>DELETE</li>
+</ul>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>request</strong> &#8211; Request object</li>
+<li><strong>args</strong> &#8211; arguments</li>
+<li><strong>kwargs</strong> &#8211; Dictionary (keyword arguments). Known kwargs listed below.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p><strong>The method uses the following kwargs:</strong></p>
+<ul class="simple">
+<li>category (String)</li>
+<li>message (Integer)</li>
+<li>lbduser (User)</li>
+</ul>
+<p><em>Category</em> specifies the message category. This argument is used only if it is specified in the url. Category
+is equivalent to locationdata collection. If this argument is used, it is expected that a locationdata collection
+with the same name exists and is &#8220;installed&#8221;.</p>
+<p><em>Message</em> specifies the message id. Used only if specified in the url.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">HTTP response. Possible statuses are listed in module documentation</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="lbd_backend.LBD_REST_messagedata.views.msg_send">
+<tt class="descclassname">lbd_backend.LBD_REST_messagedata.views.</tt><tt class="descname">msg_send</tt><big>(</big><em>request</em>, <em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#lbd_backend.LBD_REST_messagedata.views.msg_send" title="Permalink to this definition">¶</a></dt>
+<dd><p>View for sending messages.</p>
+<p><strong>Supported HTTP methods:</strong></p>
+<ul class="simple">
+<li>POST</li>
+</ul>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>request</strong> &#8211; Request object</li>
+<li><strong>args</strong> &#8211; arguments</li>
+<li><strong>kwargs</strong> &#8211; Dictionary (keyword arguments). Known kwargs listed below.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p><strong>The method uses the following kwargs:</strong></p>
+<ul class="simple">
+<li>lbduser (User)</li>
+</ul>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">HTTP response. Possible statuses are listed in module documentation</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<span class="target" id="module-lbd_backend.LBD_REST_messagedata.models"></span><div class="section" id="module-MessagedataREST.models">
+<span id="model-for-message"></span><h2>Model for message<a class="headerlink" href="#module-MessagedataREST.models" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="lbd_backend.LBD_REST_messagedata.models.Attachment">
+<em class="property">class </em><tt class="descclassname">lbd_backend.LBD_REST_messagedata.models.</tt><tt class="descname">Attachment</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#lbd_backend.LBD_REST_messagedata.models.Attachment" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fields:</p>
+<ul class="simple">
+<li>category: StringField <strong>REQUIRED</strong></li>
+<li>aid: StringField <strong>REQUIRED</strong></li>
+</ul>
+<p><strong>category</strong> is the name of the locationdata collection to which the attachment refers.</p>
+<p><strong>aid</strong> is the id (not mongodb id, but the back-end&#8217;s id) of the object to which the attachment refers (&#8220;foreignkey&#8221;).</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="lbd_backend.LBD_REST_messagedata.models.Message">
+<em class="property">class </em><tt class="descclassname">lbd_backend.LBD_REST_messagedata.models.</tt><tt class="descname">Message</tt><big>(</big><em>*args</em>, <em>**values</em><big>)</big><a class="headerlink" href="#lbd_backend.LBD_REST_messagedata.models.Message" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fields:</p>
+<ul class="simple">
+<li>mid: SequenceField <strong>AUTOMATIC</strong></li>
+<li>category: StringField</li>
+<li>sender: EmailField <strong>REQUIRED</strong></li>
+<li>recipient: EmailField <strong>REQUIRED</strong></li>
+<li>attachments: ListField(EmbeddedDocumentField(Attachment))</li>
+<li>topic: StringField <strong>REQUIRED</strong></li>
+<li>message: StringField <strong>REQUIRED</strong></li>
+<li>messageread: BooleanField <strong>REQUIRED</strong></li>
+<li>timestamp: IntField <strong>REQUIRED</strong></li>
+</ul>
+<p><strong>Mid</strong> is the id of the message. Generated automatically.</p>
+<p><strong>Category</strong> is the name of the locationdata collection to which the message refers.</p>
+<p><strong>Sender</strong> is the email address of the sender.</p>
+<p><strong>Recipient</strong> is the email address of the recipient.</p>
+<p><strong>Attachment</strong> is a list of Attachment objects.</p>
+<p><strong>Topic</strong> is the topic of the message.</p>
+<p><strong>Message</strong> is the message content.</p>
+<p><strong>Messageread</strong> tells if the message has been read or not. (True or False) (False by default)</p>
+<p><strong>Timestamp</strong> tells when the message was sent. Timestamp is in seconds from Unix Epoch on January 1st, 1970 at UTC.</p>
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#"><tt class="docutils literal"><span class="pre">lbd_backend.LBD_REST_messagedata</span></tt> Message data REST</a><ul>
+<li><a class="reference internal" href="#module-MessagedataREST.views">View for handling messages</a></li>
+<li><a class="reference internal" href="#module-MessagedataREST.models">Model for message</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="locdoc.html"
+                        title="previous chapter"><tt class="docutils literal"><span class="pre">lbd_backend.LBD_REST_locationdata</span></tt> Location data REST</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="../opendata.html"
+                        title="next chapter">Code documentation: Open data handlers</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../_sources/codedoc/msgdoc.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="../opendata.html" title="Code documentation: Open data handlers"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="locdoc.html" title="lbd_backend.LBD_REST_locationdata Location data REST"
+             >previous</a> |</li>
+        <li><a href="../index.html">LBD Backend Dev documentation</a> &raquo;</li>
+          <li><a href="../codedoc.html" >Code documentation: REST</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2014, LBD Development.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+    </div>
+  </body>
+</html>

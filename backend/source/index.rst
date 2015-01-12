@@ -17,7 +17,7 @@ Welcome to LBD Backend's documentation!
    json/jsondoc
    restdoc
    codedoc
-   opendata
+   hand
 
 Indices and tables
 ==================

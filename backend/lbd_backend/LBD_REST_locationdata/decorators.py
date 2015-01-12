@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 """
+.. _locdecos:
+
 Decorators for location data REST
 +++++++++++++++++++++++++++++++++
 **This module contains the decorators for the REST handling the location data**
@@ -27,9 +29,10 @@ from RESThandlers.HandlerInterface.Factory import HandlerFactory
 def location_collection(func):
     """
     *Wrapper*
+
     Checks if the collection in the URL exists and the handler for it is installed.
 
-    Sets kwarg to the handler object for the collection.
+    Key "handlerinterface" is added to kwargs with a handler object as the value.
 
     """
     @wraps(func)
@@ -54,6 +57,8 @@ def lbd_require_login(func):
     *Wrapper*
 
     This wrapper is used for authenticating the user with Google OAuth2.
+
+    Key "lbduser" is added to kwargs with User object as value.
 
     """
     @wraps(func)

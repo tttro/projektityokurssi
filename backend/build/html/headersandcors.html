@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Headers &mdash; LBD Backend Dev documentation</title>
+    <title>Headers and CORS &mdash; LBD Backend Dev documentation</title>
     
     <link rel="stylesheet" href="_static/default.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -52,8 +52,10 @@
         <div class="bodywrapper">
           <div class="body">
             
-  <div class="section" id="headers">
-<h1>Headers<a class="headerlink" href="#headers" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="headers-and-cors">
+<h1>Headers and CORS<a class="headerlink" href="#headers-and-cors" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="headers">
+<h2>Headers<a class="headerlink" href="#headers" title="Permalink to this headline">¶</a></h2>
 <p>The back-end uses two un-standard headers for user authentication and authorization. Both of these are required for most
 functionalities.</p>
 <table border="1" class="docutils">
@@ -77,11 +79,12 @@ functionalities.</p>
 </table>
 </div>
 <div class="section" id="cors">
-<h1>CORS<a class="headerlink" href="#cors" title="Permalink to this headline">¶</a></h1>
+<h2>CORS<a class="headerlink" href="#cors" title="Permalink to this headline">¶</a></h2>
 <p>CORS or Cross-origin resource sharing mechanism allows resources to be requested from other domains. In order to be able to
 use the back-end for example with AngularJS from another domain, some headers needed to be added. This is done in cors-middleware.</p>
 <p>Cors middleware adds support for HTTP OPTIONS method and adds <em>Access-Control-Allow-Origin</em>, <em>Access-Control-Allow-Credentials</em> and
 <em>Access-Control-Allow-Headers</em> to the request.</p>
+</div>
 </div>
 
 
@@ -92,8 +95,11 @@ use the back-end for example with AngularJS from another domain, some headers ne
         <div class="sphinxsidebarwrapper">
   <h3><a href="index.html">Table Of Contents</a></h3>
   <ul>
-<li><a class="reference internal" href="#">Headers</a></li>
+<li><a class="reference internal" href="#">Headers and CORS</a><ul>
+<li><a class="reference internal" href="#headers">Headers</a></li>
 <li><a class="reference internal" href="#cors">CORS</a></li>
+</ul>
+</li>
 </ul>
 
   <h4>Previous topic</h4>

@@ -1,0 +1,402 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>lbd_backend.LBD_REST_locationdata Location data REST &mdash; LBD Backend Dev documentation</title>
+    
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     'Dev',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="LBD Backend Dev documentation" href="../index.html" />
+    <link rel="up" title="Code documentation: REST" href="../codedoc.html" />
+    <link rel="next" title="lbd_backend.LBD_REST_messagedata Message data REST" href="msgdoc.html" />
+    <link rel="prev" title="lbd_backend.LBD_REST_locationdata.decorators Location data decorators" href="decdoc.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="msgdoc.html" title="lbd_backend.LBD_REST_messagedata Message data REST"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="decdoc.html" title="lbd_backend.LBD_REST_locationdata.decorators Location data decorators"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">LBD Backend Dev documentation</a> &raquo;</li>
+          <li><a href="../codedoc.html" accesskey="U">Code documentation: REST</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="module-lbd_backend.LBD_REST_locationdata.views">
+<span id="lbd-backend-lbd-rest-locationdata-location-data-rest"></span><h1><tt class="xref py py-mod docutils literal"><span class="pre">lbd_backend.LBD_REST_locationdata</span></tt> Location data REST<a class="headerlink" href="#module-lbd_backend.LBD_REST_locationdata.views" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="module-LocationdataREST.views">
+<span id="view-for-handling-the-backend-rest-locationdata-requests"></span><h2>View for handling the backend REST locationdata requests<a class="headerlink" href="#module-LocationdataREST.views" title="Permalink to this headline">¶</a></h2>
+<p><strong>This module handles http requests related to location data.</strong></p>
+<p>For all possible HTTP statuses, see <a class="reference internal" href="../restdoc.html#restdoc"><em>REST documentation</em></a>.</p>
+<p>Status 200 is returned when request is valid and handled successfully while 400 is returned when the request conten
+is malformed or there is some other issues with the request..</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">In case of PUT and POST, status 200 does not guarantee that any data has changed in database.</p>
+</div>
+<p>Status 400 is returned when request body does not match the defined format or there is some other inconsistency in
+the request.</p>
+<p>Status 500 means that something went wrong when handling the request.</p>
+<p>Client should be able to handle these responses and should not crash in case some undefined status is returned for
+reasons unknown.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">For kwargs added by the decorators, see <a class="reference internal" href="decdoc.html#locdecos"><em>the decorator documentation</em></a>.</p>
+</div>
+<dl class="function">
+<dt id="lbd_backend.LBD_REST_locationdata.views.api">
+<tt class="descclassname">lbd_backend.LBD_REST_locationdata.views.</tt><tt class="descname">api</tt><big>(</big><em>request</em>, <em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#lbd_backend.LBD_REST_locationdata.views.api" title="Permalink to this definition">¶</a></dt>
+<dd><p>This view returns the installed open data sources as JSON.</p>
+<p><strong>Supported HTTP methods:</strong></p>
+<ul class="simple">
+<li>GET</li>
+</ul>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">HTTP response.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="lbd_backend.LBD_REST_locationdata.views.collection">
+<tt class="descclassname">lbd_backend.LBD_REST_locationdata.views.</tt><tt class="descname">collection</tt><big>(</big><em>request</em>, <em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#lbd_backend.LBD_REST_locationdata.views.collection" title="Permalink to this definition">¶</a></dt>
+<dd><p>REST main collection request handler.</p>
+<p><strong>Supported HTTP methods:</strong></p>
+<ul class="simple">
+<li>GET</li>
+<li>DELETE</li>
+<li>PUT</li>
+<li>POST</li>
+</ul>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>request</strong> &#8211; Request object</li>
+<li><strong>args</strong> &#8211; arguments</li>
+<li><strong>kwargs</strong> &#8211; Dictionary (keyword arguments). Known kwargs listed below.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p><strong>In addition to the kwargs added by the decorators, this view uses the following:</strong></p>
+<ul>
+<li><p class="first">collection (String)</p>
+<blockquote>
+<div><ul class="simple">
+<li>Location data collection name</li>
+</ul>
+</div></blockquote>
+</li>
+</ul>
+<p><strong>Supported URL parameter:</strong></p>
+<ul class="simple">
+<li>mini (True or False): Return minimum amount of data (response must still be valid GeoJSON</li>
+</ul>
+</dd></dl>
+
+<dl class="function">
+<dt id="lbd_backend.LBD_REST_locationdata.views.collection_inarea">
+<tt class="descclassname">lbd_backend.LBD_REST_locationdata.views.</tt><tt class="descname">collection_inarea</tt><big>(</big><em>request</em>, <em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#lbd_backend.LBD_REST_locationdata.views.collection_inarea" title="Permalink to this definition">¶</a></dt>
+<dd><p>REST subcollection &#8220;inarea&#8221; request handler. Handles objects inside a rectangular area.</p>
+<p><strong>Supported HTTP methods:</strong></p>
+<ul class="simple">
+<li>GET</li>
+<li>DELETE</li>
+</ul>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>request</strong> &#8211; Request object</li>
+<li><strong>args</strong> &#8211; arguments</li>
+<li><strong>kwargs</strong> &#8211; Dictionary (keyword arguments). Known kwargs listed below.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p><strong>In addition to the kwargs added by the decorators, this view uses the following:</strong></p>
+<ul>
+<li><p class="first">collection (String)</p>
+<blockquote>
+<div><ul class="simple">
+<li>Location data collection name</li>
+</ul>
+</div></blockquote>
+</li>
+</ul>
+<p><strong>Supported URL parameter:</strong></p>
+<ul class="simple">
+<li>xbottomleft (Float): The x-coordinate of the bottom left corner of the area</li>
+<li>ybottomleft (Float): The y-coordinate of the bottom left corner of the area</li>
+<li>xtopright (Float): The x-coordinate of the top right corner of the area</li>
+<li>ytopright (Float): The y-coordinate of the top right corner of the area</li>
+<li>mini (True or False): Return minimum amount of data (response must still be valid GeoJSON</li>
+</ul>
+</dd></dl>
+
+<dl class="function">
+<dt id="lbd_backend.LBD_REST_locationdata.views.collection_near">
+<tt class="descclassname">lbd_backend.LBD_REST_locationdata.views.</tt><tt class="descname">collection_near</tt><big>(</big><em>request</em>, <em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#lbd_backend.LBD_REST_locationdata.views.collection_near" title="Permalink to this definition">¶</a></dt>
+<dd><p>REST subcollection &#8220;near&#8221; request handler. Handles objects in certain range of given coordinates</p>
+<p><strong>Supported HTTP methods:</strong></p>
+<ul class="simple">
+<li>GET</li>
+<li>DELETE</li>
+</ul>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>request</strong> &#8211; Request object</li>
+<li><strong>args</strong> &#8211; arguments</li>
+<li><strong>kwargs</strong> &#8211; Dictionary (keyword arguments). Known kwargs listed below.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p><strong>In addition to the kwargs added by the decorators, this view uses the following:</strong></p>
+<ul>
+<li><p class="first">collection (String)</p>
+<blockquote>
+<div><ul class="simple">
+<li>Location data collection name</li>
+</ul>
+</div></blockquote>
+</li>
+</ul>
+<p><strong>Supported URL parameter:</strong></p>
+<ul class="simple">
+<li>latitude (Float): the latitude of the center <strong>REQUIRED</strong></li>
+<li>longitude (Float): the longitude of the center <strong>REQUIRED</strong></li>
+<li>range (Float): the radius of the area</li>
+<li>mini (True or False): Return minimum amount of data (response must still be valid GeoJSON</li>
+</ul>
+</dd></dl>
+
+<dl class="function">
+<dt id="lbd_backend.LBD_REST_locationdata.views.search_from_rest">
+<tt class="descclassname">lbd_backend.LBD_REST_locationdata.views.</tt><tt class="descname">search_from_rest</tt><big>(</big><em>request</em>, <em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#lbd_backend.LBD_REST_locationdata.views.search_from_rest" title="Permalink to this definition">¶</a></dt>
+<dd><p>This view searches for the given search phrase from the database. Currently only search from id field is supported.
+For json format, see <a class="reference internal" href="../json/search.html#searchjson"><em>Search</em></a>.</p>
+<p><strong>Supported HTTP methods:</strong></p>
+<ul class="simple">
+<li>POST</li>
+</ul>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>request</strong> &#8211; Request object</li>
+<li><strong>args</strong> &#8211; Arguments</li>
+<li><strong>kwargs</strong> &#8211; Keyword arguments</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">HTTP response</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="lbd_backend.LBD_REST_locationdata.views.single_resource">
+<tt class="descclassname">lbd_backend.LBD_REST_locationdata.views.</tt><tt class="descname">single_resource</tt><big>(</big><em>request</em>, <em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#lbd_backend.LBD_REST_locationdata.views.single_resource" title="Permalink to this definition">¶</a></dt>
+<dd><p>REST single resource (in certain collection) request handler.</p>
+<p><strong>Supported HTTP methods:</strong></p>
+<ul class="simple">
+<li>GET</li>
+<li>DELETE</li>
+<li>PUT</li>
+</ul>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>request</strong> &#8211; Request object</li>
+<li><strong>args</strong> &#8211; arguments</li>
+<li><strong>kwargs</strong> &#8211; Dictionary (keyword arguments). Known kwargs listed below.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p><strong>In addition to the kwargs added by the decorators, this view uses the following:</strong></p>
+<ul>
+<li><p class="first">collection (String)</p>
+<blockquote>
+<div><ul class="simple">
+<li>Location data collection name</li>
+</ul>
+</div></blockquote>
+</li>
+<li><p class="first">resource (String)</p>
+<blockquote>
+<div><ul class="simple">
+<li>Resource id</li>
+</ul>
+</div></blockquote>
+</li>
+</ul>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">HTTP response. Possible statuses are listed in module documentation</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<span class="target" id="module-lbd_backend.LBD_REST_locationdata.models"></span><div class="section" id="module-LocationdataREST.models">
+<span id="model-containing-the-metadata-database-structure"></span><h2>Model containing the metadata database structure<a class="headerlink" href="#module-LocationdataREST.models" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="lbd_backend.LBD_REST_locationdata.models.MetaData">
+<em class="property">class </em><tt class="descclassname">lbd_backend.LBD_REST_locationdata.models.</tt><tt class="descname">MetaData</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#lbd_backend.LBD_REST_locationdata.models.MetaData" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fields:</p>
+<ul class="simple">
+<li>status: StringField <strong>REQUIRED</strong></li>
+<li>modified: IntField <strong>REQUIRED</strong></li>
+<li>modifier: IntField <strong>REQUIRED</strong></li>
+<li>info: StringField <strong>REQUIRED</strong></li>
+</ul>
+<p><strong>Status</strong> is a string describing the status of the object. It is always required if metadata for the
+object is defined.</p>
+<p><strong>Modified</strong> is a timestamp (seconds from epoch) and is generated automatically by the system. Always required.</p>
+<p><strong>Modifier</strong> is the id of the user that modified the metadata item. Always required, inserted by the system.</p>
+<p><strong>Info</strong> is ... infofield?</p>
+<p>New fields can be dynamically added into this model.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="lbd_backend.LBD_REST_locationdata.models.MetaDocument">
+<em class="property">class </em><tt class="descclassname">lbd_backend.LBD_REST_locationdata.models.</tt><tt class="descname">MetaDocument</tt><big>(</big><em>*args</em>, <em>**values</em><big>)</big><a class="headerlink" href="#lbd_backend.LBD_REST_locationdata.models.MetaDocument" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fields</p>
+<ul class="simple">
+<li>feature_id: StringField <strong>REQUIRED</strong> <strong>UNIQUE</strong></li>
+<li>collection: StringField <strong>REQUIRED</strong></li>
+<li>meta_data: EmbeddeDocumentField(MetaData) <strong>REQUIRED</strong></li>
+</ul>
+<p><strong>Feature_id</strong> is a string that combines the metadata to an object. Simulates a foreign key.</p>
+<p><strong>Collection_id</strong> is a string that tells the collection where the metadata belongs.</p>
+<p><strong>Meta_data</strong> is an embedded document.</p>
+<p>New fields can be dynamically added into this model.</p>
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#"><tt class="docutils literal"><span class="pre">lbd_backend.LBD_REST_locationdata</span></tt> Location data REST</a><ul>
+<li><a class="reference internal" href="#module-LocationdataREST.views">View for handling the backend REST locationdata requests</a></li>
+<li><a class="reference internal" href="#module-LocationdataREST.models">Model containing the metadata database structure</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="decdoc.html"
+                        title="previous chapter"><tt class="docutils literal"><span class="pre">lbd_backend.LBD_REST_locationdata.decorators</span></tt> Location data decorators</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="msgdoc.html"
+                        title="next chapter"><tt class="docutils literal"><span class="pre">lbd_backend.LBD_REST_messagedata</span></tt> Message data REST</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../_sources/codedoc/locdoc.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="msgdoc.html" title="lbd_backend.LBD_REST_messagedata Message data REST"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="decdoc.html" title="lbd_backend.LBD_REST_locationdata.decorators Location data decorators"
+             >previous</a> |</li>
+        <li><a href="../index.html">LBD Backend Dev documentation</a> &raquo;</li>
+          <li><a href="../codedoc.html" >Code documentation: REST</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2014, LBD Development.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+    </div>
+  </body>
+</html>

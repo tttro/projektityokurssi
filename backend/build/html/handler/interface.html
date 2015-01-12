@@ -1,0 +1,226 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>RESThandlers.HandlerInterface REST Handler Interface &mdash; LBD Backend Dev documentation</title>
+    
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     'Dev',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="LBD Backend Dev documentation" href="../index.html" />
+    <link rel="up" title="Code documentation: Handlers" href="../hand.html" />
+    <link rel="next" title="RESThandlers.HandlerInterface.Factory Handler Factory" href="factory.html" />
+    <link rel="prev" title="Code documentation: Handlers" href="../hand.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="factory.html" title="RESThandlers.HandlerInterface.Factory Handler Factory"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="../hand.html" title="Code documentation: Handlers"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">LBD Backend Dev documentation</a> &raquo;</li>
+          <li><a href="../hand.html" accesskey="U">Code documentation: Handlers</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="module-RESThandlers.HandlerInterface.Exceptions">
+<span id="resthandlers-handlerinterface-rest-handler-interface"></span><h1><tt class="xref py py-mod docutils literal"><span class="pre">RESThandlers.HandlerInterface</span></tt> REST Handler Interface<a class="headerlink" href="#module-RESThandlers.HandlerInterface.Exceptions" title="Permalink to this headline">¶</a></h1>
+<span class="target" id="module-Handlers.Interface.Exceptions"></span><dl class="exception">
+<dt id="RESThandlers.HandlerInterface.Exceptions.CollectionNotInstalled">
+<em class="property">exception </em><tt class="descclassname">RESThandlers.HandlerInterface.Exceptions.</tt><tt class="descname">CollectionNotInstalled</tt><a class="headerlink" href="#RESThandlers.HandlerInterface.Exceptions.CollectionNotInstalled" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">exceptions.Exception</span></tt></p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="RESThandlers.HandlerInterface.Exceptions.GenericDBError">
+<em class="property">exception </em><tt class="descclassname">RESThandlers.HandlerInterface.Exceptions.</tt><tt class="descname">GenericDBError</tt><a class="headerlink" href="#RESThandlers.HandlerInterface.Exceptions.GenericDBError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">exceptions.Exception</span></tt></p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="RESThandlers.HandlerInterface.Exceptions.MultipleObjectsFound">
+<em class="property">exception </em><tt class="descclassname">RESThandlers.HandlerInterface.Exceptions.</tt><tt class="descname">MultipleObjectsFound</tt><a class="headerlink" href="#RESThandlers.HandlerInterface.Exceptions.MultipleObjectsFound" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">exceptions.Exception</span></tt></p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="RESThandlers.HandlerInterface.Exceptions.ObjectNotFound">
+<em class="property">exception </em><tt class="descclassname">RESThandlers.HandlerInterface.Exceptions.</tt><tt class="descname">ObjectNotFound</tt><a class="headerlink" href="#RESThandlers.HandlerInterface.Exceptions.ObjectNotFound" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">exceptions.Exception</span></tt></p>
+</dd></dl>
+
+<span class="target" id="module-RESThandlers.HandlerInterface.HandlerBaseClass"></span><span class="target" id="module-Handlers.Interface.base"></span><dl class="class">
+<dt id="RESThandlers.HandlerInterface.HandlerBaseClass.HandlerBase">
+<em class="property">class </em><tt class="descclassname">RESThandlers.HandlerInterface.HandlerBaseClass.</tt><tt class="descname">HandlerBase</tt><a class="headerlink" href="#RESThandlers.HandlerInterface.HandlerBaseClass.HandlerBase" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<dl class="method">
+<dt id="RESThandlers.HandlerInterface.HandlerBaseClass.HandlerBase.delete_all">
+<tt class="descname">delete_all</tt><big>(</big><big>)</big><a class="headerlink" href="#RESThandlers.HandlerInterface.HandlerBaseClass.HandlerBase.delete_all" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RESThandlers.HandlerInterface.HandlerBaseClass.HandlerBase.delete_item_by_id">
+<tt class="descname">delete_item_by_id</tt><big>(</big><em>iid</em><big>)</big><a class="headerlink" href="#RESThandlers.HandlerInterface.HandlerBaseClass.HandlerBase.delete_item_by_id" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RESThandlers.HandlerInterface.HandlerBaseClass.HandlerBase.delete_near">
+<tt class="descname">delete_near</tt><big>(</big><em>latitude</em>, <em>longitude</em>, <em>nrange</em><big>)</big><a class="headerlink" href="#RESThandlers.HandlerInterface.HandlerBaseClass.HandlerBase.delete_near" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RESThandlers.HandlerInterface.HandlerBaseClass.HandlerBase.get_all">
+<tt class="descname">get_all</tt><big>(</big><em>mini=False</em><big>)</big><a class="headerlink" href="#RESThandlers.HandlerInterface.HandlerBaseClass.HandlerBase.get_all" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RESThandlers.HandlerInterface.HandlerBaseClass.HandlerBase.get_by_id">
+<tt class="descname">get_by_id</tt><big>(</big><em>iid</em><big>)</big><a class="headerlink" href="#RESThandlers.HandlerInterface.HandlerBaseClass.HandlerBase.get_by_id" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RESThandlers.HandlerInterface.HandlerBaseClass.HandlerBase.get_field_names">
+<tt class="descname">get_field_names</tt><big>(</big><big>)</big><a class="headerlink" href="#RESThandlers.HandlerInterface.HandlerBaseClass.HandlerBase.get_field_names" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RESThandlers.HandlerInterface.HandlerBaseClass.HandlerBase.get_item_count">
+<tt class="descname">get_item_count</tt><big>(</big><big>)</big><a class="headerlink" href="#RESThandlers.HandlerInterface.HandlerBaseClass.HandlerBase.get_item_count" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RESThandlers.HandlerInterface.HandlerBaseClass.HandlerBase.get_near">
+<tt class="descname">get_near</tt><big>(</big><em>longitude</em>, <em>latitude</em>, <em>nrange</em><big>)</big><a class="headerlink" href="#RESThandlers.HandlerInterface.HandlerBaseClass.HandlerBase.get_near" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RESThandlers.HandlerInterface.HandlerBaseClass.HandlerBase.get_within_rectangle">
+<tt class="descname">get_within_rectangle</tt><big>(</big><em>xtop_right</em>, <em>ytop_right</em>, <em>xbottom_left</em>, <em>ybottom_left</em>, <em>mini=False</em><big>)</big><a class="headerlink" href="#RESThandlers.HandlerInterface.HandlerBaseClass.HandlerBase.get_within_rectangle" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="RESThandlers.HandlerInterface.HandlerBaseClass.HandlerBase.handler_id">
+<tt class="descname">handler_id</tt><a class="headerlink" href="#RESThandlers.HandlerInterface.HandlerBaseClass.HandlerBase.handler_id" title="Permalink to this definition">¶</a></dt>
+<dd><p>staticmethod(function) -&gt; method</p>
+<p>Convert a function to be a static method.</p>
+<p>A static method does not receive an implicit first argument.
+To declare a static method, use this idiom:</p>
+<blockquote>
+<div>class C:
+def f(arg1, arg2, ...): ...
+f = staticmethod(f)</div></blockquote>
+<p>It can be called either on the class (e.g. C.f()) or on an instance
+(e.g. C().f()).  The instance is ignored except for its class.</p>
+<p>Static methods in Python are similar to those found in Java or C++.
+For a more advanced concept, see the classmethod builtin.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RESThandlers.HandlerInterface.HandlerBaseClass.HandlerBase.insert_to_db">
+<tt class="descname">insert_to_db</tt><big>(</big><em>jsonitem</em><big>)</big><a class="headerlink" href="#RESThandlers.HandlerInterface.HandlerBaseClass.HandlerBase.insert_to_db" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RESThandlers.HandlerInterface.HandlerBaseClass.HandlerBase.search">
+<tt class="descname">search</tt><big>(</big><em>phrase</em>, <em>field</em><big>)</big><a class="headerlink" href="#RESThandlers.HandlerInterface.HandlerBaseClass.HandlerBase.search" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RESThandlers.HandlerInterface.HandlerBaseClass.HandlerBase.update_db">
+<tt class="descname">update_db</tt><big>(</big><big>)</big><a class="headerlink" href="#RESThandlers.HandlerInterface.HandlerBaseClass.HandlerBase.update_db" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="../hand.html"
+                        title="previous chapter">Code documentation: Handlers</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="factory.html"
+                        title="next chapter"><tt class="docutils literal"><span class="pre">RESThandlers.HandlerInterface.Factory</span></tt> Handler Factory</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../_sources/handler/interface.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="factory.html" title="RESThandlers.HandlerInterface.Factory Handler Factory"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="../hand.html" title="Code documentation: Handlers"
+             >previous</a> |</li>
+        <li><a href="../index.html">LBD Backend Dev documentation</a> &raquo;</li>
+          <li><a href="../hand.html" >Code documentation: Handlers</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2014, LBD Development.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+    </div>
+  </body>
+</html>
