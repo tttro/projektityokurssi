@@ -93,7 +93,6 @@ public class EditNoteActivity extends Activity {
                 Map<String, String> metaData = new HashMap<>();
                 metaData.put("status", "");
                 metaData.put("info", text);
-                Log.d("???????", "Posting new metadataevent");
                 BusHandler.getBus().post(new UpdateMapObjectEvent(new ImmutableMapObject(object.isMinimized(),
                         object.getId(), (ImmutablePointLocation)object.getPointLocation(),
                         object.getAdditionalProperties(), metaData)));

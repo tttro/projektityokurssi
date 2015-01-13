@@ -54,7 +54,7 @@
         <Button
             android:layout_width="120dp"
             android:layout_height="wrap_content"
-            android:text="COPY"
+            android:text="COPY ID"
             android:background="@color/button_background"
             android:id="@+id/copyButton"
             android:minHeight="30dp"

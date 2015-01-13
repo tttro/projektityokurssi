@@ -42,5 +42,7 @@
     <string name="title_activity_settings">SettingsActivity</string>
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_startup">StartupActivity</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_streetview">StreetviewActivity</string>
 
 </resources>

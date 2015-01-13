@@ -12,7 +12,7 @@
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Send message"
+            android:text="New message"
             android:id="@+id/title"
             android:padding="10dip"
             android:textColor="#FFF"
