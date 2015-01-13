@@ -2,6 +2,7 @@ package fi.lbd.mobile.messaging;
 
 import android.app.DialogFragment;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,6 +32,12 @@ public class SelectReceiverDialogFragment extends DialogFragment{
 
     public void setArguments(List<String> args){
         this.users = args;
+    }
+
+    @Override
+    public void onStop(){
+        super.onStop();
+        ((SendMessageActivity)getActivity()).setSelectReceiverInProgress(false);
     }
 
     @Override

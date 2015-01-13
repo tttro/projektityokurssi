@@ -49,9 +49,9 @@ public class MessageUpdateService extends Service {
         timer.scheduleAtFixedRate(
            new TimerTask() {
                public void run() {
-                   Log.d(getClass().getSimpleName(), "***** Sending a new RequestUserMessagesEvent from background service");
+                   Log.d(getClass().toString(), " Sending a new RequestUserMessagesEvent from background service");
                    BusHandler.getBus().post(new RequestUserMessagesEvent());
                }
-           }, 1000, UPDATE_INTERVAL);
+           }, 500, UPDATE_INTERVAL);
     }
 }

@@ -1,0 +1,154 @@
+.. java:import:: android.app Activity
+
+.. java:import:: android.app ListFragment
+
+.. java:import:: android.app ProgressDialog
+
+.. java:import:: android.os AsyncTask
+
+.. java:import:: android.os Bundle
+
+.. java:import:: android.util Log
+
+.. java:import:: android.view KeyEvent
+
+.. java:import:: android.view LayoutInflater
+
+.. java:import:: android.view View
+
+.. java:import:: android.view ViewGroup
+
+.. java:import:: android.view.inputmethod EditorInfo
+
+.. java:import:: android.view.inputmethod InputMethodManager
+
+.. java:import:: android.widget EditText
+
+.. java:import:: android.widget ExpandableListView
+
+.. java:import:: android.widget LinearLayout
+
+.. java:import:: android.widget TextView
+
+.. java:import:: com.google.android.gms.common GooglePlayServicesClient
+
+.. java:import:: com.squareup.otto Subscribe
+
+.. java:import:: java.util ArrayList
+
+.. java:import:: fi.lbd.mobile ListActivity
+
+.. java:import:: fi.lbd.mobile R
+
+.. java:import:: fi.lbd.mobile.adapters ListExpandableAdapter
+
+.. java:import:: fi.lbd.mobile.events BusHandler
+
+.. java:import:: fi.lbd.mobile.events RequestFailedEvent
+
+.. java:import:: fi.lbd.mobile.location ImmutablePointLocation
+
+.. java:import:: fi.lbd.mobile.location LocationHandler
+
+.. java:import:: fi.lbd.mobile.mapobjects MapObject
+
+.. java:import:: fi.lbd.mobile.mapobjects.events RequestNearObjectsEvent
+
+.. java:import:: fi.lbd.mobile.mapobjects.events ReturnNearObjectsEvent
+
+.. java:import:: fi.lbd.mobile.mapobjects.events ReturnSearchResultEvent
+
+.. java:import:: fi.lbd.mobile.mapobjects.events SearchObjectsEvent
+
+ObjectListFragment
+==================
+
+.. java:package:: fi.lbd.mobile.fragments
+   :noindex:
+
+.. java:type:: public class ObjectListFragment extends ListFragment
+
+   Fragment that shows objects using an expandable list view. Receives MapObjects from ObjectRepositoryService via OTTO-bus. Uses LocationHandler to get user location. Created by Tommi & Ossi
+
+Methods
+-------
+hideCursor
+^^^^^^^^^^
+
+.. java:method:: public void hideCursor()
+   :outertype: ObjectListFragment
+
+hideKeyBoard
+^^^^^^^^^^^^
+
+.. java:method:: public void hideKeyBoard()
+   :outertype: ObjectListFragment
+
+newInstance
+^^^^^^^^^^^
+
+.. java:method:: public static ObjectListFragment newInstance(LocationHandler locationHandler)
+   :outertype: ObjectListFragment
+
+onCreate
+^^^^^^^^
+
+.. java:method:: @Override public void onCreate(Bundle savedInstanceState)
+   :outertype: ObjectListFragment
+
+onCreateView
+^^^^^^^^^^^^
+
+.. java:method:: @Override public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
+   :outertype: ObjectListFragment
+
+onEvent
+^^^^^^^
+
+.. java:method:: @Subscribe public void onEvent(ReturnNearObjectsEvent event)
+   :outertype: ObjectListFragment
+
+   Receives nearest objects from BackendHandler by OTTO bus. Updates the list view and status bar accordingly.
+
+onEvent
+^^^^^^^
+
+.. java:method:: @Subscribe public void onEvent(ReturnSearchResultEvent event)
+   :outertype: ObjectListFragment
+
+onEvent
+^^^^^^^
+
+.. java:method:: @Subscribe public void onEvent(RequestFailedEvent event)
+   :outertype: ObjectListFragment
+
+onPause
+^^^^^^^
+
+.. java:method:: @Override public void onPause()
+   :outertype: ObjectListFragment
+
+onResume
+^^^^^^^^
+
+.. java:method:: @Override public void onResume()
+   :outertype: ObjectListFragment
+
+performSearch
+^^^^^^^^^^^^^
+
+.. java:method:: public void performSearch(CharSequence searchParameter)
+   :outertype: ObjectListFragment
+
+setLocationHandler
+^^^^^^^^^^^^^^^^^^
+
+.. java:method:: public void setLocationHandler(LocationHandler locationHandler)
+   :outertype: ObjectListFragment
+
+showNearestObjects
+^^^^^^^^^^^^^^^^^^
+
+.. java:method:: public void showNearestObjects()
+   :outertype: ObjectListFragment
+

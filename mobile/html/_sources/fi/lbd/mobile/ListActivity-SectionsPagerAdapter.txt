@@ -1,0 +1,91 @@
+.. java:import:: android.app Activity
+
+.. java:import:: android.app Fragment
+
+.. java:import:: android.app FragmentManager
+
+.. java:import:: android.content Context
+
+.. java:import:: android.content Intent
+
+.. java:import:: android.os Bundle
+
+.. java:import:: android.support.v13.app FragmentPagerAdapter
+
+.. java:import:: android.support.v4.view ViewPager
+
+.. java:import:: android.util Log
+
+.. java:import:: android.util SparseArray
+
+.. java:import:: android.view Menu
+
+.. java:import:: android.view MenuItem
+
+.. java:import:: android.view View
+
+.. java:import:: android.view.inputmethod InputMethodManager
+
+.. java:import:: java.lang.ref WeakReference
+
+.. java:import:: java.util ArrayDeque
+
+.. java:import:: java.util ArrayList
+
+.. java:import:: java.util List
+
+.. java:import:: java.util Locale
+
+.. java:import:: fi.lbd.mobile.events BusHandler
+
+.. java:import:: fi.lbd.mobile.mapobjects MapObjectSelectionManager
+
+.. java:import:: fi.lbd.mobile.mapobjects.events SelectMapObjectEvent
+
+.. java:import:: fi.lbd.mobile.fragments GoogleMapFragment
+
+.. java:import:: fi.lbd.mobile.fragments MessageFragment
+
+.. java:import:: fi.lbd.mobile.fragments ObjectListFragment
+
+.. java:import:: fi.lbd.mobile.location LocationHandler
+
+.. java:import:: fi.lbd.mobile.mapobjects MapObject
+
+ListActivity.SectionsPagerAdapter
+=================================
+
+.. java:package:: fi.lbd.mobile
+   :noindex:
+
+.. java:type:: public class SectionsPagerAdapter extends FragmentPagerAdapter
+   :outertype: ListActivity
+
+Constructors
+------------
+SectionsPagerAdapter
+^^^^^^^^^^^^^^^^^^^^
+
+.. java:constructor:: public SectionsPagerAdapter(FragmentManager fm, LocationHandler locationHandler)
+   :outertype: ListActivity.SectionsPagerAdapter
+
+Methods
+-------
+getCount
+^^^^^^^^
+
+.. java:method:: @Override public int getCount()
+   :outertype: ListActivity.SectionsPagerAdapter
+
+getItem
+^^^^^^^
+
+.. java:method:: @Override public Fragment getItem(int position)
+   :outertype: ListActivity.SectionsPagerAdapter
+
+getPageTitle
+^^^^^^^^^^^^
+
+.. java:method:: @Override public CharSequence getPageTitle(int position)
+   :outertype: ListActivity.SectionsPagerAdapter
+

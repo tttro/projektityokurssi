@@ -1,0 +1,35 @@
+.. java:import:: java.util List
+
+.. java:import:: java.util.logging Handler
+
+.. java:import:: fi.lbd.mobile.mapobjects MapObject
+
+HandlerResponse.Status
+======================
+
+.. java:package:: fi.lbd.mobile.backendhandler
+   :noindex:
+
+.. java:type:: public enum Status
+   :outertype: HandlerResponse
+
+Enum Constants
+--------------
+Cached
+^^^^^^
+
+.. java:field:: public static final HandlerResponse.Status Cached
+   :outertype: HandlerResponse.Status
+
+Failed
+^^^^^^
+
+.. java:field:: public static final HandlerResponse.Status Failed
+   :outertype: HandlerResponse.Status
+
+Succeeded
+^^^^^^^^^
+
+.. java:field:: public static final HandlerResponse.Status Succeeded
+   :outertype: HandlerResponse.Status
+

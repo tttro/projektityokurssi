@@ -1,0 +1,589 @@
+R.styleable
+===========
+
+.. java:package:: fi.lbd.mobile
+   :noindex:
+
+.. java:type:: public static final class styleable
+   :outertype: R
+
+Fields
+------
+AdsAttrs
+^^^^^^^^
+
+.. java:field:: public static final int[] AdsAttrs
+   :outertype: R.styleable
+
+   Attributes that can be used with a AdsAttrs.
+
+   Includes the following attributes:
+
+   +-------------------------------+-------------+
+   | Attribute                     | Description |
+   +===============================+=============+
+   | \ ``fi.lbd.mobile:adSize``\   |             |
+   +-------------------------------+-------------+
+   | \ ``fi.lbd.mobile:adSizes``\  |             |
+   +-------------------------------+-------------+
+   | \ ``fi.lbd.mobile:adUnitId``\ |             |
+   +-------------------------------+-------------+
+
+   **See also:** :java:ref:`.AdsAttrs_adSize`, :java:ref:`.AdsAttrs_adSizes`, :java:ref:`.AdsAttrs_adUnitId`
+
+AdsAttrs_adSize
+^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int AdsAttrs_adSize
+   :outertype: R.styleable
+
+   This symbol is the offset where the \ :java:ref:`fi.lbd.mobile.R.attr.adSize`\  attribute's value can be found in the \ :java:ref:`AdsAttrs`\  array.
+
+   Must be a string value, using '\\;' to escape characters such as '\\n' or '\\uxxxx' for a unicode character.
+
+   This may also be a reference to a resource (in the form "\ ``@[package:]type:name``\ ") or theme attribute (in the form "\ ``?[package:][type:]name``\ ") containing a value of this type.
+
+AdsAttrs_adSizes
+^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int AdsAttrs_adSizes
+   :outertype: R.styleable
+
+   This symbol is the offset where the \ :java:ref:`fi.lbd.mobile.R.attr.adSizes`\  attribute's value can be found in the \ :java:ref:`AdsAttrs`\  array.
+
+   Must be a string value, using '\\;' to escape characters such as '\\n' or '\\uxxxx' for a unicode character.
+
+   This may also be a reference to a resource (in the form "\ ``@[package:]type:name``\ ") or theme attribute (in the form "\ ``?[package:][type:]name``\ ") containing a value of this type.
+
+AdsAttrs_adUnitId
+^^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int AdsAttrs_adUnitId
+   :outertype: R.styleable
+
+   This symbol is the offset where the \ :java:ref:`fi.lbd.mobile.R.attr.adUnitId`\  attribute's value can be found in the \ :java:ref:`AdsAttrs`\  array.
+
+   Must be a string value, using '\\;' to escape characters such as '\\n' or '\\uxxxx' for a unicode character.
+
+   This may also be a reference to a resource (in the form "\ ``@[package:]type:name``\ ") or theme attribute (in the form "\ ``?[package:][type:]name``\ ") containing a value of this type.
+
+MapAttrs
+^^^^^^^^
+
+.. java:field:: public static final int[] MapAttrs
+   :outertype: R.styleable
+
+   Attributes that can be used with a MapAttrs.
+
+   Includes the following attributes:
+
+   +---------------------------------------+-------------+
+   | Attribute                             | Description |
+   +=======================================+=============+
+   | \ ``fi.lbd.mobile:cameraBearing``\    |             |
+   +---------------------------------------+-------------+
+   | \ ``fi.lbd.mobile:cameraTargetLat``\  |             |
+   +---------------------------------------+-------------+
+   | \ ``fi.lbd.mobile:cameraTargetLng``\  |             |
+   +---------------------------------------+-------------+
+   | \ ``fi.lbd.mobile:cameraTilt``\       |             |
+   +---------------------------------------+-------------+
+   | \ ``fi.lbd.mobile:cameraZoom``\       |             |
+   +---------------------------------------+-------------+
+   | \ ``fi.lbd.mobile:mapType``\          |             |
+   +---------------------------------------+-------------+
+   | \ ``fi.lbd.mobile:uiCompass``\        |             |
+   +---------------------------------------+-------------+
+   | \ ``fi.lbd.mobile:uiRotateGestures``\ |             |
+   +---------------------------------------+-------------+
+   | \ ``fi.lbd.mobile:uiScrollGestures``\ |             |
+   +---------------------------------------+-------------+
+   | \ ``fi.lbd.mobile:uiTiltGestures``\   |             |
+   +---------------------------------------+-------------+
+   | \ ``fi.lbd.mobile:uiZoomControls``\   |             |
+   +---------------------------------------+-------------+
+   | \ ``fi.lbd.mobile:uiZoomGestures``\   |             |
+   +---------------------------------------+-------------+
+   | \ ``fi.lbd.mobile:useViewLifecycle``\ |             |
+   +---------------------------------------+-------------+
+   | \ ``fi.lbd.mobile:zOrderOnTop``\      |             |
+   +---------------------------------------+-------------+
+
+   **See also:** :java:ref:`.MapAttrs_cameraBearing`, :java:ref:`.MapAttrs_cameraTargetLat`, :java:ref:`.MapAttrs_cameraTargetLng`, :java:ref:`.MapAttrs_cameraTilt`, :java:ref:`.MapAttrs_cameraZoom`, :java:ref:`.MapAttrs_mapType`, :java:ref:`.MapAttrs_uiCompass`, :java:ref:`.MapAttrs_uiRotateGestures`, :java:ref:`.MapAttrs_uiScrollGestures`, :java:ref:`.MapAttrs_uiTiltGestures`, :java:ref:`.MapAttrs_uiZoomControls`, :java:ref:`.MapAttrs_uiZoomGestures`, :java:ref:`.MapAttrs_useViewLifecycle`, :java:ref:`.MapAttrs_zOrderOnTop`
+
+MapAttrs_cameraBearing
+^^^^^^^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int MapAttrs_cameraBearing
+   :outertype: R.styleable
+
+   This symbol is the offset where the \ :java:ref:`fi.lbd.mobile.R.attr.cameraBearing`\  attribute's value can be found in the \ :java:ref:`MapAttrs`\  array.
+
+   Must be a floating point value, such as "\ ``1.2``\ ".
+
+   This may also be a reference to a resource (in the form "\ ``@[package:]type:name``\ ") or theme attribute (in the form "\ ``?[package:][type:]name``\ ") containing a value of this type.
+
+MapAttrs_cameraTargetLat
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int MapAttrs_cameraTargetLat
+   :outertype: R.styleable
+
+   This symbol is the offset where the \ :java:ref:`fi.lbd.mobile.R.attr.cameraTargetLat`\  attribute's value can be found in the \ :java:ref:`MapAttrs`\  array.
+
+   Must be a floating point value, such as "\ ``1.2``\ ".
+
+   This may also be a reference to a resource (in the form "\ ``@[package:]type:name``\ ") or theme attribute (in the form "\ ``?[package:][type:]name``\ ") containing a value of this type.
+
+MapAttrs_cameraTargetLng
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int MapAttrs_cameraTargetLng
+   :outertype: R.styleable
+
+   This symbol is the offset where the \ :java:ref:`fi.lbd.mobile.R.attr.cameraTargetLng`\  attribute's value can be found in the \ :java:ref:`MapAttrs`\  array.
+
+   Must be a floating point value, such as "\ ``1.2``\ ".
+
+   This may also be a reference to a resource (in the form "\ ``@[package:]type:name``\ ") or theme attribute (in the form "\ ``?[package:][type:]name``\ ") containing a value of this type.
+
+MapAttrs_cameraTilt
+^^^^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int MapAttrs_cameraTilt
+   :outertype: R.styleable
+
+   This symbol is the offset where the \ :java:ref:`fi.lbd.mobile.R.attr.cameraTilt`\  attribute's value can be found in the \ :java:ref:`MapAttrs`\  array.
+
+   Must be a floating point value, such as "\ ``1.2``\ ".
+
+   This may also be a reference to a resource (in the form "\ ``@[package:]type:name``\ ") or theme attribute (in the form "\ ``?[package:][type:]name``\ ") containing a value of this type.
+
+MapAttrs_cameraZoom
+^^^^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int MapAttrs_cameraZoom
+   :outertype: R.styleable
+
+   This symbol is the offset where the \ :java:ref:`fi.lbd.mobile.R.attr.cameraZoom`\  attribute's value can be found in the \ :java:ref:`MapAttrs`\  array.
+
+   Must be a floating point value, such as "\ ``1.2``\ ".
+
+   This may also be a reference to a resource (in the form "\ ``@[package:]type:name``\ ") or theme attribute (in the form "\ ``?[package:][type:]name``\ ") containing a value of this type.
+
+MapAttrs_mapType
+^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int MapAttrs_mapType
+   :outertype: R.styleable
+
+   This symbol is the offset where the \ :java:ref:`fi.lbd.mobile.R.attr.mapType`\  attribute's value can be found in the \ :java:ref:`MapAttrs`\  array.
+
+   Must be one of the following constant values.
+
+   +------------------+-------+-------------+
+   | Constant         | Value | Description |
+   +==================+=======+=============+
+   | \ ``none``\      | 0     |             |
+   +------------------+-------+-------------+
+   | \ ``normal``\    | 1     |             |
+   +------------------+-------+-------------+
+   | \ ``satellite``\ | 2     |             |
+   +------------------+-------+-------------+
+   | \ ``terrain``\   | 3     |             |
+   +------------------+-------+-------------+
+   | \ ``hybrid``\    | 4     |             |
+   +------------------+-------+-------------+
+
+MapAttrs_uiCompass
+^^^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int MapAttrs_uiCompass
+   :outertype: R.styleable
+
+   This symbol is the offset where the \ :java:ref:`fi.lbd.mobile.R.attr.uiCompass`\  attribute's value can be found in the \ :java:ref:`MapAttrs`\  array.
+
+   Must be a boolean value, either "\ ``true``\ " or "\ ``false``\ ".
+
+   This may also be a reference to a resource (in the form "\ ``@[package:]type:name``\ ") or theme attribute (in the form "\ ``?[package:][type:]name``\ ") containing a value of this type.
+
+MapAttrs_uiRotateGestures
+^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int MapAttrs_uiRotateGestures
+   :outertype: R.styleable
+
+   This symbol is the offset where the \ :java:ref:`fi.lbd.mobile.R.attr.uiRotateGestures`\  attribute's value can be found in the \ :java:ref:`MapAttrs`\  array.
+
+   Must be a boolean value, either "\ ``true``\ " or "\ ``false``\ ".
+
+   This may also be a reference to a resource (in the form "\ ``@[package:]type:name``\ ") or theme attribute (in the form "\ ``?[package:][type:]name``\ ") containing a value of this type.
+
+MapAttrs_uiScrollGestures
+^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int MapAttrs_uiScrollGestures
+   :outertype: R.styleable
+
+   This symbol is the offset where the \ :java:ref:`fi.lbd.mobile.R.attr.uiScrollGestures`\  attribute's value can be found in the \ :java:ref:`MapAttrs`\  array.
+
+   Must be a boolean value, either "\ ``true``\ " or "\ ``false``\ ".
+
+   This may also be a reference to a resource (in the form "\ ``@[package:]type:name``\ ") or theme attribute (in the form "\ ``?[package:][type:]name``\ ") containing a value of this type.
+
+MapAttrs_uiTiltGestures
+^^^^^^^^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int MapAttrs_uiTiltGestures
+   :outertype: R.styleable
+
+   This symbol is the offset where the \ :java:ref:`fi.lbd.mobile.R.attr.uiTiltGestures`\  attribute's value can be found in the \ :java:ref:`MapAttrs`\  array.
+
+   Must be a boolean value, either "\ ``true``\ " or "\ ``false``\ ".
+
+   This may also be a reference to a resource (in the form "\ ``@[package:]type:name``\ ") or theme attribute (in the form "\ ``?[package:][type:]name``\ ") containing a value of this type.
+
+MapAttrs_uiZoomControls
+^^^^^^^^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int MapAttrs_uiZoomControls
+   :outertype: R.styleable
+
+   This symbol is the offset where the \ :java:ref:`fi.lbd.mobile.R.attr.uiZoomControls`\  attribute's value can be found in the \ :java:ref:`MapAttrs`\  array.
+
+   Must be a boolean value, either "\ ``true``\ " or "\ ``false``\ ".
+
+   This may also be a reference to a resource (in the form "\ ``@[package:]type:name``\ ") or theme attribute (in the form "\ ``?[package:][type:]name``\ ") containing a value of this type.
+
+MapAttrs_uiZoomGestures
+^^^^^^^^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int MapAttrs_uiZoomGestures
+   :outertype: R.styleable
+
+   This symbol is the offset where the \ :java:ref:`fi.lbd.mobile.R.attr.uiZoomGestures`\  attribute's value can be found in the \ :java:ref:`MapAttrs`\  array.
+
+   Must be a boolean value, either "\ ``true``\ " or "\ ``false``\ ".
+
+   This may also be a reference to a resource (in the form "\ ``@[package:]type:name``\ ") or theme attribute (in the form "\ ``?[package:][type:]name``\ ") containing a value of this type.
+
+MapAttrs_useViewLifecycle
+^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int MapAttrs_useViewLifecycle
+   :outertype: R.styleable
+
+   This symbol is the offset where the \ :java:ref:`fi.lbd.mobile.R.attr.useViewLifecycle`\  attribute's value can be found in the \ :java:ref:`MapAttrs`\  array.
+
+   Must be a boolean value, either "\ ``true``\ " or "\ ``false``\ ".
+
+   This may also be a reference to a resource (in the form "\ ``@[package:]type:name``\ ") or theme attribute (in the form "\ ``?[package:][type:]name``\ ") containing a value of this type.
+
+MapAttrs_zOrderOnTop
+^^^^^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int MapAttrs_zOrderOnTop
+   :outertype: R.styleable
+
+   This symbol is the offset where the \ :java:ref:`fi.lbd.mobile.R.attr.zOrderOnTop`\  attribute's value can be found in the \ :java:ref:`MapAttrs`\  array.
+
+   Must be a boolean value, either "\ ``true``\ " or "\ ``false``\ ".
+
+   This may also be a reference to a resource (in the form "\ ``@[package:]type:name``\ ") or theme attribute (in the form "\ ``?[package:][type:]name``\ ") containing a value of this type.
+
+WalletFragmentOptions
+^^^^^^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int[] WalletFragmentOptions
+   :outertype: R.styleable
+
+   Attributes that can be used with a WalletFragmentOptions.
+
+   Includes the following attributes:
+
+   +------------------------------------+-------------+
+   | Attribute                          | Description |
+   +====================================+=============+
+   | \ ``fi.lbd.mobile:appTheme``\      |             |
+   +------------------------------------+-------------+
+   | \ ``fi.lbd.mobile:environment``\   |             |
+   +------------------------------------+-------------+
+   | \ ``fi.lbd.mobile:fragmentMode``\  |             |
+   +------------------------------------+-------------+
+   | \ ``fi.lbd.mobile:fragmentStyle``\ |             |
+   +------------------------------------+-------------+
+
+   **See also:** :java:ref:`.WalletFragmentOptions_appTheme`, :java:ref:`.WalletFragmentOptions_environment`, :java:ref:`.WalletFragmentOptions_fragmentMode`, :java:ref:`.WalletFragmentOptions_fragmentStyle`
+
+WalletFragmentOptions_appTheme
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int WalletFragmentOptions_appTheme
+   :outertype: R.styleable
+
+   This symbol is the offset where the \ :java:ref:`fi.lbd.mobile.R.attr.appTheme`\  attribute's value can be found in the \ :java:ref:`WalletFragmentOptions`\  array.
+
+   Must be one of the following constant values.
+
+   +-------------------+-------+-------------+
+   | Constant          | Value | Description |
+   +===================+=======+=============+
+   | \ ``holo_dark``\  | 0     |             |
+   +-------------------+-------+-------------+
+   | \ ``holo_light``\ | 1     |             |
+   +-------------------+-------+-------------+
+
+WalletFragmentOptions_environment
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int WalletFragmentOptions_environment
+   :outertype: R.styleable
+
+   This symbol is the offset where the \ :java:ref:`fi.lbd.mobile.R.attr.environment`\  attribute's value can be found in the \ :java:ref:`WalletFragmentOptions`\  array.
+
+   Must be one of the following constant values.
+
+   +-----------------------+-------+-------------+
+   | Constant              | Value | Description |
+   +=======================+=======+=============+
+   | \ ``production``\     | 1     |             |
+   +-----------------------+-------+-------------+
+   | \ ``sandbox``\        | 0     |             |
+   +-----------------------+-------+-------------+
+   | \ ``strict_sandbox``\ | 2     |             |
+   +-----------------------+-------+-------------+
+
+WalletFragmentOptions_fragmentMode
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int WalletFragmentOptions_fragmentMode
+   :outertype: R.styleable
+
+   This symbol is the offset where the \ :java:ref:`fi.lbd.mobile.R.attr.fragmentMode`\  attribute's value can be found in the \ :java:ref:`WalletFragmentOptions`\  array.
+
+   Must be one of the following constant values.
+
+   +-------------------------+-------+-------------+
+   | Constant                | Value | Description |
+   +=========================+=======+=============+
+   | \ ``buyButton``\        | 1     |             |
+   +-------------------------+-------+-------------+
+   | \ ``selectionDetails``\ | 2     |             |
+   +-------------------------+-------+-------------+
+
+WalletFragmentOptions_fragmentStyle
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int WalletFragmentOptions_fragmentStyle
+   :outertype: R.styleable
+
+   This symbol is the offset where the \ :java:ref:`fi.lbd.mobile.R.attr.fragmentStyle`\  attribute's value can be found in the \ :java:ref:`WalletFragmentOptions`\  array.
+
+   Must be a reference to another resource, in the form "\ ``@[+][package:]type:name``\ " or to a theme attribute in the form "\ ``?[package:][type:]name``\ ".
+
+WalletFragmentStyle
+^^^^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int[] WalletFragmentStyle
+   :outertype: R.styleable
+
+   Attributes that can be used with a WalletFragmentStyle.
+
+   Includes the following attributes:
+
+   +--------------------------------------------------------------+-------------+
+   | Attribute                                                    | Description |
+   +==============================================================+=============+
+   | \ ``fi.lbd.mobile:buyButtonAppearance``\                     |             |
+   +--------------------------------------------------------------+-------------+
+   | \ ``fi.lbd.mobile:buyButtonHeight``\                         |             |
+   +--------------------------------------------------------------+-------------+
+   | \ ``fi.lbd.mobile:buyButtonText``\                           |             |
+   +--------------------------------------------------------------+-------------+
+   | \ ``fi.lbd.mobile:buyButtonWidth``\                          |             |
+   +--------------------------------------------------------------+-------------+
+   | \ ``fi.lbd.mobile:maskedWalletDetailsBackground``\           |             |
+   +--------------------------------------------------------------+-------------+
+   | \ ``fi.lbd.mobile:maskedWalletDetailsButtonBackground``\     |             |
+   +--------------------------------------------------------------+-------------+
+   | \ ``fi.lbd.mobile:maskedWalletDetailsButtonTextAppearance``\ |             |
+   +--------------------------------------------------------------+-------------+
+   | \ ``fi.lbd.mobile:maskedWalletDetailsHeaderTextAppearance``\ |             |
+   +--------------------------------------------------------------+-------------+
+   | \ ``fi.lbd.mobile:maskedWalletDetailsLogoImageType``\        |             |
+   +--------------------------------------------------------------+-------------+
+   | \ ``fi.lbd.mobile:maskedWalletDetailsLogoTextColor``\        |             |
+   +--------------------------------------------------------------+-------------+
+   | \ ``fi.lbd.mobile:maskedWalletDetailsTextAppearance``\       |             |
+   +--------------------------------------------------------------+-------------+
+
+   **See also:** :java:ref:`.WalletFragmentStyle_buyButtonAppearance`, :java:ref:`.WalletFragmentStyle_buyButtonHeight`, :java:ref:`.WalletFragmentStyle_buyButtonText`, :java:ref:`.WalletFragmentStyle_buyButtonWidth`, :java:ref:`.WalletFragmentStyle_maskedWalletDetailsBackground`, :java:ref:`.WalletFragmentStyle_maskedWalletDetailsButtonBackground`, :java:ref:`.WalletFragmentStyle_maskedWalletDetailsButtonTextAppearance`, :java:ref:`.WalletFragmentStyle_maskedWalletDetailsHeaderTextAppearance`, :java:ref:`.WalletFragmentStyle_maskedWalletDetailsLogoImageType`, :java:ref:`.WalletFragmentStyle_maskedWalletDetailsLogoTextColor`, :java:ref:`.WalletFragmentStyle_maskedWalletDetailsTextAppearance`
+
+WalletFragmentStyle_buyButtonAppearance
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int WalletFragmentStyle_buyButtonAppearance
+   :outertype: R.styleable
+
+   This symbol is the offset where the \ :java:ref:`fi.lbd.mobile.R.attr.buyButtonAppearance`\  attribute's value can be found in the \ :java:ref:`WalletFragmentStyle`\  array.
+
+   Must be one of the following constant values.
+
+   +-------------------+-------+-------------+
+   | Constant          | Value | Description |
+   +===================+=======+=============+
+   | \ ``classic``\    | 1     |             |
+   +-------------------+-------+-------------+
+   | \ ``grayscale``\  | 2     |             |
+   +-------------------+-------+-------------+
+   | \ ``monochrome``\ | 3     |             |
+   +-------------------+-------+-------------+
+
+WalletFragmentStyle_buyButtonHeight
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int WalletFragmentStyle_buyButtonHeight
+   :outertype: R.styleable
+
+   This symbol is the offset where the \ :java:ref:`fi.lbd.mobile.R.attr.buyButtonHeight`\  attribute's value can be found in the \ :java:ref:`WalletFragmentStyle`\  array.
+
+   May be a dimension value, which is a floating point number appended with a unit such as "\ ``14.5sp``\ ". Available units are: px (pixels), dp (density-independent pixels), sp (scaled pixels based on preferred font size), in (inches), mm (millimeters).
+
+   This may also be a reference to a resource (in the form "\ ``@[package:]type:name``\ ") or theme attribute (in the form "\ ``?[package:][type:]name``\ ") containing a value of this type.
+
+   May be one of the following constant values.
+
+   +---------------------+-------+-------------+
+   | Constant            | Value | Description |
+   +=====================+=======+=============+
+   | \ ``match_parent``\ | -1    |             |
+   +---------------------+-------+-------------+
+   | \ ``wrap_content``\ | -2    |             |
+   +---------------------+-------+-------------+
+
+WalletFragmentStyle_buyButtonText
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int WalletFragmentStyle_buyButtonText
+   :outertype: R.styleable
+
+   This symbol is the offset where the \ :java:ref:`fi.lbd.mobile.R.attr.buyButtonText`\  attribute's value can be found in the \ :java:ref:`WalletFragmentStyle`\  array.
+
+   Must be one of the following constant values.
+
+   +------------------------+-------+-------------+
+   | Constant               | Value | Description |
+   +========================+=======+=============+
+   | \ ``buy_with_google``\ | 1     |             |
+   +------------------------+-------+-------------+
+   | \ ``buy_now``\         | 2     |             |
+   +------------------------+-------+-------------+
+   | \ ``book_now``\        | 3     |             |
+   +------------------------+-------+-------------+
+
+WalletFragmentStyle_buyButtonWidth
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int WalletFragmentStyle_buyButtonWidth
+   :outertype: R.styleable
+
+   This symbol is the offset where the \ :java:ref:`fi.lbd.mobile.R.attr.buyButtonWidth`\  attribute's value can be found in the \ :java:ref:`WalletFragmentStyle`\  array.
+
+   May be a dimension value, which is a floating point number appended with a unit such as "\ ``14.5sp``\ ". Available units are: px (pixels), dp (density-independent pixels), sp (scaled pixels based on preferred font size), in (inches), mm (millimeters).
+
+   This may also be a reference to a resource (in the form "\ ``@[package:]type:name``\ ") or theme attribute (in the form "\ ``?[package:][type:]name``\ ") containing a value of this type.
+
+   May be one of the following constant values.
+
+   +---------------------+-------+-------------+
+   | Constant            | Value | Description |
+   +=====================+=======+=============+
+   | \ ``match_parent``\ | -1    |             |
+   +---------------------+-------+-------------+
+   | \ ``wrap_content``\ | -2    |             |
+   +---------------------+-------+-------------+
+
+WalletFragmentStyle_maskedWalletDetailsBackground
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int WalletFragmentStyle_maskedWalletDetailsBackground
+   :outertype: R.styleable
+
+   This symbol is the offset where the \ :java:ref:`fi.lbd.mobile.R.attr.maskedWalletDetailsBackground`\  attribute's value can be found in the \ :java:ref:`WalletFragmentStyle`\  array.
+
+   May be a reference to another resource, in the form "\ ``@[+][package:]type:name``\ " or to a theme attribute in the form "\ ``?[package:][type:]name``\ ".
+
+   May be a color value, in the form of "\ ``#rgb``\ ", "\ ``#argb``\ ", "\ ``#rrggbb``\ ", or "\ ``#aarrggbb``\ ".
+
+WalletFragmentStyle_maskedWalletDetailsButtonBackground
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int WalletFragmentStyle_maskedWalletDetailsButtonBackground
+   :outertype: R.styleable
+
+   This symbol is the offset where the \ :java:ref:`fi.lbd.mobile.R.attr.maskedWalletDetailsButtonBackground`\  attribute's value can be found in the \ :java:ref:`WalletFragmentStyle`\  array.
+
+   May be a reference to another resource, in the form "\ ``@[+][package:]type:name``\ " or to a theme attribute in the form "\ ``?[package:][type:]name``\ ".
+
+   May be a color value, in the form of "\ ``#rgb``\ ", "\ ``#argb``\ ", "\ ``#rrggbb``\ ", or "\ ``#aarrggbb``\ ".
+
+WalletFragmentStyle_maskedWalletDetailsButtonTextAppearance
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int WalletFragmentStyle_maskedWalletDetailsButtonTextAppearance
+   :outertype: R.styleable
+
+   This symbol is the offset where the \ :java:ref:`fi.lbd.mobile.R.attr.maskedWalletDetailsButtonTextAppearance`\  attribute's value can be found in the \ :java:ref:`WalletFragmentStyle`\  array.
+
+   Must be a reference to another resource, in the form "\ ``@[+][package:]type:name``\ " or to a theme attribute in the form "\ ``?[package:][type:]name``\ ".
+
+WalletFragmentStyle_maskedWalletDetailsHeaderTextAppearance
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int WalletFragmentStyle_maskedWalletDetailsHeaderTextAppearance
+   :outertype: R.styleable
+
+   This symbol is the offset where the \ :java:ref:`fi.lbd.mobile.R.attr.maskedWalletDetailsHeaderTextAppearance`\  attribute's value can be found in the \ :java:ref:`WalletFragmentStyle`\  array.
+
+   Must be a reference to another resource, in the form "\ ``@[+][package:]type:name``\ " or to a theme attribute in the form "\ ``?[package:][type:]name``\ ".
+
+WalletFragmentStyle_maskedWalletDetailsLogoImageType
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int WalletFragmentStyle_maskedWalletDetailsLogoImageType
+   :outertype: R.styleable
+
+   This symbol is the offset where the \ :java:ref:`fi.lbd.mobile.R.attr.maskedWalletDetailsLogoImageType`\  attribute's value can be found in the \ :java:ref:`WalletFragmentStyle`\  array.
+
+   Must be one of the following constant values.
+
+   +-------------------+-------+-------------+
+   | Constant          | Value | Description |
+   +===================+=======+=============+
+   | \ ``classic``\    | 1     |             |
+   +-------------------+-------+-------------+
+   | \ ``monochrome``\ | 2     |             |
+   +-------------------+-------+-------------+
+
+WalletFragmentStyle_maskedWalletDetailsLogoTextColor
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int WalletFragmentStyle_maskedWalletDetailsLogoTextColor
+   :outertype: R.styleable
+
+   This symbol is the offset where the \ :java:ref:`fi.lbd.mobile.R.attr.maskedWalletDetailsLogoTextColor`\  attribute's value can be found in the \ :java:ref:`WalletFragmentStyle`\  array.
+
+   Must be a color value, in the form of "\ ``#rgb``\ ", "\ ``#argb``\ ", "\ ``#rrggbb``\ ", or "\ ``#aarrggbb``\ ".
+
+   This may also be a reference to a resource (in the form "\ ``@[package:]type:name``\ ") or theme attribute (in the form "\ ``?[package:][type:]name``\ ") containing a value of this type.
+
+WalletFragmentStyle_maskedWalletDetailsTextAppearance
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int WalletFragmentStyle_maskedWalletDetailsTextAppearance
+   :outertype: R.styleable
+
+   This symbol is the offset where the \ :java:ref:`fi.lbd.mobile.R.attr.maskedWalletDetailsTextAppearance`\  attribute's value can be found in the \ :java:ref:`WalletFragmentStyle`\  array.
+
+   Must be a reference to another resource, in the form "\ ``@[+][package:]type:name``\ " or to a theme attribute in the form "\ ``?[package:][type:]name``\ ".
+

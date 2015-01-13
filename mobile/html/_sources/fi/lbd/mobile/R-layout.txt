@@ -1,0 +1,101 @@
+R.layout
+========
+
+.. java:package:: fi.lbd.mobile
+   :noindex:
+
+.. java:type:: public static final class layout
+   :outertype: R
+
+Fields
+------
+activity_details
+^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int activity_details
+   :outertype: R.layout
+
+activity_edit_note
+^^^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int activity_edit_note
+   :outertype: R.layout
+
+activity_list
+^^^^^^^^^^^^^
+
+.. java:field:: public static final int activity_list
+   :outertype: R.layout
+
+activity_read_message
+^^^^^^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int activity_read_message
+   :outertype: R.layout
+
+activity_send_message
+^^^^^^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int activity_send_message
+   :outertype: R.layout
+
+activity_settings
+^^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int activity_settings
+   :outertype: R.layout
+
+activity_startup
+^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int activity_startup
+   :outertype: R.layout
+
+googlemap_fragment
+^^^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int googlemap_fragment
+   :outertype: R.layout
+
+listview_double_row
+^^^^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int listview_double_row
+   :outertype: R.layout
+
+listview_expanded_row
+^^^^^^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int listview_expanded_row
+   :outertype: R.layout
+
+listview_message_fragment
+^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int listview_message_fragment
+   :outertype: R.layout
+
+listview_search_fragment
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int listview_search_fragment
+   :outertype: R.layout
+
+listview_single_row
+^^^^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int listview_single_row
+   :outertype: R.layout
+
+map_info_view
+^^^^^^^^^^^^^
+
+.. java:field:: public static final int map_info_view
+   :outertype: R.layout
+
+select_message_receiver_fragment
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int select_message_receiver_fragment
+   :outertype: R.layout
+

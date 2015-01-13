@@ -1,0 +1,116 @@
+.. java:import:: android.app ListFragment
+
+.. java:import:: android.app ProgressDialog
+
+.. java:import:: android.content Context
+
+.. java:import:: android.content Intent
+
+.. java:import:: android.os Bundle
+
+.. java:import:: android.util Log
+
+.. java:import:: android.view LayoutInflater
+
+.. java:import:: android.view View
+
+.. java:import:: android.view ViewGroup
+
+.. java:import:: android.widget ListView
+
+.. java:import:: android.widget Toast
+
+.. java:import:: com.squareup.otto Subscribe
+
+.. java:import:: java.util Collections
+
+.. java:import:: java.util Comparator
+
+.. java:import:: java.util List
+
+.. java:import:: fi.lbd.mobile.messaging MessageObjectSelectionManager
+
+.. java:import:: fi.lbd.mobile R
+
+.. java:import:: fi.lbd.mobile.messaging ReadMessageActivity
+
+.. java:import:: fi.lbd.mobile.messaging SendMessageActivity
+
+.. java:import:: fi.lbd.mobile.adapters MessageAdapter
+
+.. java:import:: fi.lbd.mobile.events BusHandler
+
+.. java:import:: fi.lbd.mobile.events RequestFailedEvent
+
+.. java:import:: fi.lbd.mobile.messaging.events DeleteMessageFromListEvent
+
+.. java:import:: fi.lbd.mobile.messaging.events RequestUserMessagesEvent
+
+.. java:import:: fi.lbd.mobile.messaging.events ReturnUserMessagesEvent
+
+.. java:import:: fi.lbd.mobile.messaging.messageobjects MessageObject
+
+MessageFragment
+===============
+
+.. java:package:: fi.lbd.mobile.fragments
+   :noindex:
+
+.. java:type:: public class MessageFragment extends ListFragment
+
+Methods
+-------
+newInstance
+^^^^^^^^^^^
+
+.. java:method:: public static MessageFragment newInstance()
+   :outertype: MessageFragment
+
+onCreate
+^^^^^^^^
+
+.. java:method:: @Override public void onCreate(Bundle savedInstanceState)
+   :outertype: MessageFragment
+
+onCreateView
+^^^^^^^^^^^^
+
+.. java:method:: @Override public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
+   :outertype: MessageFragment
+
+onEvent
+^^^^^^^
+
+.. java:method:: @Subscribe public void onEvent(ReturnUserMessagesEvent event)
+   :outertype: MessageFragment
+
+onEvent
+^^^^^^^
+
+.. java:method:: @Subscribe public void onEvent(RequestFailedEvent event)
+   :outertype: MessageFragment
+
+onEvent
+^^^^^^^
+
+.. java:method:: @Subscribe public void onEvent(DeleteMessageFromListEvent event)
+   :outertype: MessageFragment
+
+onListItemClick
+^^^^^^^^^^^^^^^
+
+.. java:method:: @Override public void onListItemClick(ListView l, View v, int position, long id)
+   :outertype: MessageFragment
+
+onPause
+^^^^^^^
+
+.. java:method:: @Override public void onPause()
+   :outertype: MessageFragment
+
+onResume
+^^^^^^^^
+
+.. java:method:: @Override public void onResume()
+   :outertype: MessageFragment
+

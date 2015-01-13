@@ -1,0 +1,52 @@
+.. java:import:: org.junit Before
+
+.. java:import:: org.junit Test
+
+.. java:import:: org.junit.runner RunWith
+
+.. java:import:: org.robolectric.shadows ShadowLog
+
+.. java:import:: java.util HashMap
+
+.. java:import:: java.util Map
+
+.. java:import:: fi.lbd.mobile CustomRobolectricTestRunner
+
+.. java:import:: fi.lbd.mobile.location ImmutablePointLocation
+
+.. java:import:: fi.lbd.mobile.location PointLocation
+
+.. java:import:: fi.lbd.mobile.mapobjects ImmutableMapObject
+
+.. java:import:: fi.lbd.mobile.mapobjects MapObject
+
+ImmutableMapObjectTest
+======================
+
+.. java:package:: fi.lbd.mobile.mapobject.test
+   :noindex:
+
+.. java:type:: @RunWith public class ImmutableMapObjectTest
+
+   Tests for ImmutableMapObject. Created by Tommi.
+
+Methods
+-------
+setUp
+^^^^^
+
+.. java:method:: @Before public void setUp() throws Exception
+   :outertype: ImmutableMapObjectTest
+
+testConstructor
+^^^^^^^^^^^^^^^
+
+.. java:method:: @Test public void testConstructor() throws Exception
+   :outertype: ImmutableMapObjectTest
+
+testEquals
+^^^^^^^^^^
+
+.. java:method:: @Test public void testEquals() throws Exception
+   :outertype: ImmutableMapObjectTest
+

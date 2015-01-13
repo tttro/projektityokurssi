@@ -10,6 +10,7 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpPut;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.conn.ClientConnectionManager;
 import org.apache.http.conn.params.ConnManagerParams;
@@ -166,6 +167,22 @@ public class BasicUrlReader implements UrlReader {
 
 
 
+    @Override
+    public UrlResponse putJson(String url, String jsonContents) {
+        StringEntity entity;
+        try {
+            entity = new StringEntity(jsonContents, HTTP.UTF_8);
+            entity.setContentType("application/json");
+        } catch (UnsupportedEncodingException e) {
+            Log.e(BasicUrlReader.class.getSimpleName(), "Url post contents were invalid. Resulted in UnsupportedEncodingException. {}", e);
+            return null;
+        }
+        HttpPut putObj = new HttpPut(url);
+        setHeaders(putObj);
+        putObj.setEntity(entity);
+        return this.process(putObj); // If the url reading fails, null is returned.
+    }
+
     private UrlResponse process(HttpUriRequest request) {
         String resultContent = "";
         UrlResponse urlResponse = null;
@@ -198,6 +215,8 @@ public class BasicUrlReader implements UrlReader {
         } catch (IOException e) {
             Log.e(BasicUrlReader.class.getSimpleName(), "Reading url encountered I/O error!", e);
         } catch (IllegalArgumentException e) {
+            Log.e(BasicUrlReader.class.getSimpleName(), "Given url is not in valid format!", e);
+        } catch (IllegalStateException e){
             Log.e(BasicUrlReader.class.getSimpleName(), "Given url is not in valid format!", e);
         } finally {
             if (bufferedReader != null) {

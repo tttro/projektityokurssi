@@ -1,0 +1,35 @@
+R.dimen
+=======
+
+.. java:package:: fi.lbd.mobile
+   :noindex:
+
+.. java:type:: public static final class dimen
+   :outertype: R
+
+Fields
+------
+activity_horizontal_margin
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int activity_horizontal_margin
+   :outertype: R.dimen
+
+activity_vertical_margin
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int activity_vertical_margin
+   :outertype: R.dimen
+
+listview_big_text_size
+^^^^^^^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int listview_big_text_size
+   :outertype: R.dimen
+
+listview_small_text_size
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int listview_small_text_size
+   :outertype: R.dimen
+

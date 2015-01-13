@@ -1,0 +1,26 @@
+.. java:import:: java.io Serializable
+
+PointLocation
+=============
+
+.. java:package:: fi.lbd.mobile.location
+   :noindex:
+
+.. java:type:: public interface PointLocation extends Serializable
+
+   Interface for simple point location. Created by Tommi.
+
+Methods
+-------
+getLatitude
+^^^^^^^^^^^
+
+.. java:method::  double getLatitude()
+   :outertype: PointLocation
+
+getLongitude
+^^^^^^^^^^^^
+
+.. java:method::  double getLongitude()
+   :outertype: PointLocation
+

@@ -1,0 +1,30 @@
+.. java:import:: android.support.annotation Nullable
+
+.. java:import:: java.util List
+
+ReturnUsersEvent
+================
+
+.. java:package:: fi.lbd.mobile.events
+   :noindex:
+
+.. java:type:: public class ReturnUsersEvent extends AbstractEvent
+
+   Created by Ossi on 4.1.2015.
+
+Constructors
+------------
+ReturnUsersEvent
+^^^^^^^^^^^^^^^^
+
+.. java:constructor:: public ReturnUsersEvent(List<String> users)
+   :outertype: ReturnUsersEvent
+
+Methods
+-------
+getUsers
+^^^^^^^^
+
+.. java:method:: public List<String> getUsers()
+   :outertype: ReturnUsersEvent
+

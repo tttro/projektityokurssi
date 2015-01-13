@@ -57,5 +57,8 @@ public class HandlerResponse<T> {
         return this.status == Status.Succeeded || this.status == Status.Cached;
     }
 
-
+    @Override
+    public String toString() {
+        return "Status: "+ this.status + " reason: "+ this.reason + " objects size: "+ (this.objects == null ? null : this.objects.size());
+    }
 }

@@ -1,0 +1,10 @@
+fi.lbd.mobile.test
+==================
+
+.. java:package:: fi.lbd.mobile.test
+
+.. toctree::
+   :maxdepth: 1
+
+   BuildConfig
+

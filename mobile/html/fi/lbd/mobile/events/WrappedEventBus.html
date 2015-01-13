@@ -1,0 +1,159 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>WrappedEventBus &mdash; LBD Mobile client Alpha documentation</title>
+    
+    <link rel="stylesheet" href="../../../../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../',
+        VERSION:     'Alpha',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <link rel="top" title="LBD Mobile client Alpha documentation" href="../../../../index.html" />
+    <link rel="up" title="fi.lbd.mobile.events" href="package-index.html" />
+    <link rel="next" title="fi.lbd.mobile.fragments" href="../fragments/package-index.html" />
+    <link rel="prev" title="ReturnUsersEvent" href="ReturnUsersEvent.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../fragments/package-index.html" title="fi.lbd.mobile.fragments"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="ReturnUsersEvent.html" title="ReturnUsersEvent"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../../../../packages.html">LBD Mobile client Alpha documentation</a> &raquo;</li>
+          <li><a href="package-index.html" accesskey="U">fi.lbd.mobile.events</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="wrappedeventbus">
+<h1>WrappedEventBus<a class="headerlink" href="#wrappedeventbus" title="Permalink to this headline">¶</a></h1>
+<dl class="type">
+<dt id="fi.lbd.mobile.events.WrappedEventBus">
+public class <tt class="descname">WrappedEventBus</tt><a class="headerlink" href="#fi.lbd.mobile.events.WrappedEventBus" title="Permalink to this definition">¶</a></dt>
+<dd><p>Forces the events to the main thread and set a required abstract type for the events <a class="reference external" href="http://stackoverflow.com/questions/15431768/how-to-send-event-from-service-to-activity-with-otto-event-bus">http://stackoverflow.com/questions/15431768/how-to-send-event-from-service-to-activity-with-otto-event-bus</a> Created by tommi on 22.10.2014.</p>
+</dd></dl>
+
+<div class="section" id="methods">
+<h2>Methods<a class="headerlink" href="#methods" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="post">
+<h3>post<a class="headerlink" href="#post" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="fi.lbd.mobile.events.WrappedEventBus.post(AbstractEvent)">
+public void <tt class="descname">post</tt><big>(</big><a class="reference internal" href="AbstractEvent.html#fi.lbd.mobile.events.AbstractEvent" title="fi.lbd.mobile.events.AbstractEvent">AbstractEvent</a><em> event</em><big>)</big><a class="headerlink" href="#fi.lbd.mobile.events.WrappedEventBus.post(AbstractEvent)" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="register">
+<h3>register<a class="headerlink" href="#register" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="fi.lbd.mobile.events.WrappedEventBus.register(Object)">
+public void <tt class="descname">register</tt><big>(</big><a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/Object.html" title="java.lang.Object">Object</a><em> object</em><big>)</big><a class="headerlink" href="#fi.lbd.mobile.events.WrappedEventBus.register(Object)" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="unregister">
+<h3>unregister<a class="headerlink" href="#unregister" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="fi.lbd.mobile.events.WrappedEventBus.unregister(java.lang.Object)">
+public void <tt class="descname">unregister</tt><big>(</big>java.<a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/package-summary.html" title="java.lang.package-summary">lang</a>.<a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/Object.html" title="java.lang.Object">Object</a><em> object</em><big>)</big><a class="headerlink" href="#fi.lbd.mobile.events.WrappedEventBus.unregister(java.lang.Object)" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../../../packages.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">WrappedEventBus</a><ul>
+<li><a class="reference internal" href="#methods">Methods</a><ul>
+<li><a class="reference internal" href="#post">post</a></li>
+<li><a class="reference internal" href="#register">register</a></li>
+<li><a class="reference internal" href="#unregister">unregister</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="ReturnUsersEvent.html"
+                        title="previous chapter">ReturnUsersEvent</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="../fragments/package-index.html"
+                        title="next chapter">fi.lbd.mobile.fragments</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../../../../_sources/fi/lbd/mobile/events/WrappedEventBus.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../fragments/package-index.html" title="fi.lbd.mobile.fragments"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="ReturnUsersEvent.html" title="ReturnUsersEvent"
+             >previous</a> |</li>
+        <li><a href="../../../../packages.html">LBD Mobile client Alpha documentation</a> &raquo;</li>
+          <li><a href="package-index.html" >fi.lbd.mobile.events</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2015, Tommi und Ossi.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+    </div>
+  </body>
+</html>

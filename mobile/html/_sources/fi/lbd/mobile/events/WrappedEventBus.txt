@@ -1,0 +1,38 @@
+.. java:import:: android.os Handler
+
+.. java:import:: android.os Looper
+
+.. java:import:: android.util Log
+
+.. java:import:: com.squareup.otto Bus
+
+WrappedEventBus
+===============
+
+.. java:package:: fi.lbd.mobile.events
+   :noindex:
+
+.. java:type:: public class WrappedEventBus
+
+   Forces the events to the main thread and set a required abstract type for the events http://stackoverflow.com/questions/15431768/how-to-send-event-from-service-to-activity-with-otto-event-bus Created by tommi on 22.10.2014.
+
+Methods
+-------
+post
+^^^^
+
+.. java:method:: public void post(AbstractEvent event)
+   :outertype: WrappedEventBus
+
+register
+^^^^^^^^
+
+.. java:method:: public void register(Object object)
+   :outertype: WrappedEventBus
+
+unregister
+^^^^^^^^^^
+
+.. java:method:: public void unregister(java.lang.Object object)
+   :outertype: WrappedEventBus
+

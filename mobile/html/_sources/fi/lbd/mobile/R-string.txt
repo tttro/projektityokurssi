@@ -1,0 +1,473 @@
+R.string
+========
+
+.. java:package:: fi.lbd.mobile
+   :noindex:
+
+.. java:type:: public static final class string
+   :outertype: R
+
+Fields
+------
+GoogleMapsApiKey
+^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int GoogleMapsApiKey
+   :outertype: R.string
+
+accept
+^^^^^^
+
+.. java:field:: public static final int accept
+   :outertype: R.string
+
+action_settings
+^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int action_settings
+   :outertype: R.string
+
+additional_notes
+^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int additional_notes
+   :outertype: R.string
+
+address_hint
+^^^^^^^^^^^^
+
+.. java:field:: public static final int address_hint
+   :outertype: R.string
+
+app_name
+^^^^^^^^
+
+.. java:field:: public static final int app_name
+   :outertype: R.string
+
+backend_url
+^^^^^^^^^^^
+
+.. java:field:: public static final int backend_url
+   :outertype: R.string
+
+button_details
+^^^^^^^^^^^^^^
+
+.. java:field:: public static final int button_details
+   :outertype: R.string
+
+button_map
+^^^^^^^^^^
+
+.. java:field:: public static final int button_map
+   :outertype: R.string
+
+common_android_wear_notification_needs_update_text
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int common_android_wear_notification_needs_update_text
+   :outertype: R.string
+
+common_android_wear_update_text
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int common_android_wear_update_text
+   :outertype: R.string
+
+common_android_wear_update_title
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int common_android_wear_update_title
+   :outertype: R.string
+
+common_google_play_services_enable_button
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int common_google_play_services_enable_button
+   :outertype: R.string
+
+common_google_play_services_enable_text
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int common_google_play_services_enable_text
+   :outertype: R.string
+
+common_google_play_services_enable_title
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int common_google_play_services_enable_title
+   :outertype: R.string
+
+common_google_play_services_error_notification_requested_by_msg
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int common_google_play_services_error_notification_requested_by_msg
+   :outertype: R.string
+
+common_google_play_services_install_button
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int common_google_play_services_install_button
+   :outertype: R.string
+
+common_google_play_services_install_text_phone
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int common_google_play_services_install_text_phone
+   :outertype: R.string
+
+common_google_play_services_install_text_tablet
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int common_google_play_services_install_text_tablet
+   :outertype: R.string
+
+common_google_play_services_install_title
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int common_google_play_services_install_title
+   :outertype: R.string
+
+common_google_play_services_invalid_account_text
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int common_google_play_services_invalid_account_text
+   :outertype: R.string
+
+common_google_play_services_invalid_account_title
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int common_google_play_services_invalid_account_title
+   :outertype: R.string
+
+common_google_play_services_needs_enabling_title
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int common_google_play_services_needs_enabling_title
+   :outertype: R.string
+
+common_google_play_services_network_error_text
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int common_google_play_services_network_error_text
+   :outertype: R.string
+
+common_google_play_services_network_error_title
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int common_google_play_services_network_error_title
+   :outertype: R.string
+
+common_google_play_services_notification_needs_installation_title
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int common_google_play_services_notification_needs_installation_title
+   :outertype: R.string
+
+common_google_play_services_notification_needs_update_title
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int common_google_play_services_notification_needs_update_title
+   :outertype: R.string
+
+common_google_play_services_notification_ticker
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int common_google_play_services_notification_ticker
+   :outertype: R.string
+
+common_google_play_services_unknown_issue
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int common_google_play_services_unknown_issue
+   :outertype: R.string
+
+common_google_play_services_unsupported_text
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int common_google_play_services_unsupported_text
+   :outertype: R.string
+
+common_google_play_services_unsupported_title
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int common_google_play_services_unsupported_title
+   :outertype: R.string
+
+common_google_play_services_update_button
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int common_google_play_services_update_button
+   :outertype: R.string
+
+common_google_play_services_update_text
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int common_google_play_services_update_text
+   :outertype: R.string
+
+common_google_play_services_update_title
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int common_google_play_services_update_title
+   :outertype: R.string
+
+common_open_on_phone
+^^^^^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int common_open_on_phone
+   :outertype: R.string
+
+common_signin_button_text
+^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int common_signin_button_text
+   :outertype: R.string
+
+common_signin_button_text_long
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int common_signin_button_text_long
+   :outertype: R.string
+
+create_calendar_message
+^^^^^^^^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int create_calendar_message
+   :outertype: R.string
+
+create_calendar_title
+^^^^^^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int create_calendar_title
+   :outertype: R.string
+
+decline
+^^^^^^^
+
+.. java:field:: public static final int decline
+   :outertype: R.string
+
+distance
+^^^^^^^^
+
+.. java:field:: public static final int distance
+   :outertype: R.string
+
+hello_world
+^^^^^^^^^^^
+
+.. java:field:: public static final int hello_world
+   :outertype: R.string
+
+item
+^^^^
+
+.. java:field:: public static final int item
+   :outertype: R.string
+
+loading
+^^^^^^^
+
+.. java:field:: public static final int loading
+   :outertype: R.string
+
+location_failed
+^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int location_failed
+   :outertype: R.string
+
+max_results
+^^^^^^^^^^^
+
+.. java:field:: public static final int max_results
+   :outertype: R.string
+
+more_characters
+^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int more_characters
+   :outertype: R.string
+
+no_nearest_found
+^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int no_nearest_found
+   :outertype: R.string
+
+no_results
+^^^^^^^^^^
+
+.. java:field:: public static final int no_results
+   :outertype: R.string
+
+object_collection
+^^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int object_collection
+   :outertype: R.string
+
+search_address
+^^^^^^^^^^^^^^
+
+.. java:field:: public static final int search_address
+   :outertype: R.string
+
+search_failed
+^^^^^^^^^^^^^
+
+.. java:field:: public static final int search_failed
+   :outertype: R.string
+
+search_id
+^^^^^^^^^
+
+.. java:field:: public static final int search_id
+   :outertype: R.string
+
+service_name
+^^^^^^^^^^^^
+
+.. java:field:: public static final int service_name
+   :outertype: R.string
+
+shared_preferences
+^^^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int shared_preferences
+   :outertype: R.string
+
+showing_nearest
+^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int showing_nearest
+   :outertype: R.string
+
+showing_results
+^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int showing_results
+   :outertype: R.string
+
+source_base_url
+^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int source_base_url
+   :outertype: R.string
+
+source_messages_base_url
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int source_messages_base_url
+   :outertype: R.string
+
+source_objects_base_url
+^^^^^^^^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int source_objects_base_url
+   :outertype: R.string
+
+source_type
+^^^^^^^^^^^
+
+.. java:field:: public static final int source_type
+   :outertype: R.string
+
+store_picture_message
+^^^^^^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int store_picture_message
+   :outertype: R.string
+
+store_picture_title
+^^^^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int store_picture_title
+   :outertype: R.string
+
+streetlights
+^^^^^^^^^^^^
+
+.. java:field:: public static final int streetlights
+   :outertype: R.string
+
+title_activity_details
+^^^^^^^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int title_activity_details
+   :outertype: R.string
+
+title_activity_edit_note
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int title_activity_edit_note
+   :outertype: R.string
+
+title_activity_list
+^^^^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int title_activity_list
+   :outertype: R.string
+
+title_activity_map
+^^^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int title_activity_map
+   :outertype: R.string
+
+title_activity_read_message
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int title_activity_read_message
+   :outertype: R.string
+
+title_activity_send_message
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int title_activity_send_message
+   :outertype: R.string
+
+title_activity_settings
+^^^^^^^^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int title_activity_settings
+   :outertype: R.string
+
+title_activity_startup
+^^^^^^^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int title_activity_startup
+   :outertype: R.string
+
+title_tab_map
+^^^^^^^^^^^^^
+
+.. java:field:: public static final int title_tab_map
+   :outertype: R.string
+
+title_tab_messages
+^^^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int title_tab_messages
+   :outertype: R.string
+
+title_tab_objects
+^^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int title_tab_objects
+   :outertype: R.string
+
+unknown_distance
+^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int unknown_distance
+   :outertype: R.string
+
+wallet_buy_button_place_holder
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int wallet_buy_button_place_holder
+   :outertype: R.string
+

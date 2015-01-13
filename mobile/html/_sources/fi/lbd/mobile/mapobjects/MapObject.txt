@@ -1,0 +1,58 @@
+.. java:import:: java.io Serializable
+
+.. java:import:: java.util Map
+
+.. java:import:: fi.lbd.mobile.location PointLocation
+
+MapObject
+=========
+
+.. java:package:: fi.lbd.mobile.mapobjects
+   :noindex:
+
+.. java:type:: public interface MapObject extends Serializable
+
+   Interface for map objects. Created by Tommi.
+
+Methods
+-------
+getAdditionalProperties
+^^^^^^^^^^^^^^^^^^^^^^^
+
+.. java:method::  Map<String, String> getAdditionalProperties()
+   :outertype: MapObject
+
+   Returns a map of the objects properties.
+
+getId
+^^^^^
+
+.. java:method::  String getId()
+   :outertype: MapObject
+
+   Returns map objects id.
+
+getMetadataProperties
+^^^^^^^^^^^^^^^^^^^^^
+
+.. java:method::  Map<String, String> getMetadataProperties()
+   :outertype: MapObject
+
+   Returns a map of the objects metadata
+
+getPointLocation
+^^^^^^^^^^^^^^^^
+
+.. java:method::  PointLocation getPointLocation()
+   :outertype: MapObject
+
+   Returns map objects location.
+
+isMinimized
+^^^^^^^^^^^
+
+.. java:method::  boolean isMinimized()
+   :outertype: MapObject
+
+   Returns true if the object is in minimized format and doesn't contain all the information the object actually has.
+

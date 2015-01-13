@@ -1,0 +1,36 @@
+.. java:import:: android.support.annotation NonNull
+
+.. java:import:: com.google.android.gms.internal id
+
+RequestFailedEvent
+==================
+
+.. java:package:: fi.lbd.mobile.events
+   :noindex:
+
+.. java:type:: public class RequestFailedEvent extends AbstractEvent
+
+   Created by Tommi.
+
+Constructors
+------------
+RequestFailedEvent
+^^^^^^^^^^^^^^^^^^
+
+.. java:constructor:: public RequestFailedEvent(AbstractEvent failedEvent, String reason)
+   :outertype: RequestFailedEvent
+
+Methods
+-------
+getFailedEvent
+^^^^^^^^^^^^^^
+
+.. java:method:: public AbstractEvent getFailedEvent()
+   :outertype: RequestFailedEvent
+
+getReason
+^^^^^^^^^
+
+.. java:method:: public String getReason()
+   :outertype: RequestFailedEvent
+

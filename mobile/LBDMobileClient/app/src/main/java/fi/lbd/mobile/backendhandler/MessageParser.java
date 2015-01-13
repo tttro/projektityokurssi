@@ -58,7 +58,7 @@ public class MessageParser {
     }
 
     private static MessageObject parseMessage(JsonNode rootNode) throws IOException, JSONException {
-//        Log.d(MessageParser.class.getSimpleName(), "parse message node json: "+ rootNode);
+        Log.d(MessageParser.class.getSimpleName(), "parse message node json: "+ rootNode);
         JsonNode categoryNode = rootNode.path("category");
 //        check(categoryNode, "Category");
         String category = categoryNode.asText();
@@ -75,6 +75,9 @@ public class MessageParser {
         check(topicNode, "Topic");
         String topic = topicNode.asText();
 
+        JsonNode timestampNode = rootNode.path("timestamp");
+        check(topicNode, "Timestamp");
+        long timestamp = timestampNode.asLong(); // In ms
         /*
         JsonNode attachmentsNode = rootNode.path("attachements");
         if (!attachmentsNode.isMissingNode()) {
@@ -96,7 +99,7 @@ public class MessageParser {
         check(recipientNode, "Recipient");
         String recipient = recipientNode.asText();
 
-        return new StringMessageObject(messageId, recipient, sender, topic, false, message);
+        return new StringMessageObject(messageId, timestamp, recipient, sender, topic, false, message);
     }
 
     private static void check(JsonNode node, String nodeName) throws JSONException{

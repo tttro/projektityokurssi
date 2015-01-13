@@ -1,0 +1,50 @@
+.. java:import:: android.content Context
+
+.. java:import:: android.content Intent
+
+.. java:import:: fi.lbd.mobile.backendhandler BackendHandlerService
+
+.. java:import:: fi.lbd.mobile.messaging MessageUpdateService
+
+ServiceManager
+==============
+
+.. java:package:: fi.lbd.mobile
+   :noindex:
+
+.. java:type:: public final class ServiceManager
+
+   Created by Ossi on 11.1.2015. Static class to manage connections to services.
+
+Methods
+-------
+initialize
+^^^^^^^^^^
+
+.. java:method:: public static void initialize(Context context)
+   :outertype: ServiceManager
+
+startBackendService
+^^^^^^^^^^^^^^^^^^^
+
+.. java:method:: public static void startBackendService()
+   :outertype: ServiceManager
+
+startMessageService
+^^^^^^^^^^^^^^^^^^^
+
+.. java:method:: public static void startMessageService()
+   :outertype: ServiceManager
+
+stopBackendService
+^^^^^^^^^^^^^^^^^^
+
+.. java:method:: public static void stopBackendService()
+   :outertype: ServiceManager
+
+stopMessageService
+^^^^^^^^^^^^^^^^^^
+
+.. java:method:: public static void stopMessageService()
+   :outertype: ServiceManager
+

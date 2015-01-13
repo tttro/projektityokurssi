@@ -1,0 +1,41 @@
+R.style
+=======
+
+.. java:package:: com.google.android.gms
+   :noindex:
+
+.. java:type:: public static final class style
+   :outertype: R
+
+Fields
+------
+Theme_IAPTheme
+^^^^^^^^^^^^^^
+
+.. java:field:: public static final int Theme_IAPTheme
+   :outertype: R.style
+
+WalletFragmentDefaultButtonTextAppearance
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int WalletFragmentDefaultButtonTextAppearance
+   :outertype: R.style
+
+WalletFragmentDefaultDetailsHeaderTextAppearance
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int WalletFragmentDefaultDetailsHeaderTextAppearance
+   :outertype: R.style
+
+WalletFragmentDefaultDetailsTextAppearance
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int WalletFragmentDefaultDetailsTextAppearance
+   :outertype: R.style
+
+WalletFragmentDefaultStyle
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int WalletFragmentDefaultStyle
+   :outertype: R.style
+

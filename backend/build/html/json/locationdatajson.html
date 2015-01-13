@@ -1,0 +1,262 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Location data &mdash; LBD Backend Dev documentation</title>
+    
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     'Dev',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="LBD Backend Dev documentation" href="../index.html" />
+    <link rel="up" title="JSON Formats" href="jsondoc.html" />
+    <link rel="next" title="Message" href="messagejson.html" />
+    <link rel="prev" title="JSON Formats" href="jsondoc.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="messagejson.html" title="Message"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="jsondoc.html" title="JSON Formats"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">LBD Backend Dev documentation</a> &raquo;</li>
+          <li><a href="jsondoc.html" accesskey="U">JSON Formats</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="location-data">
+<span id="locationjson"></span><h1>Location data<a class="headerlink" href="#location-data" title="Permalink to this headline">¶</a></h1>
+<p>Location data uses GeoJSON (<a class="reference external" href="http://geojson.org/">http://geojson.org/</a>) specification, so all objects retrieved from the back-end are compatible
+with GeoJSON readers. Thanks to GeoJSON&#8217;s flexibility, new elements can be added to the objects. Back-end utilizes this
+by adding &#8220;metadata&#8221; element inside &#8220;properties&#8221; element. This new field is completely optional and may contain information
+such as status of the location data object, who has modified the metadata and so on. In this chapter this new element is
+described in detail.</p>
+<div class="section" id="json-format">
+<h2>JSON Format<a class="headerlink" href="#json-format" title="Permalink to this headline">¶</a></h2>
+<p>Like stated above, the JSON used by the software follows the GeoJSON specification.</p>
+<p>An example from <a class="reference external" href="http://gejson.org/geojson-spec.html">http://gejson.org/geojson-spec.html</a> (referenced 11.1.2015):</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="p">{</span>
+    <span class="s">&quot;type&quot;</span><span class="p">:</span> <span class="s">&quot;FeatureCollection&quot;</span><span class="p">,</span>
+    <span class="s">&quot;features&quot;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="p">{</span>
+            <span class="s">&quot;type&quot;</span><span class="p">:</span> <span class="s">&quot;Feature&quot;</span><span class="p">,</span>
+            <span class="s">&quot;geometry&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s">&quot;type&quot;</span><span class="p">:</span> <span class="s">&quot;Point&quot;</span><span class="p">,</span>
+                <span class="s">&quot;coordinates&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mf">102.0</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">]</span>
+            <span class="p">},</span>
+            <span class="s">&quot;properties&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s">&quot;prop0&quot;</span><span class="p">:</span> <span class="s">&quot;value0&quot;</span>
+            <span class="p">}</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+            <span class="s">&quot;type&quot;</span><span class="p">:</span> <span class="s">&quot;Feature&quot;</span><span class="p">,</span>
+            <span class="s">&quot;geometry&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s">&quot;type&quot;</span><span class="p">:</span> <span class="s">&quot;LineString&quot;</span><span class="p">,</span>
+                <span class="s">&quot;coordinates&quot;</span><span class="p">:</span> <span class="p">[</span>
+                    <span class="p">[</span><span class="mf">102.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">],</span> <span class="p">[</span><span class="mf">103.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">],</span> <span class="p">[</span><span class="mf">104.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">],</span> <span class="p">[</span><span class="mf">105.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">]</span>
+                <span class="p">]</span>
+            <span class="p">},</span>
+            <span class="s">&quot;properties&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s">&quot;prop0&quot;</span><span class="p">:</span> <span class="s">&quot;value0&quot;</span><span class="p">,</span>
+                <span class="s">&quot;prop1&quot;</span><span class="p">:</span> <span class="mf">0.0</span>
+            <span class="p">}</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+            <span class="s">&quot;type&quot;</span><span class="p">:</span> <span class="s">&quot;Feature&quot;</span><span class="p">,</span>
+            <span class="s">&quot;geometry&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s">&quot;type&quot;</span><span class="p">:</span> <span class="s">&quot;Polygon&quot;</span><span class="p">,</span>
+                <span class="s">&quot;coordinates&quot;</span><span class="p">:</span> <span class="p">[</span>
+                     <span class="p">[</span> <span class="p">[</span><span class="mf">100.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">],</span> <span class="p">[</span><span class="mf">101.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">],</span> <span class="p">[</span><span class="mf">101.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">],</span>
+                       <span class="p">[</span><span class="mf">100.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">],</span> <span class="p">[</span><span class="mf">100.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">]</span> <span class="p">]</span>
+                 <span class="p">]</span>
+            <span class="p">},</span>
+            <span class="s">&quot;properties&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s">&quot;prop0&quot;</span><span class="p">:</span> <span class="s">&quot;value0&quot;</span><span class="p">,</span>
+                <span class="s">&quot;prop1&quot;</span><span class="p">:</span> <span class="p">{</span>
+                    <span class="s">&quot;this&quot;</span><span class="p">:</span> <span class="s">&quot;that&quot;</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">It should be noted that the current system does not support other feature types than &#8220;Point&#8221;.</p>
+</div>
+<p>Back-end supports GeoJSON Feature when relaying information on single object and FeatureCollection when sending multiple
+objects.</p>
+<p>The format for the additional information is:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="13%" />
+<col width="8%" />
+<col width="11%" />
+<col width="68%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Field&#8217;s name</th>
+<th class="head">Required</th>
+<th class="head">Value type</th>
+<th class="head">Notes</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>status</td>
+<td>True</td>
+<td>String</td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-odd"><td>modified</td>
+<td>True</td>
+<td>String</td>
+<td>Unix timestamp (in seconds). Tells when the metadata was modified</td>
+</tr>
+<tr class="row-even"><td>modifier</td>
+<td>True</td>
+<td>String</td>
+<td>Tells who has modified the metadata</td>
+</tr>
+<tr class="row-odd"><td>info</td>
+<td>True</td>
+<td>String</td>
+<td>&nbsp;</td>
+</tr>
+</tbody>
+</table>
+<p>Which translates to:</p>
+<div class="highlight-python"><div class="highlight"><pre>&quot;metadata&quot;: {
+    &quot;status&quot;: **String**,
+    &quot;modified&quot;: **Integer**,
+    &quot;modifier&quot;: **String**,
+    &quot;info&quot;: **String**
+}
+</pre></div>
+</div>
+<p>And a &#8220;real&#8221; example using open data service of Tampere (<a class="reference external" href="http://www.tampere.fi/tampereinfo/avoindata.html">http://www.tampere.fi/tampereinfo/avoindata.html</a>) to provide
+the Streetlight information:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="p">{</span>
+    <span class="s">&quot;geometry&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s">&quot;type&quot;</span><span class="p">:</span> <span class="s">&quot;Point&quot;</span><span class="p">,</span>
+        <span class="s">&quot;coordinates&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mf">23.643239226767022</span><span class="p">,</span> <span class="mf">61.519112683582854</span><span class="p">]</span>
+    <span class="p">},</span>
+    <span class="s">&quot;id&quot;</span><span class="p">:</span> <span class="s">&quot;WFS_KATUVALO.405172&quot;</span><span class="p">,</span>
+    <span class="s">&quot;type&quot;</span><span class="p">:</span> <span class="s">&quot;Feature&quot;</span><span class="p">,</span>
+    <span class="s">&quot;properties&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s">&quot;NIMI&quot;</span><span class="p">:</span> <span class="s">&quot;XPWR_6769212&quot;</span><span class="p">,</span>
+        <span class="s">&quot;LAMPPU_TYYPPI_KOODI&quot;</span><span class="p">:</span> <span class="s">&quot;100340&quot;</span><span class="p">,</span>
+        <span class="s">&quot;TYYPPI_KOODI&quot;</span><span class="p">:</span> <span class="s">&quot;105007&quot;</span><span class="p">,</span>
+        <span class="s">&quot;KATUVALO_ID&quot;</span><span class="p">:</span> <span class="mi">405172</span><span class="p">,</span>
+        <span class="s">&quot;LAMPPU_TYYPPI&quot;</span><span class="p">:</span> <span class="s">&quot;ST 100 (SIEMENS)&quot;</span><span class="p">,</span>
+        <span class="s">&quot;metadata&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s">&quot;status&quot;</span><span class="p">:</span> <span class="s">&quot;foobar&quot;</span><span class="p">,</span>
+            <span class="s">&quot;note&quot;</span><span class="p">:</span> <span class="s">&quot;FOOBAR&quot;</span><span class="p">,</span>
+            <span class="s">&quot;modifier&quot;</span><span class="p">:</span> <span class="s">&quot;tiina@teekkari.fi&quot;</span><span class="p">,</span>
+            <span class="s">&quot;modified&quot;</span><span class="p">:</span> <span class="mi">1420741774</span>
+        <span class="p">}</span>
+    <span class="p">},</span>
+    <span class="s">&quot;geometry_name&quot;</span><span class="p">:</span> <span class="s">&quot;GEOLOC&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Location data</a><ul>
+<li><a class="reference internal" href="#json-format">JSON Format</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="jsondoc.html"
+                        title="previous chapter">JSON Formats</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="messagejson.html"
+                        title="next chapter">Message</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../_sources/json/locationdatajson.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="messagejson.html" title="Message"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="jsondoc.html" title="JSON Formats"
+             >previous</a> |</li>
+        <li><a href="../index.html">LBD Backend Dev documentation</a> &raquo;</li>
+          <li><a href="jsondoc.html" >JSON Formats</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2014, LBD Development.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+    </div>
+  </body>
+</html>

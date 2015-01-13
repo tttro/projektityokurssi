@@ -1,5 +1,6 @@
 package fi.lbd.mobile.fragments;
 
+import android.app.Activity;
 import android.app.ListFragment;
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
@@ -21,17 +22,18 @@ import com.squareup.otto.Subscribe;
 
 import java.util.ArrayList;
 
+import fi.lbd.mobile.ListActivity;
+import fi.lbd.mobile.R;
 import fi.lbd.mobile.adapters.ListExpandableAdapter;
 import fi.lbd.mobile.events.BusHandler;
-import fi.lbd.mobile.R;
 import fi.lbd.mobile.events.RequestFailedEvent;
+import fi.lbd.mobile.location.ImmutablePointLocation;
+import fi.lbd.mobile.location.LocationHandler;
+import fi.lbd.mobile.mapobjects.MapObject;
 import fi.lbd.mobile.mapobjects.events.RequestNearObjectsEvent;
 import fi.lbd.mobile.mapobjects.events.ReturnNearObjectsEvent;
 import fi.lbd.mobile.mapobjects.events.ReturnSearchResultEvent;
 import fi.lbd.mobile.mapobjects.events.SearchObjectsEvent;
-import fi.lbd.mobile.location.ImmutablePointLocation;
-import fi.lbd.mobile.location.LocationHandler;
-import fi.lbd.mobile.mapobjects.MapObject;
 
 /**
  * Fragment that shows objects using an expandable list view.
@@ -100,7 +102,13 @@ public class ObjectListFragment extends ListFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        Log.d(this.getClass().getSimpleName(), "onCreateView");
         View view = inflater.inflate(R.layout.listview_search_fragment, container, false);
+
+        if (this.getActivity() instanceof ListActivity) {
+            ListActivity listActivity = (ListActivity)this.getActivity();
+            this.setLocationHandler(listActivity.getLocationHandler());
+        }
 
         LOADING = getActivity().getString(R.string.loading);
         LOCATION_FAILED = getActivity().getString(R.string.location_failed);
@@ -181,6 +189,7 @@ public class ObjectListFragment extends ListFragment {
 
         return view;
     }
+
 
     @Override
     public void onResume() {
@@ -384,7 +393,7 @@ public class ObjectListFragment extends ListFragment {
     public void performSearch(CharSequence searchParameter){
         synchronized (LOCK) {
             if(!searchInProgress) {
-                if(searchParameter != null && searchParameter.length() > 2) {
+                if(searchParameter != null && searchParameter.length() > 0) {
                     progressDialog = ProgressDialog.show(getActivity(), "", "Searching objects...", true);
                     progressDialog.setCancelable(true);
                     Log.d("********", "New search started");

@@ -1,0 +1,30 @@
+MarkerProducer
+==============
+
+.. java:package:: fi.lbd.mobile.mapobjects
+   :noindex:
+
+.. java:type:: public interface MarkerProducer<T>
+
+   Created by Tommi.
+
+Methods
+-------
+event
+^^^^^
+
+.. java:method::  void event(T obj, Event evt)
+   :outertype: MarkerProducer
+
+produce
+^^^^^^^
+
+.. java:method::  T produce(String id, double latitude, double longitude)
+   :outertype: MarkerProducer
+
+remove
+^^^^^^
+
+.. java:method::  void remove(T obj)
+   :outertype: MarkerProducer
+

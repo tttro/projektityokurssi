@@ -1,0 +1,330 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>BackendHandler &mdash; LBD Mobile client Alpha documentation</title>
+    
+    <link rel="stylesheet" href="../../../../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../',
+        VERSION:     'Alpha',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <link rel="top" title="LBD Mobile client Alpha documentation" href="../../../../index.html" />
+    <link rel="up" title="fi.lbd.mobile.backendhandler" href="package-index.html" />
+    <link rel="next" title="BackendHandlerService" href="BackendHandlerService.html" />
+    <link rel="prev" title="fi.lbd.mobile.backendhandler" href="package-index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="BackendHandlerService.html" title="BackendHandlerService"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="package-index.html" title="fi.lbd.mobile.backendhandler"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../../../../packages.html">LBD Mobile client Alpha documentation</a> &raquo;</li>
+          <li><a href="package-index.html" accesskey="U">fi.lbd.mobile.backendhandler</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="backendhandler">
+<h1>BackendHandler<a class="headerlink" href="#backendhandler" title="Permalink to this headline">¶</a></h1>
+<dl class="type">
+<dt id="fi.lbd.mobile.backendhandler.BackendHandler">
+public interface <tt class="descname">BackendHandler</tt><a class="headerlink" href="#fi.lbd.mobile.backendhandler.BackendHandler" title="Permalink to this definition">¶</a></dt>
+<dd><p>Interface which defines the functions of the backend handlers. Created by Tommi.</p>
+</dd></dl>
+
+<div class="section" id="methods">
+<h2>Methods<a class="headerlink" href="#methods" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="deletemessage">
+<h3>deleteMessage<a class="headerlink" href="#deletemessage" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="fi.lbd.mobile.backendhandler.BackendHandler.deleteMessage(String)">
+ <a class="reference internal" href="HandlerResponse.html#fi.lbd.mobile.backendhandler.HandlerResponse" title="fi.lbd.mobile.backendhandler.HandlerResponse">HandlerResponse</a>&lt;<a class="reference internal" href="../messaging/messageobjects/MessageObject.html#fi.lbd.mobile.messaging.messageobjects.MessageObject" title="fi.lbd.mobile.messaging.messageobjects.MessageObject">MessageObject</a>&gt; <tt class="descname">deleteMessage</tt><big>(</big><a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a><em> messageId</em><big>)</big><a class="headerlink" href="#fi.lbd.mobile.backendhandler.BackendHandler.deleteMessage(String)" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove message with given message id from the backend.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>messageId</strong> &#8211; Message to remove.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="getcollections">
+<h3>getCollections<a class="headerlink" href="#getcollections" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="fi.lbd.mobile.backendhandler.BackendHandler.getCollections(String)">
+ <a class="reference internal" href="HandlerResponse.html#fi.lbd.mobile.backendhandler.HandlerResponse" title="fi.lbd.mobile.backendhandler.HandlerResponse">HandlerResponse</a>&lt;<a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a>&gt; <tt class="descname">getCollections</tt><big>(</big><a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a><em> url</em><big>)</big><a class="headerlink" href="#fi.lbd.mobile.backendhandler.BackendHandler.getCollections(String)" title="Permalink to this definition">¶</a></dt>
+<dd><p>Requests the list of object collections in the database.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>url</strong> &#8211; Backend url</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="getmapobject">
+<h3>getMapObject<a class="headerlink" href="#getmapobject" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="fi.lbd.mobile.backendhandler.BackendHandler.getMapObject(String)">
+ <a class="reference internal" href="HandlerResponse.html#fi.lbd.mobile.backendhandler.HandlerResponse" title="fi.lbd.mobile.backendhandler.HandlerResponse">HandlerResponse</a>&lt;<a class="reference internal" href="../mapobjects/MapObject.html#fi.lbd.mobile.mapobjects.MapObject" title="fi.lbd.mobile.mapobjects.MapObject">MapObject</a>&gt; <tt class="descname">getMapObject</tt><big>(</big><a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a><em> id</em><big>)</big><a class="headerlink" href="#fi.lbd.mobile.backendhandler.BackendHandler.getMapObject(String)" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns object with the given id.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>id</strong> &#8211; Id of the wanted object.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="getmessages">
+<h3>getMessages<a class="headerlink" href="#getmessages" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="fi.lbd.mobile.backendhandler.BackendHandler.getMessages()">
+ <a class="reference internal" href="HandlerResponse.html#fi.lbd.mobile.backendhandler.HandlerResponse" title="fi.lbd.mobile.backendhandler.HandlerResponse">HandlerResponse</a>&lt;<a class="reference internal" href="../messaging/messageobjects/MessageObject.html#fi.lbd.mobile.messaging.messageobjects.MessageObject" title="fi.lbd.mobile.messaging.messageobjects.MessageObject">MessageObject</a>&gt; <tt class="descname">getMessages</tt><big>(</big><big>)</big><a class="headerlink" href="#fi.lbd.mobile.backendhandler.BackendHandler.getMessages()" title="Permalink to this definition">¶</a></dt>
+<dd><p>Request messages for the current user.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="getobjectsfromsearch">
+<h3>getObjectsFromSearch<a class="headerlink" href="#getobjectsfromsearch" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="fi.lbd.mobile.backendhandler.BackendHandler.getObjectsFromSearch(List, String, int, boolean)">
+ <a class="reference internal" href="HandlerResponse.html#fi.lbd.mobile.backendhandler.HandlerResponse" title="fi.lbd.mobile.backendhandler.HandlerResponse">HandlerResponse</a>&lt;<a class="reference internal" href="../mapobjects/MapObject.html#fi.lbd.mobile.mapobjects.MapObject" title="fi.lbd.mobile.mapobjects.MapObject">MapObject</a>&gt; <tt class="descname">getObjectsFromSearch</tt><big>(</big><a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/util/List.html" title="java.util.List">List</a>&lt;<a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a>&gt;<em> fromFields</em>, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a><em> searchString</em>, int<em> limit</em>, boolean<em> mini</em><big>)</big><a class="headerlink" href="#fi.lbd.mobile.backendhandler.BackendHandler.getObjectsFromSearch(List, String, int, boolean)" title="Permalink to this definition">¶</a></dt>
+<dd><p>Search objects which has the search string in the given fields.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>fromFields</strong> &#8211; Fields to search from.</li>
+<li><strong>searchString</strong> &#8211; String to search.</li>
+<li><strong>limit</strong> &#8211; Limit results.</li>
+<li><strong>mini</strong> &#8211; Results minimized.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="getobjectsinarea">
+<h3>getObjectsInArea<a class="headerlink" href="#getobjectsinarea" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="fi.lbd.mobile.backendhandler.BackendHandler.getObjectsInArea(PointLocation, PointLocation, boolean)">
+ <a class="reference internal" href="HandlerResponse.html#fi.lbd.mobile.backendhandler.HandlerResponse" title="fi.lbd.mobile.backendhandler.HandlerResponse">HandlerResponse</a>&lt;<a class="reference internal" href="../mapobjects/MapObject.html#fi.lbd.mobile.mapobjects.MapObject" title="fi.lbd.mobile.mapobjects.MapObject">MapObject</a>&gt; <tt class="descname">getObjectsInArea</tt><big>(</big><a class="reference internal" href="../location/PointLocation.html#fi.lbd.mobile.location.PointLocation" title="fi.lbd.mobile.location.PointLocation">PointLocation</a><em> southWest</em>, <a class="reference internal" href="../location/PointLocation.html#fi.lbd.mobile.location.PointLocation" title="fi.lbd.mobile.location.PointLocation">PointLocation</a><em> northEast</em>, boolean<em> mini</em><big>)</big><a class="headerlink" href="#fi.lbd.mobile.backendhandler.BackendHandler.getObjectsInArea(PointLocation, PointLocation, boolean)" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns objects inside area.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>southWest</strong> &#8211; Start location.</li>
+<li><strong>northEast</strong> &#8211; End location.</li>
+<li><strong>mini</strong> &#8211; Should the returned objects be minimized.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="getobjectsnearlocation">
+<h3>getObjectsNearLocation<a class="headerlink" href="#getobjectsnearlocation" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="fi.lbd.mobile.backendhandler.BackendHandler.getObjectsNearLocation(PointLocation, double, boolean)">
+ <a class="reference internal" href="HandlerResponse.html#fi.lbd.mobile.backendhandler.HandlerResponse" title="fi.lbd.mobile.backendhandler.HandlerResponse">HandlerResponse</a>&lt;<a class="reference internal" href="../mapobjects/MapObject.html#fi.lbd.mobile.mapobjects.MapObject" title="fi.lbd.mobile.mapobjects.MapObject">MapObject</a>&gt; <tt class="descname">getObjectsNearLocation</tt><big>(</big><a class="reference internal" href="../location/PointLocation.html#fi.lbd.mobile.location.PointLocation" title="fi.lbd.mobile.location.PointLocation">PointLocation</a><em> location</em>, double<em> range</em>, boolean<em> mini</em><big>)</big><a class="headerlink" href="#fi.lbd.mobile.backendhandler.BackendHandler.getObjectsNearLocation(PointLocation, double, boolean)" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns objects near the given location.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>location</strong> &#8211; Objects near this location.</li>
+<li><strong>range</strong> &#8211; Objects inside circular area defined by this range.</li>
+<li><strong>mini</strong> &#8211; Should the returned objects be minimized.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="getusers">
+<h3>getUsers<a class="headerlink" href="#getusers" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="fi.lbd.mobile.backendhandler.BackendHandler.getUsers()">
+ <a class="reference internal" href="HandlerResponse.html#fi.lbd.mobile.backendhandler.HandlerResponse" title="fi.lbd.mobile.backendhandler.HandlerResponse">HandlerResponse</a>&lt;<a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a>&gt; <tt class="descname">getUsers</tt><big>(</big><big>)</big><a class="headerlink" href="#fi.lbd.mobile.backendhandler.BackendHandler.getUsers()" title="Permalink to this definition">¶</a></dt>
+<dd><p>Requests the list of authorized users.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="postmessage">
+<h3>postMessage<a class="headerlink" href="#postmessage" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="fi.lbd.mobile.backendhandler.BackendHandler.postMessage(String, String, Object, List)">
+ <a class="reference internal" href="HandlerResponse.html#fi.lbd.mobile.backendhandler.HandlerResponse" title="fi.lbd.mobile.backendhandler.HandlerResponse">HandlerResponse</a>&lt;<a class="reference internal" href="../messaging/messageobjects/MessageObject.html#fi.lbd.mobile.messaging.messageobjects.MessageObject" title="fi.lbd.mobile.messaging.messageobjects.MessageObject">MessageObject</a>&gt; <tt class="descname">postMessage</tt><big>(</big><a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a><em> receiver</em>, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a><em> topic</em>, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/Object.html" title="java.lang.Object">Object</a><em> message</em>, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/util/List.html" title="java.util.List">List</a>&lt;<a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a>&gt;<em> attachedObjectIds</em><big>)</big><a class="headerlink" href="#fi.lbd.mobile.backendhandler.BackendHandler.postMessage(String, String, Object, List)" title="Permalink to this definition">¶</a></dt>
+<dd><p>Post a message</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>receiver</strong> &#8211; Message receiver.</li>
+<li><strong>topic</strong> &#8211; Message topic.</li>
+<li><strong>message</strong> &#8211; Message contents.</li>
+<li><strong>attachedObjectIds</strong> &#8211; Attached object ids.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="updatemapobject">
+<h3>updateMapObject<a class="headerlink" href="#updatemapobject" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="fi.lbd.mobile.backendhandler.BackendHandler.updateMapObject(MapObject)">
+ <a class="reference internal" href="HandlerResponse.html#fi.lbd.mobile.backendhandler.HandlerResponse" title="fi.lbd.mobile.backendhandler.HandlerResponse">HandlerResponse</a>&lt;<a class="reference internal" href="../mapobjects/MapObject.html#fi.lbd.mobile.mapobjects.MapObject" title="fi.lbd.mobile.mapobjects.MapObject">MapObject</a>&gt; <tt class="descname">updateMapObject</tt><big>(</big><a class="reference internal" href="../mapobjects/MapObject.html#fi.lbd.mobile.mapobjects.MapObject" title="fi.lbd.mobile.mapobjects.MapObject">MapObject</a><em> updatedMapObject</em><big>)</big><a class="headerlink" href="#fi.lbd.mobile.backendhandler.BackendHandler.updateMapObject(MapObject)" title="Permalink to this definition">¶</a></dt>
+<dd><p>Updates the object in the backend.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>updatedMapObject</strong> &#8211; Object which should be updated.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../../../packages.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">BackendHandler</a><ul>
+<li><a class="reference internal" href="#methods">Methods</a><ul>
+<li><a class="reference internal" href="#deletemessage">deleteMessage</a></li>
+<li><a class="reference internal" href="#getcollections">getCollections</a></li>
+<li><a class="reference internal" href="#getmapobject">getMapObject</a></li>
+<li><a class="reference internal" href="#getmessages">getMessages</a></li>
+<li><a class="reference internal" href="#getobjectsfromsearch">getObjectsFromSearch</a></li>
+<li><a class="reference internal" href="#getobjectsinarea">getObjectsInArea</a></li>
+<li><a class="reference internal" href="#getobjectsnearlocation">getObjectsNearLocation</a></li>
+<li><a class="reference internal" href="#getusers">getUsers</a></li>
+<li><a class="reference internal" href="#postmessage">postMessage</a></li>
+<li><a class="reference internal" href="#updatemapobject">updateMapObject</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="package-index.html"
+                        title="previous chapter">fi.lbd.mobile.backendhandler</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="BackendHandlerService.html"
+                        title="next chapter">BackendHandlerService</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../../../../_sources/fi/lbd/mobile/backendhandler/BackendHandler.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="BackendHandlerService.html" title="BackendHandlerService"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="package-index.html" title="fi.lbd.mobile.backendhandler"
+             >previous</a> |</li>
+        <li><a href="../../../../packages.html">LBD Mobile client Alpha documentation</a> &raquo;</li>
+          <li><a href="package-index.html" >fi.lbd.mobile.backendhandler</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2015, Tommi und Ossi.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+    </div>
+  </body>
+</html>

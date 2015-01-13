@@ -1,0 +1,42 @@
+Code documentation: Open data handlers
+======================================
+
+:mod:`RESThandlers.HandlerInterface` REST Handler Interface
+-----------------------------------------------------------
+
+.. automodule:: RESThandlers.HandlerInterface.Exceptions
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+.. automodule:: RESThandlers.HandlerInterface.Factory
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+.. automodule:: RESThandlers.HandlerInterface.HandlerBaseClass
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+:mod:`RESThandlers.Streetlight` Streetlight REST handler
+--------------------------------------------------------
+
+.. automodule:: RESThandlers.Streetlight.Handler
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+.. automodule:: RESThandlers.Streetlight.models
+   :members:
+
+:mod:`RESThandlers.Playgrounds` Playgrounds REST handler
+--------------------------------------------------------
+
+.. automodule:: RESThandlers.Playgrounds.Handler
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+.. automodule:: RESThandlers.Playgrounds.models
+   :members:

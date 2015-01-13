@@ -1,0 +1,148 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>RESThandlers.HandlerInterface.Factory Handler Factory &mdash; LBD Backend Dev documentation</title>
+    
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     'Dev',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="LBD Backend Dev documentation" href="../index.html" />
+    <link rel="up" title="Code documentation: Handlers" href="../hand.html" />
+    <link rel="next" title="RESThandlers.Streetlight Streetlight REST handler" href="handlers.html" />
+    <link rel="prev" title="RESThandlers.HandlerInterface REST Handler Interface" href="interface.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="handlers.html" title="RESThandlers.Streetlight Streetlight REST handler"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="interface.html" title="RESThandlers.HandlerInterface REST Handler Interface"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">LBD Backend Dev documentation</a> &raquo;</li>
+          <li><a href="../hand.html" accesskey="U">Code documentation: Handlers</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="module-RESThandlers.HandlerInterface.Factory">
+<span id="resthandlers-handlerinterface-factory-handler-factory"></span><h1><a class="reference internal" href="#module-RESThandlers.HandlerInterface.Factory" title="RESThandlers.HandlerInterface.Factory"><tt class="xref py py-mod docutils literal"><span class="pre">RESThandlers.HandlerInterface.Factory</span></tt></a> Handler Factory<a class="headerlink" href="#module-RESThandlers.HandlerInterface.Factory" title="Permalink to this headline">¶</a></h1>
+<span class="target" id="module-Handlers.Interface.Factory"></span><dl class="class">
+<dt id="RESThandlers.HandlerInterface.Factory.HandlerFactory">
+<em class="property">class </em><tt class="descclassname">RESThandlers.HandlerInterface.Factory.</tt><tt class="descname">HandlerFactory</tt><big>(</big><em>collection</em><big>)</big><a class="headerlink" href="#RESThandlers.HandlerInterface.Factory.HandlerFactory" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<dl class="method">
+<dt id="RESThandlers.HandlerInterface.Factory.HandlerFactory.create">
+<tt class="descname">create</tt><big>(</big><big>)</big><a class="headerlink" href="#RESThandlers.HandlerInterface.Factory.HandlerFactory.create" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates and return a handler object.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Handler object</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="RESThandlers.HandlerInterface.Factory.HandlerFactory.get_installed">
+<em class="property">static </em><tt class="descname">get_installed</tt><big>(</big><big>)</big><a class="headerlink" href="#RESThandlers.HandlerInterface.Factory.HandlerFactory.get_installed" title="Permalink to this definition">¶</a></dt>
+<dd><p><strong>Static</strong></p>
+<p>This method returns the installed open data services as dictionary where &#8220;name&#8221; is the name of the service (used
+when creating a new handler object) and &#8220;fields&#8221; tells what elements the service provides.
+:return: dictionary</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="interface.html"
+                        title="previous chapter"><tt class="docutils literal"><span class="pre">RESThandlers.HandlerInterface</span></tt> REST Handler Interface</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="handlers.html"
+                        title="next chapter"><tt class="docutils literal"><span class="pre">RESThandlers.Streetlight</span></tt> Streetlight REST handler</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../_sources/handler/factory.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="handlers.html" title="RESThandlers.Streetlight Streetlight REST handler"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="interface.html" title="RESThandlers.HandlerInterface REST Handler Interface"
+             >previous</a> |</li>
+        <li><a href="../index.html">LBD Backend Dev documentation</a> &raquo;</li>
+          <li><a href="../hand.html" >Code documentation: Handlers</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2014, LBD Development.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+    </div>
+  </body>
+</html>

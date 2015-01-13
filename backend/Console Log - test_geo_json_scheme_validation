@@ -1,0 +1,342 @@
+
+##teamcity[enteredTheMatrix]
+
+##teamcity[testCount count='43']
+Running test: Empty JSON
+Test passed!
+
+##teamcity[testSuiteStarted name='test_geo_json_scheme_validation.TestGeo_json_scheme_validation' locationHint='python_uttestid:///home/xc-/Documents/Projektikurssi/projektityokurssi/backend/lbd_backend/test_geo_json_scheme_validation.TestGeo_json_scheme_validation']
+
+##teamcity[testStarted name='test_empty_json' locationHint='python_uttestid:///home/xc-/Documents/Projektikurssi/projektityokurssi/backend/lbd_backend/test_geo_json_scheme_validation.TestGeo_json_scheme_validation.test_empty_json']
+
+##teamcity[testFinished duration='0' name='test_empty_json']
+Running test: Extra top level field
+{'dasfooBAR': u'BLERGH', u'geometry_name': u'GEOLOC', u'geometry': {u'type': u'Point', u'coordinates': [23.643239226767022, 61.519112683582854]}, u'id': u'WFS_KATUVALO.405172', u'type': u'Feature', u'properties': {u'NIMI': u'XPWR_6769212', u'LAMPPU_TYYPPI_KOODI': u'100340', u'TYYPPI_KOODI': u'105007', u'KATUVALO_ID': 405172, u'LAMPPU_TYYPPI': u'ST 100 (SIEMENS)', u'metadata': {u'status': u'SNAFU', u'modifier': u'Seppo S\xe4hk\xe4ri', u'modified': 1414663769}}}
+Test passed!
+
+##teamcity[testStarted name='test_extra_top_level_field' locationHint='python_uttestid:///home/xc-/Documents/Projektikurssi/projektityokurssi/backend/lbd_backend/test_geo_json_scheme_validation.TestGeo_json_scheme_validation.test_extra_top_level_field']
+
+##teamcity[testFinished duration='0' name='test_extra_top_level_field']
+Running test: Valid GeoJSON Feature
+Test passed!
+
+##teamcity[testStarted name='test_geo_json_scheme_validation_valid' locationHint='python_uttestid:///home/xc-/Documents/Projektikurssi/projektityokurssi/backend/lbd_backend/test_geo_json_scheme_validation.TestGeo_json_scheme_validation.test_geo_json_scheme_validation_valid']
+
+##teamcity[testFinished duration='0' name='test_geo_json_scheme_validation_valid']
+Running test: Feature type key written in upper case letters
+{u'geometry': {u'type': u'Point', u'COORDINATES': [23.643239226767022, 61.519112683582854]}, u'properties': {u'NIMI': u'XPWR_6769212', u'LAMPPU_TYYPPI_KOODI': u'100340', u'TYYPPI_KOODI': u'105007', u'KATUVALO_ID': 405172, u'LAMPPU_TYYPPI': u'ST 100 (SIEMENS)', u'metadata': {u'status': u'SNAFU', u'modifier': u'Seppo S\xe4hk\xe4ri', u'modified': 1414663769}}, u'type': u'Feature', u'id': u'WFS_KATUVALO.405172', u'geometry_name': u'GEOLOC'}
+Test passed!
+
+##teamcity[testStarted name='test_geometry_coordinates_key_upper_case' locationHint='python_uttestid:///home/xc-/Documents/Projektikurssi/projektityokurssi/backend/lbd_backend/test_geo_json_scheme_validation.TestGeo_json_scheme_validation.test_geometry_coordinates_key_upper_case']
+
+##teamcity[testFinished duration='0' name='test_geometry_coordinates_key_upper_case']
+Running test: Feature type key written in upper case letters
+{u'GEOMETRY': {u'type': u'Point', u'coordinates': [23.643239226767022, 61.519112683582854]}, u'properties': {u'NIMI': u'XPWR_6769212', u'LAMPPU_TYYPPI_KOODI': u'100340', u'TYYPPI_KOODI': u'105007', u'KATUVALO_ID': 405172, u'LAMPPU_TYYPPI': u'ST 100 (SIEMENS)', u'metadata': {u'status': u'SNAFU', u'modifier': u'Seppo S\xe4hk\xe4ri', u'modified': 1414663769}}, u'type': u'Feature', u'id': u'WFS_KATUVALO.405172', u'geometry_name': u'GEOLOC'}
+Test passed!
+
+##teamcity[testStarted name='test_geometry_key_upper_case' locationHint='python_uttestid:///home/xc-/Documents/Projektikurssi/projektityokurssi/backend/lbd_backend/test_geo_json_scheme_validation.TestGeo_json_scheme_validation.test_geometry_key_upper_case']
+
+##teamcity[testFinished duration='0' name='test_geometry_key_upper_case']
+Running test: Feature type key written in upper case letters
+{u'geometry': {u'TYPE': u'Point', u'coordinates': [23.643239226767022, 61.519112683582854]}, u'properties': {u'NIMI': u'XPWR_6769212', u'LAMPPU_TYYPPI_KOODI': u'100340', u'TYYPPI_KOODI': u'105007', u'KATUVALO_ID': 405172, u'LAMPPU_TYYPPI': u'ST 100 (SIEMENS)', u'metadata': {u'status': u'SNAFU', u'modifier': u'Seppo S\xe4hk\xe4ri', u'modified': 1414663769}}, u'type': u'Feature', u'id': u'WFS_KATUVALO.405172', u'geometry_name': u'GEOLOC'}
+Test passed!
+
+##teamcity[testStarted name='test_geometry_type_key_upper_case' locationHint='python_uttestid:///home/xc-/Documents/Projektikurssi/projektityokurssi/backend/lbd_backend/test_geo_json_scheme_validation.TestGeo_json_scheme_validation.test_geometry_type_key_upper_case']
+
+##teamcity[testFinished duration='0' name='test_geometry_type_key_upper_case']
+Running test: Feature type key written in upper case letters
+{u'geometry': {u'type': u'Point', u'coordinates': [23.643239226767022, 61.519112683582854]}, u'properties': {u'NIMI': u'XPWR_6769212', u'LAMPPU_TYYPPI_KOODI': u'100340', u'TYYPPI_KOODI': u'105007', u'KATUVALO_ID': 405172, u'LAMPPU_TYYPPI': u'ST 100 (SIEMENS)', u'metadata': {u'status': u'SNAFU', u'modifier': u'Seppo S\xe4hk\xe4ri', u'modified': 1414663769}}, u'type': u'Feature', u'ID': u'WFS_KATUVALO.405172', u'geometry_name': u'GEOLOC'}
+Test passed!
+
+##teamcity[testStarted name='test_id_key_upper_case' locationHint='python_uttestid:///home/xc-/Documents/Projektikurssi/projektityokurssi/backend/lbd_backend/test_geo_json_scheme_validation.TestGeo_json_scheme_validation.test_id_key_upper_case']
+
+##teamcity[testFinished duration='0' name='test_id_key_upper_case']
+Running test: Missing 'geometry' field
+Test passed!
+
+##teamcity[testStarted name='test_missing_geometry' locationHint='python_uttestid:///home/xc-/Documents/Projektikurssi/projektityokurssi/backend/lbd_backend/test_geo_json_scheme_validation.TestGeo_json_scheme_validation.test_missing_geometry']
+
+##teamcity[testFinished duration='0' name='test_missing_geometry']
+Running test: Missing 'coordinate' field
+Test passed!
+
+##teamcity[testStarted name='test_missing_geometry_coordinates' locationHint='python_uttestid:///home/xc-/Documents/Projektikurssi/projektityokurssi/backend/lbd_backend/test_geo_json_scheme_validation.TestGeo_json_scheme_validation.test_missing_geometry_coordinates']
+
+##teamcity[testFinished duration='0' name='test_missing_geometry_coordinates']
+Running test: Missing 'type' from 'geometry'
+Test passed!
+
+##teamcity[testStarted name='test_missing_geometry_type' locationHint='python_uttestid:///home/xc-/Documents/Projektikurssi/projektityokurssi/backend/lbd_backend/test_geo_json_scheme_validation.TestGeo_json_scheme_validation.test_missing_geometry_type']
+
+##teamcity[testFinished duration='0' name='test_missing_geometry_type']
+Running test: Missing 'id' field
+Test passed!
+
+##teamcity[testStarted name='test_missing_id' locationHint='python_uttestid:///home/xc-/Documents/Projektikurssi/projektityokurssi/backend/lbd_backend/test_geo_json_scheme_validation.TestGeo_json_scheme_validation.test_missing_id']
+
+##teamcity[testFinished duration='0' name='test_missing_id']
+Running test: Missing 'properties' field
+Test passed!
+
+##teamcity[testStarted name='test_missing_properties' locationHint='python_uttestid:///home/xc-/Documents/Projektikurssi/projektityokurssi/backend/lbd_backend/test_geo_json_scheme_validation.TestGeo_json_scheme_validation.test_missing_properties']
+
+##teamcity[testFinished duration='0' name='test_missing_properties']
+Running test: Missing 'metadata' from 'properties'
+Test passed!
+
+##teamcity[testStarted name='test_missing_properties_metadata' locationHint='python_uttestid:///home/xc-/Documents/Projektikurssi/projektityokurssi/backend/lbd_backend/test_geo_json_scheme_validation.TestGeo_json_scheme_validation.test_missing_properties_metadata']
+
+##teamcity[testFinished duration='0' name='test_missing_properties_metadata']
+Running test: missing 'status' from 'metadata'
+Test passed!
+
+##teamcity[testStarted name='test_missing_properties_metadata_status' locationHint='python_uttestid:///home/xc-/Documents/Projektikurssi/projektityokurssi/backend/lbd_backend/test_geo_json_scheme_validation.TestGeo_json_scheme_validation.test_missing_properties_metadata_status']
+
+##teamcity[testFinished duration='0' name='test_missing_properties_metadata_status']
+Running test: Missing 'type' field
+Test passed!
+
+##teamcity[testStarted name='test_missing_type' locationHint='python_uttestid:///home/xc-/Documents/Projektikurssi/projektityokurssi/backend/lbd_backend/test_geo_json_scheme_validation.TestGeo_json_scheme_validation.test_missing_type']
+
+##teamcity[testFinished duration='0' name='test_missing_type']
+Running test: Feature type key written in upper case letters
+{u'geometry_name': u'GEOLOC', u'geometry': {u'type': u'Point', u'coordinates': [23.643239226767022, 61.519112683582854]}, u'PROPERTIES': {u'NIMI': u'XPWR_6769212', u'LAMPPU_TYYPPI_KOODI': u'100340', u'TYYPPI_KOODI': u'105007', u'KATUVALO_ID': 405172, u'LAMPPU_TYYPPI': u'ST 100 (SIEMENS)', u'metadata': {u'status': u'SNAFU', u'modifier': u'Seppo S\xe4hk\xe4ri', u'modified': 1414663769}}, u'type': u'Feature', u'id': u'WFS_KATUVALO.405172'}
+Test passed!
+
+##teamcity[testStarted name='test_properties_key_upper_case' locationHint='python_uttestid:///home/xc-/Documents/Projektikurssi/projektityokurssi/backend/lbd_backend/test_geo_json_scheme_validation.TestGeo_json_scheme_validation.test_properties_key_upper_case']
+
+##teamcity[testFinished duration='0' name='test_properties_key_upper_case']
+Running test: Feature type key written in upper case letters
+{u'geometry': {u'type': u'Point', u'coordinates': [23.643239226767022, 61.519112683582854]}, u'properties': {u'NIMI': u'XPWR_6769212', u'LAMPPU_TYYPPI_KOODI': u'100340', u'TYYPPI_KOODI': u'105007', u'KATUVALO_ID': 405172, u'LAMPPU_TYYPPI': u'ST 100 (SIEMENS)', u'METADATA': {u'status': u'SNAFU', u'modifier': u'Seppo S\xe4hk\xe4ri', u'modified': 1414663769}}, u'type': u'Feature', u'id': u'WFS_KATUVALO.405172', u'geometry_name': u'GEOLOC'}
+Test passed!
+
+##teamcity[testStarted name='test_properties_metadata_key_upper_case' locationHint='python_uttestid:///home/xc-/Documents/Projektikurssi/projektityokurssi/backend/lbd_backend/test_geo_json_scheme_validation.TestGeo_json_scheme_validation.test_properties_metadata_key_upper_case']
+
+##teamcity[testFinished duration='0' name='test_properties_metadata_key_upper_case']
+Running test: Feature type key written in upper case letters
+{u'geometry': {u'type': u'Point', u'coordinates': [23.643239226767022, 61.519112683582854]}, u'properties': {u'NIMI': u'XPWR_6769212', u'LAMPPU_TYYPPI_KOODI': u'100340', u'TYYPPI_KOODI': u'105007', u'KATUVALO_ID': 405172, u'LAMPPU_TYYPPI': u'ST 100 (SIEMENS)', u'metadata': {u'STATUS': u'SNAFU', u'modifier': u'Seppo S\xe4hk\xe4ri', u'modified': 1414663769}}, u'type': u'Feature', u'id': u'WFS_KATUVALO.405172', u'geometry_name': u'GEOLOC'}
+Test passed!
+
+##teamcity[testStarted name='test_properties_metadata_status_key_upper_case' locationHint='python_uttestid:///home/xc-/Documents/Projektikurssi/projektityokurssi/backend/lbd_backend/test_geo_json_scheme_validation.TestGeo_json_scheme_validation.test_properties_metadata_status_key_upper_case']
+
+##teamcity[testFinished duration='0' name='test_properties_metadata_status_key_upper_case']
+Running test: Feature type key written in upper case letters
+{u'geometry': {u'type': u'Point', u'coordinates': [23.643239226767022, 61.519112683582854]}, u'properties': {u'NIMI': u'XPWR_6769212', u'LAMPPU_TYYPPI_KOODI': u'100340', u'TYYPPI_KOODI': u'105007', u'KATUVALO_ID': 405172, u'LAMPPU_TYYPPI': u'ST 100 (SIEMENS)', u'metadata': {u'status': u'SNAFU', u'modifier': u'Seppo S\xe4hk\xe4ri', u'modified': 1414663769}}, u'TYPE': u'Feature', u'id': u'WFS_KATUVALO.405172', u'geometry_name': u'GEOLOC'}
+Test passed!
+
+##teamcity[testStarted name='test_type_key_upper_case' locationHint='python_uttestid:///home/xc-/Documents/Projektikurssi/projektityokurssi/backend/lbd_backend/test_geo_json_scheme_validation.TestGeo_json_scheme_validation.test_type_key_upper_case']
+
+##teamcity[testFinished duration='0' name='test_type_key_upper_case']
+Running test: Feature type value written in upper case letters
+{u'geometry': {u'type': u'Point', u'coordinates': [23.643239226767022, 61.519112683582854]}, u'properties': {u'NIMI': u'XPWR_6769212', u'LAMPPU_TYYPPI_KOODI': u'100340', u'TYYPPI_KOODI': u'105007', u'KATUVALO_ID': 405172, u'LAMPPU_TYYPPI': u'ST 100 (SIEMENS)', u'metadata': {u'status': u'SNAFU', u'modifier': u'Seppo S\xe4hk\xe4ri', u'modified': 1414663769}}, u'type': u'FEATURE', u'id': u'WFS_KATUVALO.405172', u'geometry_name': u'GEOLOC'}
+Test passed!
+
+##teamcity[testStarted name='test_type_value_upper_case' locationHint='python_uttestid:///home/xc-/Documents/Projektikurssi/projektityokurssi/backend/lbd_backend/test_geo_json_scheme_validation.TestGeo_json_scheme_validation.test_type_value_upper_case']
+
+##teamcity[testFinished duration='0' name='test_type_value_upper_case']
+Running test: Undefined value of 'type' in 'geometry'
+Test passed!
+
+##teamcity[testStarted name='test_undefined_geometry_type_value' locationHint='python_uttestid:///home/xc-/Documents/Projektikurssi/projektityokurssi/backend/lbd_backend/test_geo_json_scheme_validation.TestGeo_json_scheme_validation.test_undefined_geometry_type_value']
+
+##teamcity[testFinished duration='0' name='test_undefined_geometry_type_value']
+Running test: Undefined value of 'type' in 'geometry' (empty)
+Test passed!
+
+##teamcity[testStarted name='test_undefined_geometry_type_value_empty' locationHint='python_uttestid:///home/xc-/Documents/Projektikurssi/projektityokurssi/backend/lbd_backend/test_geo_json_scheme_validation.TestGeo_json_scheme_validation.test_undefined_geometry_type_value_empty']
+
+##teamcity[testFinished duration='0' name='test_undefined_geometry_type_value_empty']
+Running test: Undefined value of 'type'
+Test passed!
+
+##teamcity[testStarted name='test_undefined_type_value' locationHint='python_uttestid:///home/xc-/Documents/Projektikurssi/projektityokurssi/backend/lbd_backend/test_geo_json_scheme_validation.TestGeo_json_scheme_validation.test_undefined_type_value']
+
+##teamcity[testFinished duration='0' name='test_undefined_type_value']
+Running test: Undefined value of 'type' (empty)
+False
+Test passed!
+
+##teamcity[testStarted name='test_undefined_type_value_empty' locationHint='python_uttestid:///home/xc-/Documents/Projektikurssi/projektityokurssi/backend/lbd_backend/test_geo_json_scheme_validation.TestGeo_json_scheme_validation.test_undefined_type_value_empty']
+
+##teamcity[testFinished duration='0' name='test_undefined_type_value_empty']
+Running test: Too few elements in coordinates list
+Test passed!
+
+##teamcity[testStarted name='test_wrong_amount_of_coords_too_few' locationHint='python_uttestid:///home/xc-/Documents/Projektikurssi/projektityokurssi/backend/lbd_backend/test_geo_json_scheme_validation.TestGeo_json_scheme_validation.test_wrong_amount_of_coords_too_few']
+
+##teamcity[testFinished duration='0' name='test_wrong_amount_of_coords_too_few']
+Running test: Too many elements in coordinates list
+Test passed!
+
+##teamcity[testStarted name='test_wrong_amount_of_coords_too_many' locationHint='python_uttestid:///home/xc-/Documents/Projektikurssi/projektityokurssi/backend/lbd_backend/test_geo_json_scheme_validation.TestGeo_json_scheme_validation.test_wrong_amount_of_coords_too_many']
+
+##teamcity[testFinished duration='0' name='test_wrong_amount_of_coords_too_many']
+Running test: Too many elements in coordinates field, extra element wrong type
+Results:
+<type 'list'>:False
+<type 'int'>:False
+<type 'unicode'>:False
+<type 'str'>:False
+<type 'dict'>:False
+<type 'tuple'>:False
+Test passed!
+
+##teamcity[testStarted name='test_wrong_amount_of_coords_too_many_wrong_type' locationHint='python_uttestid:///home/xc-/Documents/Projektikurssi/projektityokurssi/backend/lbd_backend/test_geo_json_scheme_validation.TestGeo_json_scheme_validation.test_wrong_amount_of_coords_too_many_wrong_type']
+
+##teamcity[testFinished duration='0' name='test_wrong_amount_of_coords_too_many_wrong_type']
+Running test: First coordinate has wrong type
+Results:
+<type 'list'>:False
+<type 'int'>:False
+<type 'unicode'>:False
+<type 'str'>:False
+<type 'dict'>:False
+<type 'tuple'>:False
+Test passed!
+
+##teamcity[testStarted name='test_wrong_geometry_coordinates_0' locationHint='python_uttestid:///home/xc-/Documents/Projektikurssi/projektityokurssi/backend/lbd_backend/test_geo_json_scheme_validation.TestGeo_json_scheme_validation.test_wrong_geometry_coordinates_0']
+
+##teamcity[testFinished duration='0' name='test_wrong_geometry_coordinates_0']
+Running test: Second coordinate has wrong type
+Results:
+<type 'list'>:False
+<type 'int'>:False
+<type 'unicode'>:False
+<type 'str'>:False
+<type 'dict'>:False
+<type 'tuple'>:False
+Test passed!
+
+##teamcity[testStarted name='test_wrong_geometry_coordinates_1' locationHint='python_uttestid:///home/xc-/Documents/Projektikurssi/projektityokurssi/backend/lbd_backend/test_geo_json_scheme_validation.TestGeo_json_scheme_validation.test_wrong_geometry_coordinates_1']
+
+##teamcity[testFinished duration='0' name='test_wrong_geometry_coordinates_1']
+Running test: Wrong 'coordinates' type
+Results:
+<type 'float'>:object of type 'float' has no len()
+<type 'int'>:object of type 'int' has no len()
+<type 'unicode'>:False
+<type 'str'>:False
+<type 'dict'>:False
+<type 'tuple'>:False
+Test passed!
+
+##teamcity[testStarted name='test_wrong_geometry_coordinates_not_list' locationHint='python_uttestid:///home/xc-/Documents/Projektikurssi/projektityokurssi/backend/lbd_backend/test_geo_json_scheme_validation.TestGeo_json_scheme_validation.test_wrong_geometry_coordinates_not_list']
+
+##teamcity[testFinished duration='0' name='test_wrong_geometry_coordinates_not_list']
+Running test: field 'geometry' is wrong type
+Results:
+<type 'float'>:False
+<type 'list'>:False
+<type 'int'>:False
+<type 'str'>:False
+<type 'dict'>:False
+<type 'tuple'>:False
+Test passed!
+
+##teamcity[testStarted name='test_wrong_geometry_type' locationHint='python_uttestid:///home/xc-/Documents/Projektikurssi/projektityokurssi/backend/lbd_backend/test_geo_json_scheme_validation.TestGeo_json_scheme_validation.test_wrong_geometry_type']
+
+##teamcity[testFinished duration='0' name='test_wrong_geometry_type']
+Running test: Wrong 'id' type
+Results:
+<type 'float'>:False
+<type 'list'>:False
+<type 'int'>:False
+<type 'str'>:False
+<type 'dict'>:False
+<type 'tuple'>:False
+Test passed!
+
+##teamcity[testStarted name='test_wrong_id' locationHint='python_uttestid:///home/xc-/Documents/Projektikurssi/projektityokurssi/backend/lbd_backend/test_geo_json_scheme_validation.TestGeo_json_scheme_validation.test_wrong_id']
+
+##teamcity[testFinished duration='0' name='test_wrong_id']
+Running test: Wrong 'status' type
+Results:
+<type 'float'>:False
+<type 'list'>:False
+<type 'int'>:False
+<type 'str'>:False
+<type 'dict'>:False
+<type 'tuple'>:False
+Test passed!
+
+##teamcity[testStarted name='test_wrong_properties_metadata_status' locationHint='python_uttestid:///home/xc-/Documents/Projektikurssi/projektityokurssi/backend/lbd_backend/test_geo_json_scheme_validation.TestGeo_json_scheme_validation.test_wrong_properties_metadata_status']
+
+##teamcity[testFinished duration='0' name='test_wrong_properties_metadata_status']
+Running test: 'type' is wrong type (int, float etc)
+Results:
+<type 'float'>:'float' object has no attribute 'lower'
+<type 'list'>:'list' object has no attribute 'lower'
+<type 'int'>:'int' object has no attribute 'lower'
+<type 'str'>:False
+<type 'dict'>:'dict' object has no attribute 'lower'
+<type 'tuple'>:'tuple' object has no attribute 'lower'
+Test passed!
+
+##teamcity[testStarted name='test_wrong_type' locationHint='python_uttestid:///home/xc-/Documents/Projektikurssi/projektityokurssi/backend/lbd_backend/test_geo_json_scheme_validation.TestGeo_json_scheme_validation.test_wrong_type']
+
+##teamcity[testFinished duration='0' name='test_wrong_type']
+Running test: one feature is empty
+{u'totalFeatures': 2, u'type': u'FeatureCollection', u'features': [{}, {u'geometry': {u'type': u'Point', u'coordinates': [23.643239226767022, 61.519112683582854]}, u'geometry_name': u'GEOLOC', u'type': u'Feature', u'id': u'WFS_KATUVALO.405171', u'properties': {u'NIMI': u'XPWR_6769211', u'LAMPPU_TYYPPI_KOODI': u'100340', u'TYYPPI_KOODI': u'105007', u'KATUVALO_ID': 405171, u'LAMPPU_TYYPPI': u'ST 100 (SIEMENS)', u'metadata': {u'status': u'SNAFU', u'modifier': u'Seppo S\xe4hk\xe4ri', u'modified': 1414663769}}}]}
+Test passed!
+
+##teamcity[testSuiteFinished name='test_geo_json_scheme_validation.TestGeo_json_scheme_validation']
+
+##teamcity[testSuiteStarted name='test_geo_json_scheme_validation.TestGeo_json_scheme_validation_FeatureCollection' locationHint='python_uttestid:///home/xc-/Documents/Projektikurssi/projektityokurssi/backend/lbd_backend/test_geo_json_scheme_validation.TestGeo_json_scheme_validation_FeatureCollection']
+
+##teamcity[testStarted name='test_empty_feature' locationHint='python_uttestid:///home/xc-/Documents/Projektikurssi/projektityokurssi/backend/lbd_backend/test_geo_json_scheme_validation.TestGeo_json_scheme_validation_FeatureCollection.test_empty_feature']
+
+##teamcity[testFinished duration='0' name='test_empty_feature']
+Running test: Valid featurecollection
+Test passed!
+
+##teamcity[testStarted name='test_featurecollection_valid' locationHint='python_uttestid:///home/xc-/Documents/Projektikurssi/projektityokurssi/backend/lbd_backend/test_geo_json_scheme_validation.TestGeo_json_scheme_validation_FeatureCollection.test_featurecollection_valid']
+
+##teamcity[testFinished duration='0' name='test_featurecollection_valid']
+Running test: features in upper case
+{u'totalFeatures': 2, u'type': u'FeatureCollection', u'FEATURES': [{u'geometry': {u'type': u'Point', u'coordinates': [23.643239226767022, 61.519112683582854]}, u'geometry_name': u'GEOLOC', u'type': u'Feature', u'id': u'WFS_KATUVALO.405172', u'properties': {u'NIMI': u'XPWR_6769212', u'LAMPPU_TYYPPI_KOODI': u'100340', u'TYYPPI_KOODI': u'105007', u'KATUVALO_ID': 405172, u'LAMPPU_TYYPPI': u'ST 100 (SIEMENS)', u'metadata': {u'status': u'SNAFU', u'modifier': u'Seppo S\xe4hk\xe4ri', u'modified': 1414663769}}}, {u'geometry': {u'type': u'Point', u'coordinates': [23.643239226767022, 61.519112683582854]}, u'geometry_name': u'GEOLOC', u'type': u'Feature', u'id': u'WFS_KATUVALO.405171', u'properties': {u'NIMI': u'XPWR_6769211', u'LAMPPU_TYYPPI_KOODI': u'100340', u'TYYPPI_KOODI': u'105007', u'KATUVALO_ID': 405171, u'LAMPPU_TYYPPI': u'ST 100 (SIEMENS)', u'metadata': {u'status': u'SNAFU', u'modifier': u'Seppo S\xe4hk\xe4ri', u'modified': 1414663769}}}]}
+Test passed!
+
+##teamcity[testStarted name='test_features_key_upper_case' locationHint='python_uttestid:///home/xc-/Documents/Projektikurssi/projektityokurssi/backend/lbd_backend/test_geo_json_scheme_validation.TestGeo_json_scheme_validation_FeatureCollection.test_features_key_upper_case']
+
+##teamcity[testFinished duration='0' name='test_features_key_upper_case']
+Running test: missing features field
+Test passed!
+
+##teamcity[testStarted name='test_features_missing' locationHint='python_uttestid:///home/xc-/Documents/Projektikurssi/projektityokurssi/backend/lbd_backend/test_geo_json_scheme_validation.TestGeo_json_scheme_validation_FeatureCollection.test_features_missing']
+
+##teamcity[testFinished duration='0' name='test_features_missing']
+Running test: invalid feature
+{u'totalFeatures': 2, u'type': u'FeatureCollection', u'features': [{u'geometry': {u'type': u'Point', u'coordinates': [23.643239226767022, 61.519112683582854]}, u'geometry_name': u'GEOLOC', u'id': u'WFS_KATUVALO.405172', u'properties': {u'NIMI': u'XPWR_6769212', u'LAMPPU_TYYPPI_KOODI': u'100340', u'TYYPPI_KOODI': u'105007', u'KATUVALO_ID': 405172, u'LAMPPU_TYYPPI': u'ST 100 (SIEMENS)', u'metadata': {u'status': u'SNAFU', u'modifier': u'Seppo S\xe4hk\xe4ri', u'modified': 1414663769}}}, {u'geometry': {u'type': u'Point', u'coordinates': [23.643239226767022, 61.519112683582854]}, u'geometry_name': u'GEOLOC', u'type': u'Feature', u'id': u'WFS_KATUVALO.405171', u'properties': {u'NIMI': u'XPWR_6769211', u'LAMPPU_TYYPPI_KOODI': u'100340', u'TYYPPI_KOODI': u'105007', u'KATUVALO_ID': 405171, u'LAMPPU_TYYPPI': u'ST 100 (SIEMENS)', u'metadata': {u'status': u'SNAFU', u'modifier': u'Seppo S\xe4hk\xe4ri', u'modified': 1414663769}}}]}
+Test passed
+
+##teamcity[testStarted name='test_invalid_feature' locationHint='python_uttestid:///home/xc-/Documents/Projektikurssi/projektityokurssi/backend/lbd_backend/test_geo_json_scheme_validation.TestGeo_json_scheme_validation_FeatureCollection.test_invalid_feature']
+
+##teamcity[testFinished duration='0' name='test_invalid_feature']
+Running test: totalfeatures in upper case
+{u'TOTALFEATURES': 2, u'type': u'FeatureCollection', u'features': [{u'geometry': {u'type': u'Point', u'coordinates': [23.643239226767022, 61.519112683582854]}, u'geometry_name': u'GEOLOC', u'type': u'Feature', u'id': u'WFS_KATUVALO.405172', u'properties': {u'NIMI': u'XPWR_6769212', u'LAMPPU_TYYPPI_KOODI': u'100340', u'TYYPPI_KOODI': u'105007', u'KATUVALO_ID': 405172, u'LAMPPU_TYYPPI': u'ST 100 (SIEMENS)', u'metadata': {u'status': u'SNAFU', u'modifier': u'Seppo S\xe4hk\xe4ri', u'modified': 1414663769}}}, {u'geometry': {u'type': u'Point', u'coordinates': [23.643239226767022, 61.519112683582854]}, u'geometry_name': u'GEOLOC', u'type': u'Feature', u'id': u'WFS_KATUVALO.405171', u'properties': {u'NIMI': u'XPWR_6769211', u'LAMPPU_TYYPPI_KOODI': u'100340', u'TYYPPI_KOODI': u'105007', u'KATUVALO_ID': 405171, u'LAMPPU_TYYPPI': u'ST 100 (SIEMENS)', u'metadata': {u'status': u'SNAFU', u'modifier': u'Seppo S\xe4hk\xe4ri', u'modified': 1414663769}}}]}
+Test passed!
+
+##teamcity[testStarted name='test_totalfeatures_key_upper_case' locationHint='python_uttestid:///home/xc-/Documents/Projektikurssi/projektityokurssi/backend/lbd_backend/test_geo_json_scheme_validation.TestGeo_json_scheme_validation_FeatureCollection.test_totalfeatures_key_upper_case']
+
+##teamcity[testFinished duration='0' name='test_totalfeatures_key_upper_case']
+Running test: missing totalFeatures field
+Test passed!
+
+##teamcity[testStarted name='test_totalfeatures_missing' locationHint='python_uttestid:///home/xc-/Documents/Projektikurssi/projektityokurssi/backend/lbd_backend/test_geo_json_scheme_validation.TestGeo_json_scheme_validation_FeatureCollection.test_totalfeatures_missing']
+
+##teamcity[testFinished duration='0' name='test_totalfeatures_missing']
+Running test: type in upper case
+{u'totalFeatures': 2, u'TYPE': u'FeatureCollection', u'features': [{u'geometry': {u'type': u'Point', u'coordinates': [23.643239226767022, 61.519112683582854]}, u'geometry_name': u'GEOLOC', u'type': u'Feature', u'id': u'WFS_KATUVALO.405172', u'properties': {u'NIMI': u'XPWR_6769212', u'LAMPPU_TYYPPI_KOODI': u'100340', u'TYYPPI_KOODI': u'105007', u'KATUVALO_ID': 405172, u'LAMPPU_TYYPPI': u'ST 100 (SIEMENS)', u'metadata': {u'status': u'SNAFU', u'modifier': u'Seppo S\xe4hk\xe4ri', u'modified': 1414663769}}}, {u'geometry': {u'type': u'Point', u'coordinates': [23.643239226767022, 61.519112683582854]}, u'geometry_name': u'GEOLOC', u'type': u'Feature', u'id': u'WFS_KATUVALO.405171', u'properties': {u'NIMI': u'XPWR_6769211', u'LAMPPU_TYYPPI_KOODI': u'100340', u'TYYPPI_KOODI': u'105007', u'KATUVALO_ID': 405171, u'LAMPPU_TYYPPI': u'ST 100 (SIEMENS)', u'metadata': {u'status': u'SNAFU', u'modifier': u'Seppo S\xe4hk\xe4ri', u'modified': 1414663769}}}]}
+Test passed!
+
+##teamcity[testStarted name='test_type_key_upper_case' locationHint='python_uttestid:///home/xc-/Documents/Projektikurssi/projektityokurssi/backend/lbd_backend/test_geo_json_scheme_validation.TestGeo_json_scheme_validation_FeatureCollection.test_type_key_upper_case']
+
+##teamcity[testFinished duration='0' name='test_type_key_upper_case']
+Running test: missing type field
+Test passed!
+
+##teamcity[testStarted name='test_type_missing' locationHint='python_uttestid:///home/xc-/Documents/Projektikurssi/projektityokurssi/backend/lbd_backend/test_geo_json_scheme_validation.TestGeo_json_scheme_validation_FeatureCollection.test_type_missing']
+
+##teamcity[testFinished duration='0' name='test_type_missing']
+
+##teamcity[testSuiteFinished name='test_geo_json_scheme_validation.TestGeo_json_scheme_validation_FeatureCollection']

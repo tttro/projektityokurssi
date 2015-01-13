@@ -9,15 +9,18 @@ import android.os.Bundle;
 import android.support.v13.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
+import android.util.SparseArray;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
-import fi.lbd.mobile.backendhandler.BackendHandlerService;
 import fi.lbd.mobile.events.BusHandler;
 import fi.lbd.mobile.mapobjects.MapObjectSelectionManager;
 import fi.lbd.mobile.mapobjects.events.SelectMapObjectEvent;
@@ -26,7 +29,6 @@ import fi.lbd.mobile.fragments.MessageFragment;
 import fi.lbd.mobile.fragments.ObjectListFragment;
 import fi.lbd.mobile.location.LocationHandler;
 import fi.lbd.mobile.mapobjects.MapObject;
-import fi.lbd.mobile.messaging.MessageUpdateService;
 
 
 public class ListActivity extends Activity {
@@ -49,6 +51,7 @@ public class ListActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.d(this.getClass().getSimpleName(), "onCreate");
         setContentView(R.layout.activity_list);
 
         pageStack = new ArrayDeque<Integer>();
@@ -61,7 +64,7 @@ public class ListActivity extends Activity {
                 this.locationHandler);
         this.viewPager = (ViewPager) findViewById(R.id.pager);
         this.viewPager.setAdapter(this.sectionsPagerAdapter);
-        viewPager.setCurrentItem(START_TAB);
+        this.viewPager.setCurrentItem(START_TAB);
 
         viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -114,12 +117,15 @@ public class ListActivity extends Activity {
         @Override
         public Fragment getItem(int position) {
             if (position == MSG_TAB) {
+                Log.d(this.getClass().getSimpleName(), "getItem: "+ position + " locationHandler: "+ this.locationHandler);
                 MessageFragment frag = MessageFragment.newInstance();
                 return frag;
             } else if (position == OBJ_TAB) {
+                Log.d(this.getClass().getSimpleName(), "getItem: "+ position + " locationHandler: "+ this.locationHandler);
                 ObjectListFragment frag = ObjectListFragment.newInstance(this.locationHandler);
                 return frag;
             } else if (position == MAP_TAB){
+                Log.d(this.getClass().getSimpleName(), "getItem: "+ position + " locationHandler: "+ this.locationHandler);
                 GoogleMapFragment frag = GoogleMapFragment.newInstance(this.locationHandler);
                 return frag;
             }
@@ -149,16 +155,16 @@ public class ListActivity extends Activity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        stopService(new Intent(this, BackendHandlerService.class)); // TODO: Missä pysäytys?
-        stopService(new Intent(this, MessageUpdateService.class));
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         this.locationHandler.start();
+
         BusHandler.getBus().register(this);
         overridePendingTransition(R.anim.fadein, R.anim.fadeout);
+        ServiceManager.startMessageService();
     }
 
     @Override
@@ -167,6 +173,18 @@ public class ListActivity extends Activity {
         this.locationHandler.stop();
         BusHandler.getBus().unregister(this);
         overridePendingTransition(R.anim.fadein, R.anim.fadeout);
+    }
+
+    @Override
+    public void onStart(){
+        super.onStart();
+        ActiveActivitiesTracker.activityStarted();
+    }
+
+    @Override
+    public void onStop(){
+        super.onStop();
+        ActiveActivitiesTracker.activityStopped();
     }
 
     public void onDetailsClick(View view){

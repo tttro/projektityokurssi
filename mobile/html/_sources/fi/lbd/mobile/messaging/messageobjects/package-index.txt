@@ -1,0 +1,11 @@
+fi.lbd.mobile.messaging.messageobjects
+======================================
+
+.. java:package:: fi.lbd.mobile.messaging.messageobjects
+
+.. toctree::
+   :maxdepth: 1
+
+   MessageObject
+   StringMessageObject
+

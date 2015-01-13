@@ -1,0 +1,17 @@
+fi.lbd.mobile.events
+====================
+
+.. java:package:: fi.lbd.mobile.events
+
+.. toctree::
+   :maxdepth: 1
+
+   AbstractEvent
+   BusHandler
+   RequestCollectionsEvent
+   RequestFailedEvent
+   RequestUsersEvent
+   ReturnCollectionsEvent
+   ReturnUsersEvent
+   WrappedEventBus
+

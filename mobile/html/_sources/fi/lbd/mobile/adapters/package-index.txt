@@ -1,0 +1,12 @@
+fi.lbd.mobile.adapters
+======================
+
+.. java:package:: fi.lbd.mobile.adapters
+
+.. toctree::
+   :maxdepth: 1
+
+   ListDetailsAdapter
+   ListExpandableAdapter
+   MessageAdapter
+

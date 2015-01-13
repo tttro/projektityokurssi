@@ -1,0 +1,228 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>HandlerResponse &mdash; LBD Mobile client Alpha documentation</title>
+    
+    <link rel="stylesheet" href="../../../../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../',
+        VERSION:     'Alpha',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <link rel="top" title="LBD Mobile client Alpha documentation" href="../../../../index.html" />
+    <link rel="up" title="fi.lbd.mobile.backendhandler" href="package-index.html" />
+    <link rel="next" title="HandlerResponse.Status" href="HandlerResponse-Status.html" />
+    <link rel="prev" title="CollectionParser" href="CollectionParser.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="HandlerResponse-Status.html" title="HandlerResponse.Status"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="CollectionParser.html" title="CollectionParser"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../../../../packages.html">LBD Mobile client Alpha documentation</a> &raquo;</li>
+          <li><a href="package-index.html" accesskey="U">fi.lbd.mobile.backendhandler</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="handlerresponse">
+<h1>HandlerResponse<a class="headerlink" href="#handlerresponse" title="Permalink to this headline">¶</a></h1>
+<dl class="type">
+<dt id="fi.lbd.mobile.backendhandler.HandlerResponse">
+public class <tt class="descname">HandlerResponse</tt>&lt;T&gt;<a class="headerlink" href="#fi.lbd.mobile.backendhandler.HandlerResponse" title="Permalink to this definition">¶</a></dt>
+<dd><p>Used as a response object from the BackendHandlers. Created by Tommi.</p>
+</dd></dl>
+
+<div class="section" id="constructors">
+<h2>Constructors<a class="headerlink" href="#constructors" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id1">
+<h3>HandlerResponse<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+<dl class="constructor">
+<dt id="fi.lbd.mobile.backendhandler.HandlerResponse.HandlerResponse(List, Status)">
+public <tt class="descname">HandlerResponse</tt><big>(</big><a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/util/List.html" title="java.util.List">List</a>&lt;T&gt;<em> objects</em>, <a class="reference internal" href="HandlerResponse-Status.html#fi.lbd.mobile.backendhandler.HandlerResponse.Status" title="fi.lbd.mobile.backendhandler.HandlerResponse.Status">Status</a><em> status</em><big>)</big><a class="headerlink" href="#fi.lbd.mobile.backendhandler.HandlerResponse.HandlerResponse(List, Status)" title="Permalink to this definition">¶</a></dt>
+<dd><p>Used as a response object from the BackendHandlers.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>objects</strong> &#8211; Response objects.</li>
+<li><strong>status</strong> &#8211; Response status.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="id2">
+<h3>HandlerResponse<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
+<dl class="constructor">
+<dt id="fi.lbd.mobile.backendhandler.HandlerResponse.HandlerResponse(List, Status, String)">
+public <tt class="descname">HandlerResponse</tt><big>(</big><a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/util/List.html" title="java.util.List">List</a>&lt;T&gt;<em> objects</em>, <a class="reference internal" href="HandlerResponse-Status.html#fi.lbd.mobile.backendhandler.HandlerResponse.Status" title="fi.lbd.mobile.backendhandler.HandlerResponse.Status">Status</a><em> status</em>, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a><em> reason</em><big>)</big><a class="headerlink" href="#fi.lbd.mobile.backendhandler.HandlerResponse.HandlerResponse(List, Status, String)" title="Permalink to this definition">¶</a></dt>
+<dd><p>Used as a response object from the BackendHandlers.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>objects</strong> &#8211; Response objects.</li>
+<li><strong>status</strong> &#8211; Response status.</li>
+<li><strong>reason</strong> &#8211; Response reason.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+</div>
+<div class="section" id="methods">
+<h2>Methods<a class="headerlink" href="#methods" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="getobjects">
+<h3>getObjects<a class="headerlink" href="#getobjects" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="fi.lbd.mobile.backendhandler.HandlerResponse.getObjects()">
+public <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/util/List.html" title="java.util.List">List</a>&lt;T&gt; <tt class="descname">getObjects</tt><big>(</big><big>)</big><a class="headerlink" href="#fi.lbd.mobile.backendhandler.HandlerResponse.getObjects()" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="getreason">
+<h3>getReason<a class="headerlink" href="#getreason" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="fi.lbd.mobile.backendhandler.HandlerResponse.getReason()">
+public <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a> <tt class="descname">getReason</tt><big>(</big><big>)</big><a class="headerlink" href="#fi.lbd.mobile.backendhandler.HandlerResponse.getReason()" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="getstatus">
+<h3>getStatus<a class="headerlink" href="#getstatus" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="fi.lbd.mobile.backendhandler.HandlerResponse.getStatus()">
+public <a class="reference internal" href="HandlerResponse-Status.html#fi.lbd.mobile.backendhandler.HandlerResponse.Status" title="fi.lbd.mobile.backendhandler.HandlerResponse.Status">Status</a> <tt class="descname">getStatus</tt><big>(</big><big>)</big><a class="headerlink" href="#fi.lbd.mobile.backendhandler.HandlerResponse.getStatus()" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="isok">
+<h3>isOk<a class="headerlink" href="#isok" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="fi.lbd.mobile.backendhandler.HandlerResponse.isOk()">
+public boolean <tt class="descname">isOk</tt><big>(</big><big>)</big><a class="headerlink" href="#fi.lbd.mobile.backendhandler.HandlerResponse.isOk()" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="tostring">
+<h3>toString<a class="headerlink" href="#tostring" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="fi.lbd.mobile.backendhandler.HandlerResponse.toString()">
+public <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a> <tt class="descname">toString</tt><big>(</big><big>)</big><a class="headerlink" href="#fi.lbd.mobile.backendhandler.HandlerResponse.toString()" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../../../packages.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">HandlerResponse</a><ul>
+<li><a class="reference internal" href="#constructors">Constructors</a><ul>
+<li><a class="reference internal" href="#id1">HandlerResponse</a></li>
+<li><a class="reference internal" href="#id2">HandlerResponse</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#methods">Methods</a><ul>
+<li><a class="reference internal" href="#getobjects">getObjects</a></li>
+<li><a class="reference internal" href="#getreason">getReason</a></li>
+<li><a class="reference internal" href="#getstatus">getStatus</a></li>
+<li><a class="reference internal" href="#isok">isOk</a></li>
+<li><a class="reference internal" href="#tostring">toString</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="CollectionParser.html"
+                        title="previous chapter">CollectionParser</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="HandlerResponse-Status.html"
+                        title="next chapter">HandlerResponse.Status</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../../../../_sources/fi/lbd/mobile/backendhandler/HandlerResponse.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="HandlerResponse-Status.html" title="HandlerResponse.Status"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="CollectionParser.html" title="CollectionParser"
+             >previous</a> |</li>
+        <li><a href="../../../../packages.html">LBD Mobile client Alpha documentation</a> &raquo;</li>
+          <li><a href="package-index.html" >fi.lbd.mobile.backendhandler</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2015, Tommi und Ossi.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+    </div>
+  </body>
+</html>

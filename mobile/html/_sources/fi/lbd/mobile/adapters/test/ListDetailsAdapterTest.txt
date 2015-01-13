@@ -1,0 +1,138 @@
+.. java:import:: android.app Activity
+
+.. java:import:: android.view LayoutInflater
+
+.. java:import:: android.view ViewGroup
+
+.. java:import:: android.widget LinearLayout
+
+.. java:import:: android.widget TextView
+
+.. java:import:: org.junit Before
+
+.. java:import:: org.junit Test
+
+.. java:import:: org.junit.runner RunWith
+
+.. java:import:: org.mockito Mock
+
+.. java:import:: org.mockito MockitoAnnotations
+
+.. java:import:: org.robolectric.shadows ShadowLog
+
+.. java:import:: org.robolectric Robolectric
+
+.. java:import:: java.util HashMap
+
+.. java:import:: java.util Map
+
+.. java:import:: fi.lbd.mobile CustomRobolectricTestRunner
+
+.. java:import:: fi.lbd.mobile R
+
+.. java:import:: fi.lbd.mobile.adapters ListDetailsAdapter
+
+.. java:import:: fi.lbd.mobile.location ImmutablePointLocation
+
+.. java:import:: fi.lbd.mobile.mapobjects ImmutableMapObject
+
+.. java:import:: fi.lbd.mobile.mapobjects MapObject
+
+ListDetailsAdapterTest
+======================
+
+.. java:package:: fi.lbd.mobile.adapters.test
+   :noindex:
+
+.. java:type:: @RunWith public class ListDetailsAdapterTest
+
+   Created by Ossi.
+
+Fields
+------
+activity
+^^^^^^^^
+
+.. java:field::  Activity activity
+   :outertype: ListDetailsAdapterTest
+
+adapterTest1
+^^^^^^^^^^^^
+
+.. java:field::  ListDetailsAdapter adapterTest1
+   :outertype: ListDetailsAdapterTest
+
+adapterTest2
+^^^^^^^^^^^^
+
+.. java:field::  ListDetailsAdapter adapterTest2
+   :outertype: ListDetailsAdapterTest
+
+adapterTest3
+^^^^^^^^^^^^
+
+.. java:field::  ListDetailsAdapter adapterTest3
+   :outertype: ListDetailsAdapterTest
+
+adapterTest4
+^^^^^^^^^^^^
+
+.. java:field::  ListDetailsAdapter adapterTest4
+   :outertype: ListDetailsAdapterTest
+
+inflater
+^^^^^^^^
+
+.. java:field::  LayoutInflater inflater
+   :outertype: ListDetailsAdapterTest
+
+location
+^^^^^^^^
+
+.. java:field:: @Mock  ImmutablePointLocation location
+   :outertype: ListDetailsAdapterTest
+
+mapObjectTest1
+^^^^^^^^^^^^^^
+
+.. java:field::  MapObject mapObjectTest1
+   :outertype: ListDetailsAdapterTest
+
+metadataTest1
+^^^^^^^^^^^^^
+
+.. java:field::  Map<String, String> metadataTest1
+   :outertype: ListDetailsAdapterTest
+
+mockActivity
+^^^^^^^^^^^^
+
+.. java:field:: @Mock  Activity mockActivity
+   :outertype: ListDetailsAdapterTest
+
+propertiesTest1
+^^^^^^^^^^^^^^^
+
+.. java:field::  Map<String, String> propertiesTest1
+   :outertype: ListDetailsAdapterTest
+
+Methods
+-------
+setUp
+^^^^^
+
+.. java:method:: @Before public void setUp() throws Exception
+   :outertype: ListDetailsAdapterTest
+
+testConstructor
+^^^^^^^^^^^^^^^
+
+.. java:method:: @Test public void testConstructor()
+   :outertype: ListDetailsAdapterTest
+
+testGetView
+^^^^^^^^^^^
+
+.. java:method:: @Test public void testGetView()
+   :outertype: ListDetailsAdapterTest
+

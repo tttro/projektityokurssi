@@ -1,0 +1,131 @@
+R.id
+====
+
+.. java:package:: com.google.android.gms
+   :noindex:
+
+.. java:type:: public static final class id
+   :outertype: R
+
+Fields
+------
+book_now
+^^^^^^^^
+
+.. java:field:: public static final int book_now
+   :outertype: R.id
+
+buyButton
+^^^^^^^^^
+
+.. java:field:: public static final int buyButton
+   :outertype: R.id
+
+buy_now
+^^^^^^^
+
+.. java:field:: public static final int buy_now
+   :outertype: R.id
+
+buy_with_google
+^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int buy_with_google
+   :outertype: R.id
+
+classic
+^^^^^^^
+
+.. java:field:: public static final int classic
+   :outertype: R.id
+
+grayscale
+^^^^^^^^^
+
+.. java:field:: public static final int grayscale
+   :outertype: R.id
+
+holo_dark
+^^^^^^^^^
+
+.. java:field:: public static final int holo_dark
+   :outertype: R.id
+
+holo_light
+^^^^^^^^^^
+
+.. java:field:: public static final int holo_light
+   :outertype: R.id
+
+hybrid
+^^^^^^
+
+.. java:field:: public static final int hybrid
+   :outertype: R.id
+
+match_parent
+^^^^^^^^^^^^
+
+.. java:field:: public static final int match_parent
+   :outertype: R.id
+
+monochrome
+^^^^^^^^^^
+
+.. java:field:: public static final int monochrome
+   :outertype: R.id
+
+none
+^^^^
+
+.. java:field:: public static final int none
+   :outertype: R.id
+
+normal
+^^^^^^
+
+.. java:field:: public static final int normal
+   :outertype: R.id
+
+production
+^^^^^^^^^^
+
+.. java:field:: public static final int production
+   :outertype: R.id
+
+sandbox
+^^^^^^^
+
+.. java:field:: public static final int sandbox
+   :outertype: R.id
+
+satellite
+^^^^^^^^^
+
+.. java:field:: public static final int satellite
+   :outertype: R.id
+
+selectionDetails
+^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int selectionDetails
+   :outertype: R.id
+
+strict_sandbox
+^^^^^^^^^^^^^^
+
+.. java:field:: public static final int strict_sandbox
+   :outertype: R.id
+
+terrain
+^^^^^^^
+
+.. java:field:: public static final int terrain
+   :outertype: R.id
+
+wrap_content
+^^^^^^^^^^^^
+
+.. java:field:: public static final int wrap_content
+   :outertype: R.id
+

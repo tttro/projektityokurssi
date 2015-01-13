@@ -1,0 +1,54 @@
+.. java:import:: java.util HashMap
+
+.. java:import:: java.util Map
+
+UrlResponse
+===========
+
+.. java:package:: fi.lbd.mobile.backendhandler
+   :noindex:
+
+.. java:type:: public class UrlResponse
+
+   Response object from URLReader. Created by Tommi.
+
+Constructors
+------------
+UrlResponse
+^^^^^^^^^^^
+
+.. java:constructor:: public UrlResponse(String contents, ResponseStatus status, String statusReason)
+   :outertype: UrlResponse
+
+   Response object from URLReader.
+
+   :param contents: Contents of the url.
+   :param status: Returned status.
+   :param statusReason: Returned reason for the status.
+
+Methods
+-------
+getContents
+^^^^^^^^^^^
+
+.. java:method:: public String getContents()
+   :outertype: UrlResponse
+
+getStatus
+^^^^^^^^^
+
+.. java:method:: public ResponseStatus getStatus()
+   :outertype: UrlResponse
+
+getStatusReason
+^^^^^^^^^^^^^^^
+
+.. java:method:: public String getStatusReason()
+   :outertype: UrlResponse
+
+toString
+^^^^^^^^
+
+.. java:method:: public String toString()
+   :outertype: UrlResponse
+

@@ -1,0 +1,227 @@
+R.styleable
+===========
+
+.. java:package:: com.google.android.gms
+   :noindex:
+
+.. java:type:: public static final class styleable
+   :outertype: R
+
+Fields
+------
+AdsAttrs
+^^^^^^^^
+
+.. java:field:: public static final int[] AdsAttrs
+   :outertype: R.styleable
+
+AdsAttrs_adSize
+^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int AdsAttrs_adSize
+   :outertype: R.styleable
+
+AdsAttrs_adSizes
+^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int AdsAttrs_adSizes
+   :outertype: R.styleable
+
+AdsAttrs_adUnitId
+^^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int AdsAttrs_adUnitId
+   :outertype: R.styleable
+
+MapAttrs
+^^^^^^^^
+
+.. java:field:: public static final int[] MapAttrs
+   :outertype: R.styleable
+
+MapAttrs_cameraBearing
+^^^^^^^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int MapAttrs_cameraBearing
+   :outertype: R.styleable
+
+MapAttrs_cameraTargetLat
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int MapAttrs_cameraTargetLat
+   :outertype: R.styleable
+
+MapAttrs_cameraTargetLng
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int MapAttrs_cameraTargetLng
+   :outertype: R.styleable
+
+MapAttrs_cameraTilt
+^^^^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int MapAttrs_cameraTilt
+   :outertype: R.styleable
+
+MapAttrs_cameraZoom
+^^^^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int MapAttrs_cameraZoom
+   :outertype: R.styleable
+
+MapAttrs_mapType
+^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int MapAttrs_mapType
+   :outertype: R.styleable
+
+MapAttrs_uiCompass
+^^^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int MapAttrs_uiCompass
+   :outertype: R.styleable
+
+MapAttrs_uiRotateGestures
+^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int MapAttrs_uiRotateGestures
+   :outertype: R.styleable
+
+MapAttrs_uiScrollGestures
+^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int MapAttrs_uiScrollGestures
+   :outertype: R.styleable
+
+MapAttrs_uiTiltGestures
+^^^^^^^^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int MapAttrs_uiTiltGestures
+   :outertype: R.styleable
+
+MapAttrs_uiZoomControls
+^^^^^^^^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int MapAttrs_uiZoomControls
+   :outertype: R.styleable
+
+MapAttrs_uiZoomGestures
+^^^^^^^^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int MapAttrs_uiZoomGestures
+   :outertype: R.styleable
+
+MapAttrs_useViewLifecycle
+^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int MapAttrs_useViewLifecycle
+   :outertype: R.styleable
+
+MapAttrs_zOrderOnTop
+^^^^^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int MapAttrs_zOrderOnTop
+   :outertype: R.styleable
+
+WalletFragmentOptions
+^^^^^^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int[] WalletFragmentOptions
+   :outertype: R.styleable
+
+WalletFragmentOptions_appTheme
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int WalletFragmentOptions_appTheme
+   :outertype: R.styleable
+
+WalletFragmentOptions_environment
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int WalletFragmentOptions_environment
+   :outertype: R.styleable
+
+WalletFragmentOptions_fragmentMode
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int WalletFragmentOptions_fragmentMode
+   :outertype: R.styleable
+
+WalletFragmentOptions_fragmentStyle
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int WalletFragmentOptions_fragmentStyle
+   :outertype: R.styleable
+
+WalletFragmentStyle
+^^^^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int[] WalletFragmentStyle
+   :outertype: R.styleable
+
+WalletFragmentStyle_buyButtonAppearance
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int WalletFragmentStyle_buyButtonAppearance
+   :outertype: R.styleable
+
+WalletFragmentStyle_buyButtonHeight
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int WalletFragmentStyle_buyButtonHeight
+   :outertype: R.styleable
+
+WalletFragmentStyle_buyButtonText
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int WalletFragmentStyle_buyButtonText
+   :outertype: R.styleable
+
+WalletFragmentStyle_buyButtonWidth
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int WalletFragmentStyle_buyButtonWidth
+   :outertype: R.styleable
+
+WalletFragmentStyle_maskedWalletDetailsBackground
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int WalletFragmentStyle_maskedWalletDetailsBackground
+   :outertype: R.styleable
+
+WalletFragmentStyle_maskedWalletDetailsButtonBackground
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int WalletFragmentStyle_maskedWalletDetailsButtonBackground
+   :outertype: R.styleable
+
+WalletFragmentStyle_maskedWalletDetailsButtonTextAppearance
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int WalletFragmentStyle_maskedWalletDetailsButtonTextAppearance
+   :outertype: R.styleable
+
+WalletFragmentStyle_maskedWalletDetailsHeaderTextAppearance
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int WalletFragmentStyle_maskedWalletDetailsHeaderTextAppearance
+   :outertype: R.styleable
+
+WalletFragmentStyle_maskedWalletDetailsLogoImageType
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int WalletFragmentStyle_maskedWalletDetailsLogoImageType
+   :outertype: R.styleable
+
+WalletFragmentStyle_maskedWalletDetailsLogoTextColor
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int WalletFragmentStyle_maskedWalletDetailsLogoTextColor
+   :outertype: R.styleable
+
+WalletFragmentStyle_maskedWalletDetailsTextAppearance
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int WalletFragmentStyle_maskedWalletDetailsTextAppearance
+   :outertype: R.styleable
+

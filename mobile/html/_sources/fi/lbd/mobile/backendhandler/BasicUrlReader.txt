@@ -1,0 +1,135 @@
+.. java:import:: android.support.annotation NonNull
+
+.. java:import:: android.util Log
+
+.. java:import:: android.util Pair
+
+.. java:import:: org.apache.http HttpResponse
+
+.. java:import:: org.apache.http.client ClientProtocolException
+
+.. java:import:: org.apache.http.client HttpClient
+
+.. java:import:: org.apache.http.client.methods HttpDelete
+
+.. java:import:: org.apache.http.client.methods HttpGet
+
+.. java:import:: org.apache.http.client.methods HttpPost
+
+.. java:import:: org.apache.http.client.methods HttpPut
+
+.. java:import:: org.apache.http.client.methods HttpUriRequest
+
+.. java:import:: org.apache.http.conn ClientConnectionManager
+
+.. java:import:: org.apache.http.conn.params ConnManagerParams
+
+.. java:import:: org.apache.http.conn.params ConnPerRoute
+
+.. java:import:: org.apache.http.conn.params ConnPerRouteBean
+
+.. java:import:: org.apache.http.conn.scheme PlainSocketFactory
+
+.. java:import:: org.apache.http.conn.scheme Scheme
+
+.. java:import:: org.apache.http.conn.scheme SchemeRegistry
+
+.. java:import:: org.apache.http.conn.ssl SSLSocketFactory
+
+.. java:import:: org.apache.http.entity StringEntity
+
+.. java:import:: org.apache.http.impl.client DefaultHttpClient
+
+.. java:import:: org.apache.http.impl.conn.tsccm ThreadSafeClientConnManager
+
+.. java:import:: org.apache.http.message AbstractHttpMessage
+
+.. java:import:: org.apache.http.params HttpParams
+
+.. java:import:: org.apache.http.protocol HTTP
+
+.. java:import:: java.io BufferedReader
+
+.. java:import:: java.io IOException
+
+.. java:import:: java.io InputStream
+
+.. java:import:: java.io InputStreamReader
+
+.. java:import:: java.io UnsupportedEncodingException
+
+.. java:import:: java.security KeyManagementException
+
+.. java:import:: java.security KeyStore
+
+.. java:import:: java.security KeyStoreException
+
+.. java:import:: java.security NoSuchAlgorithmException
+
+.. java:import:: java.security UnrecoverableKeyException
+
+.. java:import:: java.security.cert Certificate
+
+.. java:import:: java.security.cert CertificateException
+
+.. java:import:: fi.lbd.mobile ApplicationDetails
+
+BasicUrlReader
+==============
+
+.. java:package:: fi.lbd.mobile.backendhandler
+   :noindex:
+
+.. java:type:: public class BasicUrlReader implements UrlReader
+
+   Static methods for reading an url. Created by Tommi.
+
+Constructors
+------------
+BasicUrlReader
+^^^^^^^^^^^^^^
+
+.. java:constructor:: public BasicUrlReader()
+   :outertype: BasicUrlReader
+
+Methods
+-------
+delete
+^^^^^^
+
+.. java:method:: @Override public UrlResponse delete(String url)
+   :outertype: BasicUrlReader
+
+   Tries to remove the contents in the given url.
+
+   :param url:
+
+get
+^^^
+
+.. java:method:: @Override public UrlResponse get(String url)
+   :outertype: BasicUrlReader
+
+   Opens the given url and returns an URLResponse object if the connection succeeds and the contents in the given url can be read.
+
+   :param url: URL to read
+   :return: URLResponse-object with results from the URL.
+
+initialize
+^^^^^^^^^^
+
+.. java:method:: public void initialize(Pair<String, Certificate> firstCertificate, Pair<String, Certificate>... certificates) throws UrlReaderException
+   :outertype: BasicUrlReader
+
+postJson
+^^^^^^^^
+
+.. java:method:: @Override public UrlResponse postJson(String url, String jsonContents)
+   :outertype: BasicUrlReader
+
+putJson
+^^^^^^^
+
+.. java:method:: @Override public UrlResponse putJson(String url, String jsonContents)
+   :outertype: BasicUrlReader
+

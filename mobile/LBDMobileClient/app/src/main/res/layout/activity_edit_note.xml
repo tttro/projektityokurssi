@@ -14,7 +14,7 @@
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Edit note"
+            android:text="Edit info"
             android:id="@+id/textView2"
             android:padding="10dip"
             android:textColor="#FFF"
@@ -25,20 +25,22 @@
     <TextView
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="@string/additional_notes"
+        android:text="@string/object_info"
         android:id="@+id/textView"
         android:textSize="14dp"
         android:textAllCaps="true"
         android:layout_below="@+id/linearLayout"
         android:layout_alignLeft="@+id/textViewTitle"
         android:layout_alignStart="@+id/textViewTitle"
-        android:layout_marginTop="10dp"/>
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginStart="10dp"/>
 
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Empty"
-        android:id="@+id/textViewTitle"
+        android:id="@+id/textViewEdit"
         android:textSize="14dp"
         android:textStyle="italic"
         android:layout_below="@+id/textView"

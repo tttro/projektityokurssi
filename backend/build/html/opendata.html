@@ -1,0 +1,394 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Code documentation: Open data handlers &mdash; LBD Backend Dev documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     'Dev',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="LBD Backend Dev documentation" href="index.html" />
+    <link rel="prev" title="lbd_backend.LBD_REST_messagedata Message data REST" href="codedoc/msgdoc.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="codedoc/msgdoc.html" title="lbd_backend.LBD_REST_messagedata Message data REST"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">LBD Backend Dev documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="code-documentation-open-data-handlers">
+<h1>Code documentation: Open data handlers<a class="headerlink" href="#code-documentation-open-data-handlers" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="module-RESThandlers.HandlerInterface.Exceptions">
+<span id="resthandlers-handlerinterface-rest-handler-interface"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">RESThandlers.HandlerInterface</span></tt> REST Handler Interface<a class="headerlink" href="#module-RESThandlers.HandlerInterface.Exceptions" title="Permalink to this headline">¶</a></h2>
+<span class="target" id="module-Handlers.Interface.Exceptions"></span><dl class="exception">
+<dt id="RESThandlers.HandlerInterface.Exceptions.CollectionNotInstalled">
+<em class="property">exception </em><tt class="descclassname">RESThandlers.HandlerInterface.Exceptions.</tt><tt class="descname">CollectionNotInstalled</tt><a class="headerlink" href="#RESThandlers.HandlerInterface.Exceptions.CollectionNotInstalled" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">exceptions.Exception</span></tt></p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="RESThandlers.HandlerInterface.Exceptions.GenericDBError">
+<em class="property">exception </em><tt class="descclassname">RESThandlers.HandlerInterface.Exceptions.</tt><tt class="descname">GenericDBError</tt><a class="headerlink" href="#RESThandlers.HandlerInterface.Exceptions.GenericDBError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">exceptions.Exception</span></tt></p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="RESThandlers.HandlerInterface.Exceptions.MultipleObjectsFound">
+<em class="property">exception </em><tt class="descclassname">RESThandlers.HandlerInterface.Exceptions.</tt><tt class="descname">MultipleObjectsFound</tt><a class="headerlink" href="#RESThandlers.HandlerInterface.Exceptions.MultipleObjectsFound" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">exceptions.Exception</span></tt></p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="RESThandlers.HandlerInterface.Exceptions.ObjectNotFound">
+<em class="property">exception </em><tt class="descclassname">RESThandlers.HandlerInterface.Exceptions.</tt><tt class="descname">ObjectNotFound</tt><a class="headerlink" href="#RESThandlers.HandlerInterface.Exceptions.ObjectNotFound" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">exceptions.Exception</span></tt></p>
+</dd></dl>
+
+<span class="target" id="module-RESThandlers.HandlerInterface.Factory"></span><span class="target" id="module-Handlers.Interface.Factory"></span><dl class="class">
+<dt id="RESThandlers.HandlerInterface.Factory.HandlerFactory">
+<em class="property">class </em><tt class="descclassname">RESThandlers.HandlerInterface.Factory.</tt><tt class="descname">HandlerFactory</tt><big>(</big><em>collection</em><big>)</big><a class="headerlink" href="#RESThandlers.HandlerInterface.Factory.HandlerFactory" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<dl class="method">
+<dt id="RESThandlers.HandlerInterface.Factory.HandlerFactory.create">
+<tt class="descname">create</tt><big>(</big><big>)</big><a class="headerlink" href="#RESThandlers.HandlerInterface.Factory.HandlerFactory.create" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="staticmethod">
+<dt id="RESThandlers.HandlerInterface.Factory.HandlerFactory.get_installed">
+<em class="property">static </em><tt class="descname">get_installed</tt><big>(</big><big>)</big><a class="headerlink" href="#RESThandlers.HandlerInterface.Factory.HandlerFactory.get_installed" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<span class="target" id="module-RESThandlers.HandlerInterface.HandlerBaseClass"></span><span class="target" id="module-Handlers.Interface.base"></span><dl class="class">
+<dt id="RESThandlers.HandlerInterface.HandlerBaseClass.HandlerBase">
+<em class="property">class </em><tt class="descclassname">RESThandlers.HandlerInterface.HandlerBaseClass.</tt><tt class="descname">HandlerBase</tt><a class="headerlink" href="#RESThandlers.HandlerInterface.HandlerBaseClass.HandlerBase" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<dl class="method">
+<dt id="RESThandlers.HandlerInterface.HandlerBaseClass.HandlerBase.delete_all">
+<tt class="descname">delete_all</tt><big>(</big><big>)</big><a class="headerlink" href="#RESThandlers.HandlerInterface.HandlerBaseClass.HandlerBase.delete_all" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RESThandlers.HandlerInterface.HandlerBaseClass.HandlerBase.delete_item_by_id">
+<tt class="descname">delete_item_by_id</tt><big>(</big><em>iid</em><big>)</big><a class="headerlink" href="#RESThandlers.HandlerInterface.HandlerBaseClass.HandlerBase.delete_item_by_id" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RESThandlers.HandlerInterface.HandlerBaseClass.HandlerBase.delete_near">
+<tt class="descname">delete_near</tt><big>(</big><em>latitude</em>, <em>longitude</em>, <em>nrange</em><big>)</big><a class="headerlink" href="#RESThandlers.HandlerInterface.HandlerBaseClass.HandlerBase.delete_near" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RESThandlers.HandlerInterface.HandlerBaseClass.HandlerBase.get_all">
+<tt class="descname">get_all</tt><big>(</big><em>mini=False</em><big>)</big><a class="headerlink" href="#RESThandlers.HandlerInterface.HandlerBaseClass.HandlerBase.get_all" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RESThandlers.HandlerInterface.HandlerBaseClass.HandlerBase.get_by_id">
+<tt class="descname">get_by_id</tt><big>(</big><em>iid</em><big>)</big><a class="headerlink" href="#RESThandlers.HandlerInterface.HandlerBaseClass.HandlerBase.get_by_id" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RESThandlers.HandlerInterface.HandlerBaseClass.HandlerBase.get_field_names">
+<tt class="descname">get_field_names</tt><big>(</big><big>)</big><a class="headerlink" href="#RESThandlers.HandlerInterface.HandlerBaseClass.HandlerBase.get_field_names" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RESThandlers.HandlerInterface.HandlerBaseClass.HandlerBase.get_item_count">
+<tt class="descname">get_item_count</tt><big>(</big><big>)</big><a class="headerlink" href="#RESThandlers.HandlerInterface.HandlerBaseClass.HandlerBase.get_item_count" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RESThandlers.HandlerInterface.HandlerBaseClass.HandlerBase.get_near">
+<tt class="descname">get_near</tt><big>(</big><em>longitude</em>, <em>latitude</em>, <em>nrange</em><big>)</big><a class="headerlink" href="#RESThandlers.HandlerInterface.HandlerBaseClass.HandlerBase.get_near" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RESThandlers.HandlerInterface.HandlerBaseClass.HandlerBase.get_within_rectangle">
+<tt class="descname">get_within_rectangle</tt><big>(</big><em>xtop_right</em>, <em>ytop_right</em>, <em>xbottom_left</em>, <em>ybottom_left</em>, <em>mini=False</em><big>)</big><a class="headerlink" href="#RESThandlers.HandlerInterface.HandlerBaseClass.HandlerBase.get_within_rectangle" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="RESThandlers.HandlerInterface.HandlerBaseClass.HandlerBase.handler_id">
+<tt class="descname">handler_id</tt><a class="headerlink" href="#RESThandlers.HandlerInterface.HandlerBaseClass.HandlerBase.handler_id" title="Permalink to this definition">¶</a></dt>
+<dd><p>staticmethod(function) -&gt; method</p>
+<p>Convert a function to be a static method.</p>
+<p>A static method does not receive an implicit first argument.
+To declare a static method, use this idiom:</p>
+<blockquote>
+<div>class C:
+def f(arg1, arg2, ...): ...
+f = staticmethod(f)</div></blockquote>
+<p>It can be called either on the class (e.g. C.f()) or on an instance
+(e.g. C().f()).  The instance is ignored except for its class.</p>
+<p>Static methods in Python are similar to those found in Java or C++.
+For a more advanced concept, see the classmethod builtin.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RESThandlers.HandlerInterface.HandlerBaseClass.HandlerBase.insert_to_db">
+<tt class="descname">insert_to_db</tt><big>(</big><em>jsonitem</em><big>)</big><a class="headerlink" href="#RESThandlers.HandlerInterface.HandlerBaseClass.HandlerBase.insert_to_db" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RESThandlers.HandlerInterface.HandlerBaseClass.HandlerBase.search">
+<tt class="descname">search</tt><big>(</big><em>phrase</em>, <em>field</em><big>)</big><a class="headerlink" href="#RESThandlers.HandlerInterface.HandlerBaseClass.HandlerBase.search" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RESThandlers.HandlerInterface.HandlerBaseClass.HandlerBase.update_db">
+<tt class="descname">update_db</tt><big>(</big><big>)</big><a class="headerlink" href="#RESThandlers.HandlerInterface.HandlerBaseClass.HandlerBase.update_db" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-RESThandlers.Streetlight.Handler">
+<span id="resthandlers-streetlight-streetlight-rest-handler"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">RESThandlers.Streetlight</span></tt> Streetlight REST handler<a class="headerlink" href="#module-RESThandlers.Streetlight.Handler" title="Permalink to this headline">¶</a></h2>
+<span class="target" id="module-Handlers.Streetlight.handler"></span><dl class="class">
+<dt id="RESThandlers.Streetlight.Handler.StreetlightHandler">
+<em class="property">class </em><tt class="descclassname">RESThandlers.Streetlight.Handler.</tt><tt class="descname">StreetlightHandler</tt><a class="headerlink" href="#RESThandlers.Streetlight.Handler.StreetlightHandler" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#RESThandlers.HandlerInterface.HandlerBaseClass.HandlerBase" title="RESThandlers.HandlerInterface.HandlerBaseClass.HandlerBase"><tt class="xref py py-class docutils literal"><span class="pre">RESThandlers.HandlerInterface.HandlerBaseClass.HandlerBase</span></tt></a></p>
+<dl class="method">
+<dt id="RESThandlers.Streetlight.Handler.StreetlightHandler.delete_all">
+<tt class="descname">delete_all</tt><big>(</big><big>)</big><a class="headerlink" href="#RESThandlers.Streetlight.Handler.StreetlightHandler.delete_all" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RESThandlers.Streetlight.Handler.StreetlightHandler.delete_near">
+<tt class="descname">delete_near</tt><big>(</big><em>latitude</em>, <em>longitude</em>, <em>nrange</em><big>)</big><a class="headerlink" href="#RESThandlers.Streetlight.Handler.StreetlightHandler.delete_near" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RESThandlers.Streetlight.Handler.StreetlightHandler.get_all">
+<tt class="descname">get_all</tt><big>(</big><em>mini=True</em><big>)</big><a class="headerlink" href="#RESThandlers.Streetlight.Handler.StreetlightHandler.get_all" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RESThandlers.Streetlight.Handler.StreetlightHandler.get_by_id">
+<tt class="descname">get_by_id</tt><big>(</big><em>iid</em><big>)</big><a class="headerlink" href="#RESThandlers.Streetlight.Handler.StreetlightHandler.get_by_id" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RESThandlers.Streetlight.Handler.StreetlightHandler.get_field_names">
+<tt class="descname">get_field_names</tt><big>(</big><big>)</big><a class="headerlink" href="#RESThandlers.Streetlight.Handler.StreetlightHandler.get_field_names" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RESThandlers.Streetlight.Handler.StreetlightHandler.get_item_count">
+<tt class="descname">get_item_count</tt><big>(</big><big>)</big><a class="headerlink" href="#RESThandlers.Streetlight.Handler.StreetlightHandler.get_item_count" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RESThandlers.Streetlight.Handler.StreetlightHandler.get_near">
+<tt class="descname">get_near</tt><big>(</big><em>longitude</em>, <em>latitude</em>, <em>nrange=0.001</em>, <em>mini=False</em><big>)</big><a class="headerlink" href="#RESThandlers.Streetlight.Handler.StreetlightHandler.get_near" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RESThandlers.Streetlight.Handler.StreetlightHandler.get_within_rectangle">
+<tt class="descname">get_within_rectangle</tt><big>(</big><em>xtop_right</em>, <em>ytop_right</em>, <em>xbottom_left</em>, <em>ybottom_left</em>, <em>mini=False</em><big>)</big><a class="headerlink" href="#RESThandlers.Streetlight.Handler.StreetlightHandler.get_within_rectangle" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="RESThandlers.Streetlight.Handler.StreetlightHandler.handler_id">
+<tt class="descname">handler_id</tt><a class="headerlink" href="#RESThandlers.Streetlight.Handler.StreetlightHandler.handler_id" title="Permalink to this definition">¶</a></dt>
+<dd><p>staticmethod(function) -&gt; method</p>
+<p>Convert a function to be a static method.</p>
+<p>A static method does not receive an implicit first argument.
+To declare a static method, use this idiom:</p>
+<blockquote>
+<div>class C:
+def f(arg1, arg2, ...): ...
+f = staticmethod(f)</div></blockquote>
+<p>It can be called either on the class (e.g. C.f()) or on an instance
+(e.g. C().f()).  The instance is ignored except for its class.</p>
+<p>Static methods in Python are similar to those found in Java or C++.
+For a more advanced concept, see the classmethod builtin.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RESThandlers.Streetlight.Handler.StreetlightHandler.search">
+<tt class="descname">search</tt><big>(</big><em>regex</em>, <em>limit</em>, <em>field=None</em><big>)</big><a class="headerlink" href="#RESThandlers.Streetlight.Handler.StreetlightHandler.search" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RESThandlers.Streetlight.Handler.StreetlightHandler.update_db">
+<tt class="descname">update_db</tt><big>(</big><big>)</big><a class="headerlink" href="#RESThandlers.Streetlight.Handler.StreetlightHandler.update_db" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<span class="target" id="module-RESThandlers.Streetlight.models"></span><span class="target" id="module-Handlers.Streetlight.models"></span></div>
+<div class="section" id="module-RESThandlers.Playgrounds.Handler">
+<span id="resthandlers-playgrounds-playgrounds-rest-handler"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">RESThandlers.Playgrounds</span></tt> Playgrounds REST handler<a class="headerlink" href="#module-RESThandlers.Playgrounds.Handler" title="Permalink to this headline">¶</a></h2>
+<span class="target" id="module-Handlers.Streetlight.handler"></span><dl class="class">
+<dt id="RESThandlers.Playgrounds.Handler.PlaygroundHandler">
+<em class="property">class </em><tt class="descclassname">RESThandlers.Playgrounds.Handler.</tt><tt class="descname">PlaygroundHandler</tt><a class="headerlink" href="#RESThandlers.Playgrounds.Handler.PlaygroundHandler" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#RESThandlers.HandlerInterface.HandlerBaseClass.HandlerBase" title="RESThandlers.HandlerInterface.HandlerBaseClass.HandlerBase"><tt class="xref py py-class docutils literal"><span class="pre">RESThandlers.HandlerInterface.HandlerBaseClass.HandlerBase</span></tt></a></p>
+<dl class="method">
+<dt id="RESThandlers.Playgrounds.Handler.PlaygroundHandler.delete_all">
+<tt class="descname">delete_all</tt><big>(</big><big>)</big><a class="headerlink" href="#RESThandlers.Playgrounds.Handler.PlaygroundHandler.delete_all" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RESThandlers.Playgrounds.Handler.PlaygroundHandler.delete_near">
+<tt class="descname">delete_near</tt><big>(</big><em>latitude</em>, <em>longitude</em>, <em>nrange</em><big>)</big><a class="headerlink" href="#RESThandlers.Playgrounds.Handler.PlaygroundHandler.delete_near" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RESThandlers.Playgrounds.Handler.PlaygroundHandler.get_all">
+<tt class="descname">get_all</tt><big>(</big><em>mini=True</em><big>)</big><a class="headerlink" href="#RESThandlers.Playgrounds.Handler.PlaygroundHandler.get_all" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RESThandlers.Playgrounds.Handler.PlaygroundHandler.get_by_id">
+<tt class="descname">get_by_id</tt><big>(</big><em>iid</em><big>)</big><a class="headerlink" href="#RESThandlers.Playgrounds.Handler.PlaygroundHandler.get_by_id" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RESThandlers.Playgrounds.Handler.PlaygroundHandler.get_field_names">
+<tt class="descname">get_field_names</tt><big>(</big><big>)</big><a class="headerlink" href="#RESThandlers.Playgrounds.Handler.PlaygroundHandler.get_field_names" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RESThandlers.Playgrounds.Handler.PlaygroundHandler.get_item_count">
+<tt class="descname">get_item_count</tt><big>(</big><big>)</big><a class="headerlink" href="#RESThandlers.Playgrounds.Handler.PlaygroundHandler.get_item_count" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RESThandlers.Playgrounds.Handler.PlaygroundHandler.get_near">
+<tt class="descname">get_near</tt><big>(</big><em>longitude</em>, <em>latitude</em>, <em>nrange=0.001</em>, <em>mini=False</em><big>)</big><a class="headerlink" href="#RESThandlers.Playgrounds.Handler.PlaygroundHandler.get_near" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RESThandlers.Playgrounds.Handler.PlaygroundHandler.get_within_rectangle">
+<tt class="descname">get_within_rectangle</tt><big>(</big><em>xtop_right</em>, <em>ytop_right</em>, <em>xbottom_left</em>, <em>ybottom_left</em>, <em>mini=False</em><big>)</big><a class="headerlink" href="#RESThandlers.Playgrounds.Handler.PlaygroundHandler.get_within_rectangle" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="RESThandlers.Playgrounds.Handler.PlaygroundHandler.handler_id">
+<tt class="descname">handler_id</tt><a class="headerlink" href="#RESThandlers.Playgrounds.Handler.PlaygroundHandler.handler_id" title="Permalink to this definition">¶</a></dt>
+<dd><p>staticmethod(function) -&gt; method</p>
+<p>Convert a function to be a static method.</p>
+<p>A static method does not receive an implicit first argument.
+To declare a static method, use this idiom:</p>
+<blockquote>
+<div>class C:
+def f(arg1, arg2, ...): ...
+f = staticmethod(f)</div></blockquote>
+<p>It can be called either on the class (e.g. C.f()) or on an instance
+(e.g. C().f()).  The instance is ignored except for its class.</p>
+<p>Static methods in Python are similar to those found in Java or C++.
+For a more advanced concept, see the classmethod builtin.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="RESThandlers.Playgrounds.Handler.PlaygroundHandler.search">
+<tt class="descname">search</tt><big>(</big><em>regex</em>, <em>limit</em>, <em>field=None</em><big>)</big><a class="headerlink" href="#RESThandlers.Playgrounds.Handler.PlaygroundHandler.search" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="RESThandlers.Playgrounds.Handler.PlaygroundHandler.update_db">
+<tt class="descname">update_db</tt><big>(</big><big>)</big><a class="headerlink" href="#RESThandlers.Playgrounds.Handler.PlaygroundHandler.update_db" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<span class="target" id="module-RESThandlers.Playgrounds.models"></span><span class="target" id="module-Handlers.Streetlight.models"></span></div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Code documentation: Open data handlers</a><ul>
+<li><a class="reference internal" href="#module-RESThandlers.HandlerInterface.Exceptions"><tt class="docutils literal"><span class="pre">RESThandlers.HandlerInterface</span></tt> REST Handler Interface</a></li>
+<li><a class="reference internal" href="#module-RESThandlers.Streetlight.Handler"><tt class="docutils literal"><span class="pre">RESThandlers.Streetlight</span></tt> Streetlight REST handler</a></li>
+<li><a class="reference internal" href="#module-RESThandlers.Playgrounds.Handler"><tt class="docutils literal"><span class="pre">RESThandlers.Playgrounds</span></tt> Playgrounds REST handler</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="codedoc/msgdoc.html"
+                        title="previous chapter"><tt class="docutils literal"><span class="pre">lbd_backend.LBD_REST_messagedata</span></tt> Message data REST</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/opendata.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="codedoc/msgdoc.html" title="lbd_backend.LBD_REST_messagedata Message data REST"
+             >previous</a> |</li>
+        <li><a href="index.html">LBD Backend Dev documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2014, LBD Development.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+    </div>
+  </body>
+</html>

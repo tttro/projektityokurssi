@@ -1,0 +1,114 @@
+.. java:import:: android.app Activity
+
+.. java:import:: android.content ComponentName
+
+.. java:import:: android.content Context
+
+.. java:import:: android.content Intent
+
+.. java:import:: android.content ServiceConnection
+
+.. java:import:: android.content SharedPreferences
+
+.. java:import:: android.os Bundle
+
+.. java:import:: android.os IBinder
+
+.. java:import:: android.util Log
+
+.. java:import:: android.view KeyEvent
+
+.. java:import:: android.view View
+
+.. java:import:: android.view.inputmethod InputMethodManager
+
+.. java:import:: android.widget Button
+
+.. java:import:: android.widget EditText
+
+.. java:import:: android.widget RadioButton
+
+.. java:import:: android.widget RadioGroup
+
+.. java:import:: android.widget TextView
+
+.. java:import:: android.widget Toast
+
+.. java:import:: com.squareup.otto Subscribe
+
+.. java:import:: fi.lbd.mobile.backendhandler BackendHandlerService
+
+.. java:import:: fi.lbd.mobile.events BusHandler
+
+.. java:import:: fi.lbd.mobile.events RequestCollectionsEvent
+
+.. java:import:: fi.lbd.mobile.events RequestFailedEvent
+
+.. java:import:: fi.lbd.mobile.events ReturnCollectionsEvent
+
+.. java:import:: fi.lbd.mobile.messaging.events RequestUserMessagesEvent
+
+SettingsActivity
+================
+
+.. java:package:: fi.lbd.mobile
+   :noindex:
+
+.. java:type:: public class SettingsActivity extends Activity
+
+Methods
+-------
+onAcceptClick
+^^^^^^^^^^^^^
+
+.. java:method:: public void onAcceptClick(View view)
+   :outertype: SettingsActivity
+
+onCreate
+^^^^^^^^
+
+.. java:method:: @Override protected void onCreate(Bundle savedInstanceState)
+   :outertype: SettingsActivity
+
+onEvent
+^^^^^^^
+
+.. java:method:: @Subscribe public void onEvent(ReturnCollectionsEvent event)
+   :outertype: SettingsActivity
+
+onEvent
+^^^^^^^
+
+.. java:method:: @Subscribe public void onEvent(RequestFailedEvent event)
+   :outertype: SettingsActivity
+
+onLoadClick
+^^^^^^^^^^^
+
+.. java:method:: public void onLoadClick(View view)
+   :outertype: SettingsActivity
+
+onPause
+^^^^^^^
+
+.. java:method:: @Override public void onPause()
+   :outertype: SettingsActivity
+
+onResume
+^^^^^^^^
+
+.. java:method:: @Override public void onResume()
+   :outertype: SettingsActivity
+
+onStart
+^^^^^^^
+
+.. java:method:: @Override public void onStart()
+   :outertype: SettingsActivity
+
+onStop
+^^^^^^
+
+.. java:method:: @Override public void onStop()
+   :outertype: SettingsActivity
+

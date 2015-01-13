@@ -1,0 +1,38 @@
+.. java:import:: fi.lbd.mobile.messaging.messageobjects MessageObject
+
+MessageObjectSelectionManager
+=============================
+
+.. java:package:: fi.lbd.mobile.messaging
+   :noindex:
+
+.. java:type:: public class MessageObjectSelectionManager
+
+   Created by Ossi on 29.12.2014. Singleton to communicate, from MessageFragment to ReadMessageActivity, which message was selected from the list.
+
+Methods
+-------
+get
+^^^
+
+.. java:method:: public static MessageObjectSelectionManager get()
+   :outertype: MessageObjectSelectionManager
+
+getSelectedMessageObject
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. java:method:: public MessageObject getSelectedMessageObject()
+   :outertype: MessageObjectSelectionManager
+
+initialize
+^^^^^^^^^^
+
+.. java:method:: public static void initialize()
+   :outertype: MessageObjectSelectionManager
+
+setSelectedMessageObject
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. java:method:: public void setSelectedMessageObject(MessageObject selectedMessageObject)
+   :outertype: MessageObjectSelectionManager
+

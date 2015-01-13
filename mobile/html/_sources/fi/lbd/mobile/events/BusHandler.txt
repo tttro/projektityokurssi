@@ -1,0 +1,24 @@
+BusHandler
+==========
+
+.. java:package:: fi.lbd.mobile.events
+   :noindex:
+
+.. java:type:: public final class BusHandler
+
+   Handler for OTTO bus. TODO: Ennemmin dependency injectionilla? Dagger tms. Created by tommi on 19.10.2014.
+
+Methods
+-------
+getBus
+^^^^^^
+
+.. java:method:: public static WrappedEventBus getBus()
+   :outertype: BusHandler
+
+initialize
+^^^^^^^^^^
+
+.. java:method:: public static void initialize()
+   :outertype: BusHandler
+

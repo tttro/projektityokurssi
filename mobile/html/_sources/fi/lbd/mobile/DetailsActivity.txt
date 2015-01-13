@@ -1,0 +1,92 @@
+.. java:import:: android.app Activity
+
+.. java:import:: android.content ClipData
+
+.. java:import:: android.content ClipboardManager
+
+.. java:import:: android.content Context
+
+.. java:import:: android.content Intent
+
+.. java:import:: android.os Bundle
+
+.. java:import:: android.view Menu
+
+.. java:import:: android.view View
+
+.. java:import:: android.widget ListView
+
+.. java:import:: android.widget Toast
+
+.. java:import:: com.squareup.otto Subscribe
+
+.. java:import:: fi.lbd.mobile.adapters ListDetailsAdapter
+
+.. java:import:: fi.lbd.mobile.events BusHandler
+
+.. java:import:: fi.lbd.mobile.mapobjects MapObjectSelectionManager
+
+.. java:import:: fi.lbd.mobile.mapobjects.events RequestMapObjectEvent
+
+.. java:import:: fi.lbd.mobile.mapobjects.events ReturnMapObjectEvent
+
+.. java:import:: fi.lbd.mobile.mapobjects MapObject
+
+DetailsActivity
+===============
+
+.. java:package:: fi.lbd.mobile
+   :noindex:
+
+.. java:type:: public class DetailsActivity extends Activity
+
+Methods
+-------
+onCreate
+^^^^^^^^
+
+.. java:method:: @Override protected void onCreate(Bundle savedInstanceState)
+   :outertype: DetailsActivity
+
+onCreateOptionsMenu
+^^^^^^^^^^^^^^^^^^^
+
+.. java:method:: @Override public boolean onCreateOptionsMenu(Menu menu)
+   :outertype: DetailsActivity
+
+onDestroy
+^^^^^^^^^
+
+.. java:method:: @Override protected void onDestroy()
+   :outertype: DetailsActivity
+
+onEvent
+^^^^^^^
+
+.. java:method:: @Subscribe public void onEvent(ReturnMapObjectEvent event)
+   :outertype: DetailsActivity
+
+onPause
+^^^^^^^
+
+.. java:method:: @Override public void onPause()
+   :outertype: DetailsActivity
+
+onResume
+^^^^^^^^
+
+.. java:method:: @Override public void onResume()
+   :outertype: DetailsActivity
+
+onStart
+^^^^^^^
+
+.. java:method:: @Override public void onStart()
+   :outertype: DetailsActivity
+
+onStop
+^^^^^^
+
+.. java:method:: @Override public void onStop()
+   :outertype: DetailsActivity
+

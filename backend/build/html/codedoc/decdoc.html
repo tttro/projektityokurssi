@@ -1,0 +1,147 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>lbd_backend.LBD_REST_locationdata.decorators Location data decorators &mdash; LBD Backend Dev documentation</title>
+    
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     'Dev',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="LBD Backend Dev documentation" href="../index.html" />
+    <link rel="up" title="Code documentation: REST" href="../codedoc.html" />
+    <link rel="next" title="lbd_backend.LBD_REST_locationdata Location data REST" href="locdoc.html" />
+    <link rel="prev" title="Code documentation: REST" href="../codedoc.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="locdoc.html" title="lbd_backend.LBD_REST_locationdata Location data REST"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="../codedoc.html" title="Code documentation: REST"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">LBD Backend Dev documentation</a> &raquo;</li>
+          <li><a href="../codedoc.html" accesskey="U">Code documentation: REST</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="module-lbd_backend.LBD_REST_locationdata.decorators">
+<span id="lbd-backend-lbd-rest-locationdata-decorators-location-data-decorators"></span><h1><a class="reference internal" href="#module-lbd_backend.LBD_REST_locationdata.decorators" title="lbd_backend.LBD_REST_locationdata.decorators"><tt class="xref py py-mod docutils literal"><span class="pre">lbd_backend.LBD_REST_locationdata.decorators</span></tt></a> Location data decorators<a class="headerlink" href="#module-lbd_backend.LBD_REST_locationdata.decorators" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="decorators-for-location-data-rest">
+<span id="locdecos"></span><h2>Decorators for location data REST<a class="headerlink" href="#decorators-for-location-data-rest" title="Permalink to this headline">¶</a></h2>
+<p><strong>This module contains the decorators for the REST handling the location data</strong></p>
+<span class="target" id="module-LocationdataREST.decorators"></span><dl class="function">
+<dt id="lbd_backend.LBD_REST_locationdata.decorators.lbd_require_login">
+<tt class="descclassname">lbd_backend.LBD_REST_locationdata.decorators.</tt><tt class="descname">lbd_require_login</tt><big>(</big><em>func</em><big>)</big><a class="headerlink" href="#lbd_backend.LBD_REST_locationdata.decorators.lbd_require_login" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>Wrapper</em></p>
+<p>This wrapper is used for authenticating the user with Google OAuth2.</p>
+<p>Key &#8220;lbduser&#8221; is added to kwargs with User object as value.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="lbd_backend.LBD_REST_locationdata.decorators.location_collection">
+<tt class="descclassname">lbd_backend.LBD_REST_locationdata.decorators.</tt><tt class="descname">location_collection</tt><big>(</big><em>func</em><big>)</big><a class="headerlink" href="#lbd_backend.LBD_REST_locationdata.decorators.location_collection" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>Wrapper</em></p>
+<p>Checks if the collection in the URL exists and the handler for it is installed.</p>
+<p>Key &#8220;handlerinterface&#8221; is added to kwargs with a handler object as the value.</p>
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#"><tt class="docutils literal"><span class="pre">lbd_backend.LBD_REST_locationdata.decorators</span></tt> Location data decorators</a><ul>
+<li><a class="reference internal" href="#decorators-for-location-data-rest">Decorators for location data REST</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="../codedoc.html"
+                        title="previous chapter">Code documentation: REST</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="locdoc.html"
+                        title="next chapter"><tt class="docutils literal"><span class="pre">lbd_backend.LBD_REST_locationdata</span></tt> Location data REST</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../_sources/codedoc/decdoc.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="locdoc.html" title="lbd_backend.LBD_REST_locationdata Location data REST"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="../codedoc.html" title="Code documentation: REST"
+             >previous</a> |</li>
+        <li><a href="../index.html">LBD Backend Dev documentation</a> &raquo;</li>
+          <li><a href="../codedoc.html" >Code documentation: REST</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2014, LBD Development.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+    </div>
+  </body>
+</html>

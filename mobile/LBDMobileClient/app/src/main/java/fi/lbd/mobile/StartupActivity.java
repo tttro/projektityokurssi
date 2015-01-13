@@ -6,10 +6,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 
-import fi.lbd.mobile.backendhandler.BackendHandlerService;
-import fi.lbd.mobile.events.BusHandler;
-import fi.lbd.mobile.messaging.MessageUpdateService;
-
 
 public class StartupActivity extends Activity {
     private String BACKEND_URL = "";
@@ -18,10 +14,7 @@ public class StartupActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        // Start the object repository service. // TODO: Missä käynnistys?
-        startService(new Intent(this, BackendHandlerService.class));
-        startService(new Intent(this, MessageUpdateService.class));
+        Log.d("******", "StartupActivity onCreate()");
 
         BACKEND_URL = getResources().getString(R.string.backend_url);
         OBJECT_COLLECTION = getResources().getString(R.string.object_collection);
@@ -32,13 +25,15 @@ public class StartupActivity extends Activity {
 
         // If no previous settings were found, move the user to SettingsActivity
         if(url == null || collection == null){
+            finish();
             Intent intent = new Intent(this, SettingsActivity.class);
             startActivity(intent);
         }
         // Else go straight to ListActivity
         else {
+            finish();
             ApplicationDetails.get().setCurrentCollection(collection);
-            ApplicationDetails.get().setCurrentBackendUrl(url);
+            ApplicationDetails.get().setCurrentBaseApiUrl(url);
             Intent intent = new Intent(this, ListActivity.class);
             startActivity(intent);
         }

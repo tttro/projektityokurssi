@@ -58,9 +58,9 @@
         android:layout_below="@+id/backendUrlText"
         android:layout_centerHorizontal="true">
         <Button
-            android:layout_width="120dp"
+            android:layout_width="160dp"
             android:layout_height="wrap_content"
-            android:text="LOAD URL"
+            android:text="LOAD COLLECTIONS"
             android:background="@color/button_background"
             android:id="@+id/loadButton"
             android:minHeight="30dp"

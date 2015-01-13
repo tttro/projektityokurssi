@@ -1,0 +1,26 @@
+UrlReaderException
+==================
+
+.. java:package:: fi.lbd.mobile.backendhandler
+   :noindex:
+
+.. java:type:: public class UrlReaderException extends Exception
+
+   Exception from the url reader. Created by Tommi.
+
+Constructors
+------------
+UrlReaderException
+^^^^^^^^^^^^^^^^^^
+
+.. java:constructor:: public UrlReaderException(String message, Exception originalException)
+   :outertype: UrlReaderException
+
+Methods
+-------
+getOriginalException
+^^^^^^^^^^^^^^^^^^^^
+
+.. java:method:: public Exception getOriginalException()
+   :outertype: UrlReaderException
+

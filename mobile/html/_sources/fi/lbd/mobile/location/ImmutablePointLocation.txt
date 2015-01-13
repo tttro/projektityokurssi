@@ -1,0 +1,65 @@
+.. java:import:: android.util Log
+
+.. java:import:: fi.lbd.mobile.backendhandler MapObjectParser
+
+ImmutablePointLocation
+======================
+
+.. java:package:: fi.lbd.mobile.location
+   :noindex:
+
+.. java:type:: public class ImmutablePointLocation implements PointLocation
+
+   Point location which cannot be modified. Created by Tommi.
+
+Constructors
+------------
+ImmutablePointLocation
+^^^^^^^^^^^^^^^^^^^^^^
+
+.. java:constructor:: public ImmutablePointLocation(double latitude, double longitude)
+   :outertype: ImmutablePointLocation
+
+   Point location which cannot be modified.
+
+   :param latitude:
+   :param longitude:
+
+Methods
+-------
+equals
+^^^^^^
+
+.. java:method:: @Override public boolean equals(Object o)
+   :outertype: ImmutablePointLocation
+
+getLatitude
+^^^^^^^^^^^
+
+.. java:method:: @Override public double getLatitude()
+   :outertype: ImmutablePointLocation
+
+getLongitude
+^^^^^^^^^^^^
+
+.. java:method:: @Override public double getLongitude()
+   :outertype: ImmutablePointLocation
+
+hashCode
+^^^^^^^^
+
+.. java:method:: @Override public int hashCode()
+   :outertype: ImmutablePointLocation
+
+parseFromString
+^^^^^^^^^^^^^^^
+
+.. java:method:: public static ImmutablePointLocation parseFromString(String latLng)
+   :outertype: ImmutablePointLocation
+
+toString
+^^^^^^^^
+
+.. java:method:: @Override public String toString()
+   :outertype: ImmutablePointLocation
+

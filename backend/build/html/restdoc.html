@@ -1,0 +1,613 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>REST documentation &mdash; LBD Backend Dev documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     'Dev',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="LBD Backend Dev documentation" href="index.html" />
+    <link rel="next" title="Code documentation: REST" href="codedoc.html" />
+    <link rel="prev" title="Search" href="json/search.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="codedoc.html" title="Code documentation: REST"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="json/search.html" title="Search"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">LBD Backend Dev documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="rest-documentation">
+<span id="restdoc"></span><h1>REST documentation<a class="headerlink" href="#rest-documentation" title="Permalink to this headline">¶</a></h1>
+<p>This chapter describes the REST APIs.</p>
+<p>List of status codes used by the REST:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="12%" />
+<col width="41%" />
+<col width="47%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Status</th>
+<th class="head">Meaning</th>
+<th class="head">Notes</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>200</td>
+<td>OK</td>
+<td>Request successful</td>
+</tr>
+<tr class="row-odd"><td>401</td>
+<td>Unauthorized</td>
+<td>&#8220;Login&#8221; failed.</td>
+</tr>
+<tr class="row-even"><td>403</td>
+<td>Forbidden</td>
+<td>You shall not pass!</td>
+</tr>
+<tr class="row-odd"><td>404</td>
+<td>Not Found</td>
+<td>Resource not found.</td>
+</tr>
+<tr class="row-even"><td>405</td>
+<td>Method not allowed</td>
+<td>HTTP method not allowed.</td>
+</tr>
+<tr class="row-odd"><td>418</td>
+<td>I&#8217;m a teapot</td>
+<td>Short and stout!</td>
+</tr>
+<tr class="row-even"><td>500</td>
+<td>Internal Server Error</td>
+<td>Server snafu&#8217;d</td>
+</tr>
+</tbody>
+</table>
+<div class="section" id="location-data-rest">
+<span id="locationrest"></span><h2>Location data REST<a class="headerlink" href="#location-data-rest" title="Permalink to this headline">¶</a></h2>
+<p>Location data can be accessed from <strong>/locationdata/api/</strong> (e.g. <em>www.example.com/locationdata/api/</em>). This URL does not yet require
+authentication and return the installed location data services and what data (element names) they contain.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">When creating or updating resources, only metadata is updated or created currently. It is not possible to create actual
+location data objects... yet.</p>
+</div>
+<p>In urls <strong>&lt;collection name&gt;</strong> and <strong>&lt;resource&gt;</strong> are to be replaced with appropriate values. Both are strings.</p>
+<div class="section" id="locationdata-api">
+<h3>/locationdata/api/<a class="headerlink" href="#locationdata-api" title="Permalink to this headline">¶</a></h3>
+<p>Returns the installed location data services that can be accessed by appending the name of the service to the base url of
+the location data api.</p>
+<p><strong>Allowed methods:</strong></p>
+<ul class="simple">
+<li>GET</li>
+</ul>
+<p><strong>URL parameters</strong></p>
+<ul class="simple">
+<li>None</li>
+</ul>
+<p>Example result:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="p">[</span>
+    <span class="p">{</span>
+        <span class="s">&quot;fields&quot;</span><span class="p">:</span> <span class="p">[</span>
+            <span class="s">&quot;geometry_name&quot;</span><span class="p">,</span>
+            <span class="s">&quot;geometry.type&quot;</span><span class="p">,</span>
+            <span class="s">&quot;geometry.coordinates&quot;</span><span class="p">,</span>
+            <span class="s">&quot;id&quot;</span><span class="p">,</span>
+            <span class="s">&quot;type&quot;</span><span class="p">,</span>
+            <span class="s">&quot;properties.URAKKA_ALUE&quot;</span><span class="p">,</span>
+            <span class="s">&quot;properties.OSA_ALUE_NIMI&quot;</span><span class="p">,</span>
+            <span class="s">&quot;properties.PINTA_ALA&quot;</span><span class="p">,</span>
+            <span class="s">&quot;properties.KAYTTOLK&quot;</span><span class="p">,</span>
+            <span class="s">&quot;properties.ALUE_NIMI&quot;</span><span class="p">,</span>
+            <span class="s">&quot;properties.TILAAJA&quot;</span><span class="p">,</span>
+            <span class="s">&quot;properties.VIHERALUEEN_OSAN_ID&quot;</span><span class="p">,</span>
+            <span class="s">&quot;properties.KAUPUNGINOSA&quot;</span><span class="p">,</span>
+            <span class="s">&quot;properties.TOIMLK&quot;</span><span class="p">,</span>
+            <span class="s">&quot;properties.ALUE_SIJ&quot;</span><span class="p">,</span>
+            <span class="s">&quot;properties.HOITOLK&quot;</span>
+        <span class="p">],</span>
+        <span class="s">&quot;name&quot;</span><span class="p">:</span> <span class="s">&quot;Playgrounds&quot;</span><span class="p">,</span>
+        <span class="s">&quot;description&quot;</span><span class="p">:</span> <span class="s">&quot;Ring around the rosie&quot;</span>
+    <span class="p">},</span>
+    <span class="p">{</span>
+        <span class="s">&quot;fields&quot;</span><span class="p">:</span> <span class="p">[</span>
+            <span class="s">&quot;geometry_name&quot;</span><span class="p">,</span>
+            <span class="s">&quot;geometry.type&quot;</span><span class="p">,</span>
+            <span class="s">&quot;geometry.coordinates&quot;</span><span class="p">,</span>
+            <span class="s">&quot;id&quot;</span><span class="p">,</span>
+            <span class="s">&quot;type&quot;</span><span class="p">,</span>
+            <span class="s">&quot;properties.NIMI&quot;</span><span class="p">,</span>
+            <span class="s">&quot;properties.LAMPPU_TYYPPI_KOODI&quot;</span><span class="p">,</span>
+            <span class="s">&quot;properties.TYYPPI_KOODI&quot;</span><span class="p">,</span>
+            <span class="s">&quot;properties.KATUVALO_ID&quot;</span><span class="p">,</span>
+            <span class="s">&quot;properties.LAMPPU_TYYPPI&quot;</span><span class="p">,</span>
+            <span class="s">&quot;properties.TYYPPI&quot;</span>
+        <span class="p">],</span>
+        <span class="s">&quot;name&quot;</span><span class="p">:</span> <span class="s">&quot;Streetlights&quot;</span><span class="p">,</span>
+        <span class="s">&quot;description&quot;</span><span class="p">:</span> <span class="s">&quot;Tampere Streetlights&quot;</span>
+    <span class="p">}</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The name element is the one to be added to the url.</p>
+</div>
+</div>
+<div class="section" id="locationdata-api-collection-name">
+<h3>/locationdata/api/&lt;collection name&gt;/<a class="headerlink" href="#locationdata-api-collection-name" title="Permalink to this headline">¶</a></h3>
+<p><strong>Allowed methods:</strong></p>
+<ul>
+<li><p class="first">GET</p>
+<blockquote>
+<div><ul class="simple">
+<li>Returns the whole collection.</li>
+</ul>
+</div></blockquote>
+</li>
+<li><p class="first">DELETE</p>
+<blockquote>
+<div><ul class="simple">
+<li>Deletes the whole collection.</li>
+</ul>
+</div></blockquote>
+</li>
+<li><p class="first">PUT</p>
+<blockquote>
+<div><ul class="simple">
+<li>Replaces the collection.</li>
+</ul>
+</div></blockquote>
+</li>
+<li><p class="first">POST</p>
+<blockquote>
+<div><ul class="simple">
+<li>Adds a new element to the collection.</li>
+</ul>
+</div></blockquote>
+</li>
+</ul>
+<p><strong>URL parameters</strong></p>
+<ul>
+<li><p class="first">mini (<em>Optional</em>)</p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>Boolean</strong> Returns minimum amount of data. Valid values: true or false</li>
+</ul>
+</div></blockquote>
+</li>
+</ul>
+</div>
+<div class="section" id="locationdata-api-collection-name-resource">
+<h3>/locationdata/api/&lt;collection name&gt;/&lt;resource&gt;<a class="headerlink" href="#locationdata-api-collection-name-resource" title="Permalink to this headline">¶</a></h3>
+<p><strong>Allowed methods:</strong></p>
+<ul>
+<li><p class="first">GET</p>
+<blockquote>
+<div><ul class="simple">
+<li>Returns the resource.</li>
+</ul>
+</div></blockquote>
+</li>
+<li><p class="first">DELETE</p>
+<blockquote>
+<div><ul class="simple">
+<li>Deletes the resource.</li>
+</ul>
+</div></blockquote>
+</li>
+<li><p class="first">PUT</p>
+<blockquote>
+<div><ul class="simple">
+<li>Update or create a resource.</li>
+</ul>
+</div></blockquote>
+</li>
+</ul>
+</div>
+<div class="section" id="locationdata-api-collection-name-near">
+<h3>/locationdata/api/&lt;collection name&gt;/near/<a class="headerlink" href="#locationdata-api-collection-name-near" title="Permalink to this headline">¶</a></h3>
+<p>Searches objects from circular area.</p>
+<p><strong>Allowed methods:</strong></p>
+<ul>
+<li><p class="first">GET</p>
+<blockquote>
+<div><ul class="simple">
+<li>Returns the resources near the location.</li>
+</ul>
+</div></blockquote>
+</li>
+<li><p class="first">DELETE</p>
+<blockquote>
+<div><ul class="simple">
+<li>Deletes the resources near the location.</li>
+</ul>
+</div></blockquote>
+</li>
+</ul>
+<p><strong>URL parameters</strong></p>
+<ul>
+<li><p class="first">mini (<em>Optional</em>)</p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>Boolean</strong> Returns minimum amount of data. Valid values: true or false</li>
+</ul>
+</div></blockquote>
+</li>
+<li><p class="first">latitude (<em>Required</em>)</p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>Float</strong> The latitude of the circle&#8217;s center</li>
+</ul>
+</div></blockquote>
+</li>
+<li><p class="first">longitude (<em>Required</em>)</p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>Float</strong> The longitude of the circle&#8217;s center</li>
+</ul>
+</div></blockquote>
+</li>
+<li><p class="first">range (<em>Optional</em>)</p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>Float</strong> The radius of the circle</li>
+</ul>
+</div></blockquote>
+</li>
+</ul>
+</div>
+<div class="section" id="locationdata-api-collection-name-inarea">
+<h3>/locationdata/api/&lt;collection name&gt;/inarea/<a class="headerlink" href="#locationdata-api-collection-name-inarea" title="Permalink to this headline">¶</a></h3>
+<p>Searches objects inside a rectangular area.</p>
+<p><strong>Allowed methods:</strong></p>
+<ul>
+<li><p class="first">GET</p>
+<blockquote>
+<div><ul class="simple">
+<li>Returns the resources inside the area.</li>
+</ul>
+</div></blockquote>
+</li>
+<li><p class="first">DELETE</p>
+<blockquote>
+<div><ul class="simple">
+<li>Deletes the resource inside the area.</li>
+</ul>
+</div></blockquote>
+</li>
+</ul>
+<p><strong>URL parameters</strong></p>
+<ul>
+<li><p class="first">mini (<em>Optional</em>)</p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>Boolean</strong> Returns minimum amount of data. Valid values: true or false</li>
+</ul>
+</div></blockquote>
+</li>
+<li><p class="first">xbottomleft (<em>Required</em>)</p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>Float</strong> The longitude of the bottom left corner of the area.</li>
+</ul>
+</div></blockquote>
+</li>
+<li><p class="first">ybottomleft (<em>Required</em>)</p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>Float</strong> The latitude of the bottom left corner of the area.</li>
+</ul>
+</div></blockquote>
+</li>
+<li><p class="first">xtopright (<em>Required</em>)</p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>Float</strong> The longitude of the top right corner of the area.</li>
+</ul>
+</div></blockquote>
+</li>
+<li><p class="first">ytopright (<em>Required</em>)</p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>Float</strong> The latitude of the top right corner of the area.</li>
+</ul>
+</div></blockquote>
+</li>
+</ul>
+</div>
+<div class="section" id="locationdata-api-collection-name-search">
+<h3>/locationdata/api/&lt;collection name&gt;/search/<a class="headerlink" href="#locationdata-api-collection-name-search" title="Permalink to this headline">¶</a></h3>
+<p>Searches from the location data REST. Search is currently limited to the id.</p>
+<p><strong>Allowed methods:</strong></p>
+<ul>
+<li><p class="first">POST</p>
+<blockquote>
+<div><ul class="simple">
+<li>Send the search JSON.</li>
+</ul>
+</div></blockquote>
+</li>
+</ul>
+<p><strong>URL parameters</strong></p>
+<ul class="simple">
+<li>None</li>
+</ul>
+</div>
+</div>
+<div class="section" id="message-data-rest">
+<span id="messagerest"></span><h2>Message data REST<a class="headerlink" href="#message-data-rest" title="Permalink to this headline">¶</a></h2>
+<p>The REST for sending messages in the system. For JSON formats, see <a class="reference internal" href="json/messagejson.html#messagejson"><em>Message formats</em></a></p>
+<p>In URLs <strong>&lt;message id&gt;</strong> and <strong>&lt;category&gt;</strong> are to be replaced with appropriate values. Message id is an integer and
+category is a string.</p>
+<div class="section" id="messagedata-api-send">
+<h3>/messagedata/api/send/<a class="headerlink" href="#messagedata-api-send" title="Permalink to this headline">¶</a></h3>
+<p><strong>Allowed methods:</strong></p>
+<ul>
+<li><p class="first">POST</p>
+<blockquote>
+<div><ul class="simple">
+<li>Send a message.</li>
+</ul>
+</div></blockquote>
+</li>
+</ul>
+<p><strong>URL parameters</strong></p>
+<ul class="simple">
+<li>None</li>
+</ul>
+</div>
+<div class="section" id="messagedata-api-users-list">
+<h3>/messagedata/api/users/list/<a class="headerlink" href="#messagedata-api-users-list" title="Permalink to this headline">¶</a></h3>
+<p>Lists all users.</p>
+<p><strong>Allowed methods:</strong></p>
+<ul>
+<li><p class="first">GET</p>
+<blockquote>
+<div><ul class="simple">
+<li>Returns name and email of users.</li>
+</ul>
+</div></blockquote>
+</li>
+</ul>
+<p><strong>URL parameters</strong></p>
+<ul class="simple">
+<li>None</li>
+</ul>
+</div>
+<div class="section" id="messagedata-api-markasread-message-id">
+<h3>/messagedata/api/markasread/&lt;message id&gt;<a class="headerlink" href="#messagedata-api-markasread-message-id" title="Permalink to this headline">¶</a></h3>
+<p><strong>Allowed methods:</strong></p>
+<ul>
+<li><p class="first">GET</p>
+<blockquote>
+<div><ul class="simple">
+<li>Mark message read.</li>
+</ul>
+</div></blockquote>
+</li>
+</ul>
+<p><strong>URL parameters</strong></p>
+<ul class="simple">
+<li>None</li>
+</ul>
+</div>
+<div class="section" id="messagedata-api-messages">
+<h3>/messagedata/api/messages/<a class="headerlink" href="#messagedata-api-messages" title="Permalink to this headline">¶</a></h3>
+<p><strong>Allowed methods:</strong></p>
+<ul>
+<li><p class="first">GET</p>
+<blockquote>
+<div><ul class="simple">
+<li>Get user&#8217;s all messages.</li>
+</ul>
+</div></blockquote>
+</li>
+<li><p class="first">DELETE</p>
+<blockquote>
+<div><ul class="simple">
+<li>Delete user&#8217;s all messages</li>
+</ul>
+</div></blockquote>
+</li>
+</ul>
+<p><strong>URL parameters</strong></p>
+<ul class="simple">
+<li>None</li>
+</ul>
+</div>
+<div class="section" id="messagedata-api-messages-message-id">
+<h3>/messagedata/api/messages/&lt;message id&gt;<a class="headerlink" href="#messagedata-api-messages-message-id" title="Permalink to this headline">¶</a></h3>
+<p><strong>Allowed methods:</strong></p>
+<ul>
+<li><p class="first">GET</p>
+<blockquote>
+<div><ul class="simple">
+<li>Get a single message.</li>
+</ul>
+</div></blockquote>
+</li>
+<li><p class="first">DELETE</p>
+<blockquote>
+<div><ul class="simple">
+<li>Delete the message.</li>
+</ul>
+</div></blockquote>
+</li>
+</ul>
+<p><strong>URL parameters</strong></p>
+<ul class="simple">
+<li>None</li>
+</ul>
+</div>
+<div class="section" id="messagedata-api-messages-category">
+<h3>/messagedata/api/messages/&lt;category&gt;/<a class="headerlink" href="#messagedata-api-messages-category" title="Permalink to this headline">¶</a></h3>
+<p><strong>Allowed methods:</strong></p>
+<ul>
+<li><p class="first">GET</p>
+<blockquote>
+<div><ul class="simple">
+<li>Get user&#8217;s all messages in certain category.</li>
+</ul>
+</div></blockquote>
+</li>
+<li><p class="first">DELETE</p>
+<blockquote>
+<div><ul class="simple">
+<li>Delete user&#8217;s all messages in certain category.</li>
+</ul>
+</div></blockquote>
+</li>
+</ul>
+<p><strong>URL parameters</strong></p>
+<ul class="simple">
+<li>None</li>
+</ul>
+</div>
+<div class="section" id="messagedata-api-messages-category-message-id">
+<h3>/messagedata/api/messages/&lt;category&gt;/&lt;message id&gt;<a class="headerlink" href="#messagedata-api-messages-category-message-id" title="Permalink to this headline">¶</a></h3>
+<p><strong>Allowed methods:</strong></p>
+<ul>
+<li><p class="first">GET</p>
+<blockquote>
+<div><ul class="simple">
+<li>Get a single message in a certain category.</li>
+</ul>
+</div></blockquote>
+</li>
+<li><p class="first">DELETE</p>
+<blockquote>
+<div><ul class="simple">
+<li>Delete a single message in a certain category.</li>
+</ul>
+</div></blockquote>
+</li>
+</ul>
+<p><strong>URL parameters</strong></p>
+<ul class="simple">
+<li>None</li>
+</ul>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">REST documentation</a><ul>
+<li><a class="reference internal" href="#location-data-rest">Location data REST</a><ul>
+<li><a class="reference internal" href="#locationdata-api">/locationdata/api/</a></li>
+<li><a class="reference internal" href="#locationdata-api-collection-name">/locationdata/api/&lt;collection name&gt;/</a></li>
+<li><a class="reference internal" href="#locationdata-api-collection-name-resource">/locationdata/api/&lt;collection name&gt;/&lt;resource&gt;</a></li>
+<li><a class="reference internal" href="#locationdata-api-collection-name-near">/locationdata/api/&lt;collection name&gt;/near/</a></li>
+<li><a class="reference internal" href="#locationdata-api-collection-name-inarea">/locationdata/api/&lt;collection name&gt;/inarea/</a></li>
+<li><a class="reference internal" href="#locationdata-api-collection-name-search">/locationdata/api/&lt;collection name&gt;/search/</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#message-data-rest">Message data REST</a><ul>
+<li><a class="reference internal" href="#messagedata-api-send">/messagedata/api/send/</a></li>
+<li><a class="reference internal" href="#messagedata-api-users-list">/messagedata/api/users/list/</a></li>
+<li><a class="reference internal" href="#messagedata-api-markasread-message-id">/messagedata/api/markasread/&lt;message id&gt;</a></li>
+<li><a class="reference internal" href="#messagedata-api-messages">/messagedata/api/messages/</a></li>
+<li><a class="reference internal" href="#messagedata-api-messages-message-id">/messagedata/api/messages/&lt;message id&gt;</a></li>
+<li><a class="reference internal" href="#messagedata-api-messages-category">/messagedata/api/messages/&lt;category&gt;/</a></li>
+<li><a class="reference internal" href="#messagedata-api-messages-category-message-id">/messagedata/api/messages/&lt;category&gt;/&lt;message id&gt;</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="json/search.html"
+                        title="previous chapter">Search</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="codedoc.html"
+                        title="next chapter">Code documentation: REST</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/restdoc.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="codedoc.html" title="Code documentation: REST"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="json/search.html" title="Search"
+             >previous</a> |</li>
+        <li><a href="index.html">LBD Backend Dev documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2014, LBD Development.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+    </div>
+  </body>
+</html>

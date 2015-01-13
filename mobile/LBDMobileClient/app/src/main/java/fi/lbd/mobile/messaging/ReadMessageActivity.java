@@ -4,12 +4,17 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.squareup.otto.Subscribe;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+import fi.lbd.mobile.ActiveActivitiesTracker;
 import fi.lbd.mobile.R;
 import fi.lbd.mobile.events.BusHandler;
 import fi.lbd.mobile.events.RequestFailedEvent;
@@ -20,6 +25,7 @@ import fi.lbd.mobile.messaging.messageobjects.StringMessageObject;
 
 
 public class ReadMessageActivity extends Activity {
+    private boolean deleteInProgress = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,9 +36,20 @@ public class ReadMessageActivity extends Activity {
                 .getSelectedMessageObject();
         if(object != null) {
             View rootView = findViewById(android.R.id.content);
-            ((TextView) rootView.findViewById(R.id.textViewSender)).setText(object.getSender());
-            ((TextView) rootView.findViewById(R.id.textViewTopic)).setText(object.getTopic());
-            ((TextView) rootView.findViewById(R.id.textViewMessageContents)).setText(object.getMessage());
+            String sender = object.getSender();
+            String topic = object.getTopic();
+            String message = object.getMessage();
+
+            long timestamp = object.getTimestamp();
+            Date date = new Date(timestamp*1000);
+            String parsedDate = new SimpleDateFormat("dd.MM.yyyy', 'HH:mm").format(date);
+
+            if(sender != null && topic != null && message != null && parsedDate != null){
+                ((TextView) rootView.findViewById(R.id.textViewSender)).setText(sender);
+                ((TextView) rootView.findViewById(R.id.textViewTopic)).setText(topic);
+                ((TextView) rootView.findViewById(R.id.textViewDate)).setText(parsedDate);
+                ((TextView) rootView.findViewById(R.id.textViewMessageContents)).setText(message);
+            }
         }
     }
 
@@ -48,12 +65,28 @@ public class ReadMessageActivity extends Activity {
         BusHandler.getBus().unregister(this);
     }
 
+    @Override
+    public void onStart(){
+        super.onStart();
+        ActiveActivitiesTracker.activityStarted();
+    }
+
+    @Override
+    public void onStop(){
+        super.onStop();
+        ActiveActivitiesTracker.activityStopped();
+        this.deleteInProgress = false;
+    }
+
     public void onDeleteClick(View view){
-        StringMessageObject object = (StringMessageObject) MessageObjectSelectionManager.get()
-                .getSelectedMessageObject();
-        if(object != null && object.getId() != null && object.getId().length()>0) {
-            DeleteMessageEvent deleteMessageEvent = new DeleteMessageEvent(object.getId());
-            BusHandler.getBus().post(deleteMessageEvent);
+        if(!this.deleteInProgress) {
+            StringMessageObject object = (StringMessageObject) MessageObjectSelectionManager.get()
+                    .getSelectedMessageObject();
+            if (object != null && object.getId() != null && object.getId().length() > 0) {
+                this.deleteInProgress = true;
+                DeleteMessageEvent deleteMessageEvent = new DeleteMessageEvent(object.getId());
+                BusHandler.getBus().post(deleteMessageEvent);
+            }
         }
     }
 
@@ -65,7 +98,6 @@ public class ReadMessageActivity extends Activity {
 
     @Subscribe
     public void onEvent(DeleteMessageSucceededEvent event){
-     //   BusHandler.getBus().post(new RequestUserMessagesEvent());
         Context context = getApplicationContext();
         CharSequence dialogText = "Message deleted";
         int duration = Toast.LENGTH_SHORT;
@@ -74,12 +106,14 @@ public class ReadMessageActivity extends Activity {
         MessageObjectDeletionManager manager = MessageObjectDeletionManager.get();
         manager.setDeletedMessageObject(event.getOriginalEvent().getMessageId());
         manager.deleteMessageFromList();
+        this.deleteInProgress = false;
         onBackPressed();
     }
 
     @Subscribe
     public void onEvent(RequestFailedEvent event){
         if(event.getFailedEvent() instanceof DeleteMessageEvent) {
+            this.deleteInProgress = false;
             Context context = getApplicationContext();
             CharSequence dialogText = "Failed to delete message";
             int duration = Toast.LENGTH_SHORT;

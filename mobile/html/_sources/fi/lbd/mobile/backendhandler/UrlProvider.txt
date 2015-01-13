@@ -1,0 +1,86 @@
+.. java:import:: android.content Context
+
+.. java:import:: fi.lbd.mobile ApplicationDetails
+
+UrlProvider
+===========
+
+.. java:package:: fi.lbd.mobile.backendhandler
+   :noindex:
+
+.. java:type:: public class UrlProvider implements ApplicationDetails.ApplicationDetailListener
+
+   Created by Tommi on 10.1.2015.
+
+Fields
+------
+baseMessageUrl
+^^^^^^^^^^^^^^
+
+.. java:field:: protected String baseMessageUrl
+   :outertype: UrlProvider
+
+baseObjectUrl
+^^^^^^^^^^^^^
+
+.. java:field:: protected String baseObjectUrl
+   :outertype: UrlProvider
+
+baseUrl
+^^^^^^^
+
+.. java:field:: protected String baseUrl
+   :outertype: UrlProvider
+
+objectCollection
+^^^^^^^^^^^^^^^^
+
+.. java:field:: protected String objectCollection
+   :outertype: UrlProvider
+
+Constructors
+------------
+UrlProvider
+^^^^^^^^^^^
+
+.. java:constructor:: public UrlProvider(String baseUrl, String baseObjectUrl, String baseMessageUrl, String objectCollection)
+   :outertype: UrlProvider
+
+Methods
+-------
+getBaseMessageUrl
+^^^^^^^^^^^^^^^^^
+
+.. java:method:: public String getBaseMessageUrl()
+   :outertype: UrlProvider
+
+getBaseObjectUrl
+^^^^^^^^^^^^^^^^
+
+.. java:method:: public String getBaseObjectUrl()
+   :outertype: UrlProvider
+
+getBaseUrl
+^^^^^^^^^^
+
+.. java:method:: public String getBaseUrl()
+   :outertype: UrlProvider
+
+getObjectCollection
+^^^^^^^^^^^^^^^^^^^
+
+.. java:method:: public String getObjectCollection()
+   :outertype: UrlProvider
+
+notifyApiUrlChange
+^^^^^^^^^^^^^^^^^^
+
+.. java:method:: @Override public void notifyApiUrlChange(String newBaseUrl, String newMessageApiUrl, String newObjectApiUrl)
+   :outertype: UrlProvider
+
+notifyCollectionChange
+^^^^^^^^^^^^^^^^^^^^^^
+
+.. java:method:: @Override public void notifyCollectionChange(String newCollection)
+   :outertype: UrlProvider
+

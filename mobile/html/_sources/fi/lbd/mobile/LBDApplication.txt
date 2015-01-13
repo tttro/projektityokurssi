@@ -1,0 +1,38 @@
+.. java:import:: android.app Application
+
+.. java:import:: android.util Log
+
+.. java:import:: fi.lbd.mobile.events BusHandler
+
+.. java:import:: fi.lbd.mobile.mapobjects MapObjectSelectionManager
+
+.. java:import:: fi.lbd.mobile.messaging MessageObjectDeletionManager
+
+.. java:import:: fi.lbd.mobile.messaging MessageObjectSelectionManager
+
+LBDApplication
+==============
+
+.. java:package:: fi.lbd.mobile
+   :noindex:
+
+.. java:type:: public class LBDApplication extends Application
+
+   Created by Tommi.
+
+Constructors
+------------
+LBDApplication
+^^^^^^^^^^^^^^
+
+.. java:constructor:: public LBDApplication()
+   :outertype: LBDApplication
+
+Methods
+-------
+onCreate
+^^^^^^^^
+
+.. java:method:: @Override public void onCreate()
+   :outertype: LBDApplication
+

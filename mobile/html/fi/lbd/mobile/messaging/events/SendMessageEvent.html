@@ -1,0 +1,201 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>SendMessageEvent &mdash; LBD Mobile client Alpha documentation</title>
+    
+    <link rel="stylesheet" href="../../../../../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../../',
+        VERSION:     'Alpha',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../../_static/doctools.js"></script>
+    <link rel="top" title="LBD Mobile client Alpha documentation" href="../../../../../index.html" />
+    <link rel="up" title="fi.lbd.mobile.messaging.events" href="package-index.html" />
+    <link rel="next" title="SendMessageSucceededEvent" href="SendMessageSucceededEvent.html" />
+    <link rel="prev" title="SelectReceiverEvent" href="SelectReceiverEvent.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="SendMessageSucceededEvent.html" title="SendMessageSucceededEvent"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="SelectReceiverEvent.html" title="SelectReceiverEvent"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../../../../../packages.html">LBD Mobile client Alpha documentation</a> &raquo;</li>
+          <li><a href="package-index.html" accesskey="U">fi.lbd.mobile.messaging.events</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="sendmessageevent">
+<h1>SendMessageEvent<a class="headerlink" href="#sendmessageevent" title="Permalink to this headline">¶</a></h1>
+<dl class="type">
+<dt id="fi.lbd.mobile.messaging.events.SendMessageEvent">
+public class <tt class="descname">SendMessageEvent</tt>&lt;T&gt; extends <a class="reference internal" href="../../events/AbstractEvent.html#fi.lbd.mobile.events.AbstractEvent" title="fi.lbd.mobile.events.AbstractEvent">AbstractEvent</a><a class="headerlink" href="#fi.lbd.mobile.messaging.events.SendMessageEvent" title="Permalink to this definition">¶</a></dt>
+<dd><p>Created by Tommi on 3.1.2015.</p>
+</dd></dl>
+
+<div class="section" id="constructors">
+<h2>Constructors<a class="headerlink" href="#constructors" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id1">
+<h3>SendMessageEvent<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+<dl class="constructor">
+<dt id="fi.lbd.mobile.messaging.events.SendMessageEvent.SendMessageEvent(String, String, T, MapObject)">
+public <tt class="descname">SendMessageEvent</tt><big>(</big><a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a><em> receiver</em>, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a><em> topic</em>, T<em> message</em>, <a class="reference internal" href="../../mapobjects/MapObject.html#fi.lbd.mobile.mapobjects.MapObject" title="fi.lbd.mobile.mapobjects.MapObject">MapObject</a>...<em> objects</em><big>)</big><a class="headerlink" href="#fi.lbd.mobile.messaging.events.SendMessageEvent.SendMessageEvent(String, String, T, MapObject)" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="id2">
+<h3>SendMessageEvent<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
+<dl class="constructor">
+<dt id="fi.lbd.mobile.messaging.events.SendMessageEvent.SendMessageEvent(String, String, T, List)">
+public <tt class="descname">SendMessageEvent</tt><big>(</big><a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a><em> receiver</em>, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a><em> topic</em>, T<em> message</em>, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/util/List.html" title="java.util.List">List</a>&lt;<a class="reference internal" href="../../mapobjects/MapObject.html#fi.lbd.mobile.mapobjects.MapObject" title="fi.lbd.mobile.mapobjects.MapObject">MapObject</a>&gt;<em> objects</em><big>)</big><a class="headerlink" href="#fi.lbd.mobile.messaging.events.SendMessageEvent.SendMessageEvent(String, String, T, List)" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="id3">
+<h3>SendMessageEvent<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
+<dl class="constructor">
+<dt id="fi.lbd.mobile.messaging.events.SendMessageEvent.SendMessageEvent(String, String, T, String)">
+public <tt class="descname">SendMessageEvent</tt><big>(</big><a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a><em> receiver</em>, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a><em> topic</em>, T<em> message</em>, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a>...<em> objectIds</em><big>)</big><a class="headerlink" href="#fi.lbd.mobile.messaging.events.SendMessageEvent.SendMessageEvent(String, String, T, String)" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+</div>
+<div class="section" id="methods">
+<h2>Methods<a class="headerlink" href="#methods" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="getmessage">
+<h3>getMessage<a class="headerlink" href="#getmessage" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="fi.lbd.mobile.messaging.events.SendMessageEvent.getMessage()">
+public T <tt class="descname">getMessage</tt><big>(</big><big>)</big><a class="headerlink" href="#fi.lbd.mobile.messaging.events.SendMessageEvent.getMessage()" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="getobjectattachments">
+<h3>getObjectAttachments<a class="headerlink" href="#getobjectattachments" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="fi.lbd.mobile.messaging.events.SendMessageEvent.getObjectAttachments()">
+public <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/util/List.html" title="java.util.List">List</a>&lt;<a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a>&gt; <tt class="descname">getObjectAttachments</tt><big>(</big><big>)</big><a class="headerlink" href="#fi.lbd.mobile.messaging.events.SendMessageEvent.getObjectAttachments()" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="getreceiver">
+<h3>getReceiver<a class="headerlink" href="#getreceiver" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="fi.lbd.mobile.messaging.events.SendMessageEvent.getReceiver()">
+public <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a> <tt class="descname">getReceiver</tt><big>(</big><big>)</big><a class="headerlink" href="#fi.lbd.mobile.messaging.events.SendMessageEvent.getReceiver()" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="gettopic">
+<h3>getTopic<a class="headerlink" href="#gettopic" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="fi.lbd.mobile.messaging.events.SendMessageEvent.getTopic()">
+public <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a> <tt class="descname">getTopic</tt><big>(</big><big>)</big><a class="headerlink" href="#fi.lbd.mobile.messaging.events.SendMessageEvent.getTopic()" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../../../../packages.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">SendMessageEvent</a><ul>
+<li><a class="reference internal" href="#constructors">Constructors</a><ul>
+<li><a class="reference internal" href="#id1">SendMessageEvent</a></li>
+<li><a class="reference internal" href="#id2">SendMessageEvent</a></li>
+<li><a class="reference internal" href="#id3">SendMessageEvent</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#methods">Methods</a><ul>
+<li><a class="reference internal" href="#getmessage">getMessage</a></li>
+<li><a class="reference internal" href="#getobjectattachments">getObjectAttachments</a></li>
+<li><a class="reference internal" href="#getreceiver">getReceiver</a></li>
+<li><a class="reference internal" href="#gettopic">getTopic</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="SelectReceiverEvent.html"
+                        title="previous chapter">SelectReceiverEvent</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="SendMessageSucceededEvent.html"
+                        title="next chapter">SendMessageSucceededEvent</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../../../../../_sources/fi/lbd/mobile/messaging/events/SendMessageEvent.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="SendMessageSucceededEvent.html" title="SendMessageSucceededEvent"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="SelectReceiverEvent.html" title="SelectReceiverEvent"
+             >previous</a> |</li>
+        <li><a href="../../../../../packages.html">LBD Mobile client Alpha documentation</a> &raquo;</li>
+          <li><a href="package-index.html" >fi.lbd.mobile.messaging.events</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2015, Tommi und Ossi.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+    </div>
+  </body>
+</html>

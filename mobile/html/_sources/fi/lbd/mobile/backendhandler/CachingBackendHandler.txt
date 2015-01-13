@@ -1,0 +1,64 @@
+.. java:import:: java.util Iterator
+
+.. java:import:: java.util List
+
+.. java:import:: java.util.concurrent ConcurrentHashMap
+
+.. java:import:: fi.lbd.mobile ApplicationDetails
+
+.. java:import:: fi.lbd.mobile.mapobjects MapObject
+
+.. java:import:: fi.lbd.mobile.location PointLocation
+
+CachingBackendHandler
+=====================
+
+.. java:package:: fi.lbd.mobile.backendhandler
+   :noindex:
+
+.. java:type:: public class CachingBackendHandler extends BasicBackendHandler implements ApplicationDetails.ApplicationDetailListener
+
+   Caches the method invocations so that we don't need to fetch new data from the backend if the same method is invoked multiple times inside a short time period. Created by Tommi.
+
+Constructors
+------------
+CachingBackendHandler
+^^^^^^^^^^^^^^^^^^^^^
+
+.. java:constructor:: public CachingBackendHandler(UrlReader urlReader, UrlProvider urlProvider, long cacheTimeMs)
+   :outertype: CachingBackendHandler
+
+Methods
+-------
+checkForOutdatedCaches
+^^^^^^^^^^^^^^^^^^^^^^
+
+.. java:method:: public void checkForOutdatedCaches()
+   :outertype: CachingBackendHandler
+
+   Method which should be invoked frequently to check for outdated caches.
+
+getObjectsInArea
+^^^^^^^^^^^^^^^^
+
+.. java:method:: @Override public HandlerResponse getObjectsInArea(PointLocation southWest, PointLocation northEast, boolean mini)
+   :outertype: CachingBackendHandler
+
+   Returns the objects inside the area from the backend or as a cached result.
+
+   :param southWest: Start point.
+   :param northEast: End point.
+   :param mini: Should the results be in minimized format.
+
+notifyApiUrlChange
+^^^^^^^^^^^^^^^^^^
+
+.. java:method:: @Override public void notifyApiUrlChange(String newBaseUrl, String newMessageApiUrl, String newObjectApiUrl)
+   :outertype: CachingBackendHandler
+
+notifyCollectionChange
+^^^^^^^^^^^^^^^^^^^^^^
+
+.. java:method:: @Override public void notifyCollectionChange(String newCollection)
+   :outertype: CachingBackendHandler
+

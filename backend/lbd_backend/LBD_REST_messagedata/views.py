@@ -1,12 +1,21 @@
 # -*- coding: utf-8 -*-
-import time
 
+"""
+View for handling messages
+++++++++++++++++++++++++++
+.. module:: MessagedataREST.views
+    :platform: Unix, Windows
+    :synopsis: This module handles http requests related to message data.
+.. moduleauthor:: Aki Mäkinen <aki.makinen@outlook.com>
+
+"""
 __author__ = 'Aki Mäkinen'
 
+import time
 import json
+import mongoengine
 from django.http import HttpResponse
 from django.views.decorators.http import require_http_methods
-import mongoengine
 
 from RESThandlers.HandlerInterface.Exceptions import CollectionNotInstalled
 from RESThandlers.HandlerInterface.Factory import HandlerFactory
@@ -25,42 +34,35 @@ _messagecollection = {
 
 @lbd_require_login
 @require_http_methods(["GET", "DELETE"])
-def msg_single(request, *args, **kwargs):
-    userdata = User.objects.get(user_id=kwargs["lbduser"].user_id)
-    if request.method == "GET":
-        try:
-            item = Message.objects(recipient=userdata.email.lower(), mid=kwargs["message"]).as_pymongo()
-            if len(item) > 1:
-                return HttpResponse(status=s_codes["INTERNALERROR"])
-            else:
-                msg = item[0]
-            msg.pop("_id")
-            msg.pop("user_id")
-        except mongoengine.DoesNotExist:
-            return HttpResponse(status=s_codes["NOTFOUND"])
-
-        return HttpResponse(content=json.dumps(_beautify_message(msg)), status=s_codes["OK"],
-                            content_type="application/json; charset=utf-8")
-
-    elif request.method == "DELETE":
-        try:
-            Message.objects(recipient=userdata.email.lower(), mid=kwargs["message"]).delete()
-        except mongoengine.DoesNotExist:
-            return HttpResponse(status=s_codes["NOTFOUND"])
-
-        if Message.objects(recipient=userdata.email.lower(), mid=kwargs["message"]).count() == 0:
-            return HttpResponse(status=s_codes["OK"])
-        else:
-            return HttpResponse(status=s_codes["INTERNALERROR"], content_type="application/json; charset=utf-8",
-                                content='{"message": "Internal error. Something went wrong when '
-                                        'trying to delete the message"}')
-
-
-@lbd_require_login
-@require_http_methods(["GET", "DELETE"])
 def msg_general(request, *args, **kwargs):
+    """
+    Handles all message requests (both to single and multiple messages).
+
+    **Supported HTTP methods:**
+
+    * GET
+    * DELETE
+
+    :param request: Request object
+    :param args: arguments
+    :param kwargs: Dictionary (keyword arguments). Known kwargs listed below.
+
+    **The method uses the following kwargs:**
+
+    * category (String)
+    * message (Integer)
+    * lbduser (User)
+
+    *Category* specifies the message category. This argument is used only if it is specified in the url. Category
+    is equivalent to locationdata collection. If this argument is used, it is expected that a locationdata collection
+    with the same name exists and is "installed".
+
+    *Message* specifies the message id. Used only if specified in the url.
+
+    :return: HTTP response. Possible statuses are listed in module documentation
+
+    """
     userdata = User.objects.get(user_id=kwargs["lbduser"].user_id)
-    print userdata.email
     single_msg = False
     query = dict()
     query["recipient"] = userdata.email.lower()
@@ -126,8 +128,25 @@ def msg_general(request, *args, **kwargs):
 @lbd_require_login
 @require_http_methods(["POST"])
 def msg_send(request, *args, **kwargs):
+    """
+    View for sending messages.
+
+    **Supported HTTP methods:**
+
+    * POST
+
+    :param request: Request object
+    :param args: arguments
+    :param kwargs: Dictionary (keyword arguments). Known kwargs listed below.
+
+    **The method uses the following kwargs:**
+
+    * lbduser (User)
+
+    :return: HTTP response. Possible statuses are listed in module documentation
+
+    """
     userdata = User.objects.get(user_id=kwargs["lbduser"].user_id)
-    print userdata.email
     #############################################################
     #
     # POST
@@ -229,8 +248,28 @@ def msg_send(request, *args, **kwargs):
 @lbd_require_login
 @require_http_methods(["GET"])
 def mark_as_read(request, *args, **kwargs):
+    """
+    View for marking a message read.
+
+    **Supported HTTP methods:**
+
+    * GET
+
+    :param request: Request object
+    :param args: arguments
+    :param kwargs: Dictionary (keyword arguments). Known kwargs listed below.
+
+    **The method uses the following kwargs:**
+
+    * message (Integer)
+    * lbduser (User)
+
+    *Message* specifies the message id. Required.
+
+    :return: HTTP response. Possible statuses are listed in module documentation
+
+    """
     userdata = User.objects.get(user_id=kwargs["lbduser"].user_id)
-    print userdata.email
 
     query = dict()
     query["recipient"] = userdata.email.lower()
@@ -253,6 +292,15 @@ def mark_as_read(request, *args, **kwargs):
 
 
 def _beautify_message(msg):
+    """
+    Function for cleaning the received message. Removes everything not allowed by the specification, adds some required
+    fields and renames some to follow the specification.
+
+    :param msg: Received message as dictionary
+
+    :return: Cleaned message.
+
+    """
     msg["type"] = "Message"
     msg.pop("_id")
     msg["id"] = msg.pop("mid")

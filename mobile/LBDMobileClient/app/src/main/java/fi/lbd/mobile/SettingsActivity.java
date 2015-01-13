@@ -1,16 +1,15 @@
 package fi.lbd.mobile;
 
 import android.app.Activity;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.util.AttributeSet;
+import android.os.IBinder;
 import android.util.Log;
 import android.view.KeyEvent;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -22,10 +21,12 @@ import android.widget.Toast;
 
 import com.squareup.otto.Subscribe;
 
+import fi.lbd.mobile.backendhandler.BackendHandlerService;
 import fi.lbd.mobile.events.BusHandler;
 import fi.lbd.mobile.events.RequestCollectionsEvent;
 import fi.lbd.mobile.events.RequestFailedEvent;
 import fi.lbd.mobile.events.ReturnCollectionsEvent;
+import fi.lbd.mobile.messaging.events.RequestUserMessagesEvent;
 
 
 public class SettingsActivity extends Activity {
@@ -37,14 +38,17 @@ public class SettingsActivity extends Activity {
     private EditText urlText;
     private TextView selectCollectionText;
     private Button acceptButton;
+    private ServiceConnection backendHandlerConnection;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.d(this.getClass().getSimpleName(), "----- Creating SettingsActivity");
         setContentView(R.layout.activity_settings);
         BACKEND_URL = getResources().getString(R.string.backend_url);
         OBJECT_COLLECTION = getResources().getString(R.string.object_collection);
 
+        // Find UI elements
         this.rootView = this.findViewById(android.R.id.content);
         this.urlText = ((EditText)rootView.findViewById(R.id.backendUrlText));
         this.selectCollectionText = (TextView)rootView.findViewById(R.id.collectionText);
@@ -63,18 +67,36 @@ public class SettingsActivity extends Activity {
                 selectCollectionText.setVisibility(View.INVISIBLE);
             }
         });
+
         // When user clicks "Done" on keyboard, close the keyboard
         urlText.setOnKeyListener(onSoftKeyboardDonePress);
+
+        /*
+        //  Connection that represents binding to BackendHandlerService.
+        //  Only used to provide onServiceConnected callback.
+         */
+        backendHandlerConnection = new ServiceConnection() {
+            @Override
+            public void onServiceConnected(ComponentName className,
+                                           IBinder service) {
+                Log.d("--------", "onServiceConnected, sending RequestCollectionsEvent, and unbinding");
+                BusHandler.getBus().post(new RequestCollectionsEvent(ApplicationDetails.get().getCurrentBaseApiUrl()));
+                unbindService(this);
+            }
+            @Override
+            public void onServiceDisconnected(ComponentName name) {}
+        };
     }
 
     @Override
     public void onResume(){
         super.onResume();
+        Log.d(this.getClass().getSimpleName(), "----- Resuming SettingsActivity");
         BusHandler.getBus().register(this);
         hideSoftKeyboard();
 
         // Restore settings that were last selected
-        String url = ApplicationDetails.get().getCurrentBackendUrl();
+        String url = ApplicationDetails.get().getCurrentBaseApiUrl();
         if(url != null){
             urlText.setText(url);
             BusHandler.getBus().post(new RequestCollectionsEvent(url));
@@ -82,18 +104,48 @@ public class SettingsActivity extends Activity {
     }
 
     @Override
+    public void onStart(){
+        super.onStart();
+        ActiveActivitiesTracker.activityStarted();
+    }
+
+    @Override
+    public void onStop(){
+        super.onStop();
+        ActiveActivitiesTracker.activityStopped();
+    }
+
+    @Override
     public void onPause(){
         super.onPause();
         BusHandler.getBus().unregister(this);
-    }
 
-    public void onLoadClick(View view){
-        String url = urlText.getText().toString();
-        if(url != null){
-            BusHandler.getBus().post(new RequestCollectionsEvent(url));
+        // Try to unbind binded service to ensure no binds are leaked when going to pause
+        try {
+            unbindService(backendHandlerConnection);
+        } catch (Exception e){
+            Log.d(this.getClass().getSimpleName(), "-----onPause trying to unbind a nonexisting bind.");
         }
     }
 
+   /*
+    //  Clicking the load button updates new url for BackendHandlerService.
+    //
+    //  Also binds to BackendHandlerService to get a callback when the Service is connected with
+    //  its new URL.
+     */
+    public void onLoadClick(View view){
+        String url = urlText.getText().toString();
+        if(url != null){
+            ApplicationDetails.get().setCurrentBaseApiUrl(url);
+            bindService(new Intent(this, BackendHandlerService.class), backendHandlerConnection, Context.BIND_AUTO_CREATE);
+        }
+    }
+
+    /*
+    //  Clicking the Accept button saves new settings and starts ListActivity
+    //
+     */
     public void onAcceptClick(View view){
         String checkedCollection = null;
 
@@ -102,9 +154,9 @@ public class SettingsActivity extends Activity {
             checkedCollection = checkedButton.getText().toString();
 
             String url = urlText.getText().toString();
-            Log.d(getClass().getSimpleName(), " Saving settings to ApplicationDetails");
+            Log.d(getClass().getSimpleName(), " Saving settings to ApplicationDetails url: "+ url);
             ApplicationDetails.get().setCurrentCollection(checkedCollection);
-            ApplicationDetails.get().setCurrentBackendUrl(url);
+            ApplicationDetails.get().setCurrentBaseApiUrl(url);
 
             Log.d(getClass().getSimpleName(), " Saving settings to SharedPreferences");
             SharedPreferences settings = getSharedPreferences(getString(R.string.shared_preferences), MODE_PRIVATE);
@@ -113,6 +165,7 @@ public class SettingsActivity extends Activity {
             editor.putString(OBJECT_COLLECTION, checkedCollection);
             editor.apply();
 
+            BusHandler.getBus().post(new RequestUserMessagesEvent());
             Intent intent = new Intent(this, ListActivity.class);
             startActivity(intent);
         }
@@ -123,7 +176,9 @@ public class SettingsActivity extends Activity {
 
     @Subscribe
     public void onEvent(ReturnCollectionsEvent event){
+
         // Clear the radiogroup and load new radiobuttons to view
+        Log.d("------", "ReturnCollectionsEvent");
         clearRadioGroup();
         RadioGroup.LayoutParams layoutParams;
         int i = 0;
@@ -157,6 +212,7 @@ public class SettingsActivity extends Activity {
     @Subscribe
     public void onEvent(RequestFailedEvent event){
         if(event.getFailedEvent() instanceof RequestCollectionsEvent){
+            Log.d("--------", "RequestFailedEvent");
             makeShortToast("Please check URL");
 
             // Clear the radiogroup and add a radiobutton with "empty" text

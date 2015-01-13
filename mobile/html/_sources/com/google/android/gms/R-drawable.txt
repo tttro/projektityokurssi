@@ -1,0 +1,203 @@
+R.drawable
+==========
+
+.. java:package:: com.google.android.gms
+   :noindex:
+
+.. java:type:: public static final class drawable
+   :outertype: R
+
+Fields
+------
+common_full_open_on_phone
+^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int common_full_open_on_phone
+   :outertype: R.drawable
+
+common_ic_googleplayservices
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int common_ic_googleplayservices
+   :outertype: R.drawable
+
+common_signin_btn_icon_dark
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int common_signin_btn_icon_dark
+   :outertype: R.drawable
+
+common_signin_btn_icon_disabled_dark
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int common_signin_btn_icon_disabled_dark
+   :outertype: R.drawable
+
+common_signin_btn_icon_disabled_focus_dark
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int common_signin_btn_icon_disabled_focus_dark
+   :outertype: R.drawable
+
+common_signin_btn_icon_disabled_focus_light
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int common_signin_btn_icon_disabled_focus_light
+   :outertype: R.drawable
+
+common_signin_btn_icon_disabled_light
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int common_signin_btn_icon_disabled_light
+   :outertype: R.drawable
+
+common_signin_btn_icon_focus_dark
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int common_signin_btn_icon_focus_dark
+   :outertype: R.drawable
+
+common_signin_btn_icon_focus_light
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int common_signin_btn_icon_focus_light
+   :outertype: R.drawable
+
+common_signin_btn_icon_light
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int common_signin_btn_icon_light
+   :outertype: R.drawable
+
+common_signin_btn_icon_normal_dark
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int common_signin_btn_icon_normal_dark
+   :outertype: R.drawable
+
+common_signin_btn_icon_normal_light
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int common_signin_btn_icon_normal_light
+   :outertype: R.drawable
+
+common_signin_btn_icon_pressed_dark
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int common_signin_btn_icon_pressed_dark
+   :outertype: R.drawable
+
+common_signin_btn_icon_pressed_light
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int common_signin_btn_icon_pressed_light
+   :outertype: R.drawable
+
+common_signin_btn_text_dark
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int common_signin_btn_text_dark
+   :outertype: R.drawable
+
+common_signin_btn_text_disabled_dark
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int common_signin_btn_text_disabled_dark
+   :outertype: R.drawable
+
+common_signin_btn_text_disabled_focus_dark
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int common_signin_btn_text_disabled_focus_dark
+   :outertype: R.drawable
+
+common_signin_btn_text_disabled_focus_light
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int common_signin_btn_text_disabled_focus_light
+   :outertype: R.drawable
+
+common_signin_btn_text_disabled_light
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int common_signin_btn_text_disabled_light
+   :outertype: R.drawable
+
+common_signin_btn_text_focus_dark
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int common_signin_btn_text_focus_dark
+   :outertype: R.drawable
+
+common_signin_btn_text_focus_light
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int common_signin_btn_text_focus_light
+   :outertype: R.drawable
+
+common_signin_btn_text_light
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int common_signin_btn_text_light
+   :outertype: R.drawable
+
+common_signin_btn_text_normal_dark
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int common_signin_btn_text_normal_dark
+   :outertype: R.drawable
+
+common_signin_btn_text_normal_light
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int common_signin_btn_text_normal_light
+   :outertype: R.drawable
+
+common_signin_btn_text_pressed_dark
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int common_signin_btn_text_pressed_dark
+   :outertype: R.drawable
+
+common_signin_btn_text_pressed_light
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int common_signin_btn_text_pressed_light
+   :outertype: R.drawable
+
+ic_plusone_medium_off_client
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int ic_plusone_medium_off_client
+   :outertype: R.drawable
+
+ic_plusone_small_off_client
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int ic_plusone_small_off_client
+   :outertype: R.drawable
+
+ic_plusone_standard_off_client
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int ic_plusone_standard_off_client
+   :outertype: R.drawable
+
+ic_plusone_tall_off_client
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int ic_plusone_tall_off_client
+   :outertype: R.drawable
+
+powered_by_google_dark
+^^^^^^^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int powered_by_google_dark
+   :outertype: R.drawable
+
+powered_by_google_light
+^^^^^^^^^^^^^^^^^^^^^^^
+
+.. java:field:: public static final int powered_by_google_light
+   :outertype: R.drawable
+

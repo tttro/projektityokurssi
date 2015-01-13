@@ -1,0 +1,292 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>MapTableModel &mdash; LBD Mobile client Alpha documentation</title>
+    
+    <link rel="stylesheet" href="../../../../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../',
+        VERSION:     'Alpha',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <link rel="top" title="LBD Mobile client Alpha documentation" href="../../../../index.html" />
+    <link rel="up" title="fi.lbd.mobile.mapobjects" href="package-index.html" />
+    <link rel="next" title="MapTableModelListener" href="MapTableModelListener.html" />
+    <link rel="prev" title="MapObjectSelectionManager" href="MapObjectSelectionManager.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="MapTableModelListener.html" title="MapTableModelListener"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="MapObjectSelectionManager.html" title="MapObjectSelectionManager"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../../../../packages.html">LBD Mobile client Alpha documentation</a> &raquo;</li>
+          <li><a href="package-index.html" accesskey="U">fi.lbd.mobile.mapobjects</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="maptablemodel">
+<h1>MapTableModel<a class="headerlink" href="#maptablemodel" title="Permalink to this headline">¶</a></h1>
+<dl class="type">
+<dt id="fi.lbd.mobile.mapobjects.MapTableModel">
+public class <tt class="descname">MapTableModel</tt>&lt;T&gt;<a class="headerlink" href="#fi.lbd.mobile.mapobjects.MapTableModel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Model which handles the loading and removing of its objects according to a updated region. Splits the world into grid cells and informs the listeners about regions which should be loaded or cached. Created by Tommi.</p>
+</dd></dl>
+
+<div class="section" id="constructors">
+<h2>Constructors<a class="headerlink" href="#constructors" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id1">
+<h3>MapTableModel<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+<dl class="constructor">
+<dt id="fi.lbd.mobile.mapobjects.MapTableModel.MapTableModel(double, double)">
+public <tt class="descname">MapTableModel</tt><big>(</big>double<em> precisionLat</em>, double<em> precisionLon</em><big>)</big><a class="headerlink" href="#fi.lbd.mobile.mapobjects.MapTableModel.MapTableModel(double, double)" title="Permalink to this definition">¶</a></dt>
+<dd><p>Model which handles the loading and removing of its objects according to a updated region. Splits the world into grid cells and informs the listeners about regions which should be loaded or cached.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>precisionLat</strong> &#8211; Used while dividing latitude coordinates.</li>
+<li><strong>precisionLon</strong> &#8211; Used while dividing longitude coordinates.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+</div>
+<div class="section" id="methods">
+<h2>Methods<a class="headerlink" href="#methods" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="addlistener">
+<h3>addListener<a class="headerlink" href="#addlistener" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="fi.lbd.mobile.mapobjects.MapTableModel.addListener(MapTableModelListener)">
+public void <tt class="descname">addListener</tt><big>(</big><a class="reference internal" href="MapTableModelListener.html#fi.lbd.mobile.mapobjects.MapTableModelListener" title="fi.lbd.mobile.mapobjects.MapTableModelListener">MapTableModelListener</a>&lt;T&gt;<em> listener</em><big>)</big><a class="headerlink" href="#fi.lbd.mobile.mapobjects.MapTableModel.addListener(MapTableModelListener)" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds a listener for listening model changes and requests.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>listener</strong> &#8211; Listener.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="addobjects">
+<h3>addObjects<a class="headerlink" href="#addobjects" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="fi.lbd.mobile.mapobjects.MapTableModel.addObjects(double, double, List)">
+public void <tt class="descname">addObjects</tt><big>(</big>double<em> gridStartLat</em>, double<em> gridStartLon</em>, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/util/List.html" title="java.util.List">List</a>&lt;T&gt;<em> objects</em><big>)</big><a class="headerlink" href="#fi.lbd.mobile.mapobjects.MapTableModel.addObjects(double, double, List)" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds objects in the given coordinate to the corresponding grid cell. Coordinate can be any coordinate inside the cell.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>gridStartLat</strong> &#8211; Any coordinate inside the grid cell.</li>
+<li><strong>gridStartLon</strong> &#8211; Any coordinate inside the grid cell.</li>
+<li><strong>objects</strong> &#8211; Objects to add into the cell.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="hasgridcellswaitingforobjects">
+<h3>hasGridCellsWaitingForObjects<a class="headerlink" href="#hasgridcellswaitingforobjects" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="fi.lbd.mobile.mapobjects.MapTableModel.hasGridCellsWaitingForObjects()">
+public boolean <tt class="descname">hasGridCellsWaitingForObjects</tt><big>(</big><big>)</big><a class="headerlink" href="#fi.lbd.mobile.mapobjects.MapTableModel.hasGridCellsWaitingForObjects()" title="Permalink to this definition">¶</a></dt>
+<dd><p>Does the model contain grid cells which have requested for objects but haven&#8217;t received them yet.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">True if there is a cell which is waiting for objects.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="isempty">
+<h3>isEmpty<a class="headerlink" href="#isempty" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="fi.lbd.mobile.mapobjects.MapTableModel.isEmpty(double, double)">
+public boolean <tt class="descname">isEmpty</tt><big>(</big>double<em> gridStartLat</em>, double<em> gridStartLon</em><big>)</big><a class="headerlink" href="#fi.lbd.mobile.mapobjects.MapTableModel.isEmpty(double, double)" title="Permalink to this definition">¶</a></dt>
+<dd><p>Is grid cell which contains the given position empty.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>gridStartLat</strong> &#8211; Any coordinate inside the grid cell.</li>
+<li><strong>gridStartLon</strong> &#8211; Any coordinate inside the grid cell.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">True if empty, false otherwise.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="removelistener">
+<h3>removeListener<a class="headerlink" href="#removelistener" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="fi.lbd.mobile.mapobjects.MapTableModel.removeListener(MapTableModelListener)">
+public void <tt class="descname">removeListener</tt><big>(</big><a class="reference internal" href="MapTableModelListener.html#fi.lbd.mobile.mapobjects.MapTableModelListener" title="fi.lbd.mobile.mapobjects.MapTableModelListener">MapTableModelListener</a>&lt;T&gt;<em> listener</em><big>)</big><a class="headerlink" href="#fi.lbd.mobile.mapobjects.MapTableModel.removeListener(MapTableModelListener)" title="Permalink to this definition">¶</a></dt>
+<dd><p>Removes a listener.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>listener</strong> &#8211; Listener.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="updatetable">
+<h3>updateTable<a class="headerlink" href="#updatetable" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="fi.lbd.mobile.mapobjects.MapTableModel.updateTable(double, double, double, double)">
+public void <tt class="descname">updateTable</tt><big>(</big>double<em> startLat</em>, double<em> startLon</em>, double<em> endLat</em>, double<em> endLon</em><big>)</big><a class="headerlink" href="#fi.lbd.mobile.mapobjects.MapTableModel.updateTable(double, double, double, double)" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks if the region has changed enough so that more grid cells should be loaded.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>startLat</strong> &#8211; Current start position.</li>
+<li><strong>startLon</strong> &#8211; Current start position.</li>
+<li><strong>endLat</strong> &#8211; Current end position.</li>
+<li><strong>endLon</strong> &#8211; Current end position.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../../../packages.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">MapTableModel</a><ul>
+<li><a class="reference internal" href="#constructors">Constructors</a><ul>
+<li><a class="reference internal" href="#id1">MapTableModel</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#methods">Methods</a><ul>
+<li><a class="reference internal" href="#addlistener">addListener</a></li>
+<li><a class="reference internal" href="#addobjects">addObjects</a></li>
+<li><a class="reference internal" href="#hasgridcellswaitingforobjects">hasGridCellsWaitingForObjects</a></li>
+<li><a class="reference internal" href="#isempty">isEmpty</a></li>
+<li><a class="reference internal" href="#removelistener">removeListener</a></li>
+<li><a class="reference internal" href="#updatetable">updateTable</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="MapObjectSelectionManager.html"
+                        title="previous chapter">MapObjectSelectionManager</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="MapTableModelListener.html"
+                        title="next chapter">MapTableModelListener</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../../../../_sources/fi/lbd/mobile/mapobjects/MapTableModel.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="MapTableModelListener.html" title="MapTableModelListener"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="MapObjectSelectionManager.html" title="MapObjectSelectionManager"
+             >previous</a> |</li>
+        <li><a href="../../../../packages.html">LBD Mobile client Alpha documentation</a> &raquo;</li>
+          <li><a href="package-index.html" >fi.lbd.mobile.mapobjects</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2015, Tommi und Ossi.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+    </div>
+  </body>
+</html>
