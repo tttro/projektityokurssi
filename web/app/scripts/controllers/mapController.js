@@ -221,7 +221,7 @@ mapController.controller('mapController', function($scope, $window,$rootScope, $
                 var map = $scope.map;
                 navigator.geolocation.getCurrentPosition(function(position){
                     $scope.showLoadingIcon = true;
-                    console.log(position.coords.latitude+", " +position.coords.longitude);
+                    //console.log(position.coords.latitude+", " +position.coords.longitude);
                     var currentPosition =  new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
 
                     createGeoMarker(currentPosition);

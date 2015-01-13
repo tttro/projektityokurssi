@@ -222,5 +222,5 @@ dataServices.factory('AuthService', function($rootScope,$http,notify,appConfig){
 var errorHandler = function(data,message,dataTypeUrl,notify) {
     //alert("Sorry, Data Load Failure");
     notify('Failed to load '+message+' data from the server! Please try again later.');
-    console.log("Data Load Failure: "+dataTypeUrl +" " + status);
+    //console.log("Data Load Failure: "+dataTypeUrl +" " + status);
 }
