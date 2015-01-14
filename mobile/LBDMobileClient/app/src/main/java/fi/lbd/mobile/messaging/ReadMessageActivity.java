@@ -11,6 +11,9 @@ import android.widget.Toast;
 
 import com.squareup.otto.Subscribe;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import fi.lbd.mobile.ActiveActivitiesTracker;
 import fi.lbd.mobile.R;
 import fi.lbd.mobile.events.BusHandler;
@@ -33,9 +36,20 @@ public class ReadMessageActivity extends Activity {
                 .getSelectedMessageObject();
         if(object != null) {
             View rootView = findViewById(android.R.id.content);
-            ((TextView) rootView.findViewById(R.id.textViewSender)).setText(object.getSender());
-            ((TextView) rootView.findViewById(R.id.textViewTopic)).setText(object.getTopic());
-            ((TextView) rootView.findViewById(R.id.textViewMessageContents)).setText(object.getMessage());
+            String sender = object.getSender();
+            String topic = object.getTopic();
+            String message = object.getMessage();
+
+            long timestamp = object.getTimestamp();
+            Date date = new Date(timestamp*1000);
+            String parsedDate = new SimpleDateFormat("dd.MM.yyyy', 'HH:mm").format(date);
+
+            if(sender != null && topic != null && message != null && parsedDate != null){
+                ((TextView) rootView.findViewById(R.id.textViewSender)).setText(sender);
+                ((TextView) rootView.findViewById(R.id.textViewTopic)).setText(topic);
+                ((TextView) rootView.findViewById(R.id.textViewDate)).setText(parsedDate);
+                ((TextView) rootView.findViewById(R.id.textViewMessageContents)).setText(message);
+            }
         }
     }
 

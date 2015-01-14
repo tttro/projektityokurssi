@@ -1,0 +1,27 @@
+\BOOKMARK [0][-]{chapter.1}{Requirements}{}% 1
+\BOOKMARK [0][-]{chapter.2}{Installation}{}% 2
+\BOOKMARK [1][-]{section.2.1}{MongoDB}{chapter.2}% 3
+\BOOKMARK [1][-]{section.2.2}{Python}{chapter.2}% 4
+\BOOKMARK [1][-]{section.2.3}{Django}{chapter.2}% 5
+\BOOKMARK [0][-]{chapter.3}{Headers and CORS}{}% 6
+\BOOKMARK [1][-]{section.3.1}{Headers}{chapter.3}% 7
+\BOOKMARK [1][-]{section.3.2}{CORS}{chapter.3}% 8
+\BOOKMARK [0][-]{chapter.4}{JSON Formats}{}% 9
+\BOOKMARK [1][-]{section.4.1}{Location data}{chapter.4}% 10
+\BOOKMARK [1][-]{section.4.2}{Message}{chapter.4}% 11
+\BOOKMARK [1][-]{section.4.3}{Search}{chapter.4}% 12
+\BOOKMARK [0][-]{chapter.5}{REST documentation}{}% 13
+\BOOKMARK [1][-]{section.5.1}{Location data REST}{chapter.5}% 14
+\BOOKMARK [1][-]{section.5.2}{Message data REST}{chapter.5}% 15
+\BOOKMARK [0][-]{chapter.6}{Code documentation: REST}{}% 16
+\BOOKMARK [1][-]{section.6.1}{lbd\137backend.LBD\137REST\137locationdata.decorators Location data decorators}{chapter.6}% 17
+\BOOKMARK [1][-]{section.6.2}{lbd\137backend.LBD\137REST\137locationdata Location data REST}{chapter.6}% 18
+\BOOKMARK [1][-]{section.6.3}{lbd\137backend.LBD\137REST\137messagedata Message data REST}{chapter.6}% 19
+\BOOKMARK [0][-]{chapter.7}{Code documentation: Handlers}{}% 20
+\BOOKMARK [1][-]{section.7.1}{RESThandlers.HandlerInterface REST Handler Interface}{chapter.7}% 21
+\BOOKMARK [1][-]{section.7.2}{RESThandlers.HandlerInterface.Factory Handler Factory}{chapter.7}% 22
+\BOOKMARK [1][-]{section.7.3}{RESThandlers.Streetlight Streetlight REST handler}{chapter.7}% 23
+\BOOKMARK [1][-]{section.7.4}{RESThandlers.Playgrounds Playgrounds REST handler}{chapter.7}% 24
+\BOOKMARK [0][-]{chapter.8}{Indices and tables}{}% 25
+\BOOKMARK [0][-]{section*.76}{Python Module Index}{}% 26
+\BOOKMARK [0][-]{section*.77}{Index}{}% 27

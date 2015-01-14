@@ -15,6 +15,7 @@ import com.squareup.otto.Subscribe;
 
 import fi.lbd.mobile.adapters.ListDetailsAdapter;
 import fi.lbd.mobile.events.BusHandler;
+import fi.lbd.mobile.events.RequestFailedEvent;
 import fi.lbd.mobile.mapobjects.MapObjectSelectionManager;
 import fi.lbd.mobile.mapobjects.events.RequestMapObjectEvent;
 import fi.lbd.mobile.mapobjects.events.ReturnMapObjectEvent;
@@ -28,9 +29,6 @@ public class DetailsActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        BusHandler.getBus().register(this);
-        BusHandler.getBus().post(new RequestMapObjectEvent(MapObjectSelectionManager.get().getSelectedMapObject().getId()));
     }
 
     @Override
@@ -42,6 +40,7 @@ public class DetailsActivity extends Activity {
     public void onResume() {
         super.onResume();
         BusHandler.getBus().register(this);
+        BusHandler.getBus().post(new RequestMapObjectEvent(MapObjectSelectionManager.get().getSelectedMapObject().getId()));
     }
 
     @Override
@@ -69,30 +68,40 @@ public class DetailsActivity extends Activity {
 
     @Subscribe
     public void onEvent (ReturnMapObjectEvent event){
-            final MapObject obj = event.getMapObject();
-            if (obj != null){
-                this.adapter = new ListDetailsAdapter(this, obj, obj
-                        .getAdditionalProperties().size(), 1, 1);
-                setContentView(R.layout.activity_details);
-                ListView list = (ListView)findViewById(android.R.id.list);
-                list.setAdapter(this.adapter);
+        final MapObject obj = event.getMapObject();
 
-                // Listen to edit button press
-                findViewById(R.id.editNoteButton).setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        editNote();
-                    }
-                });
+        if (obj != null) {
+            // Update selected object in case of new data
+            MapObjectSelectionManager.get().setSelectedMapObject(event.getMapObject());
+            this.adapter = new ListDetailsAdapter(this, obj, obj
+                    .getAdditionalProperties().size(), 1, obj.getMetadataProperties().size());
+            setContentView(R.layout.activity_details);
+            ListView list = (ListView) findViewById(android.R.id.list);
+            list.setAdapter(this.adapter);
 
-                // Listen to copy button press
-                findViewById(R.id.copyButton).setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        copyId(obj.getId());
-                    }
-                });
-            }
+            // Listen to edit button press
+            findViewById(R.id.editNoteButton).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    editNote();
+                }
+            });
+
+            // Listen to copy button press
+            findViewById(R.id.copyButton).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    copyId(obj.getId());
+                }
+            });
+        }
+    }
+
+    @Subscribe
+    public void onEvent(RequestFailedEvent event){
+        if(event.getFailedEvent() instanceof RequestMapObjectEvent){
+            onBackPressed();
+        }
     }
 
     private void editNote(){

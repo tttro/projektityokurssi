@@ -12,7 +12,7 @@ loginController.controller('loginController', function($scope, $rootScope, $wind
 
     $scope.$on('event:google-plus-signin-success', function(event, authResult) {
 
-        console.log('google-plus-signin-success');
+        //console.log('google-plus-signin-success');
         AuthService.getUserInfo(authResult,function(userinfo) {
             appConfig.googleId = userinfo.id;
             appConfig.googleToken = authResult.access_token;

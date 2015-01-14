@@ -16,7 +16,8 @@ itemController.controller('itemController', function($scope, $http, $rootScope, 
     $scope.showSearchResultText = false;
     $scope.searchResultText = '';
 
-    $scope.items = ObjectsLocal.get();
+    orginalItemList= ObjectsLocal.get();
+    $scope.items = orginalItemList
 
     /*** Event from service, data is ready
      *  Add markers when all data fetched from server
@@ -42,6 +43,7 @@ itemController.controller('itemController', function($scope, $http, $rootScope, 
         else
         {
             if(searchQuery.length >= 3){
+                $scope.showLoadingIcon = true;
                 ObjectsService.search(searchQuery, function(data){
 
                     if(data.totalResults > 0) {
@@ -62,6 +64,8 @@ itemController.controller('itemController', function($scope, $http, $rootScope, 
                         $scope.searchResultText = 'No results found';
                         $scope.items = [];
                     }
+
+                    $scope.showLoadingIcon = false;
 
                 });
             }
@@ -108,8 +112,19 @@ itemController.controller('itemController', function($scope, $http, $rootScope, 
 
     $scope.saveNote = function(item){
 
-        item.properties.metadata['status'] = '';
-        console.log(item);
+        // If metadata does not exist, create empty one
+        if(!item.properties.metadata)
+        {
+            var metadata = {
+                info:'',
+                status:''
+            }
+            item.properties['metadata'] = metadata;
+        }
+        else if(item.properties.metadata && !item.properties.metadata.status)
+        {
+            item.properties.metadata['status'] = '';
+        }
 
         ObjectsService.put(item);
     }

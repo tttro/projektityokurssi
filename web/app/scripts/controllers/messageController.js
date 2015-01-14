@@ -2,7 +2,7 @@
 
 var messageController = angular.module('messageController', []);
 
-messageController.controller('messageController', function($scope, $filter, $timeout,MessageService, notify){
+messageController.controller('messageController', function($scope, $filter, $interval,MessageService, notify){
 
 
     var messageModel = [];
@@ -18,19 +18,19 @@ messageController.controller('messageController', function($scope, $filter, $tim
 
     messageModel.messageSend = messageSend;
 
-
+    var updateMessages = function(){
+        $scope.showLoadingIcon = true;
+        // Get user's messages
+        MessageService.get(function(messages){
+            messageModel.messageList = messages;
+            orginalMessageList = messages;
+            $scope.showLoadingIcon = false;
+            //console.log(messages);
+        });
+    }
     /*** Logic ***/
-
-    $scope.showLoadingIcon = true;
-    // Get user's messages
-    MessageService.get(function(messages){
-        messageModel.messageList = messages;
-        orginalMessageList = messages;
-        $scope.showLoadingIcon = false;
-        console.log(messages);
-    });
-
-
+    updateMessages();
+   // $interval(updateMessages,10000);
 
     // Get user of application
     MessageService.getUsers(function(users){
@@ -63,16 +63,9 @@ messageController.controller('messageController', function($scope, $filter, $tim
 
     $scope.delete = function(id){
         MessageService.delete(id,function(){
-
+            updateMessages();
         });
-        $scope.showLoadingIcon = true;
 
-
-        MessageService.get(function(messages){
-            messageModel.messageList = messages;
-            orginalMessageList = messages;
-            $scope.showLoadingIcon = false;
-        });
 
     }
     /* Accordion */

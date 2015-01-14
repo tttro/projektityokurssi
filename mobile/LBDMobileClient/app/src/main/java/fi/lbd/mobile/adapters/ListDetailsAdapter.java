@@ -7,8 +7,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
+
+import java.text.SimpleDateFormat;
 import java.util.AbstractMap;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Map;
 import fi.lbd.mobile.R;
 import fi.lbd.mobile.mapobjects.MapObject;
@@ -142,12 +145,16 @@ public class ListDetailsAdapter extends BaseAdapter {
             int metaDataIndex = i-amountOfAdditionalProperties-amountOfCoordinates-1;
             String key = metaDataProperties.get(metaDataIndex).getKey();
             if (key == null || key.isEmpty()){
-                key = NOTES;
+                key = EMPTY;
             }
             textViewId.setText(key);
             String value = metaDataProperties.get(metaDataIndex).getValue();
             if (value == null || value.isEmpty()){
                 value = EMPTY;
+            }
+            else if(key.equals("modified")){
+                Date date = new Date(Long.parseLong(value)*1000);
+                value = new SimpleDateFormat("'Date: 'dd.MM.yyyy', Time: 'HH:mm").format(date);
             }
             textViewLocation.setText(value);
         }

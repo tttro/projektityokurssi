@@ -16,7 +16,7 @@ settingsController.controller('settingsController', function($scope, $location,$
     }
 
     ObjectsService.getCollections(function(result){
-        console.log(result);
+        //console.log(result);
         $scope.settingsModel.collections = result;
     });
 
