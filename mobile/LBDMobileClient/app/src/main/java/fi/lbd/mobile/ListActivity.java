@@ -9,19 +9,17 @@ import android.os.Bundle;
 import android.support.v13.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
-import android.util.SparseArray;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
-import java.lang.ref.WeakReference;
 import java.util.ArrayDeque;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Locale;
 
 import fi.lbd.mobile.events.BusHandler;
+import fi.lbd.mobile.fragments.OpenSettingsFragment;
+import fi.lbd.mobile.fragments.SettingsFragment;
 import fi.lbd.mobile.mapobjects.MapObjectSelectionManager;
 import fi.lbd.mobile.mapobjects.events.SelectMapObjectEvent;
 import fi.lbd.mobile.fragments.GoogleMapFragment;
@@ -43,7 +41,8 @@ public class ListActivity extends Activity {
     private static final int MSG_TAB = 0;
     private static final int OBJ_TAB = 1;
     private static final int MAP_TAB = 2;
-    private static final int TAB_COUNT = 3;
+    private static final int SET_TAB = 3;
+    private static final int TAB_COUNT = 4;
 
     // Data structure to save previous tabs in order to restore them when back button is pressed.
     private ArrayDeque<Integer> pageStack;
@@ -70,11 +69,11 @@ public class ListActivity extends Activity {
             @Override
             public void onPageSelected(int i) {
                 // Hide soft keyboard when user switches tab
-                final InputMethodManager imm = (InputMethodManager)getSystemService(
+                final InputMethodManager imm = (InputMethodManager) getSystemService(
                         Context.INPUT_METHOD_SERVICE);
                 View view = activity.getCurrentFocus();
                 // If no view has focus, create a new one
-                if(view == null) {
+                if (view == null) {
                     view = new View(activity);
                 }
                 imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
@@ -128,6 +127,10 @@ public class ListActivity extends Activity {
                 Log.d(this.getClass().getSimpleName(), "getItem: "+ position + " locationHandler: "+ this.locationHandler);
                 GoogleMapFragment frag = GoogleMapFragment.newInstance(this.locationHandler);
                 return frag;
+            } else if(position == SET_TAB){
+                Log.d(this.getClass().getSimpleName(), "getItem: "+ position + " locationHandler: "+ this.locationHandler);
+                OpenSettingsFragment frag = OpenSettingsFragment.newInstance();
+                return frag;
             }
             return null;
         }
@@ -147,6 +150,8 @@ public class ListActivity extends Activity {
                     return getString(R.string.title_tab_objects).toUpperCase(l);
                 case MAP_TAB:
                     return getString(R.string.title_tab_map).toUpperCase(l);
+                case SET_TAB:
+                    return "SETTINGS";
             }
             return null;
         }
