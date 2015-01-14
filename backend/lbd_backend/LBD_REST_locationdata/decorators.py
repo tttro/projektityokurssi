@@ -14,9 +14,11 @@ Decorators for location data REST
 
 __author__ = 'Aki Mäkinen'
 
+import traceback
 import httplib
 import mongoengine
 import json
+import sys
 from functools import wraps
 from django.http import HttpResponse
 
@@ -104,9 +106,7 @@ def lbd_require_login(func):
                 print e.message
                 return HttpResponse(status=s_codes["INTERNALERROR"], content_type="application/json; charset=utf-8",
                                     content='{"message": "Internal error: %s"}' % e.message)
-
             return func(request, *args, **kwargs)
-
         else:
             return HttpResponse(status=s_codes["BAD"], content_type="application/json; charset=utf-8",
                                 content='{"message": "Missing header or headers!"}')

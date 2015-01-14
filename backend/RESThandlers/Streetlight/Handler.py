@@ -217,10 +217,13 @@ class StreetlightHandler(HandlerBase):
 
 
     def search(self, regex, limit, field=None):
+        print "A"
         if field is None:
             raise NotImplementedError # TODO: Search from all fields... some day
         elif field == "id":
+            print "B"
             reg = re.compile(regex, re.IGNORECASE)
+            print "B.5"
             raw = self.modelobject._get_collection().aggregate([{'$match': {
                                                                      "feature_id": {
                                                                          "$regex": reg
@@ -229,22 +232,24 @@ class StreetlightHandler(HandlerBase):
                                                             }, {
                                                                 '$project': self._doc_structure
                                                             }])
+            print "C"
             if int(raw["ok"]) == 1:
                 results = raw["result"]
             else:
                 results = []
-
+            print "D"
             totalresults = len(results)
             if totalresults > limit:
                 results = results[:limit]
+            print "E"
             featurecollection = self._featurecollection
             featurecollection["totalFeatures"] = len(results)
             featurecollection["features"] = results
-
+            print "F"
             return totalresults, featurecollection
         else:
             raise NotImplementedError
-
+        print "G"
 
     def get_field_names(self):
         doc = self.modelobject._get_collection().find_one()

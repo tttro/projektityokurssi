@@ -523,11 +523,15 @@ def search_from_rest(request, *args, **kwargs):
     :param kwargs: Keyword arguments
     :return: HTTP response
     """
+    print "1"
     try:
         contentjson = json.loads(request.body)
     except ValueError:
         return HttpResponse(status=400)
-
+    except Exception as e:
+        print "Foobar"
+        return HttpResponse(status=418)
+    print "2"
     if not all (key in contentjson for key in ("from", "search", "limit")):
         return HttpResponse(status=400)
 
@@ -535,20 +539,23 @@ def search_from_rest(request, *args, **kwargs):
         not isinstance(contentjson["limit"], int) or not (isinstance(contentjson["from"], str) or
                                                                       isinstance(contentjson["from"], unicode)):
         return HttpResponse(status=400)
+    print "3"
     try:
         limit = int(contentjson["limit"])
     except ValueError:
         return HttpResponse(status=400)
 
-
+    print "4"
     original_search_phrase = contentjson["search"]
     allowed_chars = "[A-Za-z0-9\\.\\@]"
     search_regex = contentjson["search"].replace("?", allowed_chars).replace("*", allowed_chars+"*")
 
     handlerinterface = kwargs["handlerinterface"]
-
+    print "5"
     try:
+        print "Before search"
         totalresults, results = handlerinterface.search(search_regex, limit, contentjson["from"])
+        print "After search"
     except NotImplementedError:
         return HttpResponse(status=400)
 
