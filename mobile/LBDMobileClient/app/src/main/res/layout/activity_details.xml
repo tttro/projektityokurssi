@@ -41,7 +41,7 @@
         <Button
             android:layout_width="120dp"
             android:layout_height="wrap_content"
-            android:text="EDIT"
+            android:text="EDIT INFO"
             android:background="@color/button_background"
             android:id="@+id/editNoteButton"
             android:minHeight="30dp"

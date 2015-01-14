@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <Button
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:text="OPEN SETTINGS"
+        android:background="#2F3A41"
+        android:id="@+id/openSettingsButton"
+        android:minHeight="50dp"
+        android:textSize="6pt"
+        android:textColor="@color/white_text"
+        android:layout_gravity="center_horizontal"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true" />
+
+</RelativeLayout>
