@@ -72,7 +72,7 @@
             android:theme="@android:style/Theme.Holo.Light.NoActionBar" >
         </activity>
         <activity
-            android:name=".EditNoteActivity"
+            android:name=".EditInfoActivity"
             android:label="@string/title_activity_edit_note"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Holo.Light.NoActionBar" >

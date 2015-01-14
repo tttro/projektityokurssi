@@ -33,6 +33,7 @@ public class StreetviewActivity extends FragmentActivity {
     public void onStart(){
         super.onStart();
         ActiveActivitiesTracker.activityStarted();
+
         StreetViewPanoramaFragment streetview = (StreetViewPanoramaFragment)getFragmentManager()
                 .findFragmentById(R.id.streetviewpanorama);
         StreetViewPanorama panorama = streetview.getStreetViewPanorama();
@@ -40,12 +41,6 @@ public class StreetviewActivity extends FragmentActivity {
         if(panorama != null && object != null) {
             panorama.setPosition(new LatLng(object.getPointLocation().getLatitude(),
                     object.getPointLocation().getLongitude()));
-            String urlBase = "http://maps.googleapis.com/maps/api/streetview?size=400x400&";
-            String urlEnd = "&fov=90&heading=235&pitch=10&sensor=false";
-            String location = "location="+Double.toString(object.getPointLocation().getLatitude())+","+
-                    Double.toString(object.getPointLocation().getLongitude());
-            String url = urlBase + location + urlEnd;
-            new StreetViewTask().execute(url);
         }
         else {
             onBackPressed();
@@ -56,40 +51,5 @@ public class StreetviewActivity extends FragmentActivity {
     public void onStop(){
         super.onStop();
         ActiveActivitiesTracker.activityStopped();
-    }
-
-    private class StreetViewTask extends AsyncTask<String, Void, Boolean>{
-        @Override
-        protected Boolean doInBackground(String... urls) {
-            try {
-                HttpURLConnection connection = (HttpURLConnection) new URL(urls[0]).openConnection();
-                connection.setRequestMethod("GET");
-                int responseCode = connection.getResponseCode();
-                if (responseCode != 200) {
-                    Log.d(getClass().getSimpleName(), " Response code != 200");
-                }
-                else {
-                    BufferedReader in = new BufferedReader(
-                            new InputStreamReader(connection.getInputStream()));
-                    String inputLine;
-                    StringBuilder response = new StringBuilder();
-                    while ((inputLine = in.readLine()) != null) {
-                        response.append(inputLine);
-                    }
-                    in.close();
-                }
-            } catch(MalformedURLException e) {
-                Log.d(getClass().getSimpleName(), e.getMessage());
-            } catch (IOException e){
-                Log.d(getClass().getSimpleName(), e.getMessage());
-            }
-            return true;
-        }
-
-        @Override
-        protected void onPostExecute(Boolean result) {
-
-        }
-
     }
 }
