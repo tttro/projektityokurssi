@@ -24,9 +24,11 @@
     <div id="searchInfo" ng-show="showSearchResultText">
        {{searchResultText}}
     </div>
+    <div ng-show="showLoadingIcon" class="loading"><img src="./img/ajax-loader.gif"></div>
     <ul>
         <!-- Details -->
         <li ng-repeat="item in items.features | orderBy:'id'" ng-class="{'open': isSelected(item)}">
+            <!-- Accordion header -->
             <div class="accord-title" is-open="open" ng-click="click(item) ">
                 <div class="fleft">{{item.id}}</div>
                 <div class="fright">
@@ -34,6 +36,7 @@
                     <span ng-if="isSelected(item)" class="glyphicon glyphicon-chevron-up"></span>
                 </div>
             </div>
+            <!-- Accordion content -->
             <div class="accord-content" style="clear: both">
                 <div class="address"><div ng-show="showLoadingIcon"><img src="img/ajax-loader_min.gif"></div>{{address}}</div>
                 <div class="list-item">
@@ -44,17 +47,17 @@
                                 <strong>{{key2}}</strong> <br>{{val2}}
                             </div>
                         </div>-->
-
-                       <div ng-if="key != 'metadata'">
+                        <!-- key and value -->
+                        <div ng-if="key != 'metadata'">
                             <div class="item-row">
                                 <strong>{{key}}</strong> <br>{{val}}
                             </div>
                         </div>
                     </div>
                     <div class="note">
-                        <label>Note</label>
-                        <textarea class="note form-control" rows="3" ng-model="item.properties.metadata.info"></textarea>
-                        <button class="btn btn-default save" ng-click="saveNote(item)"><span class="glyphicon glyphicon-floppy-disk" aria-hidden="false"></span></button>
+                        <label>Note</label> <span class="save fright glyphicon glyphicon-floppy-disk" aria-hidden="false" ng-click="saveNote(item)" title="Save note"></span>
+                        <textarea class="note form-control" rows="3" ng-model="item.properties.metadata.info"> </textarea>
+
                     </div>
                     <button class="btn btn-primary" ng-click="showMarker(item.id)">Show on map</button>
                 </div>
