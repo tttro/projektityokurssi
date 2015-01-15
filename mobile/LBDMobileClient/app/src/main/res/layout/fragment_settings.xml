@@ -79,6 +79,7 @@
         android:layout_marginStart="10dp"
         android:layout_marginLeft="10dp"
         android:layout_marginTop="30dp"
+        android:visibility="invisible"
         android:layout_below="@+id/linearLayout2" />
 
 <LinearLayout
@@ -102,12 +103,7 @@
                 android:id="@+id/radioGroup"
                 android:checkedButton="@+id/emptyRadioButton">
 
-                <RadioButton
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Empty"
-                    android:id="@+id/emptyRadioButton"
-                    android:layout_centerHorizontal="true" />
+
 
             </RadioGroup>
         </ScrollView>
@@ -125,6 +121,7 @@
             android:layout_width="120dp"
             android:layout_height="wrap_content"
             android:text="ACCEPT"
+            android:visibility="invisible"
             android:background="@color/button_background"
             android:id="@+id/acceptButton"
             android:minHeight="30dp"

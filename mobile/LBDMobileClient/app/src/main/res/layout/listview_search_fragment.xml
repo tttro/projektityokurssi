@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:textColor="@color/white_text"
         android:background="@color/near_objects_background"
-        android:text="@string/loading"
+        android:text=""
         android:gravity="center_horizontal"
         android:paddingTop="2dp"
         android:paddingBottom="2dp"/>
