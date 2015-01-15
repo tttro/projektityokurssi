@@ -81,8 +81,10 @@ public class MessageUpdateService extends Service {
             // or otherwise at the moment when it becomes active.
             BusHandler.getBus().post(new UpdateCachedMessagesToListEvent(newMessageObjects));
             this.updateMessagesToList();
-            String dialogText = "You have a new message!";
-            GlobalToastMaker.makeLongToast(dialogText);
+            if(newMessageObjects.size() > 0) {
+                String dialogText = "You have a new message!";
+                GlobalToastMaker.makeLongToast(dialogText);
+            }
         }
 
         // If no message updates are needed, send an update event with null parameter, so that

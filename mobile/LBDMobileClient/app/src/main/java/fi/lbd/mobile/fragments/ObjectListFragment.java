@@ -2,6 +2,7 @@ package fi.lbd.mobile.fragments;
 
 import android.app.ListFragment;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -175,6 +176,7 @@ public class ObjectListFragment extends ListFragment {
                 }
             }
         });
+
 
         // Listen to onConnected callback on LocationHandler
         this.locationHandler.addListener( new GooglePlayServicesClient.ConnectionCallbacks() {
@@ -408,8 +410,16 @@ public class ObjectListFragment extends ListFragment {
     public void showNearestObjects() {
         synchronized (LOCK){
             if(!searchInProgress) {
-                progressDialog = ProgressDialog.show(getActivity(), "", "Locating nearest objects...", true);
+                progressDialog = ProgressDialog.show(getActivity(), "", "Locating nearest objects...", true, true, new DialogInterface.OnCancelListener() {
+                    @Override
+                    public void onCancel(DialogInterface dialogInterface) {
+                        dismissDialog();
+                        Log.d("________", " Releasing the lock dialog onCancel.");
+                        searchInProgress = false;
+                    }
+                });
                 progressDialog.setCancelable(true);
+                progressDialog.setCanceledOnTouchOutside(false);
                 searchInProgress = true;
                 LocationTask activeTask = new LocationTask();
                 activeTask.execute();

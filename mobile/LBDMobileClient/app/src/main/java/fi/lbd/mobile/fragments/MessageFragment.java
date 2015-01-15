@@ -6,10 +6,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.squareup.otto.Subscribe;
@@ -74,6 +77,12 @@ public class MessageFragment extends ListFragment {
     public void onResume() {
         super.onResume();
         BusHandler.getBus().register(this);
+        if(adapter.getCount() > 0 && getListView().getVisibility() == View.INVISIBLE){
+            TextView noMessagesText = (TextView)((View)getListView().getParent())
+                    .findViewById(R.id.noMessagesTextView);
+            noMessagesText.setVisibility(View.GONE);
+            getListView().setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
@@ -97,8 +106,13 @@ public class MessageFragment extends ListFragment {
 
     @Subscribe
     public void onEvent(UpdateCachedMessagesToListEvent event) {
+        TextView noMessagesText = (TextView)((View)getListView().getParent())
+                .findViewById(R.id.noMessagesTextView);
         Log.d("___________ MessageFragment", " received UpdateMessagesEvent");
-        if(event.getObjects() != null) {
+
+        if(event.getObjects() != null && event.getObjects().size() > 0) {
+            noMessagesText.setVisibility(View.GONE);
+            getListView().setVisibility(View.VISIBLE);
             this.adapter.clear();
             this.adapter.addAll(event.getObjects());
             this.adapter.notifyDataSetChanged();
@@ -106,6 +120,13 @@ public class MessageFragment extends ListFragment {
                 Log.d(this.getClass().getSimpleName(), "Message: " + message);
             }
         }
+        else if(event.getObjects() != null && event.getObjects().size() == 0){
+            this.adapter.clear();
+            this.adapter.notifyDataSetChanged();
+            getListView().setVisibility(View.INVISIBLE);
+            noMessagesText.setVisibility(View.VISIBLE);
+        }
+
         if (progressDialog != null && progressDialog.isShowing()) {
             this.progressDialog.dismiss();
         }
@@ -114,7 +135,6 @@ public class MessageFragment extends ListFragment {
     @Subscribe
     public void onEvent(RequestFailedEvent event){
         if(event.getFailedEvent() instanceof RequestUserMessagesEvent) {
-            Log.d("___________ MessageFragment", " received FailedEvent");
             Context context = getActivity().getApplicationContext();
             CharSequence dialogText = "Failed to download messages";
             int duration = Toast.LENGTH_SHORT;
