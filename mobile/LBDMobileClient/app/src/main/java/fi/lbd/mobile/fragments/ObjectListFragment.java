@@ -1,6 +1,5 @@
 package fi.lbd.mobile.fragments;
 
-import android.app.Activity;
 import android.app.ListFragment;
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
@@ -16,6 +15,7 @@ import android.widget.EditText;
 import android.widget.ExpandableListView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.common.GooglePlayServicesClient;
 import com.squareup.otto.Subscribe;
@@ -70,7 +70,7 @@ public class ObjectListFragment extends ListFragment {
     private LinearLayout dummyView;
     private TextView statusText;
     private String lastStatusText = EMPTY;
-    private int lastStatusBackground = 0;
+    private int lastStatusBackground = LOCATION_BACKGROUND;
     private ProgressDialog progressDialog;
 
     // Lock and boolean variables used to prevent users from flooding the backend with searches,
@@ -244,10 +244,10 @@ public class ObjectListFragment extends ListFragment {
      */
     @Subscribe
     public void onEvent(ReturnNearObjectsEvent event) {
-        this.adapter.clear();
-        statusText.setBackgroundColor(LOCATION_BACKGROUND);
-        lastStatusBackground = LOCATION_BACKGROUND;
-        if (event.getMapObjects() != null) {
+        if (event.getMapObjects() != null && event.getMapObjects().size() > 0) {
+            this.adapter.clear();
+            statusText.setBackgroundColor(LOCATION_BACKGROUND);
+            lastStatusBackground = LOCATION_BACKGROUND;
 
             if(event.getMapObjects().size() > MAX_RESULTS_AMOUNT){
                 ArrayList<MapObject> mapObjects = new ArrayList<MapObject>();
@@ -268,8 +268,7 @@ public class ObjectListFragment extends ListFragment {
             }
         }
         else {
-            statusText.setText(NO_NEAREST);
-            lastStatusText = NO_NEAREST;
+            makeLongToast(NO_NEAREST);
         }
         this.getListView().requestLayout();
         if(lastExpanded >=0 && lastExpanded < adapter.getGroupCount()) {
@@ -291,10 +290,9 @@ public class ObjectListFragment extends ListFragment {
      */
     @Subscribe
     public void onEvent (ReturnSearchResultEvent event){
-        statusText.setBackgroundColor(SEARCH_BACKGROUND);
-        lastStatusBackground = SEARCH_BACKGROUND;
-
         if (event.getMapObjects() != null && event.getMapObjects().size() > 0) {
+            statusText.setBackgroundColor(SEARCH_BACKGROUND);
+            lastStatusBackground = SEARCH_BACKGROUND;
             this.adapter.clear();
             if(event.getMapObjects().size() == MAX_RESULTS_AMOUNT) {
                 statusText.setText(String.format(MAX_RESULTS, MAX_RESULTS_AMOUNT));
@@ -311,8 +309,7 @@ public class ObjectListFragment extends ListFragment {
             this.adapter.notifyDataSetChanged();
         }
         else {
-            statusText.setText(NO_RESULTS);
-            lastStatusText = NO_RESULTS;
+            makeLongToast(NO_RESULTS);
         }
 
         synchronized (LOCK){
@@ -331,12 +328,10 @@ public class ObjectListFragment extends ListFragment {
         statusText.setBackgroundColor(lastStatusBackground);
 
         if (event.getFailedEvent() instanceof RequestNearObjectsEvent) {
-            statusText.setText(LOCATION_FAILED);
-            lastStatusText = LOCATION_FAILED;
+            makeLongToast(LOCATION_FAILED);
         }
         else if (event.getFailedEvent() instanceof SearchObjectsEvent) {
-            statusText.setText(SEARCH_FAILED);
-            lastStatusText = SEARCH_FAILED;
+            makeLongToast(SEARCH_FAILED);
         }
         this.getListView().requestLayout();
         synchronized (LOCK){
@@ -368,13 +363,13 @@ public class ObjectListFragment extends ListFragment {
     public class ExpandListener implements ExpandableListView.OnGroupExpandListener {
         @Override
         public void onGroupExpand(int groupPosition) {
-                if (lastExpanded >= 0 && lastExpanded != groupPosition){
-                    expandableListView.collapseGroup(lastExpanded);
-                }
-              lastExpanded = groupPosition;
-              expandableListView.smoothScrollToPositionFromTop(groupPosition, 0);
+            if (lastExpanded >= 0 && lastExpanded != groupPosition){
+                expandableListView.collapseGroup(lastExpanded);
             }
+            lastExpanded = groupPosition;
+            expandableListView.smoothScrollToPositionFromTop(groupPosition, 0);
         }
+    }
 
     public class CollapseListener implements ExpandableListView.OnGroupCollapseListener {
         @Override
@@ -385,11 +380,11 @@ public class ObjectListFragment extends ListFragment {
         }
     }
 
- /*
-  *  Performs search from backend using OTTO bus event "SearchObjectsEvent".
-  *
-  *   Only searches from the "id" field.
-  */
+    /*
+     *  Performs search from backend using OTTO bus event "SearchObjectsEvent".
+     *
+     *   Only searches from the "id" field.
+     */
     public void performSearch(CharSequence searchParameter){
         synchronized (LOCK) {
             if(!searchInProgress) {
@@ -402,14 +397,9 @@ public class ObjectListFragment extends ListFragment {
                     list.add("id");
                     BusHandler.getBus().post(new SearchObjectsEvent(list, searchParameter.toString(),
                             MAX_RESULTS_AMOUNT, false));
-                    statusText.setText(LOADING);
-                    statusText.setBackgroundColor(SEARCH_BACKGROUND);
                 }
                 else {
-                    statusText.setText(MORE_CHARACTERS);
-                    statusText.setBackgroundColor(SEARCH_BACKGROUND);
-                    lastStatusText = MORE_CHARACTERS;
-                    lastStatusBackground = SEARCH_BACKGROUND;
+                    makeLongToast(MORE_CHARACTERS);
                 }
             }
         }
@@ -441,12 +431,10 @@ public class ObjectListFragment extends ListFragment {
         @Override
         protected void onPreExecute(){
             Log.d("________", "New locationtask started");
-            statusText.setText(LOADING);
-            statusText.setBackgroundColor(LOCATION_BACKGROUND);
         }
         @Override
         protected Boolean doInBackground(Void... params) {
-            for (int i = 1; i < 5; ++i) {
+            for (int i = 1; i < 3; ++i) {
                 if (locationHandler != null && locationHandler.getLocationClient().isConnected()) {
                     locationHandler.updateCachedLocation();
                     if (locationHandler.getCachedLocation() != null) {
@@ -471,9 +459,7 @@ public class ObjectListFragment extends ListFragment {
                     dismissDialog();
                     Log.d("________", "Couldn't connect to locationclient. Releasing lock.");
                     searchInProgress = false;
-                    statusText.setText(LOCATION_FAILED);
-                    lastStatusText = LOCATION_FAILED;
-                    lastStatusBackground = LOCATION_BACKGROUND;
+                    makeLongToast(LOCATION_FAILED);
                 }
             }
         }
@@ -484,6 +470,13 @@ public class ObjectListFragment extends ListFragment {
             progressDialog.dismiss();
         }
     }
- }
+
+    private void makeLongToast(String message){
+        if(message != null) {
+            int duration = Toast.LENGTH_LONG;
+            Toast.makeText(getActivity(), message, duration).show();
+        }
+    }
+}
 
 
