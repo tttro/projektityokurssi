@@ -3,6 +3,7 @@ package fi.lbd.mobile.location;
 import android.app.Activity;
 import android.content.IntentSender;
 import android.location.Location;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -22,6 +23,8 @@ public class LocationHandler implements GooglePlayServicesClient.ConnectionCallb
     private Activity activity;
     private LocationClient locationClient;
     private ImmutablePointLocation cachedLocation = null;
+    private boolean isLocationUpdated = false;
+
     /**
      * Checks if the google play services are available and if they are creates a location client.
      *
@@ -109,12 +112,28 @@ public class LocationHandler implements GooglePlayServicesClient.ConnectionCallb
      * Updates the cached user location.
      *
      */
-    public void updateCachedLocation(){
+    public boolean updateCachedLocation(){
         if (this.locationClient != null) {
-            Location location = this.locationClient.getLastLocation();
-            this.cachedLocation = (location != null) ? new ImmutablePointLocation(location
-                    .getLatitude(), location.getLongitude()) : null;
+            setIsLocationUpdated(false);
+
+            LocationTask locationTask = new LocationTask();
+            locationTask.execute();
+
+            for (int i = 1; i < 4; ++i) {
+                try {
+                    if(!isLocationUpdated) {
+                        Log.d("??????", " updateachedLocation loop");
+                        Thread.sleep(1000);
+                    }
+                    else {
+                        Log.d("??????", " updateachedLocation returning true");
+                        return true;
+                    }
+                } catch (InterruptedException exception) {}
+            }
+            Log.d("??????", " updateachedLocation out of loop");
         }
+        return false;
     }
 
     public ImmutablePointLocation getCachedLocation(){
@@ -149,5 +168,20 @@ public class LocationHandler implements GooglePlayServicesClient.ConnectionCallb
             GooglePlayServicesUtil.getErrorDialog(connectionResult.getErrorCode(), this.activity,
                     CONNECTION_FAILURE_RESOLUTION_REQUEST).show();
         }
+    }
+
+    private class LocationTask extends AsyncTask<Void, Void, Boolean> {
+        @Override
+        protected Boolean doInBackground(Void... params) {
+            Location location = locationClient.getLastLocation();
+            cachedLocation = (location != null) ? new ImmutablePointLocation(location
+                    .getLatitude(), location.getLongitude()) : null;
+            setIsLocationUpdated(true);
+            return true;
+        }
+    }
+
+    private synchronized void setIsLocationUpdated(boolean isLocationUpdated){
+        this.isLocationUpdated = isLocationUpdated;
     }
 }

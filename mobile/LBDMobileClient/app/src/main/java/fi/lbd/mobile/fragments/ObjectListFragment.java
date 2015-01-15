@@ -434,22 +434,14 @@ public class ObjectListFragment extends ListFragment {
         }
         @Override
         protected Boolean doInBackground(Void... params) {
-            for (int i = 1; i < 3; ++i) {
                 if (locationHandler != null && locationHandler.getLocationClient().isConnected()) {
-                    locationHandler.updateCachedLocation();
-                    if (locationHandler.getCachedLocation() != null) {
+                    if (locationHandler.updateCachedLocation() && locationHandler.getCachedLocation() != null) {
                         BusHandler.getBus().post(new RequestNearObjectsEvent(new ImmutablePointLocation(
                                 locationHandler.getCachedLocation().getLatitude(),
                                 locationHandler.getCachedLocation().getLongitude()), 0.002, false));
                         return true;
                     }
                 }
-                try{
-                    Thread.sleep(1000);
-                } catch (InterruptedException exception){
-                    return false;
-                }
-            }
             return false;
         }
         @Override
