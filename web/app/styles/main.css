@@ -328,10 +328,13 @@ header a {
     width: 100%;
     margin-top: 10px;
 }
-.btn.save {
+.save {
     cursor: pointer;
+    border: 1px solid #ccc;
+    padding: 1px;
+    background: #fff;
 }
-.btn.save:hover{
+.save:hover{
     color: #184663;
 }
 
@@ -396,6 +399,14 @@ header a {
     border-bottom: 1px solid #ccc;
 }
 
+.accord-content .btn.w50p {
+    width: 45%;
+    margin-right: 10px;
+
+}
+.accord-content .btn.w50p.marginOff {
+    margin-right: 0px;
+}
 
 /* Settings */
 .single-page {
@@ -478,4 +489,8 @@ header a {
     overflow: hidden;
     clip: rect(0,0,0,0);
     border: 0;
+}
+
+.gm-style-iw {
+    height: auto;
 }

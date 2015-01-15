@@ -41,7 +41,8 @@
             </div>
             <div class="accord-content" style="clear: both">
                 <div class="list-item" ng-bind-html="message.message | linky:'_blank'"></div>
-                <button class="btn btn-danger" ng-click="delete(message.id)">Delete</button>
+                <button class="w50p btn btn-danger fleft" ng-click="delete(message,$index)">Delete</button>
+                <button class="w50p btn btn-primary fleft marginOff" ng-click="reply(message)">Reply</button>
             </div>
         </li>
     </ul>

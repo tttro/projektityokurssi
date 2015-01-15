@@ -22,15 +22,15 @@ messageController.controller('messageController', function($scope, $filter, $int
         $scope.showLoadingIcon = true;
         // Get user's messages
         MessageService.get(function(messages){
-            messageModel.messageList = messages;
+            //messageModel.messageList = messages;
+            $scope.messageModel.messageList = messages;
             orginalMessageList = messages;
             $scope.showLoadingIcon = false;
-            //console.log(messages);
         });
     }
     /*** Logic ***/
     updateMessages();
-   // $interval(updateMessages,10000);
+   $interval(updateMessages,30000);
 
     // Get user of application
     MessageService.getUsers(function(users){
@@ -56,18 +56,32 @@ messageController.controller('messageController', function($scope, $filter, $int
 
             $scope.messageModel.messageSend.topic = '';
             $scope.messageModel.messageSend.message = '';
-
         }
 
     }
 
-    $scope.delete = function(id){
-        MessageService.delete(id,function(){
-            updateMessages();
+    $scope.delete = function(message, index){
+        $scope.messageModel.messageList.messages.splice( index , 1 );
+        MessageService.delete(message.id);
+    }
+
+    $scope.reply = function(message){
+
+        // Find sender from list
+        var indexVal = 0;
+        angular.forEach($scope.messageModel.userList, function(value, key) {
+
+            if (value.email === message.sender) {
+                $scope.messageModel.messageSend.to = $scope.messageModel.userList[indexVal];
+            }
+            indexVal++;
+
         });
 
+        $scope.messageModel.messageSend.topic = 'RE: ' + message.topic;
 
-    }
+    };
+
     /* Accordion */
     $scope.click = function(message){
 
