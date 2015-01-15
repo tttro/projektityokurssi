@@ -220,7 +220,10 @@ class StreetlightHandler(HandlerBase):
         if field is None:
             raise NotImplementedError # TODO: Search from all fields... some day
         elif field == "id":
-            reg = re.compile(regex, re.IGNORECASE)
+            try:
+                reg = re.compile(regex, re.IGNORECASE)
+            except Exception as e:
+                raise ValueError(e.message)
             raw = self.modelobject._get_collection().aggregate([{'$match': {
                                                                      "feature_id": {
                                                                          "$regex": reg

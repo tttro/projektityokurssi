@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>REST documentation &mdash; LBD Backend Dev documentation</title>
+    <title>5. REST documentation &mdash; LBD Backend Dev documentation</title>
     
     <link rel="stylesheet" href="_static/default.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -24,8 +24,8 @@
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
     <link rel="top" title="LBD Backend Dev documentation" href="index.html" />
-    <link rel="next" title="Code documentation: REST" href="codedoc.html" />
-    <link rel="prev" title="Search" href="json/search.html" /> 
+    <link rel="next" title="6. Code documentation: REST" href="codedoc.html" />
+    <link rel="prev" title="4.3. Search" href="json/search.html" /> 
   </head>
   <body>
     <div class="related">
@@ -38,10 +38,10 @@
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="codedoc.html" title="Code documentation: REST"
+          <a href="codedoc.html" title="6. Code documentation: REST"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="json/search.html" title="Search"
+          <a href="json/search.html" title="4.3. Search"
              accesskey="P">previous</a> |</li>
         <li><a href="index.html">LBD Backend Dev documentation</a> &raquo;</li> 
       </ul>
@@ -53,7 +53,7 @@
           <div class="body">
             
   <div class="section" id="rest-documentation">
-<span id="restdoc"></span><h1>REST documentation<a class="headerlink" href="#rest-documentation" title="Permalink to this headline">¶</a></h1>
+<span id="restdoc"></span><h1>5. REST documentation<a class="headerlink" href="#rest-documentation" title="Permalink to this headline">¶</a></h1>
 <p>This chapter describes the REST APIs.</p>
 <p>List of status codes used by the REST:</p>
 <table border="1" class="docutils">
@@ -100,7 +100,7 @@
 </tbody>
 </table>
 <div class="section" id="location-data-rest">
-<span id="locationrest"></span><h2>Location data REST<a class="headerlink" href="#location-data-rest" title="Permalink to this headline">¶</a></h2>
+<span id="locationrest"></span><h2>5.1. Location data REST<a class="headerlink" href="#location-data-rest" title="Permalink to this headline">¶</a></h2>
 <p>Location data can be accessed from <strong>/locationdata/api/</strong> (e.g. <em>www.example.com/locationdata/api/</em>). This URL does not yet require
 authentication and return the installed location data services and what data (element names) they contain.</p>
 <div class="admonition note">
@@ -110,7 +110,7 @@ location data objects... yet.</p>
 </div>
 <p>In urls <strong>&lt;collection name&gt;</strong> and <strong>&lt;resource&gt;</strong> are to be replaced with appropriate values. Both are strings.</p>
 <div class="section" id="locationdata-api">
-<h3>/locationdata/api/<a class="headerlink" href="#locationdata-api" title="Permalink to this headline">¶</a></h3>
+<h3>5.1.1. /locationdata/api/<a class="headerlink" href="#locationdata-api" title="Permalink to this headline">¶</a></h3>
 <p>Returns the installed location data services that can be accessed by appending the name of the service to the base url of
 the location data api.</p>
 <p><strong>Allowed methods:</strong></p>
@@ -171,7 +171,7 @@ the location data api.</p>
 </div>
 </div>
 <div class="section" id="locationdata-api-collection-name">
-<h3>/locationdata/api/&lt;collection name&gt;/<a class="headerlink" href="#locationdata-api-collection-name" title="Permalink to this headline">¶</a></h3>
+<h3>5.1.2. /locationdata/api/&lt;collection name&gt;/<a class="headerlink" href="#locationdata-api-collection-name" title="Permalink to this headline">¶</a></h3>
 <p><strong>Allowed methods:</strong></p>
 <ul>
 <li><p class="first">GET</p>
@@ -215,7 +215,7 @@ the location data api.</p>
 </ul>
 </div>
 <div class="section" id="locationdata-api-collection-name-resource">
-<h3>/locationdata/api/&lt;collection name&gt;/&lt;resource&gt;<a class="headerlink" href="#locationdata-api-collection-name-resource" title="Permalink to this headline">¶</a></h3>
+<h3>5.1.3. /locationdata/api/&lt;collection name&gt;/&lt;resource&gt;<a class="headerlink" href="#locationdata-api-collection-name-resource" title="Permalink to this headline">¶</a></h3>
 <p><strong>Allowed methods:</strong></p>
 <ul>
 <li><p class="first">GET</p>
@@ -242,7 +242,7 @@ the location data api.</p>
 </ul>
 </div>
 <div class="section" id="locationdata-api-collection-name-near">
-<h3>/locationdata/api/&lt;collection name&gt;/near/<a class="headerlink" href="#locationdata-api-collection-name-near" title="Permalink to this headline">¶</a></h3>
+<h3>5.1.4. /locationdata/api/&lt;collection name&gt;/near/<a class="headerlink" href="#locationdata-api-collection-name-near" title="Permalink to this headline">¶</a></h3>
 <p>Searches objects from circular area.</p>
 <p><strong>Allowed methods:</strong></p>
 <ul>
@@ -294,7 +294,7 @@ the location data api.</p>
 </ul>
 </div>
 <div class="section" id="locationdata-api-collection-name-inarea">
-<h3>/locationdata/api/&lt;collection name&gt;/inarea/<a class="headerlink" href="#locationdata-api-collection-name-inarea" title="Permalink to this headline">¶</a></h3>
+<h3>5.1.5. /locationdata/api/&lt;collection name&gt;/inarea/<a class="headerlink" href="#locationdata-api-collection-name-inarea" title="Permalink to this headline">¶</a></h3>
 <p>Searches objects inside a rectangular area.</p>
 <p><strong>Allowed methods:</strong></p>
 <ul>
@@ -353,7 +353,7 @@ the location data api.</p>
 </ul>
 </div>
 <div class="section" id="locationdata-api-collection-name-search">
-<h3>/locationdata/api/&lt;collection name&gt;/search/<a class="headerlink" href="#locationdata-api-collection-name-search" title="Permalink to this headline">¶</a></h3>
+<h3>5.1.6. /locationdata/api/&lt;collection name&gt;/search/<a class="headerlink" href="#locationdata-api-collection-name-search" title="Permalink to this headline">¶</a></h3>
 <p>Searches from the location data REST. Search is currently limited to the id.</p>
 <p><strong>Allowed methods:</strong></p>
 <ul>
@@ -372,12 +372,12 @@ the location data api.</p>
 </div>
 </div>
 <div class="section" id="message-data-rest">
-<span id="messagerest"></span><h2>Message data REST<a class="headerlink" href="#message-data-rest" title="Permalink to this headline">¶</a></h2>
+<span id="messagerest"></span><h2>5.2. Message data REST<a class="headerlink" href="#message-data-rest" title="Permalink to this headline">¶</a></h2>
 <p>The REST for sending messages in the system. For JSON formats, see <a class="reference internal" href="json/messagejson.html#messagejson"><em>Message formats</em></a></p>
 <p>In URLs <strong>&lt;message id&gt;</strong> and <strong>&lt;category&gt;</strong> are to be replaced with appropriate values. Message id is an integer and
 category is a string.</p>
 <div class="section" id="messagedata-api-send">
-<h3>/messagedata/api/send/<a class="headerlink" href="#messagedata-api-send" title="Permalink to this headline">¶</a></h3>
+<h3>5.2.1. /messagedata/api/send/<a class="headerlink" href="#messagedata-api-send" title="Permalink to this headline">¶</a></h3>
 <p><strong>Allowed methods:</strong></p>
 <ul>
 <li><p class="first">POST</p>
@@ -394,7 +394,7 @@ category is a string.</p>
 </ul>
 </div>
 <div class="section" id="messagedata-api-users-list">
-<h3>/messagedata/api/users/list/<a class="headerlink" href="#messagedata-api-users-list" title="Permalink to this headline">¶</a></h3>
+<h3>5.2.2. /messagedata/api/users/list/<a class="headerlink" href="#messagedata-api-users-list" title="Permalink to this headline">¶</a></h3>
 <p>Lists all users.</p>
 <p><strong>Allowed methods:</strong></p>
 <ul>
@@ -412,7 +412,7 @@ category is a string.</p>
 </ul>
 </div>
 <div class="section" id="messagedata-api-markasread-message-id">
-<h3>/messagedata/api/markasread/&lt;message id&gt;<a class="headerlink" href="#messagedata-api-markasread-message-id" title="Permalink to this headline">¶</a></h3>
+<h3>5.2.3. /messagedata/api/markasread/&lt;message id&gt;<a class="headerlink" href="#messagedata-api-markasread-message-id" title="Permalink to this headline">¶</a></h3>
 <p><strong>Allowed methods:</strong></p>
 <ul>
 <li><p class="first">GET</p>
@@ -429,7 +429,7 @@ category is a string.</p>
 </ul>
 </div>
 <div class="section" id="messagedata-api-messages">
-<h3>/messagedata/api/messages/<a class="headerlink" href="#messagedata-api-messages" title="Permalink to this headline">¶</a></h3>
+<h3>5.2.4. /messagedata/api/messages/<a class="headerlink" href="#messagedata-api-messages" title="Permalink to this headline">¶</a></h3>
 <p><strong>Allowed methods:</strong></p>
 <ul>
 <li><p class="first">GET</p>
@@ -453,7 +453,7 @@ category is a string.</p>
 </ul>
 </div>
 <div class="section" id="messagedata-api-messages-message-id">
-<h3>/messagedata/api/messages/&lt;message id&gt;<a class="headerlink" href="#messagedata-api-messages-message-id" title="Permalink to this headline">¶</a></h3>
+<h3>5.2.5. /messagedata/api/messages/&lt;message id&gt;<a class="headerlink" href="#messagedata-api-messages-message-id" title="Permalink to this headline">¶</a></h3>
 <p><strong>Allowed methods:</strong></p>
 <ul>
 <li><p class="first">GET</p>
@@ -477,7 +477,7 @@ category is a string.</p>
 </ul>
 </div>
 <div class="section" id="messagedata-api-messages-category">
-<h3>/messagedata/api/messages/&lt;category&gt;/<a class="headerlink" href="#messagedata-api-messages-category" title="Permalink to this headline">¶</a></h3>
+<h3>5.2.6. /messagedata/api/messages/&lt;category&gt;/<a class="headerlink" href="#messagedata-api-messages-category" title="Permalink to this headline">¶</a></h3>
 <p><strong>Allowed methods:</strong></p>
 <ul>
 <li><p class="first">GET</p>
@@ -501,7 +501,7 @@ category is a string.</p>
 </ul>
 </div>
 <div class="section" id="messagedata-api-messages-category-message-id">
-<h3>/messagedata/api/messages/&lt;category&gt;/&lt;message id&gt;<a class="headerlink" href="#messagedata-api-messages-category-message-id" title="Permalink to this headline">¶</a></h3>
+<h3>5.2.7. /messagedata/api/messages/&lt;category&gt;/&lt;message id&gt;<a class="headerlink" href="#messagedata-api-messages-category-message-id" title="Permalink to this headline">¶</a></h3>
 <p><strong>Allowed methods:</strong></p>
 <ul>
 <li><p class="first">GET</p>
@@ -535,24 +535,24 @@ category is a string.</p>
         <div class="sphinxsidebarwrapper">
   <h3><a href="index.html">Table Of Contents</a></h3>
   <ul>
-<li><a class="reference internal" href="#">REST documentation</a><ul>
-<li><a class="reference internal" href="#location-data-rest">Location data REST</a><ul>
-<li><a class="reference internal" href="#locationdata-api">/locationdata/api/</a></li>
-<li><a class="reference internal" href="#locationdata-api-collection-name">/locationdata/api/&lt;collection name&gt;/</a></li>
-<li><a class="reference internal" href="#locationdata-api-collection-name-resource">/locationdata/api/&lt;collection name&gt;/&lt;resource&gt;</a></li>
-<li><a class="reference internal" href="#locationdata-api-collection-name-near">/locationdata/api/&lt;collection name&gt;/near/</a></li>
-<li><a class="reference internal" href="#locationdata-api-collection-name-inarea">/locationdata/api/&lt;collection name&gt;/inarea/</a></li>
-<li><a class="reference internal" href="#locationdata-api-collection-name-search">/locationdata/api/&lt;collection name&gt;/search/</a></li>
+<li><a class="reference internal" href="#">5. REST documentation</a><ul>
+<li><a class="reference internal" href="#location-data-rest">5.1. Location data REST</a><ul>
+<li><a class="reference internal" href="#locationdata-api">5.1.1. /locationdata/api/</a></li>
+<li><a class="reference internal" href="#locationdata-api-collection-name">5.1.2. /locationdata/api/&lt;collection name&gt;/</a></li>
+<li><a class="reference internal" href="#locationdata-api-collection-name-resource">5.1.3. /locationdata/api/&lt;collection name&gt;/&lt;resource&gt;</a></li>
+<li><a class="reference internal" href="#locationdata-api-collection-name-near">5.1.4. /locationdata/api/&lt;collection name&gt;/near/</a></li>
+<li><a class="reference internal" href="#locationdata-api-collection-name-inarea">5.1.5. /locationdata/api/&lt;collection name&gt;/inarea/</a></li>
+<li><a class="reference internal" href="#locationdata-api-collection-name-search">5.1.6. /locationdata/api/&lt;collection name&gt;/search/</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#message-data-rest">Message data REST</a><ul>
-<li><a class="reference internal" href="#messagedata-api-send">/messagedata/api/send/</a></li>
-<li><a class="reference internal" href="#messagedata-api-users-list">/messagedata/api/users/list/</a></li>
-<li><a class="reference internal" href="#messagedata-api-markasread-message-id">/messagedata/api/markasread/&lt;message id&gt;</a></li>
-<li><a class="reference internal" href="#messagedata-api-messages">/messagedata/api/messages/</a></li>
-<li><a class="reference internal" href="#messagedata-api-messages-message-id">/messagedata/api/messages/&lt;message id&gt;</a></li>
-<li><a class="reference internal" href="#messagedata-api-messages-category">/messagedata/api/messages/&lt;category&gt;/</a></li>
-<li><a class="reference internal" href="#messagedata-api-messages-category-message-id">/messagedata/api/messages/&lt;category&gt;/&lt;message id&gt;</a></li>
+<li><a class="reference internal" href="#message-data-rest">5.2. Message data REST</a><ul>
+<li><a class="reference internal" href="#messagedata-api-send">5.2.1. /messagedata/api/send/</a></li>
+<li><a class="reference internal" href="#messagedata-api-users-list">5.2.2. /messagedata/api/users/list/</a></li>
+<li><a class="reference internal" href="#messagedata-api-markasread-message-id">5.2.3. /messagedata/api/markasread/&lt;message id&gt;</a></li>
+<li><a class="reference internal" href="#messagedata-api-messages">5.2.4. /messagedata/api/messages/</a></li>
+<li><a class="reference internal" href="#messagedata-api-messages-message-id">5.2.5. /messagedata/api/messages/&lt;message id&gt;</a></li>
+<li><a class="reference internal" href="#messagedata-api-messages-category">5.2.6. /messagedata/api/messages/&lt;category&gt;/</a></li>
+<li><a class="reference internal" href="#messagedata-api-messages-category-message-id">5.2.7. /messagedata/api/messages/&lt;category&gt;/&lt;message id&gt;</a></li>
 </ul>
 </li>
 </ul>
@@ -561,10 +561,10 @@ category is a string.</p>
 
   <h4>Previous topic</h4>
   <p class="topless"><a href="json/search.html"
-                        title="previous chapter">Search</a></p>
+                        title="previous chapter">4.3. Search</a></p>
   <h4>Next topic</h4>
   <p class="topless"><a href="codedoc.html"
-                        title="next chapter">Code documentation: REST</a></p>
+                        title="next chapter">6. Code documentation: REST</a></p>
   <h3>This Page</h3>
   <ul class="this-page-menu">
     <li><a href="_sources/restdoc.txt"
@@ -597,10 +597,10 @@ category is a string.</p>
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="codedoc.html" title="Code documentation: REST"
+          <a href="codedoc.html" title="6. Code documentation: REST"
              >next</a> |</li>
         <li class="right" >
-          <a href="json/search.html" title="Search"
+          <a href="json/search.html" title="4.3. Search"
              >previous</a> |</li>
         <li><a href="index.html">LBD Backend Dev documentation</a> &raquo;</li> 
       </ul>
