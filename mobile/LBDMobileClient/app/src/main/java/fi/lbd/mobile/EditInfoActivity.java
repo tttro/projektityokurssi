@@ -1,6 +1,7 @@
 package fi.lbd.mobile;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
@@ -25,8 +26,9 @@ import fi.lbd.mobile.mapobjects.events.UpdateMapObjectEvent;
 import fi.lbd.mobile.mapobjects.events.UpdateMapObjectSucceededEvent;
 
 
-public class EditNoteActivity extends Activity {
+public class EditInfoActivity extends Activity {
     private boolean acceptButtonPressed = false;
+    private ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +54,9 @@ public class EditNoteActivity extends Activity {
         super.onStop();
         this.acceptButtonPressed = false;
         ActiveActivitiesTracker.activityStopped();
+        if(progressDialog != null && progressDialog.isShowing()){
+            this.progressDialog.dismiss();
+        }
     }
 
     @Override
@@ -69,6 +74,9 @@ public class EditNoteActivity extends Activity {
     @Subscribe
     public void onEvent(UpdateMapObjectSucceededEvent event){
         this.acceptButtonPressed = false;
+        if(progressDialog != null && progressDialog.isShowing()){
+            this.progressDialog.dismiss();
+        }
         onBackPressed();
     }
 
@@ -76,6 +84,9 @@ public class EditNoteActivity extends Activity {
     public void onEvent(RequestFailedEvent event){
         if(event.getFailedEvent() instanceof UpdateMapObjectEvent){
             this.acceptButtonPressed = false;
+            if(progressDialog != null && progressDialog.isShowing()){
+                this.progressDialog.dismiss();
+            }
             makeShortToast("Saving content failed");
         }
     }
@@ -85,6 +96,8 @@ public class EditNoteActivity extends Activity {
             MapObject object = MapObjectSelectionManager.get().getSelectedMapObject();
             if (object != null) {
                 this.acceptButtonPressed = true;
+                progressDialog = ProgressDialog.show(this, "", "Saving...", true);
+                progressDialog.setCancelable(false);
                 EditText editText = (EditText) ((View) view.getParent().getParent()).findViewById(R.id.textViewEdit);
                 String text = editText.getText().toString();
                 if (text == null) {
@@ -93,7 +106,6 @@ public class EditNoteActivity extends Activity {
                 Map<String, String> metaData = new HashMap<>();
                 metaData.put("status", "");
                 metaData.put("info", text);
-                Log.d("???????", "Posting new metadataevent");
                 BusHandler.getBus().post(new UpdateMapObjectEvent(new ImmutableMapObject(object.isMinimized(),
                         object.getId(), (ImmutablePointLocation)object.getPointLocation(),
                         object.getAdditionalProperties(), metaData)));

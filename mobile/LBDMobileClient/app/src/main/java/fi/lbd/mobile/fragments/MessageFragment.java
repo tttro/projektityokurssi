@@ -14,7 +14,6 @@ import android.widget.Toast;
 
 import com.squareup.otto.Subscribe;
 
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
@@ -27,7 +26,7 @@ import fi.lbd.mobile.events.BusHandler;
 import fi.lbd.mobile.events.RequestFailedEvent;
 import fi.lbd.mobile.messaging.events.DeleteMessageFromListEvent;
 import fi.lbd.mobile.messaging.events.RequestUserMessagesEvent;
-import fi.lbd.mobile.messaging.events.ReturnUserMessagesEvent;
+import fi.lbd.mobile.messaging.events.UpdateCachedMessagesToListEvent;
 import fi.lbd.mobile.messaging.messageobjects.MessageObject;
 
 
@@ -97,23 +96,15 @@ public class MessageFragment extends ListFragment {
 	}
 
     @Subscribe
-    public void onEvent(ReturnUserMessagesEvent event) {
-        // TODO: More efficient way to comparison (using sets?)
-        List<MessageObject> newMessageObjects = event.getMessageObjects();
-        List<MessageObject> oldMessageObjects = adapter.getObjects();
-
-        if(!areMessageListsIdentical(oldMessageObjects, newMessageObjects)) {
+    public void onEvent(UpdateCachedMessagesToListEvent event) {
+        Log.d("___________ MessageFragment", " received UpdateMessagesEvent");
+        if(event.getObjects() != null) {
             this.adapter.clear();
-            Collections.sort(newMessageObjects, new MessageTimeStampComparator());
-            this.adapter.addAll(newMessageObjects);
+            this.adapter.addAll(event.getObjects());
             this.adapter.notifyDataSetChanged();
-            for (MessageObject message : newMessageObjects) {
+            for (MessageObject message : event.getObjects()) {
                 Log.d(this.getClass().getSimpleName(), "Message: " + message);
             }
-            Context context = getActivity().getApplicationContext();
-            CharSequence dialogText = "You have a new message!";
-            int duration = Toast.LENGTH_LONG;
-            Toast.makeText(context, dialogText, duration).show();
         }
         if (progressDialog != null && progressDialog.isShowing()) {
             this.progressDialog.dismiss();
@@ -123,6 +114,7 @@ public class MessageFragment extends ListFragment {
     @Subscribe
     public void onEvent(RequestFailedEvent event){
         if(event.getFailedEvent() instanceof RequestUserMessagesEvent) {
+            Log.d("___________ MessageFragment", " received FailedEvent");
             Context context = getActivity().getApplicationContext();
             CharSequence dialogText = "Failed to download messages";
             int duration = Toast.LENGTH_SHORT;
@@ -130,46 +122,6 @@ public class MessageFragment extends ListFragment {
             if(progressDialog != null && progressDialog.isShowing()) {
                 this.progressDialog.dismiss();
             }
-        }
-    }
-
-    @Subscribe
-    public void onEvent(DeleteMessageFromListEvent event){
-        if(event.getMessageId() != null) {
-            Log.d("*****Deleting message with ID ", event.getMessageId());
-            adapter.deleteItem(event.getMessageId());
-            adapter.notifyDataSetChanged();
-        }
-    }
-
-    private boolean areMessageListsIdentical(List<MessageObject> oldMessageObjects,
-                                     List<MessageObject> newMessageObjects){
-        boolean areIdentical = true;
-        for(MessageObject newObject : newMessageObjects){
-            int iterator = 0;
-            for(MessageObject oldObject : oldMessageObjects){
-                if(oldObject.equals(newObject)){
-                    break;
-                }
-                ++iterator;
-            }
-            if(iterator == oldMessageObjects.size()){
-                areIdentical = false;
-                break;
-            }
-        }
-        return areIdentical;
-    }
-
-    private class MessageTimeStampComparator implements Comparator<MessageObject>{
-        @Override
-        public int compare(MessageObject o1, MessageObject o2){
-            long t1 = o1.getTimestamp();
-            long t2 = o2.getTimestamp();
-            if(t1 == t2){
-                return 0;
-            }
-            return t1 < t2 ? 1 : -1;
         }
     }
 } 
