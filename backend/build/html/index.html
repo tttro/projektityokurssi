@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Welcome to LBD Backend’s documentation! &mdash; LBD Backend Dev documentation</title>
+    <title>LBD Open data Backend Documentation &mdash; LBD Backend Dev documentation</title>
     
     <link rel="stylesheet" href="_static/default.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -24,7 +24,7 @@
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
     <link rel="top" title="LBD Backend Dev documentation" href="#" />
-    <link rel="next" title="Requirements" href="requirements.html" /> 
+    <link rel="next" title="1. Requirements" href="requirements.html" /> 
   </head>
   <body>
     <div class="related">
@@ -37,7 +37,7 @@
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="requirements.html" title="Requirements"
+          <a href="requirements.html" title="1. Requirements"
              accesskey="N">next</a> |</li>
         <li><a href="#">LBD Backend Dev documentation</a> &raquo;</li> 
       </ul>
@@ -48,57 +48,53 @@
         <div class="bodywrapper">
           <div class="body">
             
-  <div class="section" id="welcome-to-lbd-backend-s-documentation">
-<h1>Welcome to LBD Backend&#8217;s documentation!<a class="headerlink" href="#welcome-to-lbd-backend-s-documentation" title="Permalink to this headline">¶</a></h1>
-<p><strong>Table of Contents</strong></p>
+  <div class="section" id="lbd-open-data-backend-documentation">
+<h1>LBD Open data Backend Documentation<a class="headerlink" href="#lbd-open-data-backend-documentation" title="Permalink to this headline">¶</a></h1>
+<p>Welcome to the documentation of the LBD Open data Backend. This documentation explains everything you ever wanted to know
+about this software, except what the Secret Government prohibits us to reveal.</p>
+<div class="section" id="table-of-content">
+<h2>Table of Content<a class="headerlink" href="#table-of-content" title="Permalink to this headline">¶</a></h2>
 <div class="toctree-wrapper compound">
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="requirements.html">Requirements</a></li>
-<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="installation.html#mongodb">MongoDB</a></li>
-<li class="toctree-l2"><a class="reference internal" href="installation.html#python">Python</a></li>
-<li class="toctree-l2"><a class="reference internal" href="installation.html#django">Django</a></li>
+<li class="toctree-l1"><a class="reference internal" href="requirements.html">1. Requirements</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">2. Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#mongodb">2.1. MongoDB</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#python">2.2. Python</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#django">2.3. Django</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="headersandcors.html">Headers and CORS</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="headersandcors.html#headers">Headers</a></li>
-<li class="toctree-l2"><a class="reference internal" href="headersandcors.html#cors">CORS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="headersandcors.html">3. Headers and CORS</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="headersandcors.html#headers">3.1. Headers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="headersandcors.html#cors">3.2. CORS</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="json/jsondoc.html">JSON Formats</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="json/locationdatajson.html">Location data</a></li>
-<li class="toctree-l2"><a class="reference internal" href="json/messagejson.html">Message</a></li>
-<li class="toctree-l2"><a class="reference internal" href="json/search.html">Search</a></li>
+<li class="toctree-l1"><a class="reference internal" href="json/jsondoc.html">4. JSON Formats</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="json/locationdatajson.html">4.1. Location data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="json/messagejson.html">4.2. Message</a></li>
+<li class="toctree-l2"><a class="reference internal" href="json/search.html">4.3. Search</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="restdoc.html">REST documentation</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="restdoc.html#location-data-rest">Location data REST</a></li>
-<li class="toctree-l2"><a class="reference internal" href="restdoc.html#message-data-rest">Message data REST</a></li>
+<li class="toctree-l1"><a class="reference internal" href="restdoc.html">5. REST documentation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="restdoc.html#location-data-rest">5.1. Location data REST</a></li>
+<li class="toctree-l2"><a class="reference internal" href="restdoc.html#message-data-rest">5.2. Message data REST</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="codedoc.html">Code documentation: REST</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="codedoc/decdoc.html"><tt class="docutils literal"><span class="pre">lbd_backend.LBD_REST_locationdata.decorators</span></tt> Location data decorators</a></li>
-<li class="toctree-l2"><a class="reference internal" href="codedoc/locdoc.html"><tt class="docutils literal"><span class="pre">lbd_backend.LBD_REST_locationdata</span></tt> Location data REST</a></li>
-<li class="toctree-l2"><a class="reference internal" href="codedoc/msgdoc.html"><tt class="docutils literal"><span class="pre">lbd_backend.LBD_REST_messagedata</span></tt> Message data REST</a></li>
+<li class="toctree-l1"><a class="reference internal" href="codedoc.html">6. Code documentation: REST</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="codedoc/decdoc.html">6.1. <tt class="docutils literal"><span class="pre">lbd_backend.LBD_REST_locationdata.decorators</span></tt> Location data decorators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="codedoc/locdoc.html">6.2. <tt class="docutils literal"><span class="pre">lbd_backend.LBD_REST_locationdata</span></tt> Location data REST</a></li>
+<li class="toctree-l2"><a class="reference internal" href="codedoc/msgdoc.html">6.3. <tt class="docutils literal"><span class="pre">lbd_backend.LBD_REST_messagedata</span></tt> Message data REST</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="hand.html">Code documentation: Handlers</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="handler/interface.html"><tt class="docutils literal"><span class="pre">RESThandlers.HandlerInterface</span></tt> REST Handler Interface</a></li>
-<li class="toctree-l2"><a class="reference internal" href="handler/factory.html"><tt class="docutils literal"><span class="pre">RESThandlers.HandlerInterface.Factory</span></tt> Handler Factory</a></li>
-<li class="toctree-l2"><a class="reference internal" href="handler/handlers.html"><tt class="docutils literal"><span class="pre">RESThandlers.Streetlight</span></tt> Streetlight REST handler</a></li>
-<li class="toctree-l2"><a class="reference internal" href="handler/handlers.html#module-RESThandlers.Playgrounds.Handler"><tt class="docutils literal"><span class="pre">RESThandlers.Playgrounds</span></tt> Playgrounds REST handler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="hand.html">7. Code documentation: Handlers</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="handler/interface.html">7.1. <tt class="docutils literal"><span class="pre">RESThandlers.HandlerInterface</span></tt> REST Handler Interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="handler/factory.html">7.2. <tt class="docutils literal"><span class="pre">RESThandlers.HandlerInterface.Factory</span></tt> Handler Factory</a></li>
+<li class="toctree-l2"><a class="reference internal" href="handler/handlers.html">7.3. <tt class="docutils literal"><span class="pre">RESThandlers.Streetlight</span></tt> Streetlight REST handler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="handler/handlers.html#module-RESThandlers.Playgrounds.Handler">7.4. <tt class="docutils literal"><span class="pre">RESThandlers.Playgrounds</span></tt> Playgrounds REST handler</a></li>
 </ul>
 </li>
 </ul>
 </div>
 </div>
-<div class="section" id="indices-and-tables">
-<h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">¶</a></h1>
-<ul class="simple">
-<li><a class="reference internal" href="genindex.html"><em>Index</em></a></li>
-<li><a class="reference internal" href="py-modindex.html"><em>Module Index</em></a></li>
-<li><a class="reference internal" href="search.html"><em>Search Page</em></a></li>
-</ul>
 </div>
 
 
@@ -109,13 +105,15 @@
         <div class="sphinxsidebarwrapper">
   <h3><a href="#">Table Of Contents</a></h3>
   <ul>
-<li><a class="reference internal" href="#">Welcome to LBD Backend&#8217;s documentation!</a></li>
-<li><a class="reference internal" href="#indices-and-tables">Indices and tables</a></li>
+<li><a class="reference internal" href="#">LBD Open data Backend Documentation</a><ul>
+<li><a class="reference internal" href="#table-of-content">Table of Content</a></li>
+</ul>
+</li>
 </ul>
 
   <h4>Next topic</h4>
   <p class="topless"><a href="requirements.html"
-                        title="next chapter">Requirements</a></p>
+                        title="next chapter">1. Requirements</a></p>
   <h3>This Page</h3>
   <ul class="this-page-menu">
     <li><a href="_sources/index.txt"
@@ -148,7 +146,7 @@
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="requirements.html" title="Requirements"
+          <a href="requirements.html" title="1. Requirements"
              >next</a> |</li>
         <li><a href="#">LBD Backend Dev documentation</a> &raquo;</li> 
       </ul>

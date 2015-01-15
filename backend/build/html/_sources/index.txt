@@ -3,13 +3,17 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to LBD Backend's documentation!
-=======================================
+LBD Open data Backend Documentation
+===================================
+Welcome to the documentation of the LBD Open data Backend. This documentation explains everything you ever wanted to know
+about this software, except what the Secret Government prohibits us to reveal.
 
-**Table of Contents**
+Table of Content
+^^^^^^^^^^^^^^^^
 
 .. toctree::
    :maxdepth: 2
+   :numbered:
 
    requirements
    installation
@@ -19,9 +23,3 @@ Welcome to LBD Backend's documentation!
    codedoc
    hand
 
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`

@@ -1,6 +1,7 @@
 package fi.lbd.mobile;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
@@ -23,8 +24,8 @@ import fi.lbd.mobile.mapobjects.MapObject;
 
 
 public class DetailsActivity extends Activity {
-
     private ListDetailsAdapter adapter;
+    private ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +40,8 @@ public class DetailsActivity extends Activity {
     @Override
     public void onResume() {
         super.onResume();
+        progressDialog = ProgressDialog.show(this, "", "Loading object...", true);
+        progressDialog.setCancelable(false);
         BusHandler.getBus().register(this);
         BusHandler.getBus().post(new RequestMapObjectEvent(MapObjectSelectionManager.get().getSelectedMapObject().getId()));
     }
@@ -59,6 +62,9 @@ public class DetailsActivity extends Activity {
     public void onStop(){
         super.onStop();
         ActiveActivitiesTracker.activityStopped();
+        if(progressDialog != null && progressDialog.isShowing()){
+            this.progressDialog.dismiss();
+        }
     }
 
     @Override
@@ -95,17 +101,23 @@ public class DetailsActivity extends Activity {
                 }
             });
         }
+        if(progressDialog != null && progressDialog.isShowing()){
+            this.progressDialog.dismiss();
+        }
     }
 
     @Subscribe
     public void onEvent(RequestFailedEvent event){
         if(event.getFailedEvent() instanceof RequestMapObjectEvent){
+            if(progressDialog != null && progressDialog.isShowing()){
+                this.progressDialog.dismiss();
+            }
             onBackPressed();
         }
     }
 
     private void editNote(){
-        Intent intent = new Intent(this, EditNoteActivity.class);
+        Intent intent = new Intent(this, EditInfoActivity.class);
         startActivity(intent);
     }
 

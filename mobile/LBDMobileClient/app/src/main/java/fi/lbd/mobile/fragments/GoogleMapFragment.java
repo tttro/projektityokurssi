@@ -1,6 +1,8 @@
 package fi.lbd.mobile.fragments;
 
 import android.app.Activity;
+import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.location.Address;
@@ -229,9 +231,25 @@ public class GoogleMapFragment extends MapFragment implements OnInfoWindowClickL
     @Override
     public void onInfoWindowClick(Marker marker) {
         MapObjectSelectionManager.get().setSelectedMapObject(this.modelController.findMapObject(marker));
+
+        /*
         Intent intent = new Intent(this.getActivity(), DetailsActivity.class);
         startActivity(intent);
         this.getActivity().overridePendingTransition(0, 0); // Hides the transition animation
+        */
+
+        // DialogFragment.show() will take care of adding the fragment
+        // in a transaction.  We also want to remove any currently showing
+        // dialog, so make our own transaction and take care of that here.
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        Fragment prev = getFragmentManager().findFragmentByTag("");
+        if (prev != null) {
+            ft.remove(prev);
+        }
+        ft.addToBackStack(null);
+
+        MapDialogFragment dialog = MapDialogFragment.newInstance();
+        dialog.show(ft, "");
     }
 
     @Subscribe
