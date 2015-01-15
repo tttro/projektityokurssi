@@ -71,6 +71,7 @@
             android:textSize="14dp"
             android:textStyle="italic"
             android:singleLine="true"
+            android:inputType="textCapSentences"
             android:layout_marginEnd="60dp"
             android:layout_marginRight="60dp"/>
 
@@ -88,6 +89,7 @@
             android:layout_height="wrap_content"
             android:hint="Write your message here"
             android:id="@+id/textViewMessage"
+            android:inputType="textCapSentences"
             android:textSize="14dp"
             android:singleLine="true"
             android:layout_marginEnd="60dp"
