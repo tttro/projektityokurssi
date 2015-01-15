@@ -11,7 +11,7 @@ import re
 import urllib
 import json
 
-from RESThandlers.HandlerInterface.Exceptions import GenericDBError
+from RESThandlers.HandlerInterface.Exceptions import GenericDBError, ObjectNotFound
 from RESThandlers.HandlerInterface.HandlerBaseClass import HandlerBase
 from RESThandlers.Streetlight.models import Streetlights
 
@@ -111,7 +111,8 @@ class StreetlightHandler(HandlerBase):
         if int(result["ok"]) == 1 and len(result["result"]) > 0:
             return result["result"][0]
         else:
-            return None
+            raise ObjectNotFound("Object not found")
+
 
     def get_near(self, longitude, latitude, nrange=0.001, mini=False):
         if mini:
