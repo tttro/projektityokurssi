@@ -2,7 +2,7 @@
 
 var messageController = angular.module('messageController', []);
 
-messageController.controller('messageController', function($scope, $filter, $interval,MessageService, notify){
+messageController.controller('messageController', function($scope, $filter,MessageService, notify){
 
 
     var messageModel = [];
@@ -30,7 +30,7 @@ messageController.controller('messageController', function($scope, $filter, $int
     }
     /*** Logic ***/
     updateMessages();
-   $interval(updateMessages,30000);
+
 
     // Get user of application
     MessageService.getUsers(function(users){
@@ -81,6 +81,10 @@ messageController.controller('messageController', function($scope, $filter, $int
         $scope.messageModel.messageSend.topic = 'RE: ' + message.topic;
 
     };
+
+    $scope.updateMessages = function(){
+        updateMessages();
+    }
 
     /* Accordion */
     $scope.click = function(message){
