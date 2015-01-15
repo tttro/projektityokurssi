@@ -20,6 +20,7 @@ import fi.lbd.mobile.R;
 import fi.lbd.mobile.events.BusHandler;
 import fi.lbd.mobile.events.RequestFailedEvent;
 import fi.lbd.mobile.messaging.events.DeleteMessageEvent;
+import fi.lbd.mobile.messaging.events.DeleteMessageFromListEvent;
 import fi.lbd.mobile.messaging.events.DeleteMessageSucceededEvent;
 import fi.lbd.mobile.messaging.events.RequestUserMessagesEvent;
 import fi.lbd.mobile.messaging.messageobjects.StringMessageObject;
@@ -110,9 +111,8 @@ public class ReadMessageActivity extends Activity {
         int duration = Toast.LENGTH_SHORT;
         Toast.makeText(context, dialogText, duration).show();
 
-        MessageObjectDeletionManager manager = MessageObjectDeletionManager.get();
-        manager.setDeletedMessageObject(event.getOriginalEvent().getMessageId());
-        manager.deleteMessageFromList();
+        BusHandler.getBus().post(new DeleteMessageFromListEvent(event.getOriginalEvent().getMessageId()));
+
         this.deleteInProgress = false;
         if(progressDialog != null && progressDialog.isShowing()){
             this.progressDialog.dismiss();
