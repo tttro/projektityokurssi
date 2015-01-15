@@ -17,7 +17,7 @@ import mongoengine
 from django.http import HttpResponse
 from django.views.decorators.http import require_http_methods
 
-from RESThandlers.HandlerInterface.Exceptions import CollectionNotInstalled
+from RESThandlers.HandlerInterface.Exceptions import CollectionNotInstalled, ObjectNotFound
 from RESThandlers.HandlerInterface.Factory import HandlerFactory
 from lbd_backend.LBD_REST_messagedata.models import Message, Attachment
 from lbd_backend.LBD_REST_users.models import User
@@ -193,9 +193,9 @@ def msg_send(request, *args, **kwargs):
                                             content_type="application/json; charset=utf-8")
                     hf = HandlerFactory(item["category"])
                     hinterface = hf.create()
-                    result = hinterface.get_by_id(item["id"])
-
-                    if result is None:
+                    try:
+                        result = hinterface.get_by_id(item["id"])
+                    except ObjectNotFound:
                         return HttpResponse(status=s_codes["BAD"],
                                             content='{"message": "Attachment item not found."}',
                                             content_type="application/json; charset=utf-8")

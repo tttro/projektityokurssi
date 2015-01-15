@@ -4,9 +4,9 @@ import android.app.Activity;
 import android.app.DialogFragment;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -33,6 +33,8 @@ import fi.lbd.mobile.messaging.events.SendMessageSucceededEvent;
 
 public class SendMessageActivity extends Activity {
 
+    private ProgressDialog sendingMessageDialog;
+    private ProgressDialog loadReceiversDialog;
     private DialogFragment selectReceiverDialog = null;
     private boolean sendInProgress = false;
     private boolean selectReceiverInProgress = false;
@@ -77,11 +79,19 @@ public class SendMessageActivity extends Activity {
         ActiveActivitiesTracker.activityStopped();
         this.selectReceiverInProgress = false;
         this.sendInProgress = false;
+        if(sendingMessageDialog != null && sendingMessageDialog.isShowing()){
+            this.sendingMessageDialog.dismiss();
+        }
+        if(loadReceiversDialog != null && loadReceiversDialog.isShowing()){
+            this.loadReceiversDialog.dismiss();
+        }
     }
 
     public void onSelectReceiverClick(View view){
         if(!this.selectReceiverInProgress) {
             this.selectReceiverInProgress = true;
+            loadReceiversDialog = ProgressDialog.show(this, "", "Loading users...", true);
+            loadReceiversDialog.setCancelable(true);
             BusHandler.getBus().post(new RequestUsersEvent());
         }
     }
@@ -97,6 +107,8 @@ public class SendMessageActivity extends Activity {
             if (receiver != null && title != null && message != null && receiver.length() > 0
                     && title.length() > 0 && message.length() > 0) {
                 this.sendInProgress = true;
+                sendingMessageDialog = ProgressDialog.show(this, "", "Sending message...", true);
+                sendingMessageDialog.setCancelable(false);
                 SendMessageEvent<String> sendMessageEvent = new SendMessageEvent<>(receiver, title, message,
                         new ImmutableMapObject(false, "TEST_ID_1231", new ImmutablePointLocation(10, 10),
                                 new HashMap<String, String>(), new HashMap<String, String>()));
@@ -117,6 +129,9 @@ public class SendMessageActivity extends Activity {
         int duration = Toast.LENGTH_SHORT;
         Toast.makeText(context, dialogText, duration).show();
         this.sendInProgress = false;
+        if(sendingMessageDialog != null && sendingMessageDialog.isShowing()){
+            this.sendingMessageDialog.dismiss();
+        }
         onBackPressed();
     }
 
@@ -128,9 +143,15 @@ public class SendMessageActivity extends Activity {
             int duration = Toast.LENGTH_SHORT;
             Toast.makeText(context, dialogText, duration).show();
             this.sendInProgress = false;
+            if(sendingMessageDialog != null && sendingMessageDialog.isShowing()){
+                this.sendingMessageDialog.dismiss();
+            }
         }
         else if(event.getFailedEvent() instanceof RequestUsersEvent){
             this.selectReceiverInProgress = false;
+            if(loadReceiversDialog != null && loadReceiversDialog.isShowing()){
+                this.loadReceiversDialog.dismiss();
+            }
             Context context = getApplicationContext();
             CharSequence dialogText = "Loading users failed";
             int duration = Toast.LENGTH_SHORT;
@@ -146,6 +167,9 @@ public class SendMessageActivity extends Activity {
         }
         else {
             this.selectReceiverInProgress = false;
+            if(loadReceiversDialog != null && loadReceiversDialog.isShowing()){
+                this.loadReceiversDialog.dismiss();
+            }
             Context context = getApplicationContext();
             CharSequence dialogText = "No users found";
             int duration = Toast.LENGTH_SHORT;
@@ -184,5 +208,8 @@ public class SendMessageActivity extends Activity {
 
     protected void setSelectReceiverInProgress(boolean isInProgress){
         this.selectReceiverInProgress = isInProgress;
+        if(loadReceiversDialog != null && loadReceiversDialog.isShowing()){
+            this.loadReceiversDialog.dismiss();
+        }
     }
 }

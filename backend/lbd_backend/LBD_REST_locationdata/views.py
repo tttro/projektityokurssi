@@ -31,6 +31,7 @@ reasons unknown.
    For kwargs added by the decorators, see :ref:`the decorator documentation <locdecos>`.
 
 """
+from RESThandlers.HandlerInterface.Exceptions import ObjectNotFound
 
 __author__ = 'Aki Mäkinen'
 
@@ -68,7 +69,6 @@ def api(request):
         temp.append(v)
     installed_sources_json = json.dumps(temp)
     return HttpResponse(content=installed_sources_json, content_type="application/json; charset=utf-8")
-
 
 
 @location_collection
@@ -112,20 +112,22 @@ def single_resource(request, *args, **kwargs):
     #
     #############################################################
     if request.method == "GET":
-        datatemp = handlerinterface.get_by_id(kwargs["resource"])
-        if datatemp is None:
+        try:
+            datatemp = handlerinterface.get_by_id(kwargs["resource"])
+        except ObjectNotFound:
             return HttpResponse(status=s_codes["NOTFOUND"])
-        else:
-            try:
-                metatemp = None
-                metatemp = MetaDocument._get_collection().find_one({"feature_id": datatemp["id"]})
-            except DuplicateKeyError:
-                HttpResponse(status=s_codes["INTERNALERROR"])
 
-            if metatemp is not None:
-                datatemp["properties"]["metadata"] = metatemp["meta_data"]
+        try:
+            metatemp = None
+            metatemp = MetaDocument._get_collection().find_one({"feature_id": datatemp["id"]})
+        except DuplicateKeyError as e:
+            HttpResponse(status=s_codes["INTERNALERROR"], content='{"message":"%s"}' % e.message,
+                         content_type="application/json")
 
-            return HttpResponse(status=s_codes["OK"], content_type="application/json; charset=utf-8", content=json.dumps(datatemp))
+        if metatemp is not None:
+            datatemp["properties"]["metadata"] = metatemp["meta_data"]
+
+        return HttpResponse(status=s_codes["OK"], content_type="application/json; charset=utf-8", content=json.dumps(datatemp))
 
     #############################################################
     #
@@ -133,15 +135,18 @@ def single_resource(request, *args, **kwargs):
     #
     #############################################################
     elif request.method == "DELETE":
-        item = handlerinterface.get_by_id(kwargs["resource"])
-        if item is not None:
-            result = MetaDocument._get_collection().remove({"feature_id": kwargs["resource"]})
-            if result["ok"] == 1:
-                return HttpResponse(status=s_codes["OK"])
-            else:
-                return HttpResponse(status=s_codes["INTERNALERROR"])
-        else:
+        try:
+            item = handlerinterface.get_by_id(kwargs["resource"])
+        except ObjectNotFound:
             return HttpResponse(status=s_codes["NOTFOUND"])
+
+        result = MetaDocument._get_collection().remove({"feature_id": kwargs["resource"]})
+        if result["ok"] == 1:
+            return HttpResponse(status=s_codes["OK"])
+        else:
+            return HttpResponse(status=s_codes["INTERNALERROR"])
+
+
 
     #############################################################
     #
@@ -159,12 +164,15 @@ def single_resource(request, *args, **kwargs):
         if geo_json_scheme_validation(content_json):
             print "After Geo valid"
             try:
-                if handlerinterface.get_by_id(kwargs["resource"]) is None:
+                if content_json["id"] != kwargs["resource"]:
+                    return HttpResponse(status=s_codes["BAD"], content='{"message":"Bad JSON. Id does not match the resource in the URL."}',
+                                        content_type="application/json")
+                try:
+                    handlerinterface.get_by_id(kwargs["resource"])
+                    handlerinterface.get_by_id(content_json["id"])
+                except ObjectNotFound:
                     return HttpResponse(status=s_codes["NOTFOUND"])
-                elif content_json["id"] != kwargs["resource"] or handlerinterface.get_by_id(content_json["id"]) is None:
-                    return HttpResponse(status=s_codes["BAD"])
-                else:
-                    pass
+
 
                 content_json["properties"]["metadata"]["modified"] = int(time.time())
                 content_json["properties"]["metadata"]["modifier"] = kwargs["lbduser"].email
@@ -187,7 +195,6 @@ def single_resource(request, *args, **kwargs):
                 return HttpResponse(status=s_codes["OK"])
 
             except KeyError:
-                print "Foo"
                 return HttpResponse(status=s_codes["BAD"])
 
         else:
@@ -251,11 +258,11 @@ def collection(request, *args, **kwargs):
     #
     #############################################################
     elif request.method == "DELETE":
-        MetaDocument.objects().delete()
-        if MetaDocument.objects().count() == 0:
-            return HttpResponse(status=s_codes["OK"])
-        else:
-            return HttpResponse(status=s_codes["INTERNALERROR"])
+        try:
+            MetaDocument.objects().delete()
+        except Exception as e:
+            return HttpResponse(status=s_codes["OK"], content='{"message":"%s"}' % e.message,
+                                content_type="application/json")
 
     #############################################################
     #
@@ -292,10 +299,12 @@ def collection(request, *args, **kwargs):
                                 temp.save()
                             except mongoengine.NotUniqueError:
                                 pass
-                except KeyError:
-                    return HttpResponse(status=s_codes["BAD"])
+                except KeyError as e:
+                    return HttpResponse(status=s_codes["BAD"], content='{"message":"%s"}' % e.message,
+                                        content_type="application/json")
             else:
-                return HttpResponse(status=s_codes["BAD"])
+                return HttpResponse(status=s_codes["BAD"], content='{"message":"Bad JSON"}',
+                                        content_type="application/json")
             return HttpResponse(status=s_codes["OK"])
         else:
             return HttpResponse(status=s_codes["INTERNALERROR"])
@@ -389,12 +398,11 @@ def collection_near(request, *args, **kwargs):
             items = handlerinterface.get_near(longitude, latitude, mini=mini)
         else:
             items = handlerinterface.get_near(longitude, latitude, nrange, mini=mini)
-        if items is not None:
-            if not mini:
-                items = _addmeta(items, colle)
-            return HttpResponse(status=s_codes["OK"], content=json.dumps(items), content_type="application/json; charset=utf-8")
-        else:
-            return HttpResponse(status=s_codes["NOTFOUND"])
+
+        if not mini:
+            items = _addmeta(items, colle)
+        return HttpResponse(status=s_codes["OK"], content=json.dumps(items), content_type="application/json; charset=utf-8")
+
 
     #############################################################
     #
@@ -407,18 +415,17 @@ def collection_near(request, *args, **kwargs):
         else:
             result = handlerinterface.get_near(longitude, latitude, nrange)
 
-        if result is not None:
-            itemlist = []
-            for r in result["features"]:
-                itemlist.append(r["id"])
 
-            f = MetaDocument._get_collection().remove({'feature_id':{'$in':itemlist}})
-            if f["ok"] == 1:
-                return HttpResponse(status=s_codes["OK"])
-            else:
-                return HttpResponse(status=s_codes["INTERNALERROR"])
+        itemlist = []
+        for r in result["features"]:
+            itemlist.append(r["id"])
+
+        f = MetaDocument._get_collection().remove({'feature_id':{'$in':itemlist}})
+        if f["ok"] == 1:
+            return HttpResponse(status=s_codes["OK"])
         else:
-            return HttpResponse(staus=s_codes["NOTFOUND"])
+            return HttpResponse(status=s_codes["INTERNALERROR"], content='{"message":"Something went wrong when making the query."}',
+                            content_type="application/json; charset=utf-8")
 
 
 @location_collection
@@ -457,8 +464,9 @@ def collection_inarea(request, *args, **kwargs):
         ytop_right = float(request.GET.get('ytopright', None))
         xbottom_left = float(request.GET.get('xbottomleft', None))
         ybottom_left = float(request.GET.get('ybottomleft', None))
-    except (TypeError, ValueError):
-        return HttpResponse(status=s_codes["BAD"])
+    except (TypeError, ValueError) as e:
+        return HttpResponse(status=s_codes["BAD"], content='{"message":"%s"}' % e.message,
+                            content_type="application/json; charset=utf-8")
     urlmini = request.GET.get('mini', "")
 
     handlerinterface = kwargs["handlerinterface"]
@@ -476,13 +484,11 @@ def collection_inarea(request, *args, **kwargs):
             mini = False
 
         items = handlerinterface.get_within_rectangle(xtop_right, ytop_right, xbottom_left, ybottom_left, mini)
-        if items is not None:
-            if not mini:
-                items = _addmeta(items, colle)
+        if not mini:
+            items = _addmeta(items, colle)
 
-            return HttpResponse(status=s_codes["OK"], content=json.dumps(items), content_type="application/json; charset=utf-8")
-        else:
-            return HttpResponse(status=s_codes["NOTFOUND"])
+        return HttpResponse(status=s_codes["OK"], content=json.dumps(items), content_type="application/json; charset=utf-8")
+
 
     #############################################################
     #
@@ -501,9 +507,13 @@ def collection_inarea(request, *args, **kwargs):
             if f["ok"] == 1:
                 return HttpResponse(status=s_codes["OK"])
             else:
-                return HttpResponse(status=s_codes["INTERNALERROR"])
+                return HttpResponse(status=s_codes["INTERNALERROR"], content='{"message":"Something went wrong when'
+                                                                             'making the query."}',
+                                content_type="application/json; charset=utf-8")
         else:
-            return HttpResponse(staus=s_codes["NOTFOUND"])
+            return HttpResponse(staus=s_codes["NOTFOUND"], content='{"message":"Nothing was found from the area, '
+                                                                   'therefore nothing was deleted."}',
+                                content_type="application/json; charset=utf-8")
 
 
 @location_collection
@@ -526,24 +536,24 @@ def search_from_rest(request, *args, **kwargs):
     print "1"
     try:
         contentjson = json.loads(request.body)
-    except ValueError:
-        return HttpResponse(status=400)
-    except Exception as e:
-        print "Foobar"
-        return HttpResponse(status=418)
-    print "2"
+    except ValueError as e:
+        return HttpResponse(status=s_codes["BAD"], content_type="applicetion/json; charset=utf-8",
+                            content='{"message":"%s"}' % e.message)
+
     if not all (key in contentjson for key in ("from", "search", "limit")):
-        return HttpResponse(status=400)
+        return HttpResponse(status=s_codes["BAD"], content_type="applicetion/json; charset=utf-8",
+                            content='{"message":"A field is missing from the JSON document"}')
 
     if  not (isinstance(contentjson["search"], str) or isinstance(contentjson["search"], unicode)) or \
         not isinstance(contentjson["limit"], int) or not (isinstance(contentjson["from"], str) or
                                                                       isinstance(contentjson["from"], unicode)):
-        return HttpResponse(status=400)
-    print "3"
+        return HttpResponse(status=s_codes["BAD"], content_type="applicetion/json; charset=utf-8",
+                            content='{"message":"Bad JSON!"}')
     try:
         limit = int(contentjson["limit"])
     except ValueError:
-        return HttpResponse(status=400)
+        return HttpResponse(status=s_codes["BAD"], content_type="applicetion/json; charset=utf-8",
+                            content='{"message":"Result limit must be an integer."}')
 
     print "4"
     original_search_phrase = contentjson["search"]
@@ -557,8 +567,13 @@ def search_from_rest(request, *args, **kwargs):
         totalresults, results = handlerinterface.search(search_regex, limit, contentjson["from"])
         print "After search"
     except NotImplementedError:
-        return HttpResponse(status=400)
-
+        return HttpResponse(status=s_codes["BAD"], content='{"messge":"NotImplementedError was raised. This may be the result of '
+                                                'trying to search from unsupported field. It might also be that search has'
+                                                'not been implemented for this collection."}',
+                            content_type="application/json; charset=utf-8")
+    except ValueError as e:
+        return HttpResponse(status=s_codes["BAD"], content='{"message":"%s"}' % e.message,
+                            content_type="application/json; charset=utf-8")
     results = _addmeta(results, kwargs["collection"])
     resultjson = contentjson
     resultjson["totalResults"] = totalresults
