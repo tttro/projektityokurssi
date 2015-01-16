@@ -40,9 +40,10 @@ public class DetailsActivity extends Activity {
     @Override
     public void onResume() {
         super.onResume();
-        progressDialog = ProgressDialog.show(this, "", "Loading object...", true);
-        progressDialog.setCancelable(false);
         BusHandler.getBus().register(this);
+        progressDialog = ProgressDialog.show(this, "", "Loading object...", true);
+        progressDialog.setCancelable(true);
+        progressDialog.setCanceledOnTouchOutside(false);
         BusHandler.getBus().post(new RequestMapObjectEvent(MapObjectSelectionManager.get().getSelectedMapObject().getId()));
     }
 

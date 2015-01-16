@@ -47,7 +47,7 @@ import fi.lbd.mobile.mapobjects.events.SearchObjectsEvent;
 public class ObjectListFragment extends ListFragment {
     // Declare strings used in the status bar.
     // Defined in onCreateView(), since strings.xml cannot be accessed here.
-    private final String EMPTY = "";
+    private final String EMPTY = "No objects to show";
     private String LOADING;
     private String LOCATION_FAILED;
     private String SHOWING_NEAREST;
@@ -206,12 +206,6 @@ public class ObjectListFragment extends ListFragment {
                 expandableListView.expandGroup(i);
         }
         this.expandableListView.setSelection(firstVisiblePosition);
-
-        // Return text and background of the status bar as they were
-        if(statusText.getText().equals(EMPTY)){
-            statusText.setText(lastStatusText);
-            statusText.setBackgroundColor(lastStatusBackground);
-        }
     }
 
     @Override
@@ -226,7 +220,6 @@ public class ObjectListFragment extends ListFragment {
             Log.d("________", "onPause(). Releasing lock.");
             searchInProgress = false;
         }
-        statusText.setText(EMPTY);
 
         // Save expandable list view item states
         int numberOfGroups = adapter.getGroupCount();
@@ -393,6 +386,7 @@ public class ObjectListFragment extends ListFragment {
                 if(searchParameter != null && searchParameter.length() > 0) {
                     progressDialog = ProgressDialog.show(getActivity(), "", "Searching objects...", true);
                     progressDialog.setCancelable(true);
+                    progressDialog.setCanceledOnTouchOutside(false);
                     Log.d("********", "New search started");
                     searchInProgress = true;
                     ArrayList list = new ArrayList<String>();

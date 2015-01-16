@@ -48,7 +48,6 @@ public class SettingsFragment extends Fragment {
     private ServiceConnection backendHandlerConnection;
 
     private ProgressDialog progressDialog;
-
     private boolean isAcceptClicked = false;
     private boolean isLoadCollectionsClicked = false;
 
@@ -103,7 +102,8 @@ public class SettingsFragment extends Fragment {
             public void onServiceConnected(ComponentName className,
                                            IBinder service) {
                 progressDialog = ProgressDialog.show(getActivity(), "", "Downloading collections...", true);
-                progressDialog.setCancelable(false);
+                progressDialog.setCancelable(true);
+                progressDialog.setCanceledOnTouchOutside(false);
                 Log.d("--------", "onServiceConnected, sending RequestCollectionsEvent, and unbinding");
                 BusHandler.getBus().post(new RequestCollectionsEvent(ApplicationDetails.get().getCurrentBaseApiUrl()));
                 getActivity().unbindService(this);
@@ -128,6 +128,8 @@ public class SettingsFragment extends Fragment {
         Log.d(this.getClass().getSimpleName(), "----- Resuming SettingsFragment");
         BusHandler.getBus().register(this);
         hideSoftKeyboard();
+        isAcceptClicked = false;
+        isLoadCollectionsClicked = false;
 
         // Restore settings that were last selected
         String url = ApplicationDetails.get().getCurrentBaseApiUrl();
@@ -212,6 +214,7 @@ public class SettingsFragment extends Fragment {
                     editor.apply();
 
                     BusHandler.getBus().post(new RequestUserMessagesEvent());
+                    getActivity().finish();
                     Intent intent = new Intent(getActivity(), ListActivity.class);
                     startActivity(intent);
                 } else {
@@ -256,6 +259,7 @@ public class SettingsFragment extends Fragment {
         if(progressDialog != null && progressDialog.isShowing()){
             this.progressDialog.dismiss();
         }
+        isLoadCollectionsClicked = false;
     }
 
     @Subscribe
@@ -274,6 +278,7 @@ public class SettingsFragment extends Fragment {
             if(progressDialog != null && progressDialog.isShowing()){
                 this.progressDialog.dismiss();
             }
+            isLoadCollectionsClicked = false;
         }
     }
 

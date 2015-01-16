@@ -67,6 +67,7 @@ public class MessageFragment extends ListFragment {
                 BusHandler.getBus().post(new RequestUserMessagesEvent());
                 progressDialog = ProgressDialog.show(getActivity(), "", "Downloading messages...", true);
                 progressDialog.setCancelable(true);
+                progressDialog.setCanceledOnTouchOutside(false);
             }
         });
 

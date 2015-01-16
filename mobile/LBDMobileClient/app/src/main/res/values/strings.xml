@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">LBDMobileClient</string>
+    <string name="app_name">LBD Mobile Client</string>
     <string name="service_name">LBDBackendHandlerService</string>
     <string name="action_settings">Settings</string>
     <string name="backend_url">Backend URL</string>
@@ -28,6 +28,7 @@
     <string name="loading">Loading objects...</string>
     <string name="location_failed">Location failed, please try again</string>
     <string name="search_failed">Search failed, please try again</string>
+    <string name="no_objects">No objects to show</string>
     <string name="showing_nearest">Showing %d nearest objects</string>
     <string name="no_nearest_found">No near objects found</string>
     <string name="showing_results">Search resulted in %d objects</string>
