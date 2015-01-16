@@ -9,7 +9,7 @@ import fi.lbd.mobile.messaging.MessageUpdateService;
 /**
  * Created by Ossi on 11.1.2015.
  *
- * Static class to manage connections to services.
+ * Static class to manage starting and stopping services.
  */
 public final class ServiceManager {
     private static Context serviceContext;

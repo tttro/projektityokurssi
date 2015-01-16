@@ -8,6 +8,8 @@ import java.util.List;
 import fi.lbd.mobile.messaging.messageobjects.MessageObject;
 
 /**
+ * Singleton to store user's current MessageObjects.
+ *
  * Created by Ossi on 14.1.2015.
  */
 public class MessageObjectRepository {
@@ -35,6 +37,7 @@ public class MessageObjectRepository {
         return this.objects;
     }
 
+    //Static method for comparing the similarity of two message lists
     // TODO: More efficient way to comparison (using sets?)
     public static boolean areMessageListsIdentical(List<MessageObject> oldMessageObjects,
                                              List<MessageObject> newMessageObjects){

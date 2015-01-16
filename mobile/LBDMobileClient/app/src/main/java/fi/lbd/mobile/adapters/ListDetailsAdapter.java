@@ -16,11 +16,13 @@ import java.util.Map;
 import fi.lbd.mobile.R;
 import fi.lbd.mobile.mapobjects.MapObject;
 /**
+ * Adapter to handle showing details of a MapObject on a ListView.
+ * The amount of details (properties, metadata items, and coordinate points) to be shown can be determined.
+ *
  * Created by Ossi on 19.11.2014.
  */
 public class ListDetailsAdapter extends BaseAdapter {
     private final static String EMPTY = "Empty";
-    private final static String NOTES = "ADDITIONAL NOTES";
     private final static String LOCATION = "LOCATION";
     // Number of properties, metadata items and coordinate points contained in each object
     private int amountOfAdditionalProperties = 0;
@@ -31,6 +33,15 @@ public class ListDetailsAdapter extends BaseAdapter {
     private ArrayList<Map.Entry<String,String>> additionalProperties;
     private ArrayList<Map.Entry<String,String>> metaDataProperties;
     private Context context;
+
+    public ListDetailsAdapter(Context context, MapObject mapObject, int additionalProperties,
+                              int coordinates, int metaDataProperties) {
+        this.context = context;
+        this.additionalProperties = new ArrayList<Map.Entry<String,String>>();
+        this.metaDataProperties = new ArrayList<Map.Entry<String,String>>();
+        setAmountOfProperties(mapObject, additionalProperties, coordinates, metaDataProperties);
+        setObject(mapObject);
+    }
 
     private void setObject(MapObject mapObject){
         this.object = mapObject;
@@ -54,6 +65,7 @@ public class ListDetailsAdapter extends BaseAdapter {
             }
         }
     }
+
     private void setAmountOfProperties(MapObject object, int additionalProperties,
                                        int coordinateObjects, int metaDataProperties){
         if(object.getAdditionalProperties().size() >= additionalProperties) {
@@ -82,39 +94,47 @@ public class ListDetailsAdapter extends BaseAdapter {
         else {
             this.amountOfCoordinates = 1;
         }
-        Log.d("************", String.format("amount of metadataproperties set to %d",this.amountOfMetaDataProperties));
+        Log.d(this.getClass().toString(), String.format("amount of metadataproperties set to " +
+                "%d",this.amountOfMetaDataProperties));
     }
-    public ListDetailsAdapter(Context context, MapObject mapObject, int additionalProperties,
-                              int coordinates, int metaDataProperties) {
-        this.context = context;
-        this.additionalProperties = new ArrayList<Map.Entry<String,String>>();
-        this.metaDataProperties = new ArrayList<Map.Entry<String,String>>();
-        setAmountOfProperties(mapObject, additionalProperties, coordinates, metaDataProperties);
-        setObject(mapObject);
-    }
+
+    // Count = amount of: object id + additional properties + metadata properties + coordinates
     @Override
     public int getCount() {
-        // Count = object id + additional properties + metadata properties + coordinates
         return 1 + amountOfAdditionalProperties + amountOfMetaDataProperties + amountOfCoordinates;
     }
+
     // Not used
     @Override
     public Object getItem(int i) {
         return null;
     }
+
     // Not used
     @Override
     public long getItemId(int i) {
         return i;
     }
+
+    /*
+    //  Object details are listed in the following order:
+    //
+    //  1. Object ID
+    //  2. Additional properties
+    //  3. Coordinates (currently an object can contain at most only 1 coordinate point)
+    //  4. Metadata properties
+    //
+     */
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
         if(view == null){
             LayoutInflater inflater = ((Activity) this.context).getLayoutInflater();
             view = inflater.inflate(R.layout.listview_double_row, viewGroup, false);
         }
+
         TextView textViewId = (TextView) view.findViewById(R.id.textViewObjectId);
         TextView textViewLocation = (TextView) view.findViewById(R.id.textViewObjectLocation);
+
         if(i == 0){
             String key = "OBJECT ID";
             String value = objectId;

@@ -26,7 +26,12 @@ import fi.lbd.mobile.messaging.events.DeleteMessageSucceededEvent;
 import fi.lbd.mobile.messaging.events.RequestUserMessagesEvent;
 import fi.lbd.mobile.messaging.messageobjects.StringMessageObject;
 
-
+/**
+ *
+ * Activity for reading a single message.
+ *
+ * Created by Ossi.
+ */
 public class ReadMessageActivity extends Activity {
     private boolean deleteInProgress = false;
     private ProgressDialog progressDialog;

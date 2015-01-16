@@ -36,6 +36,13 @@ import fi.lbd.mobile.events.RequestFailedEvent;
 import fi.lbd.mobile.events.ReturnCollectionsEvent;
 import fi.lbd.mobile.messaging.events.RequestUserMessagesEvent;
 
+/**
+ *
+ * Fragment where the user can determine settings (background URL, and object collection)
+ * to be used in the app.
+ *
+ * Created by Ossi.
+ */
 public class SettingsFragment extends Fragment {
     private String BACKEND_URL = "";
     private String OBJECT_COLLECTION = "";
@@ -93,9 +100,9 @@ public class SettingsFragment extends Fragment {
         // When user clicks "Done" on keyboard, close the keyboard
         urlText.setOnKeyListener(onSoftKeyboardDonePress);
 
-        /*
-        //  Connection that represents binding to BackendHandlerService.
-        //  Only used to provide onServiceConnected callback.
+        /**
+         *  Connection that represents binding to BackendHandlerService.
+         *  Only used to provide onServiceConnected callback.
          */
         backendHandlerConnection = new ServiceConnection() {
             @Override
@@ -160,16 +167,17 @@ public class SettingsFragment extends Fragment {
         try {
             this.getActivity().unbindService(backendHandlerConnection);
         } catch (Exception e){
-            Log.d(this.getClass().getSimpleName(), "-----onPause trying to unbind a nonexisting bind.");
+            Log.d(this.getClass().getSimpleName(), "onPause() trying to unbind a non-existing bind.");
         }
     }
 
-    /*
-     //  Clicking the load button updates new url for BackendHandlerService.
-     //
-     //  Also binds to BackendHandlerService to get a callback when the Service is connected with
-     //  its new URL.
-      */
+    /**
+     *  Clicking the load button updates new url for BackendHandlerService.
+     *
+     *  Also binds to BackendHandlerService to get a callback when the Service is connected with
+     *  its new URL.
+     *
+     */
     private class LoadListener implements Button.OnClickListener {
         @Override
         public void onClick(View view) {
@@ -185,9 +193,9 @@ public class SettingsFragment extends Fragment {
         }
     }
 
-    /*
-    //  Clicking the Accept button saves new settings and starts ListActivity
-    //
+    /**
+     *  Clicking the Accept button saves new settings and starts ListActivity
+     *
      */
     private class AcceptListener implements Button.OnClickListener{
         @Override
@@ -227,7 +235,7 @@ public class SettingsFragment extends Fragment {
     @Subscribe
     public void onEvent(ReturnCollectionsEvent event){
         // Clear the radiogroup and load new radiobuttons to view
-        Log.d("------", "ReturnCollectionsEvent");
+        Log.d(getClass().toString(), " received ReturnCollectionsEvent");
         clearRadioGroup();
         RadioGroup.LayoutParams layoutParams;
         int i = 0;
@@ -265,7 +273,7 @@ public class SettingsFragment extends Fragment {
     @Subscribe
     public void onEvent(RequestFailedEvent event){
         if(event.getFailedEvent() instanceof RequestCollectionsEvent){
-            Log.d("--------", "RequestFailedEvent");
+            Log.d(getClass().toString(), " Received RequestFailedEvent");
             makeShortToast("Please check URL");
 
             // Clear the radiogroup and add a radiobutton with "empty" text

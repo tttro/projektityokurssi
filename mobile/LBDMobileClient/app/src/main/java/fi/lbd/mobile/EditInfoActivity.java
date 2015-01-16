@@ -25,7 +25,12 @@ import fi.lbd.mobile.mapobjects.MapObjectSelectionManager;
 import fi.lbd.mobile.mapobjects.events.UpdateMapObjectEvent;
 import fi.lbd.mobile.mapobjects.events.UpdateMapObjectSucceededEvent;
 
-
+/**
+ *
+ * Activity to allow editing the "Info" field of an individual object
+ *
+ * Created by Ossi.
+ */
 public class EditInfoActivity extends Activity {
     private boolean acceptButtonPressed = false;
     private ProgressDialog progressDialog;

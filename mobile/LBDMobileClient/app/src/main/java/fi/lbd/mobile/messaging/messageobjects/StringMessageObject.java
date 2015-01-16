@@ -5,7 +5,7 @@ import android.util.Log;
 
 /**
  *
- * Concrete class representing a MessageObject that has a simple String as a message.
+ * Concrete class representing a MessageObject that has a simple String message.
  *
  * Created by Ossi on 29.12.2014.
  */

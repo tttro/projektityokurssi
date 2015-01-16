@@ -20,6 +20,15 @@ import fi.lbd.mobile.messaging.events.ReturnUserMessagesEvent;
 import fi.lbd.mobile.messaging.events.UpdateCachedMessagesToListEvent;
 import fi.lbd.mobile.messaging.messageobjects.MessageObject;
 
+/**
+ *
+ * Service that requests a new list of user's messages every 30 seconds.
+ *
+ * If new message list differs from the previous message list, new messages are saved to
+ * MessageObjectRepository, and MessageFragment is notified via UpdateCachedMessagesToListEvent.
+ *
+ * Created by Ossi.
+ */
 public class MessageUpdateService extends Service {
     private Timer timer = new Timer();
     private static final long UPDATE_INTERVAL = 30*1000;
@@ -35,7 +44,6 @@ public class MessageUpdateService extends Service {
 
     @Override
     public IBinder onBind(Intent intent) {
-        // TODO: Return the communication channel to the service.
         throw new UnsupportedOperationException("Not yet implemented");
     }
 
@@ -53,7 +61,7 @@ public class MessageUpdateService extends Service {
         if (timer != null) {
             timer.cancel();
         }
-        Log.i(getClass().getSimpleName(), "MessageUpdateService stopped.");
+        Log.i(getClass().getSimpleName(), " MessageUpdateService stopped.");
     }
 
     private void startService() {
@@ -76,9 +84,12 @@ public class MessageUpdateService extends Service {
             newMessageObjects = MessageObjectRepository.sortMessagesByTimestamp(newMessageObjects);
             MessageObjectRepository.get().setObjects(newMessageObjects);
 
-            // Send new objects both via @Produce annotation as well as a normal Post event.
-            // This way MessageFragment receives updated messages instantaneously if it is active,
-            // or otherwise at the moment when it becomes active.
+            /**
+             * Send new objects both via @Produce annotation as well as a normal Post event.
+             *
+             * This way MessageFragment receives updated messages instantaneously if it is active,
+             * or otherwise at the moment when it becomes active.
+             */
             BusHandler.getBus().post(new UpdateCachedMessagesToListEvent(newMessageObjects));
             this.updateMessagesToList();
             if(newMessageObjects.size() > 0) {
@@ -97,7 +108,7 @@ public class MessageUpdateService extends Service {
     @Subscribe
     public void onEvent(DeleteMessageFromListEvent event){
         if(event.getMessageId() != null) {
-            Log.d("___________ MessageUpdateService deleting message with ID ", event.getMessageId());
+            Log.d("MessageUpdateService deleting message with ID ", event.getMessageId());
             MessageObjectRepository.get().deleteMessage(event.getMessageId());
             BusHandler.getBus().post(new UpdateCachedMessagesToListEvent(MessageObjectRepository.get().getObjects()));
             updateMessagesToList();
@@ -106,7 +117,7 @@ public class MessageUpdateService extends Service {
 
     @Produce
     public UpdateCachedMessagesToListEvent updateMessagesToList(){
-        Log.d("___________ MessageUpdateService ", "producing UpdateCachedMessagesEvent");
+        Log.d("MessageUpdateService ", "producing UpdateCachedMessagesEvent");
         return new UpdateCachedMessagesToListEvent(MessageObjectRepository.get().getObjects());
     }
 }

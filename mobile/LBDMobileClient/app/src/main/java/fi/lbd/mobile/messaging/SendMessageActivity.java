@@ -31,7 +31,12 @@ import fi.lbd.mobile.messaging.events.SelectReceiverEvent;
 import fi.lbd.mobile.messaging.events.SendMessageEvent;
 import fi.lbd.mobile.messaging.events.SendMessageSucceededEvent;
 
-
+/**
+ *
+ * Activity for sending a message.
+ *
+ * Created by Ossi.
+ */
 public class SendMessageActivity extends Activity {
 
     private ProgressDialog sendingMessageDialog;
@@ -52,7 +57,7 @@ public class SendMessageActivity extends Activity {
         BusHandler.getBus().register(this);
 
         if(getIntent().getSerializableExtra("Replying") != null &&
-                (boolean)getIntent().getSerializableExtra("Replying") == true){
+                (boolean)getIntent().getSerializableExtra("Replying")){
             MessageObject object = MessageObjectSelectionManager.get().getSelectedMessageObject();
             if(object != null) {
                 View rootView = findViewById(android.R.id.content);
@@ -98,7 +103,6 @@ public class SendMessageActivity extends Activity {
         }
     }
 
-    // TODO: Fix send
     public void onSendClick(View view){
         View rootView = findViewById(android.R.id.content);
         String receiver = (String)(((TextView)rootView.findViewById(R.id.textViewReceiver)).getText());
@@ -113,7 +117,7 @@ public class SendMessageActivity extends Activity {
                 sendingMessageDialog.setCancelable(true);
                 sendingMessageDialog.setCanceledOnTouchOutside(false);
                 SendMessageEvent<String> sendMessageEvent = new SendMessageEvent<>(receiver, title, message,
-                        new ImmutableMapObject(false, "TEST_ID_1231", new ImmutablePointLocation(10, 10),
+                        new ImmutableMapObject(false, "Empty", new ImmutablePointLocation(10, 10),
                                 new HashMap<String, String>(), new HashMap<String, String>()));
                 BusHandler.getBus().post(sendMessageEvent);
             }
@@ -173,9 +177,7 @@ public class SendMessageActivity extends Activity {
 
     private void showDialog(List<String> users) {
 
-        // DialogFragment.show() will take care of adding the fragment
-        // in a transaction.  We also want to remove any currently showing
-        // dialog, so make our own transaction and take care of that here.
+        // Remove any currently showing dialog
         FragmentTransaction ft = getFragmentManager().beginTransaction();
         Fragment prev = getFragmentManager().findFragmentByTag("Select receiver");
         if (prev != null) {

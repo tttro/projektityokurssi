@@ -12,6 +12,8 @@ import fi.lbd.mobile.R;
 import fi.lbd.mobile.SettingsActivity;
 
 /**
+ * Fragment that only contains a button to open SettingsActivity.
+ *
  * Created by Ossi on 14.1.2015.
  */
 public class OpenSettingsFragment extends Fragment{
@@ -20,7 +22,6 @@ public class OpenSettingsFragment extends Fragment{
     }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // Inflate UI
         View view = inflater.inflate(R.layout.fragment_open_settings, container, false);
 
         view.findViewById(R.id.openSettingsButton).setOnClickListener(new View.OnClickListener() {
