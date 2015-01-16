@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.android.debug.hv.ViewServer;
 import com.squareup.otto.Subscribe;
 
 import java.util.HashMap;
@@ -41,6 +42,7 @@ public class EditInfoActivity extends Activity {
                 ((EditText) findViewById(android.R.id.content).findViewById(R.id.textViewEdit)).setText(oldInfo);
             }
         }
+        ViewServer.get(this).addWindow(this);
     }
 
     @Override
@@ -63,6 +65,13 @@ public class EditInfoActivity extends Activity {
     public void onResume(){
         super.onResume();
         BusHandler.getBus().register(this);
+        ViewServer.get(this).setFocusedWindow(this);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        ViewServer.get(this).removeWindow(this);
     }
 
     @Override

@@ -1,1 +1,1 @@
-include ':app'//, ':libs:ViewServer'
+include ':app', ':libs:ViewServer'

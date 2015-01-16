@@ -19,6 +19,7 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.android.debug.hv.ViewServer;
 import com.google.android.gms.common.GooglePlayServicesClient;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -74,7 +75,6 @@ public class GoogleMapFragment extends MapFragment implements OnInfoWindowClickL
     private Geocoder geocoder;
     private MapModelController<Marker> modelController;
     private LocationHandler locationHandler;
-
 
     /**
      * Should be used to instantiate this class instead of new-statement.

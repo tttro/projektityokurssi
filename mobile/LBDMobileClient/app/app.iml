@@ -142,6 +142,7 @@
     <orderEntry type="library" exported="" scope="TEST" name="vtd-xml-2.11" level="project" />
     <orderEntry type="library" exported="" scope="TEST" name="junit-4.12" level="project" />
     <orderEntry type="library" exported="" scope="TEST" name="robolectric-2.3" level="project" />
+    <orderEntry type="module" module-name="ViewServer" exported="" />
   </component>
 </module>
 

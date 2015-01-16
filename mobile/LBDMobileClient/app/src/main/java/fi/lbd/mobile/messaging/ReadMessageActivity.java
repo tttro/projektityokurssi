@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.debug.hv.ViewServer;
 import com.squareup.otto.Subscribe;
 
 import java.text.SimpleDateFormat;
@@ -54,18 +55,26 @@ public class ReadMessageActivity extends Activity {
                 ((TextView) rootView.findViewById(R.id.textViewMessageContents)).setText(message);
             }
         }
+        ViewServer.get(this).addWindow(this);
     }
 
     @Override
     public void onResume(){
         super.onResume();
         BusHandler.getBus().register(this);
+        ViewServer.get(this).setFocusedWindow(this);
     }
 
     @Override
     public void onPause(){
         super.onPause();
         BusHandler.getBus().unregister(this);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        ViewServer.get(this).removeWindow(this);
     }
 
     @Override

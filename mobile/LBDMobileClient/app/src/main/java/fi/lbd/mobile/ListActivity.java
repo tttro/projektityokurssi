@@ -14,6 +14,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
+import com.android.debug.hv.ViewServer;
+
 import java.util.ArrayDeque;
 import java.util.Locale;
 
@@ -84,6 +86,7 @@ public class ListActivity extends Activity {
             @Override
             public void onPageScrollStateChanged(int i) {}
         });
+        ViewServer.get(this).addWindow(this);
     }
 
     @Override
@@ -160,6 +163,7 @@ public class ListActivity extends Activity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        ViewServer.get(this).removeWindow(this);
     }
 
     @Override
@@ -170,6 +174,7 @@ public class ListActivity extends Activity {
         BusHandler.getBus().register(this);
         overridePendingTransition(R.anim.fadein, R.anim.fadeout);
         ServiceManager.startMessageService();
+        ViewServer.get(this).setFocusedWindow(this);
     }
 
     @Override
