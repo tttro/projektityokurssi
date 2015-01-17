@@ -30,13 +30,16 @@ from RESThandlers.HandlerInterface.Factory import HandlerFactory
 
 _supported_http_methods = ["GET", "PUT", "POST", "DELETE", "OPTIONS"]
 
-def authenticate_only_methods(func, lst):
-    @wraps(func)
-    def wrapper(request, *args, **kwargs):
-        kwargs["authenticate_only_methods"] = lst
-        return func(request, *args, **kwargs)
-    return wrapper
-
+def authenticate_only_methods(lst):
+    def inner(func):
+        @wraps(func)
+        def wrapper(request, *args, **kwargs):
+            print "In authenticate_only_methods"
+            print lst
+            kwargs["authenticate_only_methods"] = lst
+            return func(request, *args, **kwargs)
+        return wrapper
+    return inner
 
 def location_collection(func):
     """
@@ -75,16 +78,20 @@ def lbd_require_login(func):
     """
     @wraps(func)
     def wrapper(request, *args, **kwargs):
+        print "In lbd_require_login"
         if "authenticate_only_methods" in kwargs:
             for item in kwargs["authenticate_only_methods"]:
                 if item not in _supported_http_methods:
                     return HttpResponse(status=s_codes["INTERNALERROR"])
-            if request.METHOD in kwargs["authenticate_only_methods"]:
+            if request.method in kwargs["authenticate_only_methods"]:
                 require_authentication_headers = True
             else:
                 require_authentication_headers = False
         else:
+            print "Requiring auth headers"
             require_authentication_headers = True
+
+        print require_authentication_headers
 
         if require_authentication_headers:
             if "HTTP_LBD_LOGIN_HEADER" in request.META and "HTTP_LBD_OAUTH_ID" in request.META:

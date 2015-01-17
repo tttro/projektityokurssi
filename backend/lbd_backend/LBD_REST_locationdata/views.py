@@ -31,7 +31,6 @@ reasons unknown.
    For kwargs added by the decorators, see :ref:`the decorator documentation <locdecos>`.
 
 """
-from django.contrib.auth.decorators import login_required
 from RESThandlers.HandlerInterface.Exceptions import ObjectNotFound
 
 __author__ = 'Aki Mäkinen'
@@ -45,7 +44,7 @@ from django.shortcuts import HttpResponse
 from django.views.decorators.http import require_http_methods
 from pymongo.errors import DuplicateKeyError
 
-from lbd_backend.LBD_REST_locationdata.decorators import location_collection, lbd_require_login
+from lbd_backend.LBD_REST_locationdata.decorators import location_collection, lbd_require_login, authenticate_only_methods
 from lbd_backend.LBD_REST_locationdata.models import MetaDocument, MetaData
 from lbd_backend.utils import s_codes, geo_json_scheme_validation
 
@@ -71,8 +70,8 @@ def api(request):
     installed_sources_json = json.dumps(temp)
     return HttpResponse(content=installed_sources_json, content_type="application/json; charset=utf-8")
 
-@login_required
 @location_collection
+@authenticate_only_methods(["DELETE", "PUT", "POST"])
 @lbd_require_login
 @require_http_methods(["GET", "DELETE", "PUT"])
 def single_resource(request, *args, **kwargs):
@@ -204,6 +203,7 @@ def single_resource(request, *args, **kwargs):
 
 @location_collection
 @lbd_require_login
+@authenticate_only_methods(["DELETE", "PUT", "POST"])
 @require_http_methods(["GET", "DELETE", "PUT", "POST"])
 def collection(request, *args, **kwargs):
     """
@@ -341,6 +341,7 @@ def collection(request, *args, **kwargs):
 
 @location_collection
 @lbd_require_login
+@authenticate_only_methods(["DELETE", "PUT", "POST"])
 @require_http_methods(["GET", "DELETE"])
 def collection_near(request, *args, **kwargs):
     """
@@ -431,6 +432,7 @@ def collection_near(request, *args, **kwargs):
 
 @location_collection
 @lbd_require_login
+@authenticate_only_methods(["DELETE", "PUT", "POST"])
 @require_http_methods(["GET", "DELETE"])
 def collection_inarea(request, *args, **kwargs):
     """
@@ -519,6 +521,7 @@ def collection_inarea(request, *args, **kwargs):
 
 @location_collection
 @lbd_require_login
+@authenticate_only_methods(["DELETE", "PUT"])
 @require_http_methods(["POST"])
 def search_from_rest(request, *args, **kwargs):
     """
