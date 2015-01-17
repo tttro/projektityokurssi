@@ -170,15 +170,15 @@ public class BasicUrlReader implements UrlReader {
      */
     @Override
 	public UrlResponse get(String url) {
-        HttpGet getObj;
         try {
-            getObj = new HttpGet(url);
-        } catch (Exception e){
-            e.printStackTrace();
-            getObj = null;
+            HttpGet getObj = new HttpGet(url);
+            setHeaders(getObj);
+            return this.process(getObj); // If the url reading fails, null is returned.
+        } catch (Exception exception){
+            Log.d("URL get unsuccessful. Resulted in exception: ",
+                    exception.getClass().toString() + ": " + exception.getMessage());
+            return null;
         }
-        setHeaders(getObj);
-	    return this.process(getObj); // If the url reading fails, null is returned.
 	}
 
     /**
@@ -201,13 +201,20 @@ public class BasicUrlReader implements UrlReader {
             entity = new StringEntity(jsonContents, HTTP.UTF_8);
             entity.setContentType("application/json");
         } catch (UnsupportedEncodingException e) {
-            Log.e(BasicUrlReader.class.getSimpleName(), "Url post contents were invalid. Resulted in UnsupportedEncodingException. {}", e);
+            Log.e(BasicUrlReader.class.getSimpleName(),
+                    "Url post contents were invalid. Resulted in UnsupportedEncodingException. {}", e);
             return null;
         }
-        HttpPost postObj = new HttpPost(url);
-        setHeaders(postObj);
-        postObj.setEntity(entity);
-        return this.process(postObj); // If the url reading fails, null is returned.
+        try {
+            HttpPost postObj = new HttpPost(url);
+            setHeaders(postObj);
+            postObj.setEntity(entity);
+            return this.process(postObj); // If the url reading fails, null is returned.
+        } catch (Exception exception){
+            Log.d("URL post unsuccessful. Resulted in exception: ",
+                    exception.getClass().toString() + ": " + exception.getMessage());
+            return null;
+        }
     }
 
 

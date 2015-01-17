@@ -4,6 +4,11 @@ import android.app.Activity;
 import android.os.Bundle;
 import fi.lbd.mobile.fragments.SettingsFragment;
 
+/**
+ *  Activity to provide settings functionality.
+ *
+ *  Created by Ossi.
+ */
 public class SettingsActivity extends Activity {
 
     @Override

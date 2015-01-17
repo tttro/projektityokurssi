@@ -16,6 +16,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import fi.lbd.mobile.ActiveActivitiesTracker;
+import fi.lbd.mobile.GlobalToastMaker;
 import fi.lbd.mobile.R;
 import fi.lbd.mobile.events.BusHandler;
 import fi.lbd.mobile.events.RequestFailedEvent;
@@ -25,7 +26,12 @@ import fi.lbd.mobile.messaging.events.DeleteMessageSucceededEvent;
 import fi.lbd.mobile.messaging.events.RequestUserMessagesEvent;
 import fi.lbd.mobile.messaging.messageobjects.StringMessageObject;
 
-
+/**
+ *
+ * Activity for reading a single message.
+ *
+ * Created by Ossi.
+ */
 public class ReadMessageActivity extends Activity {
     private boolean deleteInProgress = false;
     private ProgressDialog progressDialog;
@@ -106,10 +112,8 @@ public class ReadMessageActivity extends Activity {
 
     @Subscribe
     public void onEvent(DeleteMessageSucceededEvent event){
-        Context context = getApplicationContext();
-        CharSequence dialogText = "Message deleted";
-        int duration = Toast.LENGTH_SHORT;
-        Toast.makeText(context, dialogText, duration).show();
+        String dialogText = "Message deleted";
+        GlobalToastMaker.makeShortToast(dialogText);
 
         BusHandler.getBus().post(new DeleteMessageFromListEvent(event.getOriginalEvent().getMessageId()));
 
@@ -127,10 +131,8 @@ public class ReadMessageActivity extends Activity {
             if(progressDialog != null && progressDialog.isShowing()){
                 this.progressDialog.dismiss();
             }
-            Context context = getApplicationContext();
-            CharSequence dialogText = "Failed to delete message";
-            int duration = Toast.LENGTH_SHORT;
-            Toast.makeText(context, dialogText, duration).show();
+            String dialogText = "Failed to delete message";
+            GlobalToastMaker.makeShortToast(dialogText);
         }
     }
 }

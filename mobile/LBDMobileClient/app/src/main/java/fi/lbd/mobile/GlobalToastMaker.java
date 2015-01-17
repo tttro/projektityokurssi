@@ -4,6 +4,8 @@ import android.content.Context;
 import android.widget.Toast;
 
 /**
+ * Used to make Toasts on a global context (this is preferred e.g. for certain failure messages).
+ *
  * Created by Ossi on 14.1.2015.
  */
 public final class GlobalToastMaker {

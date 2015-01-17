@@ -17,10 +17,12 @@ import fi.lbd.mobile.R;
 import fi.lbd.mobile.messaging.messageobjects.MessageObject;
 
 /**
+ *
+ * Adapter to handle showing messages on a list view.
+ *
  * Created by Ossi on 20.12.2014.
  */
 
-// TODO: http://www.codeofaninja.com/2013/09/android-viewholder-pattern-example.html
 public class MessageAdapter extends BaseAdapter {
     private List<MessageObject> objects;
     private Context context;
@@ -77,14 +79,5 @@ public class MessageAdapter extends BaseAdapter {
 
     public List<MessageObject> getObjects(){
         return this.objects;
-    }
-
-    public void deleteItem(String deleteId){
-        for(Iterator iterator = objects.iterator(); iterator.hasNext();){
-
-            if(((MessageObject)iterator.next()).getId().equals(deleteId)){
-                iterator.remove();
-            }
-        }
     }
 }

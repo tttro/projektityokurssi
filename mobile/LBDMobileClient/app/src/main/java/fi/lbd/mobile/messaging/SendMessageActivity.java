@@ -18,6 +18,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import fi.lbd.mobile.ActiveActivitiesTracker;
+import fi.lbd.mobile.GlobalToastMaker;
 import fi.lbd.mobile.R;
 import fi.lbd.mobile.events.BusHandler;
 import fi.lbd.mobile.events.RequestFailedEvent;
@@ -30,7 +31,12 @@ import fi.lbd.mobile.messaging.events.SelectReceiverEvent;
 import fi.lbd.mobile.messaging.events.SendMessageEvent;
 import fi.lbd.mobile.messaging.events.SendMessageSucceededEvent;
 
-
+/**
+ *
+ * Activity for sending a message.
+ *
+ * Created by Ossi.
+ */
 public class SendMessageActivity extends Activity {
 
     private ProgressDialog sendingMessageDialog;
@@ -51,7 +57,7 @@ public class SendMessageActivity extends Activity {
         BusHandler.getBus().register(this);
 
         if(getIntent().getSerializableExtra("Replying") != null &&
-                (boolean)getIntent().getSerializableExtra("Replying") == true){
+                (boolean)getIntent().getSerializableExtra("Replying")){
             MessageObject object = MessageObjectSelectionManager.get().getSelectedMessageObject();
             if(object != null) {
                 View rootView = findViewById(android.R.id.content);
@@ -92,11 +98,11 @@ public class SendMessageActivity extends Activity {
             this.selectReceiverInProgress = true;
             loadReceiversDialog = ProgressDialog.show(this, "", "Loading users...", true);
             loadReceiversDialog.setCancelable(true);
+            loadReceiversDialog.setCanceledOnTouchOutside(false);
             BusHandler.getBus().post(new RequestUsersEvent());
         }
     }
 
-    // TODO: Fix send
     public void onSendClick(View view){
         View rootView = findViewById(android.R.id.content);
         String receiver = (String)(((TextView)rootView.findViewById(R.id.textViewReceiver)).getText());
@@ -108,26 +114,24 @@ public class SendMessageActivity extends Activity {
                     && title.length() > 0 && message.length() > 0) {
                 this.sendInProgress = true;
                 sendingMessageDialog = ProgressDialog.show(this, "", "Sending message...", true);
-                sendingMessageDialog.setCancelable(false);
+                sendingMessageDialog.setCancelable(true);
+                sendingMessageDialog.setCanceledOnTouchOutside(false);
                 SendMessageEvent<String> sendMessageEvent = new SendMessageEvent<>(receiver, title, message,
-                        new ImmutableMapObject(false, "TEST_ID_1231", new ImmutablePointLocation(10, 10),
+                        new ImmutableMapObject(false, "Empty", new ImmutablePointLocation(10, 10),
                                 new HashMap<String, String>(), new HashMap<String, String>()));
                 BusHandler.getBus().post(sendMessageEvent);
-            } else {
-                Context context = getApplicationContext();
-                CharSequence dialogText = "Please check message parameters";
-                int duration = Toast.LENGTH_SHORT;
-                Toast.makeText(context, dialogText, duration).show();
+            }
+            else {
+                String dialogText = "Please check message parameters";
+                makeShortToast(dialogText);
             }
         }
     }
 
     @Subscribe
     public void onEvent(SendMessageSucceededEvent event){
-        Context context = getApplicationContext();
-        CharSequence dialogText = "Message sent";
-        int duration = Toast.LENGTH_SHORT;
-        Toast.makeText(context, dialogText, duration).show();
+        String dialogText = "Message sent";
+        GlobalToastMaker.makeShortToast(dialogText);
         this.sendInProgress = false;
         if(sendingMessageDialog != null && sendingMessageDialog.isShowing()){
             this.sendingMessageDialog.dismiss();
@@ -138,10 +142,8 @@ public class SendMessageActivity extends Activity {
     @Subscribe
     public void onEvent(RequestFailedEvent event){
         if (event.getFailedEvent() instanceof SendMessageEvent) {
-            Context context = getApplicationContext();
-            CharSequence dialogText = "Failed to send message";
-            int duration = Toast.LENGTH_SHORT;
-            Toast.makeText(context, dialogText, duration).show();
+            String dialogText = "Failed to send message";
+            GlobalToastMaker.makeShortToast(dialogText);
             this.sendInProgress = false;
             if(sendingMessageDialog != null && sendingMessageDialog.isShowing()){
                 this.sendingMessageDialog.dismiss();
@@ -152,10 +154,8 @@ public class SendMessageActivity extends Activity {
             if(loadReceiversDialog != null && loadReceiversDialog.isShowing()){
                 this.loadReceiversDialog.dismiss();
             }
-            Context context = getApplicationContext();
-            CharSequence dialogText = "Loading users failed";
-            int duration = Toast.LENGTH_SHORT;
-            Toast.makeText(context, dialogText, duration).show();
+            String dialogText = "Loading users failed";
+            makeShortToast(dialogText);
         }
     }
 
@@ -170,18 +170,14 @@ public class SendMessageActivity extends Activity {
             if(loadReceiversDialog != null && loadReceiversDialog.isShowing()){
                 this.loadReceiversDialog.dismiss();
             }
-            Context context = getApplicationContext();
-            CharSequence dialogText = "No users found";
-            int duration = Toast.LENGTH_SHORT;
-            Toast.makeText(context, dialogText, duration).show();
+            String dialogText = "No users found";
+            makeShortToast(dialogText);
         }
     }
 
     private void showDialog(List<String> users) {
 
-        // DialogFragment.show() will take care of adding the fragment
-        // in a transaction.  We also want to remove any currently showing
-        // dialog, so make our own transaction and take care of that here.
+        // Remove any currently showing dialog
         FragmentTransaction ft = getFragmentManager().beginTransaction();
         Fragment prev = getFragmentManager().findFragmentByTag("Select receiver");
         if (prev != null) {
@@ -210,6 +206,13 @@ public class SendMessageActivity extends Activity {
         this.selectReceiverInProgress = isInProgress;
         if(loadReceiversDialog != null && loadReceiversDialog.isShowing()){
             this.loadReceiversDialog.dismiss();
+        }
+    }
+
+    private void makeShortToast(String message){
+        if(message != null) {
+            int duration = Toast.LENGTH_SHORT;
+            Toast.makeText(this, message, duration).show();
         }
     }
 }

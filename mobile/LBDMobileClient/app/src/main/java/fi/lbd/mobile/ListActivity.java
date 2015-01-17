@@ -19,7 +19,6 @@ import java.util.Locale;
 
 import fi.lbd.mobile.events.BusHandler;
 import fi.lbd.mobile.fragments.OpenSettingsFragment;
-import fi.lbd.mobile.fragments.SettingsFragment;
 import fi.lbd.mobile.mapobjects.MapObjectSelectionManager;
 import fi.lbd.mobile.mapobjects.events.SelectMapObjectEvent;
 import fi.lbd.mobile.fragments.GoogleMapFragment;
@@ -28,7 +27,13 @@ import fi.lbd.mobile.fragments.ObjectListFragment;
 import fi.lbd.mobile.location.LocationHandler;
 import fi.lbd.mobile.mapobjects.MapObject;
 
-
+/**
+ *
+ * The "main" activity of the app. Uses ViewPager to provide tabs for messages, object list, map, and
+ * settings.
+ *
+ * Created by Ossi.
+ */
 public class ListActivity extends Activity {
     // Keeps loaded fragments in memory
     private SectionsPagerAdapter sectionsPagerAdapter;
@@ -50,7 +55,7 @@ public class ListActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.d(this.getClass().getSimpleName(), "onCreate");
+        Log.d(this.getClass().getSimpleName(), " onCreate()");
         setContentView(R.layout.activity_list);
 
         pageStack = new ArrayDeque<Integer>();
@@ -151,7 +156,7 @@ public class ListActivity extends Activity {
                 case MAP_TAB:
                     return getString(R.string.title_tab_map).toUpperCase(l);
                 case SET_TAB:
-                    return "SETTINGS";
+                    return getString(R.string.title_tab_settings).toUpperCase(l);
             }
             return null;
         }
@@ -199,7 +204,7 @@ public class ListActivity extends Activity {
             object = (MapObject)(((View)(view.getParent().getParent())).getTag());
         } catch (Exception e){
             e.printStackTrace();
-            Log.d("NO OBJECT TAG RECEIVED", "-----ON DETAILS CLICK");
+            Log.d(getClass().toString(), " No object tag received on details click.");
         }
         if (object != null) {
             MapObjectSelectionManager.get().setSelectedMapObject(object);
@@ -207,7 +212,7 @@ public class ListActivity extends Activity {
             startActivity(intent);
         }
         else {
-            Log.d("OBJECT WAS NULL", "-----ON DETAILS CLICK");
+            Log.d(getClass().toString(), " Tagged object was null on details click.");
         }
     }
     public void onMapClick(View view){
@@ -217,18 +222,23 @@ public class ListActivity extends Activity {
             object = (MapObject)((View)(view.getParent().getParent())).getTag();
         } catch (Exception e){
             e.printStackTrace();
-            Log.d("NO OBJECT TAG RECEIVED", "-----ON MAP CLICK");
+            Log.d(getClass().toString(), " No object tag received on map click.");
         }
         if (object != null){
             MapObjectSelectionManager.get().setSelectedMapObject(object);
             BusHandler.getBus().post(new SelectMapObjectEvent());
             viewPager.setCurrentItem(MAP_TAB);
         }
+        else {
+            Log.d(getClass().toString(), " Tagged object was null on map click.");
+        }
     }
 
-    // Handle back button presses.
-    //
-    // Pressing the back button brings user to the previous tab.
+    /**
+     * Handle back button presses.
+     * Pressing the back button brings user to the previous tab.
+     *
+     */
     @Override
     public void onBackPressed() {
         if(pageStack.size() > 1) {

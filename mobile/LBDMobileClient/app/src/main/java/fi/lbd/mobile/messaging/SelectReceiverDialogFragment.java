@@ -17,6 +17,9 @@ import fi.lbd.mobile.events.BusHandler;
 import fi.lbd.mobile.messaging.events.SelectReceiverEvent;
 
 /**
+ *
+ * DialogFragment for selecting the message receiver from a list of radio buttons.
+ *
  * Created by Ossi on 4.1.2015.
  */
 public class SelectReceiverDialogFragment extends DialogFragment{
