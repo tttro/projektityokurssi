@@ -1,13 +1,20 @@
 package fi.lbd.mobile.backendhandler;
 
+import android.accounts.Account;
+import android.accounts.AccountManager;
 import android.app.Service;
 import android.content.Intent;
 import android.os.Binder;
+import android.os.Bundle;
 import android.os.IBinder;
 import android.util.Log;
 import android.util.Pair;
 import android.widget.Toast;
 
+import com.google.android.gms.auth.GoogleAuthException;
+import com.google.android.gms.auth.GoogleAuthUtil;
+import com.google.android.gms.auth.UserRecoverableAuthException;
+import com.google.android.gms.common.Scopes;
 import com.squareup.otto.Subscribe;
 
 import java.io.BufferedInputStream;
@@ -49,6 +56,10 @@ import fi.lbd.mobile.messaging.events.ReturnUserMessagesEvent;
 import fi.lbd.mobile.events.ReturnUsersEvent;
 import fi.lbd.mobile.messaging.events.SendMessageEvent;
 import fi.lbd.mobile.messaging.events.SendMessageSucceededEvent;
+import fi.lbd.mobile.myActivity;
+
+import static android.support.v4.app.ActivityCompat.startActivityForResult;
+
 
 /**
  * Service which interacts with the backend handler. Communication is done through OTTO-bus.
@@ -57,7 +68,6 @@ import fi.lbd.mobile.messaging.events.SendMessageSucceededEvent;
  */
 public class BackendHandlerService extends Service {
     private static final long MAX_CACHE_TIME = 1000 * 60 * 1; // 1 Min
-
     // Amount of threads in the executor pool
     private static final int EXECUTING_THREADS = 4;
     private static final int THREAD_TIMEOUT = 10;
@@ -122,7 +132,7 @@ public class BackendHandlerService extends Service {
 
         BasicUrlReader urlReader = new BasicUrlReader();
         try {
-            urlReader.initialize(new Pair<>("LBDServiceCertificate", certificate));
+            urlReader.initialize(getBaseContext(), new Pair<>("LBDServiceCertificate", certificate));
         } catch (UrlReaderException ex) {
             throw new RuntimeException(ex.getOriginalException());
         }

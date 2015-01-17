@@ -1,8 +1,17 @@
 package fi.lbd.mobile.backendhandler;
 
+import android.accounts.Account;
+import android.accounts.AccountManager;
+import android.content.Context;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.util.Log;
 import android.util.Pair;
+
+import com.google.android.gms.auth.GoogleAuthException;
+import com.google.android.gms.auth.GoogleAuthUtil;
+import com.google.android.gms.auth.UserRecoverableAuthException;
+import com.google.android.gms.common.Scopes;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
@@ -41,6 +50,9 @@ import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
 
 import fi.lbd.mobile.ApplicationDetails;
+import fi.lbd.mobile.myActivity;
+
+import static android.support.v4.app.ActivityCompat.startActivityForResult;
 
 /**
  * Static methods for reading an url.
@@ -48,14 +60,17 @@ import fi.lbd.mobile.ApplicationDetails;
  * Created by Tommi.
  */
 public class BasicUrlReader implements UrlReader {
+    static final int REQUEST_AUTHORIZATION = 1138;
     private static final int CONNECTIONS_PER_ROUTE = 4;
     private static DefaultHttpClient httpClient;
-
+    private Context context;
     public BasicUrlReader() {}
 
-    public void initialize(@NonNull Pair<String, Certificate> firstCertificate,
+    public void initialize(Context cont,
+                           @NonNull Pair<String, Certificate> firstCertificate,
                            @NonNull Pair<String, Certificate>... certificates) throws UrlReaderException {
         try {
+            context = cont;
             // Store given certificates to the key store
             String keyStoreType = KeyStore.getDefaultType();
             KeyStore keyStore = KeyStore.getInstance(keyStoreType);
@@ -98,9 +113,39 @@ public class BasicUrlReader implements UrlReader {
 
     private void setHeaders(AbstractHttpMessage message) {
         if(message != null) {
+            AccountManager accountManager = AccountManager.get(context);
+            Account[] accounts = accountManager.getAccountsByType("com.google");
+            Account account;
+            if (accounts.length > 0) {
+                account = accounts[0];
+            } else {
+                account = null;
+            }
+            Log.d("******", account.toString());
+            String email = account.name;
+            String token = "foo";
+            String scope = "oauth2:" + Scopes.PROFILE;
+            String gid = "";
+            try {
+                token = GoogleAuthUtil.getToken(context, email, scope);
+                gid = GoogleAuthUtil.getAccountId(context, email);
+            } catch (UserRecoverableAuthException userRecoverableException) {
+                // GooglePlayServices.apk is either old, disabled, or not present, which is
+                // recoverable, so we need to show the user some UI through the activity.
+
+//                startActivityForResult(new myActivity(), userRecoverableException.getIntent(),
+//                        REQUEST_AUTHORIZATION, new Bundle());
+                Log.d("******", userRecoverableException.toString());
+            } catch (GoogleAuthException fatalException) {
+                Log.d("******", fatalException.toString());
+                Log.d("******", fatalException.getMessage());
+            } catch (IOException io) {
+                Log.d("******", "Blah3");
+            }
             Log.i(this.getClass().getSimpleName(), "USER ID: "+ ApplicationDetails.get().getUserId());
-            message.addHeader("LBD_LOGIN_HEADER", "asdasd"); // TODO: Access token
-            message.addHeader("LBD_OAUTH_ID", ApplicationDetails.get().getUserId()); // Google id
+            Log.i(this.getClass().getSimpleName(), "USER ID: "+ gid);
+            message.addHeader("LBD_LOGIN_HEADER", token); // TODO: Access token
+            message.addHeader("LBD_OAUTH_ID", gid); // Google id
         }
     }
 
