@@ -56,7 +56,6 @@ import fi.lbd.mobile.messaging.events.ReturnUserMessagesEvent;
 import fi.lbd.mobile.events.ReturnUsersEvent;
 import fi.lbd.mobile.messaging.events.SendMessageEvent;
 import fi.lbd.mobile.messaging.events.SendMessageSucceededEvent;
-import fi.lbd.mobile.myActivity;
 
 import static android.support.v4.app.ActivityCompat.startActivityForResult;
 
@@ -132,7 +131,7 @@ public class BackendHandlerService extends Service {
 
         BasicUrlReader urlReader = new BasicUrlReader();
         try {
-            urlReader.initialize(getBaseContext(), new Pair<>("LBDServiceCertificate", certificate));
+            urlReader.initialize(getApplicationContext(), new Pair<>("LBDServiceCertificate", certificate));
         } catch (UrlReaderException ex) {
             throw new RuntimeException(ex.getOriginalException());
         }

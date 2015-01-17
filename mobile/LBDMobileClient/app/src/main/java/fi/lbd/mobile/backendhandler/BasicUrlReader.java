@@ -50,7 +50,6 @@ import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
 
 import fi.lbd.mobile.ApplicationDetails;
-import fi.lbd.mobile.myActivity;
 
 import static android.support.v4.app.ActivityCompat.startActivityForResult;
 
@@ -129,6 +128,7 @@ public class BasicUrlReader implements UrlReader {
             try {
                 token = GoogleAuthUtil.getToken(context, email, scope);
                 gid = GoogleAuthUtil.getAccountId(context, email);
+                Log.d("******", token);
             } catch (UserRecoverableAuthException userRecoverableException) {
                 // GooglePlayServices.apk is either old, disabled, or not present, which is
                 // recoverable, so we need to show the user some UI through the activity.

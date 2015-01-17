@@ -62,7 +62,7 @@ public class StartupActivity extends Activity {
                 String foo = "foo";
                 String scope = "oauth2:" + Scopes.PROFILE;
                 try {
-                    foo = GoogleAuthUtil.getToken(getBaseContext(), email, scope);
+                    foo = GoogleAuthUtil.getToken(getApplicationContext(), email, scope);
                 } catch (UserRecoverableAuthException userRecoverableException) {
                     // GooglePlayServices.apk is either old, disabled, or not present, which is
                     // recoverable, so we need to show the user some UI through the activity.

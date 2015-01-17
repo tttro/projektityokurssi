@@ -22,6 +22,16 @@
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true" />
 
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="INVALIDATE SIGN-IN TOKEN"
+        android:id="@+id/invalidateOauthToken"
+        android:background="@color/button_background"
+        android:textColor="@color/white_text"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentTop="true" />
+
 </RelativeLayout>
 
     <LinearLayout
