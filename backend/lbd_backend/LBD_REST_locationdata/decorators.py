@@ -28,12 +28,14 @@ from RESThandlers.HandlerInterface.Factory import HandlerFactory
 
 _supported_http_methods = ["GET", "PUT", "POST", "DELETE", "OPTIONS"]
 
-def authenticate_only_methods(func, lst):
-    @wraps(func)
-    def wrapper(request, *args, **kwargs):
-        kwargs["authenticate_only_methods"] = lst
-        return func(request, *args, **kwargs)
-    return wrapper
+def authenticate_only_methods(lst):
+    def inner(func):
+        @wraps(func)
+        def wrapper(request, *args, **kwargs):
+            kwargs["authenticate_only_methods"] = lst
+            return func(request, *args, **kwargs)
+        return wrapper
+    return inner
 
 
 def location_collection(func):
