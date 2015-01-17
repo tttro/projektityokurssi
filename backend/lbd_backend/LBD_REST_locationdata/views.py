@@ -31,6 +31,7 @@ reasons unknown.
    For kwargs added by the decorators, see :ref:`the decorator documentation <locdecos>`.
 
 """
+from django.contrib.auth.decorators import login_required
 from RESThandlers.HandlerInterface.Exceptions import ObjectNotFound
 
 __author__ = 'Aki Mäkinen'
@@ -70,7 +71,7 @@ def api(request):
     installed_sources_json = json.dumps(temp)
     return HttpResponse(content=installed_sources_json, content_type="application/json; charset=utf-8")
 
-
+@login_required
 @location_collection
 @lbd_require_login
 @require_http_methods(["GET", "DELETE", "PUT"])

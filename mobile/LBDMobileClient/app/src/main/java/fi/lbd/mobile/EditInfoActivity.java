@@ -25,7 +25,12 @@ import fi.lbd.mobile.mapobjects.MapObjectSelectionManager;
 import fi.lbd.mobile.mapobjects.events.UpdateMapObjectEvent;
 import fi.lbd.mobile.mapobjects.events.UpdateMapObjectSucceededEvent;
 
-
+/**
+ *
+ * Activity to allow editing the "Info" field of an individual object
+ *
+ * Created by Ossi.
+ */
 public class EditInfoActivity extends Activity {
     private boolean acceptButtonPressed = false;
     private ProgressDialog progressDialog;
@@ -87,7 +92,7 @@ public class EditInfoActivity extends Activity {
             if(progressDialog != null && progressDialog.isShowing()){
                 this.progressDialog.dismiss();
             }
-            makeShortToast("Saving content failed");
+            GlobalToastMaker.makeShortToast("Saving content failed");
         }
     }
 
@@ -97,7 +102,8 @@ public class EditInfoActivity extends Activity {
             if (object != null) {
                 this.acceptButtonPressed = true;
                 progressDialog = ProgressDialog.show(this, "", "Saving...", true);
-                progressDialog.setCancelable(false);
+                progressDialog.setCancelable(true);
+                progressDialog.setCanceledOnTouchOutside(false);
                 EditText editText = (EditText) ((View) view.getParent().getParent()).findViewById(R.id.textViewEdit);
                 String text = editText.getText().toString();
                 if (text == null) {
@@ -115,13 +121,5 @@ public class EditInfoActivity extends Activity {
 
     public void onCancelClick(View view){
         onBackPressed();
-    }
-
-    private void makeShortToast(String message){
-        if(message != null) {
-            Context context = getApplicationContext();
-            int duration = Toast.LENGTH_SHORT;
-            Toast.makeText(context, message, duration).show();
-        }
     }
 }

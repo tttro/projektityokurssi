@@ -28,10 +28,15 @@ import fi.lbd.mobile.location.PointLocation;
 import fi.lbd.mobile.mapobjects.MapObject;
 
 /**
+ *
+ * Adapter to handle showing objects on an expandable list view.
+ *
+ * Number of details (additional properties, coordinates, metadata properties), to be shown when the
+ * list is expanded, can be determined.
+ *
  * Created by Ossi on 20.10.2014.
  */
 
-// TODO: http://www.codeofaninja.com/2013/09/android-viewholder-pattern-example.html
 public class ListExpandableAdapter extends BaseExpandableListAdapter {
     private ArrayList<Pair<Integer, MapObject>> objects;
     private Context context;
@@ -157,7 +162,7 @@ public class ListExpandableAdapter extends BaseExpandableListAdapter {
 
             // Tag links the expanded item to its location object
             view.setTag(((Pair<Integer, MapObject>)getGroup(groupPosition)).second);
-            Log.d("TAG SET--------------------",
+            Log.d(getClass().toString() + "Tag set: ",
                     (((Pair<Integer, MapObject>)getGroup(groupPosition)).second).getId());
 
            final MapObject object = ((Pair<Integer, MapObject>)getGroup(groupPosition)).second;
@@ -176,8 +181,7 @@ public class ListExpandableAdapter extends BaseExpandableListAdapter {
         return true;
     }
 
-
-    // Function to adjust the height of a listview according to its children
+    // Function to adjust the height of a list view according to its children
     private static void adjustListHeight(ListView listView){
         int newHeight = 0;
         Adapter adapter = listView.getAdapter();
