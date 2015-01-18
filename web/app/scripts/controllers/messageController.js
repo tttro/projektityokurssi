@@ -110,13 +110,13 @@ messageController.controller('messageController', function($scope, $filter,Messa
 
     // Search
     $scope.messageSearch = function(searchQuery) {
-        $scope.messageList = getFilteredObjectList(searchQuery);
+        $scope.messageModel.messageList.messages = getFiltereMessagetList(searchQuery);
     }
 
 
-    var getFilteredObjectList = function(searchQuery){
+    var getFiltereMessagetList = function(searchQuery){
 
-        var filteredList = $filter('filter')(orginalMessageList.messages,{$:searchQuery},false);
+        var filteredList = $filter('filter')(angular.copy(orginalMessageList.messages) ,{$:searchQuery},false)
 
         return filteredList;
     }

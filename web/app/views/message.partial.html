@@ -1,16 +1,18 @@
 <!-- message.partial.html -->
 <div class="search-form">
-
-       <button style="margin-bottom: 10px;font-size: 13px;" title="Update messages" class="btn btn-primary" type="button" ng-click="updateMessages()"><span class="glyphicon glyphicon-refresh" ></span></button>
-
+    <!-- Refresh -->
+   <button style="margin-bottom: 10px;font-size: 13px;" title="Update messages" class="btn btn-primary" type="button" ng-click="updateMessages()"><span class="glyphicon glyphicon-refresh" ></span></button>
+    <!-- Search -->
     <div class="input-group">
-        <input type="text" class="form-control" ng-model="searchQuery" placeholder="search messages..." >
+        <input type="text" class="form-control" ng-model="searchQuery" placeholder="search messages...">
       <span class="input-group-btn">
         <button class="btn btn-default" type="button" ng-click="messageSearch(searchQuery)"><span class="glyphicon glyphicon-search" aria-hidden="false"></span></button>
       </span>
     </div>
 </div>
+
 <div class="tab-content-inner">
+    <!-- Message send -->
     <div class="sendmsg-form">
         <div class="form-group">
             <label for="messageTo">To</label>
@@ -30,8 +32,8 @@
     </div>
     <div ng-show="showLoadingIcon" class="loading"><img src="./img/ajax-loader.gif"></div>
     <ul>
-        <!-- Details -->
-        <li ng-repeat="message in messageModel.messageList.messages | orderBy:timestamp" ng-class="{'open': isSelected(message)}">
+        <!-- Messages -->
+        <li ng-repeat="message in messageModel.messageList.messages | orderBy:'-timestamp'" ng-class="{'open': isSelected(message)}">
             <div class="accord-title clearfix" is-open="open" ng-click="click(message)">
                 <div class="fleft">
                     <div class="from">{{message.sender}} <br>{{message.timestamp * 1000 | date:'dd.MM.yyyy HH:mm'}} </div>
