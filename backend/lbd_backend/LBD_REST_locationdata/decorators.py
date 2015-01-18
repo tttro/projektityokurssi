@@ -41,6 +41,7 @@ def authenticate_only_methods(lst):
         return wrapper
     return inner
 
+
 def location_collection(func):
     """
     *Wrapper*
@@ -97,7 +98,8 @@ def lbd_require_login(func):
             if "HTTP_LBD_LOGIN_HEADER" in request.META and "HTTP_LBD_OAUTH_ID" in request.META:
                 access_token = request.META["HTTP_LBD_LOGIN_HEADER"]
                 userid = request.META["HTTP_LBD_OAUTH_ID"]
-
+                print "ACCESS_TOKEN: "+access_token
+                print "USER_ID: "+userid
                 url = 'www.googleapis.com'
                 h = httplib.HTTPSConnection(url)
                 h.request("GET", '/oauth2/v1/tokeninfo?access_token=' + access_token)
@@ -119,6 +121,7 @@ def lbd_require_login(func):
                         errormsg = result["error_description"]
                     else:
                         errormsg = "Unknown error happened. Oh noes!"
+                    print errormsg
 
                     return HttpResponse(status=s_codes["BAD"], content='{"message": "%s"}' % errormsg,
                                         content_type="application/json; charset=utf-8")
