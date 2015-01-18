@@ -12,7 +12,7 @@ itemController.controller('itemController', function($scope, $http, $rootScope, 
     $scope.address = '';
     $scope.searchQuery = '';
     $scope.selectedItem = null;
-    $scope.searchMethod = 'map'
+    $scope.searchMethod = 'all'
     $scope.showSearchResultText = false;
     $scope.searchResultText = '';
 

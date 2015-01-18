@@ -61,8 +61,11 @@ messageController.controller('messageController', function($scope, $filter,Messa
     }
 
     $scope.delete = function(message, index){
-        $scope.messageModel.messageList.messages.splice( index , 1 );
-        MessageService.delete(message.id);
+
+        MessageService.delete(message.id, function(){
+            updateMessages();
+        });
+
     }
 
     $scope.reply = function(message){
@@ -113,7 +116,7 @@ messageController.controller('messageController', function($scope, $filter,Messa
 
     var getFilteredObjectList = function(searchQuery){
 
-        var filteredList = $filter('filter')(orginalMessageList,{$:searchQuery},false);
+        var filteredList = $filter('filter')(orginalMessageList.messages,{$:searchQuery},false);
 
         return filteredList;
     }
