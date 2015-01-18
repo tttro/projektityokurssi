@@ -2,6 +2,7 @@ package fi.lbd.mobile.fragments;
 
 import android.app.ListFragment;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -46,8 +47,7 @@ import fi.lbd.mobile.mapobjects.events.SearchObjectsEvent;
 public class ObjectListFragment extends ListFragment {
     // Declare strings used in the status bar.
     // Defined in onCreateView(), since strings.xml cannot be accessed here.
-    private final String EMPTY = "";
-    private String LOADING;
+    private final String EMPTY = "No objects to show";
     private String LOCATION_FAILED;
     private String SHOWING_NEAREST;
     private String NO_NEAREST;
@@ -102,7 +102,7 @@ public class ObjectListFragment extends ListFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        Log.d(this.getClass().getSimpleName(), "onCreateView");
+        Log.d(this.getClass().getSimpleName(), " onCreateView");
         View view = inflater.inflate(R.layout.listview_search_fragment, container, false);
 
         if (this.getActivity() instanceof ListActivity) {
@@ -110,7 +110,6 @@ public class ObjectListFragment extends ListFragment {
             this.setLocationHandler(listActivity.getLocationHandler());
         }
 
-        LOADING = getActivity().getString(R.string.loading);
         LOCATION_FAILED = getActivity().getString(R.string.location_failed);
         SHOWING_NEAREST = getActivity().getString(R.string.showing_nearest);
         NO_NEAREST = getActivity().getString(R.string.no_nearest_found);
@@ -176,6 +175,7 @@ public class ObjectListFragment extends ListFragment {
             }
         });
 
+
         // Listen to onConnected callback on LocationHandler
         this.locationHandler.addListener( new GooglePlayServicesClient.ConnectionCallbacks() {
             @Override
@@ -204,12 +204,6 @@ public class ObjectListFragment extends ListFragment {
                 expandableListView.expandGroup(i);
         }
         this.expandableListView.setSelection(firstVisiblePosition);
-
-        // Return text and background of the status bar as they were
-        if(statusText.getText().equals(EMPTY)){
-            statusText.setText(lastStatusText);
-            statusText.setBackgroundColor(lastStatusBackground);
-        }
     }
 
     @Override
@@ -221,10 +215,9 @@ public class ObjectListFragment extends ListFragment {
         // Set active location/search task as finished, clear the status bar text
         synchronized (LOCK){
             dismissDialog();
-            Log.d("________", "onPause(). Releasing lock.");
+            Log.d(getClass().toString(), " onPause(). Releasing lock.");
             searchInProgress = false;
         }
-        statusText.setText(EMPTY);
 
         // Save expandable list view item states
         int numberOfGroups = adapter.getGroupCount();
@@ -238,9 +231,11 @@ public class ObjectListFragment extends ListFragment {
     }
 
     /**
+     *
      *  Receives nearest objects from BackendHandler by OTTO bus.
      *
      *  Updates the list view and status bar accordingly.
+     *
      */
     @Subscribe
     public void onEvent(ReturnNearObjectsEvent event) {
@@ -336,7 +331,7 @@ public class ObjectListFragment extends ListFragment {
         this.getListView().requestLayout();
         synchronized (LOCK){
             dismissDialog();
-            Log.d("__________","Error received. Releasing lock.");
+            Log.d(getClass().toString(),"Error received. Releasing lock.");
             searchInProgress = false;
         }
     }
@@ -391,6 +386,7 @@ public class ObjectListFragment extends ListFragment {
                 if(searchParameter != null && searchParameter.length() > 0) {
                     progressDialog = ProgressDialog.show(getActivity(), "", "Searching objects...", true);
                     progressDialog.setCancelable(true);
+                    progressDialog.setCanceledOnTouchOutside(false);
                     Log.d("********", "New search started");
                     searchInProgress = true;
                     ArrayList list = new ArrayList<String>();
@@ -408,8 +404,18 @@ public class ObjectListFragment extends ListFragment {
     public void showNearestObjects() {
         synchronized (LOCK){
             if(!searchInProgress) {
-                progressDialog = ProgressDialog.show(getActivity(), "", "Locating nearest objects...", true);
+                progressDialog = ProgressDialog.show(getActivity(), "", "Locating nearest objects...",
+                        true, true, new DialogInterface.OnCancelListener() {
+                    @Override
+                    public void onCancel(DialogInterface dialogInterface) {
+                        dismissDialog();
+                        Log.d(getClass().toString() + "showNearestObjects()",
+                                " Releasing the lock dialog onCancel.");
+                        searchInProgress = false;
+                    }
+                });
                 progressDialog.setCancelable(true);
+                progressDialog.setCanceledOnTouchOutside(false);
                 searchInProgress = true;
                 LocationTask activeTask = new LocationTask();
                 activeTask.execute();
@@ -424,7 +430,7 @@ public class ObjectListFragment extends ListFragment {
      *  near objects from BackendHandler using an OTTO bus event.
      *
      *  @return Returns true if user location was successful and OTTO event was successfully sent.
-     *  @return Returns false if user location was unsuccessful during a 5s timeout, or if the task
+     *  @return Returns false if user location was unsuccessful during a 3s timeout, or if the task
      *  is cancelled.
      */
     private class LocationTask extends AsyncTask<Void, Void, Boolean>{

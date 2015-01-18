@@ -22,7 +22,12 @@ import fi.lbd.mobile.mapobjects.events.RequestMapObjectEvent;
 import fi.lbd.mobile.mapobjects.events.ReturnMapObjectEvent;
 import fi.lbd.mobile.mapobjects.MapObject;
 
-
+/**
+ *
+ * Activity to show details of an individual object.
+ *
+ * Created by Ossi.
+ */
 public class DetailsActivity extends Activity {
     private ListDetailsAdapter adapter;
     private ProgressDialog progressDialog;
@@ -40,9 +45,10 @@ public class DetailsActivity extends Activity {
     @Override
     public void onResume() {
         super.onResume();
-        progressDialog = ProgressDialog.show(this, "", "Loading object...", true);
-        progressDialog.setCancelable(false);
         BusHandler.getBus().register(this);
+        progressDialog = ProgressDialog.show(this, "", "Loading object...", true);
+        progressDialog.setCancelable(true);
+        progressDialog.setCanceledOnTouchOutside(false);
         BusHandler.getBus().post(new RequestMapObjectEvent(MapObjectSelectionManager.get().getSelectedMapObject().getId()));
     }
 
@@ -77,7 +83,7 @@ public class DetailsActivity extends Activity {
         final MapObject obj = event.getMapObject();
 
         if (obj != null) {
-            // Update selected object in case of new data
+            // Update selected object to SelectionManager in case of new data was received
             MapObjectSelectionManager.get().setSelectedMapObject(event.getMapObject());
             this.adapter = new ListDetailsAdapter(this, obj, obj
                     .getAdditionalProperties().size(), 1, obj.getMetadataProperties().size());

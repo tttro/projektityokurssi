@@ -23,3 +23,8 @@ Table of Content
    codedoc
    hand
 
+
+.. toctree::
+   :hidden:
+
+   wearewhiteandnerdy
