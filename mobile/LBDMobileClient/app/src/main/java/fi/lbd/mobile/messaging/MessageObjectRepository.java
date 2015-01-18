@@ -44,6 +44,9 @@ public class MessageObjectRepository {
         if(newMessageObjects == null || oldMessageObjects == null){
             return false;
         }
+        if(newMessageObjects.size() != oldMessageObjects.size()){
+            return false;
+        }
         boolean areIdentical = true;
         for(MessageObject newObject : newMessageObjects){
             int iterator = 0;
