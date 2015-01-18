@@ -163,7 +163,6 @@ def single_resource(request, *args, **kwargs):
 
 
         if geo_json_scheme_validation(content_json):
-            print "After Geo valid"
             try:
                 if content_json["id"] != kwargs["resource"]:
                     return HttpResponse(status=s_codes["BAD"], content='{"message":"Bad JSON. Id does not match the resource in the URL."}',
@@ -537,7 +536,6 @@ def search_from_rest(request, *args, **kwargs):
     :param kwargs: Keyword arguments
     :return: HTTP response
     """
-    print "1"
     try:
         contentjson = json.loads(request.body)
     except ValueError as e:
@@ -559,17 +557,13 @@ def search_from_rest(request, *args, **kwargs):
         return HttpResponse(status=s_codes["BAD"], content_type="applicetion/json; charset=utf-8",
                             content='{"message":"Result limit must be an integer."}')
 
-    print "4"
     original_search_phrase = contentjson["search"]
     allowed_chars = "[A-Za-z0-9\\.\\@]"
     search_regex = contentjson["search"].replace("?", allowed_chars).replace("*", allowed_chars+"*")
 
     handlerinterface = kwargs["handlerinterface"]
-    print "5"
     try:
-        print "Before search"
         totalresults, results = handlerinterface.search(search_regex, limit, contentjson["from"])
-        print "After search"
     except NotImplementedError:
         return HttpResponse(status=s_codes["BAD"], content='{"messge":"NotImplementedError was raised. This may be the result of '
                                                 'trying to search from unsupported field. It might also be that search has'

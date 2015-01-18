@@ -34,8 +34,6 @@ def authenticate_only_methods(lst):
     def inner(func):
         @wraps(func)
         def wrapper(request, *args, **kwargs):
-            print "In authenticate_only_methods"
-            print lst
             kwargs["authenticate_only_methods"] = lst
             return func(request, *args, **kwargs)
         return wrapper
@@ -89,7 +87,6 @@ def lbd_require_login(func):
             else:
                 require_authentication_headers = False
         else:
-            print "Requiring auth headers"
             require_authentication_headers = True
 
         print require_authentication_headers
@@ -98,8 +95,6 @@ def lbd_require_login(func):
             if "HTTP_LBD_LOGIN_HEADER" in request.META and "HTTP_LBD_OAUTH_ID" in request.META:
                 access_token = request.META["HTTP_LBD_LOGIN_HEADER"]
                 userid = request.META["HTTP_LBD_OAUTH_ID"]
-                print "ACCESS_TOKEN: "+access_token
-                print "USER_ID: "+userid
                 url = 'www.googleapis.com'
                 h = httplib.HTTPSConnection(url)
                 h.request("GET", '/oauth2/v1/tokeninfo?access_token=' + access_token)
@@ -111,11 +106,10 @@ def lbd_require_login(func):
                     return HttpResponse(status=s_codes["INTERNALERROR"])
                 #if True:
                 if response.status == 200 and userid == result["user_id"]:
-                    print result
                     print response.status
                     print "User matches"
                 else:
-                    print "ERRORD!"
+                    print "ERROR!"
                     print "STATUS: " + str(response.status)
                     if "error_description" in result:
                         errormsg = result["error_description"]
