@@ -20,8 +20,7 @@ appDirectives.directive('googlePlusSignin', function($window){
             var defaults = {
                 callback: 'signinCallback',
                 cookiepolicy: 'single_host_origin',
-                requestvisibleactions: 'http://schemas.google.com/AddActivity',
-                scope: 'https://www.googleapis.com/auth/plus.login https://www.googleapis.com/auth/userinfo.email profile',
+                scope: 'profile email',
                 width: 'wide',
             };
 
@@ -44,7 +43,7 @@ appDirectives.directive('googlePlusSignin', function($window){
 
             // Asynchronously load the G+ SDK.
             var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
-            po.src = 'https://apis.google.com/js/client:plusone.js';
+            po.src = 'https://apis.google.com/js/client:platform.js';
             var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
 
             linker(function(el, tScope){

@@ -139,13 +139,15 @@ dataServices.factory('MessageService', function($http, appConfig,notify){
                 notify('A message failed to send to ' +  messageObject.to.email);
             });
         },
-        delete: function(id){
+        delete: function(id, callback){
             $http({
                 method: 'DELETE',
                 url: appConfig.baseApiUrl + 'messagedata/api/messages/'+id
             })
             .success(function(data){
+
                 notify('Message has been deleted');
+                callback(data);
             })
             .error(function(data,status,header,config){
                 notify('Failed to delete message');
