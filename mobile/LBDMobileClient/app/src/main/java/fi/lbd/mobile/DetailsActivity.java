@@ -4,9 +4,13 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.ClipData;
 import android.content.ClipboardManager;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.os.Bundle;
+import android.os.IBinder;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.ListView;
@@ -16,7 +20,9 @@ import com.android.debug.hv.ViewServer;
 import com.squareup.otto.Subscribe;
 
 import fi.lbd.mobile.adapters.ListDetailsAdapter;
+import fi.lbd.mobile.backendhandler.BackendHandlerService;
 import fi.lbd.mobile.events.BusHandler;
+import fi.lbd.mobile.events.RequestCollectionsEvent;
 import fi.lbd.mobile.events.RequestFailedEvent;
 import fi.lbd.mobile.mapobjects.MapObjectSelectionManager;
 import fi.lbd.mobile.mapobjects.events.RequestMapObjectEvent;
@@ -32,11 +38,14 @@ import fi.lbd.mobile.mapobjects.MapObject;
 public class DetailsActivity extends Activity {
     private ListDetailsAdapter adapter;
     private ProgressDialog progressDialog;
+    private ServiceConnection backendHandlerConnection;
+    private Activity activity = this;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ViewServer.get(this).addWindow(this);
+        backendHandlerConnection = new BackendHandlerConnection();
     }
 
     @Override
@@ -48,17 +57,22 @@ public class DetailsActivity extends Activity {
     public void onResume() {
         super.onResume();
         BusHandler.getBus().register(this);
-        progressDialog = ProgressDialog.show(this, "", "Loading object...", true);
-        progressDialog.setCancelable(true);
-        progressDialog.setCanceledOnTouchOutside(false);
-        BusHandler.getBus().post(new RequestMapObjectEvent(MapObjectSelectionManager.get().getSelectedMapObject().getId()));
         ViewServer.get(this).setFocusedWindow(this);
+        activity.bindService(new Intent(activity, BackendHandlerService.class),
+                backendHandlerConnection, Context.BIND_AUTO_CREATE);
     }
 
     @Override
     public void onPause() {
         super.onPause();
         BusHandler.getBus().unregister(this);
+
+        // Try to unbind binded service to ensure no binds are leaked when going to pause
+        try {
+            activity.unbindService(backendHandlerConnection);
+        } catch (Exception e){
+            Log.d(this.getClass().getSimpleName(), " onPause() trying to unbind a non-existing bind.");
+        }
     }
 
     @Override
@@ -136,9 +150,27 @@ public class DetailsActivity extends Activity {
         ClipData clip = ClipData.newPlainText("ID", id);
         clipboard.setPrimaryClip(clip);
 
-        Context context = getApplicationContext();
         CharSequence dialogText = "Object id copied to clipboard";
         int duration = Toast.LENGTH_SHORT;
-        Toast.makeText(context, dialogText, duration).show();
+        Toast.makeText(this, dialogText, duration).show();
     }
+
+    /**
+     *  Connection that represents binding to BackendHandlerService.
+     *  Only used to provide onServiceConnected callback.
+     */
+    private class BackendHandlerConnection implements ServiceConnection {
+        @Override
+        public void onServiceConnected(ComponentName className,
+                IBinder service) {
+            progressDialog = ProgressDialog.show(activity, "", "Loading object...", true);
+            progressDialog.setCancelable(true);
+            progressDialog.setCanceledOnTouchOutside(false);
+            Log.d(getClass().toString(), " onServiceConnected, sending RequestObjectEvent, and unbinding");
+            BusHandler.getBus().post(new RequestMapObjectEvent(MapObjectSelectionManager.get().getSelectedMapObject().getId()));
+            activity.unbindService(this);
+        }
+        @Override
+        public void onServiceDisconnected(ComponentName name) {}
+    };
 }
