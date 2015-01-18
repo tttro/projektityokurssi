@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.android.debug.hv.ViewServer;
 import com.squareup.otto.Subscribe;
 
 import fi.lbd.mobile.adapters.ListDetailsAdapter;
@@ -35,6 +36,7 @@ public class DetailsActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ViewServer.get(this).addWindow(this);
     }
 
     @Override
@@ -50,6 +52,7 @@ public class DetailsActivity extends Activity {
         progressDialog.setCancelable(true);
         progressDialog.setCanceledOnTouchOutside(false);
         BusHandler.getBus().post(new RequestMapObjectEvent(MapObjectSelectionManager.get().getSelectedMapObject().getId()));
+        ViewServer.get(this).setFocusedWindow(this);
     }
 
     @Override
@@ -76,6 +79,7 @@ public class DetailsActivity extends Activity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        ViewServer.get(this).removeWindow(this);
     }
 
     @Subscribe

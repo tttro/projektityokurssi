@@ -13,6 +13,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.debug.hv.ViewServer;
 import com.squareup.otto.Subscribe;
 
 import fi.lbd.mobile.messaging.MessageObjectSelectionManager;

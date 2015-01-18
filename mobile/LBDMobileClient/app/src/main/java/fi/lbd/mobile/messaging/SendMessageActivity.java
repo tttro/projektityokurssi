@@ -12,6 +12,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.debug.hv.ViewServer;
 import com.squareup.otto.Subscribe;
 
 import java.util.HashMap;
@@ -49,6 +50,7 @@ public class SendMessageActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_send_message);
+        ViewServer.get(this).addWindow(this);
     }
 
     @Override
@@ -65,12 +67,19 @@ public class SendMessageActivity extends Activity {
                 ((TextView) rootView.findViewById(R.id.textViewTitle)).setText("RE: " + object.getTopic());
             }
         }
+        ViewServer.get(this).setFocusedWindow(this);
     }
 
     @Override
     public void onPause(){
         super.onPause();
         BusHandler.getBus().unregister(this);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        ViewServer.get(this).removeWindow(this);
     }
 
     @Override
