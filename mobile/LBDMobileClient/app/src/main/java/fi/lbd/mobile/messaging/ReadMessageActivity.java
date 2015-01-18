@@ -77,13 +77,13 @@ public class ReadMessageActivity extends Activity {
     @Override
     public void onStart(){
         super.onStart();
-        ActiveActivitiesTracker.activityStarted();
+        ActiveActivitiesTracker.activityStarted(this);
     }
 
     @Override
     public void onStop(){
         super.onStop();
-        ActiveActivitiesTracker.activityStopped();
+        ActiveActivitiesTracker.activityStopped(this);
         this.deleteInProgress = false;
         if(progressDialog != null && progressDialog.isShowing()){
             this.progressDialog.dismiss();

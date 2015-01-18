@@ -103,22 +103,20 @@
             android:layout_marginEnd="60dp"
             android:layout_marginRight="60dp"/>
 
-    </LinearLayout>
+        <Button
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="20dp"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:text="SEND"
+            android:background="@color/button_background"
+            android:id="@+id/sendButton"
+            android:minHeight="30dp"
+            android:textSize="6pt"
+            android:onClick="onSendClick"
+            android:textColor="@color/white_text"
+            android:layout_gravity="center_horizontal" />
 
-    <Button
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="20dp"
-        android:layout_width="120dp"
-        android:layout_height="wrap_content"
-        android:text="SEND"
-        android:background="@color/button_background"
-        android:id="@+id/sendButton"
-        android:minHeight="30dp"
-        android:textSize="6pt"
-        android:onClick="onSendClick"
-        android:textColor="@color/white_text"
-        android:layout_gravity="center_horizontal"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true" />
+    </LinearLayout>
 
 </RelativeLayout>

@@ -1,5 +1,7 @@
 package fi.lbd.mobile;
 
+import android.app.Activity;
+import android.content.SharedPreferences;
 import android.util.Log;
 
 /**
@@ -11,11 +13,26 @@ import android.util.Log;
 public class ActiveActivitiesTracker {
     private static int activeActivities = 0;
 
-    public static void activityStarted()
+    public static void activityStarted(Activity activity)
     {
         if( activeActivities == 0 )
         {
-            Log.d("Going to foreground", " starting services...");
+            Log.d("Activity: " + activity.getClass().toString() + " going to foreground", " starting services...");
+
+            String backend_url = activity.getResources().getString(R.string.backend_url);
+            String object_collection = activity.getResources().getString(R.string.object_collection);
+            SharedPreferences settings = activity.getApplication().getApplicationContext()
+                    .getSharedPreferences(activity.getString(R.string.shared_preferences), Activity.MODE_PRIVATE);
+            String url = settings.getString(backend_url, null);
+            String collection = settings.getString(object_collection, null);
+
+            // If previous settings were found, update them to ApplicationDetails
+            if(url != null && collection != null){
+                Log.d("---------------", "Updated applicationdetails" + "url " + url + "collection " + collection);
+                ApplicationDetails.get().setCurrentBaseApiUrl(url);
+                ApplicationDetails.get().setCurrentCollection(collection);
+            }
+
             ServiceManager.startMessageService();
             ServiceManager.startBackendService();
         }
@@ -23,12 +40,10 @@ public class ActiveActivitiesTracker {
        // Log.d("Number of active activities: ", Integer.toString(activeActivities));
     }
 
-    public static void activityStopped()
-    {
+    public static void activityStopped(Activity activity){
         activeActivities--;
-        if( activeActivities == 0 )
-        {
-            Log.d("Going to background", " stopping services...");
+        if( activeActivities == 0 ){
+            Log.d("Activity: " + activity.getClass().toString() + " going to background", " stopping services...");
             ServiceManager.stopMessageService();
             ServiceManager.stopBackendService();
         }

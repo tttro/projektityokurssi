@@ -79,6 +79,7 @@ public class MessageUpdateService extends Service {
         List<MessageObject> newMessageObjects = event.getMessageObjects();
         List<MessageObject> oldMessageObjects = MessageObjectRepository.get().getObjects();
 
+        // TODO: handle null newMessage objects. Should be handled in the else if block.
         if(newMessageObjects == null){}
         else if (!MessageObjectRepository.areMessageListsIdentical(oldMessageObjects, newMessageObjects)) {
             newMessageObjects = MessageObjectRepository.sortMessagesByTimestamp(newMessageObjects);
