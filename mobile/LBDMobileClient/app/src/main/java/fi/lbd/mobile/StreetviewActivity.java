@@ -29,7 +29,7 @@ public class StreetviewActivity extends FragmentActivity {
     @Override
     public void onStart(){
         super.onStart();
-        ActiveActivitiesTracker.activityStarted();
+        ActiveActivitiesTracker.activityStarted(this);
 
         StreetViewPanoramaFragment streetview = (StreetViewPanoramaFragment)getFragmentManager()
                 .findFragmentById(R.id.streetviewpanorama);
@@ -47,6 +47,6 @@ public class StreetviewActivity extends FragmentActivity {
     @Override
     public void onStop(){
         super.onStop();
-        ActiveActivitiesTracker.activityStopped();
+        ActiveActivitiesTracker.activityStopped(this);
     }
 }

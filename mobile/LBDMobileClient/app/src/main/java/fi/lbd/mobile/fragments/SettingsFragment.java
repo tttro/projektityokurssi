@@ -149,13 +149,11 @@ public class SettingsFragment extends Fragment {
     @Override
     public void onStart(){
         super.onStart();
-        ActiveActivitiesTracker.activityStarted();
     }
 
     @Override
     public void onStop(){
         super.onStop();
-        ActiveActivitiesTracker.activityStopped();
     }
 
     @Override

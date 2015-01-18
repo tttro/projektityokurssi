@@ -188,13 +188,13 @@ public class ListActivity extends Activity {
     @Override
     public void onStart(){
         super.onStart();
-        ActiveActivitiesTracker.activityStarted();
+        ActiveActivitiesTracker.activityStarted(this);
     }
 
     @Override
     public void onStop(){
         super.onStop();
-        ActiveActivitiesTracker.activityStopped();
+        ActiveActivitiesTracker.activityStopped(this);
     }
 
     public void onDetailsClick(View view){

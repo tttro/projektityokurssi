@@ -64,6 +64,20 @@ public class SelectReceiverDialogFragment extends DialogFragment{
             layoutParams = new RadioGroup.LayoutParams(RadioGroup.LayoutParams.WRAP_CONTENT, RadioGroup.LayoutParams.WRAP_CONTENT);
             radioGroup.addView(radioButton, layoutParams);
         }
+        for(int i=0; i<users.size(); i++){
+            RadioButton radioButton = new RadioButton(this.getActivity());
+            radioButton.setText(users.get(i));
+            radioButton.setId(i);
+            layoutParams = new RadioGroup.LayoutParams(RadioGroup.LayoutParams.WRAP_CONTENT, RadioGroup.LayoutParams.WRAP_CONTENT);
+            radioGroup.addView(radioButton, layoutParams);
+        }
+        for(int i=0; i<users.size(); i++){
+            RadioButton radioButton = new RadioButton(this.getActivity());
+            radioButton.setText(users.get(i));
+            radioButton.setId(i);
+            layoutParams = new RadioGroup.LayoutParams(RadioGroup.LayoutParams.WRAP_CONTENT, RadioGroup.LayoutParams.WRAP_CONTENT);
+            radioGroup.addView(radioButton, layoutParams);
+        }
 
         // Watch for button clicks.
         Button button = (Button)v.findViewById(R.id.selectButton);

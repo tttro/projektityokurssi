@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     android:padding="30dp">
 
     <TextView
@@ -10,14 +11,22 @@
         android:layout_height="wrap_content"
         android:textSize="20sp"
         android:text="Select receiver:"
-        android:id="@+id/textView"
-        android:layout_marginBottom="20dp"/>
+        android:id="@+id/textView"/>
 
-    <RadioGroup
-        android:id="@+id/radioGroup"
+    <ScrollView
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
-    </RadioGroup>
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:id="@+id/scrollView2">
+
+        <RadioGroup
+            android:scrollbars="vertical"
+            android:id="@+id/radioGroup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+        </RadioGroup>
+
+    </ScrollView>
 
     <Button
         android:layout_width="120dp"
@@ -27,10 +36,9 @@
         android:id="@+id/selectButton"
         android:minHeight="30dp"
         android:textSize="6pt"
+        android:layout_marginTop="20dp"
         android:onClick="onAcceptClick"
         android:textColor="@color/white_text"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="20dp"
-        android:layout_marginBottom="20dp"/>
+        android:layout_gravity="center_horizontal" />
 
 </LinearLayout>

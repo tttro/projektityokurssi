@@ -41,11 +41,6 @@ public class StartupActivity extends Activity {
         BACKEND_URL = getResources().getString(R.string.backend_url);
         OBJECT_COLLECTION = getResources().getString(R.string.object_collection);
 
-
-        SharedPreferences settings = getSharedPreferences(getString(R.string.shared_preferences), MODE_PRIVATE);
-        String url = settings.getString(BACKEND_URL, null);
-        String collection = settings.getString(OBJECT_COLLECTION, null);
-
         Thread t = new Thread(new Runnable() {
             @Override
             public void run() {
@@ -80,8 +75,10 @@ public class StartupActivity extends Activity {
         });
         t.start();
 
+        SharedPreferences settings = getSharedPreferences(getString(R.string.shared_preferences), MODE_PRIVATE);
+        String url = settings.getString(BACKEND_URL, null);
+        String collection = settings.getString(OBJECT_COLLECTION, null);
 
-//        Log.d("******", foo);
         // If no previous settings were found, move the user to SettingsActivity
         if(url == null || collection == null){
             finish();
