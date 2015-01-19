@@ -1,7 +1,7 @@
 LBD
 =================
 This projects is a part of Tampere University of Technology course Project Work on
-Pervasive Systems and whole application is licenced under X License?.
+Pervasive Systems and whole application is licenced under X License?. Made in collaboration with [Leadin] (www.leadin.fi).
 
 * Mobile-client: Android (Java)
 * Web-client: HTML, CSS, JS, AngularJS
