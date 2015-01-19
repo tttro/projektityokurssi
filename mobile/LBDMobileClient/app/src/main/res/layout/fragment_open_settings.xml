@@ -32,6 +32,7 @@
         android:id="@+id/invalidateOauthToken"
         android:background="@android:color/holo_red_dark"
         android:textColor="@color/white_text"
+        android:visibility="gone"
         android:layout_below="@+id/openSettingsButton"
         android:layout_centerHorizontal="true" />
 

@@ -69,6 +69,7 @@ public class ListActivity extends Activity {
         this.viewPager = (ViewPager) findViewById(R.id.pager);
         this.viewPager.setAdapter(this.sectionsPagerAdapter);
         this.viewPager.setCurrentItem(START_TAB);
+        this.viewPager.setOffscreenPageLimit(4);
 
         viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
