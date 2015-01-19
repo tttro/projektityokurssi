@@ -2,6 +2,7 @@
 var appDirectives = angular.module('appDirectives', []);
 
 // Based on https://github.com/sirkitree/angular-directive.g-signin
+// Modified 2015 by LBD: This doesn't required Google Plus profile anymore
 appDirectives.directive('googlePlusSignin', function($window){
 
     var ending = /\.apps\.googleusercontent\.com$/;

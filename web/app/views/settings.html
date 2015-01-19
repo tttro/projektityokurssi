@@ -14,12 +14,14 @@
             <label for="baseUrl">Data source base url</label>
             <input type="text" class="form-control" id="baseUrl" placeholder="Enter url" ng-model="settingsModel.baseApiUrl">
         </div>
+        <label for="">Collections</label>
         <div class="radio" ng-repeat="collection in settingsModel.collections">
             <label>
                 <input type="radio" ng-value="collection.name" ng-model="settingsModel.collectionModel"> {{collection.name}}
             </label>
         </div>
-        <button class="btn btn-default" ng-click="cancel()">Cancel</button>
+        <br>
+        <button class="btn btn-default" ng-click="cancel()">Cancel/Back</button>
         <button class="btn btn-primary" ng-click="saveSettings()">Save changes and move back</button>
     </form>
 </div>

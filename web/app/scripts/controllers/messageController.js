@@ -8,6 +8,7 @@ messageController.controller('messageController', function($scope, $filter,Messa
     var messageModel = [];
     var orginalMessageList = [];
 
+    // Structure for message send
     var messageSend = {
         to:{
             email:''
@@ -28,9 +29,9 @@ messageController.controller('messageController', function($scope, $filter,Messa
             $scope.showLoadingIcon = false;
         });
     }
+
     /*** Logic ***/
     updateMessages();
-
 
     // Get user of application
     MessageService.getUsers(function(users){
@@ -115,7 +116,7 @@ messageController.controller('messageController', function($scope, $filter,Messa
 
 
     var getFiltereMessagetList = function(searchQuery){
-
+        // Search by text from any values
         var filteredList = $filter('filter')(angular.copy(orginalMessageList.messages) ,{$:searchQuery},false)
 
         return filteredList;
