@@ -3,9 +3,9 @@ package fi.lbd.mobile.mapobjects;
 import fi.lbd.mobile.messaging.messageobjects.MessageObject;
 
 /**
+ * Contains the currently selected map object.
  *
- * TODO: Ennemmin dependency injectionilla? Dagger tms.
- * Created by tommi on 22.10.2014.
+ * Created by Tommi on 22.10.2014.
  */
 public final class MapObjectSelectionManager {
     private static MapObjectSelectionManager singleton;
@@ -21,9 +21,19 @@ public final class MapObjectSelectionManager {
     public static MapObjectSelectionManager get() {
         return MapObjectSelectionManager.singleton;
     }
+
+    /**
+     * Set selected map object.
+     * @param selectedMapObject
+     */
     public void setSelectedMapObject(MapObject selectedMapObject) {
         this.selectedMapObject = selectedMapObject;
     }
+
+    /**
+     * Get selected map object.
+     * @return
+     */
     public MapObject getSelectedMapObject() {
         return this.selectedMapObject;
     }

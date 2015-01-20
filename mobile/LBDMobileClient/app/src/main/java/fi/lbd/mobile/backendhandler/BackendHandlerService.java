@@ -1,20 +1,12 @@
 package fi.lbd.mobile.backendhandler;
 
-import android.accounts.Account;
-import android.accounts.AccountManager;
 import android.app.Service;
 import android.content.Intent;
 import android.os.Binder;
-import android.os.Bundle;
 import android.os.IBinder;
 import android.util.Log;
 import android.util.Pair;
-import android.widget.Toast;
 
-import com.google.android.gms.auth.GoogleAuthException;
-import com.google.android.gms.auth.GoogleAuthUtil;
-import com.google.android.gms.auth.UserRecoverableAuthException;
-import com.google.android.gms.common.Scopes;
 import com.squareup.otto.Subscribe;
 
 import java.io.BufferedInputStream;
@@ -56,8 +48,6 @@ import fi.lbd.mobile.messaging.events.ReturnUserMessagesEvent;
 import fi.lbd.mobile.events.ReturnUsersEvent;
 import fi.lbd.mobile.messaging.events.SendMessageEvent;
 import fi.lbd.mobile.messaging.events.SendMessageSucceededEvent;
-
-import static android.support.v4.app.ActivityCompat.startActivityForResult;
 
 
 /**
@@ -131,7 +121,8 @@ public class BackendHandlerService extends Service {
 
         BasicUrlReader urlReader = new BasicUrlReader();
         try {
-            urlReader.initialize(getApplicationContext(), new Pair<>("LBDServiceCertificate", certificate));
+            urlReader.initialize(new GoogleAuthProvider(getApplicationContext()),
+                    new Pair<>("LBDServiceCertificate", certificate));
         } catch (UrlReaderException ex) {
             throw new RuntimeException(ex.getOriginalException());
         }
@@ -173,6 +164,28 @@ public class BackendHandlerService extends Service {
      */
     public void shutdown() {
         this.executorPool.shutdown();
+    }
+
+    /**
+     * Required for unit testing.
+     */
+    public void forceUrlReaderAndProvider(BasicUrlReader urlReader, UrlProvider urlProvider ) {
+
+        this.backendHandler = new CachingBackendHandler(urlReader, urlProvider, MAX_CACHE_TIME);
+
+        if (this.backendHandler instanceof ApplicationDetails.ApplicationDetailListener) {
+            ApplicationDetails.get().registerApiChangeListener((ApplicationDetails.ApplicationDetailListener) this.backendHandler);
+        }
+        ApplicationDetails.get().registerApiChangeListener(urlProvider);
+
+        this.scheduledExecutor.shutdownNow();
+        scheduledExecutor = Executors.newScheduledThreadPool(1);
+        // Start the repeating check for outdated caches.
+        this.scheduledExecutor.scheduleAtFixedRate(new Runnable() {
+            public void run() {
+                ((CachingBackendHandler)backendHandler).checkForOutdatedCaches();
+            }
+        }, INTERVAL_START_DURATION, INTERVAL_DURATION, INTERVAL_TIME_UNIT);
     }
 
     @Override

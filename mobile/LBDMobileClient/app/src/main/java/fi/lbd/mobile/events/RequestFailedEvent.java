@@ -5,6 +5,8 @@ import android.support.annotation.NonNull;
 import com.google.android.gms.internal.id;
 
 /**
+ * Returned from the backendhandler service if some request failed.
+ *
  * Created by Tommi.
  */
 public class RequestFailedEvent extends AbstractEvent {
@@ -22,5 +24,10 @@ public class RequestFailedEvent extends AbstractEvent {
 
     public String getReason() {
         return reason;
+    }
+
+    @Override
+    public String toString() {
+        return "Returned RequestFailedEvent. Reason: \""+ this.getReason() + "\" Original event: "+this.failedEvent.getClass();
     }
 }

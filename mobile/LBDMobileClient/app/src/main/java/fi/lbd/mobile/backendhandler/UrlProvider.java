@@ -5,6 +5,8 @@ import android.content.Context;
 import fi.lbd.mobile.ApplicationDetails;
 
 /**
+ * Listens for application detail changes and provides urls for backend handler.
+ *
  * Created by Tommi on 10.1.2015.
  */
 public class UrlProvider implements ApplicationDetails.ApplicationDetailListener {

@@ -8,6 +8,7 @@ import fi.lbd.mobile.events.AbstractEvent;
 import fi.lbd.mobile.messaging.messageobjects.MessageObject;
 
 /**
+ * Returns the requested user messages from the backend.
  * Created by Tommi on 3.1.2015.
  */
 public class ReturnUserMessagesEvent extends AbstractEvent {

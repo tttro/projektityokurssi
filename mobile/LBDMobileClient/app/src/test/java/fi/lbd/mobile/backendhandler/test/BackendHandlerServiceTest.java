@@ -1,5 +1,7 @@
 package fi.lbd.mobile.backendhandler.test;
 
+import android.util.Pair;
+
 import com.squareup.otto.Subscribe;
 
 import org.junit.After;
@@ -10,18 +12,24 @@ import org.robolectric.Robolectric;
 import org.robolectric.shadows.ShadowLog;
 import org.robolectric.util.ServiceController;
 
+import java.security.cert.Certificate;
+
 import fi.lbd.mobile.CustomRobolectricTestRunner;
+import fi.lbd.mobile.backendhandler.AuthProvider;
 import fi.lbd.mobile.backendhandler.BackendHandlerService;
+import fi.lbd.mobile.backendhandler.BasicUrlReader;
+import fi.lbd.mobile.backendhandler.UrlProvider;
 import fi.lbd.mobile.events.BusHandler;
-import fi.lbd.mobile.mapobjects.events.CacheObjectsInAreaEvent;
 import fi.lbd.mobile.events.RequestFailedEvent;
+import fi.lbd.mobile.location.ImmutablePointLocation;
+import fi.lbd.mobile.mapobjects.events.CacheObjectsInAreaEvent;
 import fi.lbd.mobile.mapobjects.events.RequestMapObjectEvent;
 import fi.lbd.mobile.mapobjects.events.RequestNearObjectsEvent;
 import fi.lbd.mobile.mapobjects.events.RequestObjectsInAreaEvent;
 import fi.lbd.mobile.mapobjects.events.ReturnMapObjectEvent;
 import fi.lbd.mobile.mapobjects.events.ReturnNearObjectsEvent;
 import fi.lbd.mobile.mapobjects.events.ReturnObjectsInAreaEvent;
-import fi.lbd.mobile.location.ImmutablePointLocation;
+import fi.lbd.mobile.utils.DummyAuthProvider;
 import fi.lbd.mobile.utils.TestData;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -37,6 +45,9 @@ public class BackendHandlerServiceTest {
 
     // http://robolectric.org/activity-lifecycle/
     private ServiceController<BackendHandlerService> serviceCtrlr;
+    private UrlProvider urlProvider;
+    private AuthProvider authProvider;
+    private BasicUrlReader urlreader;
 
     private boolean bReturnNearObjectsEvent = false;
     private boolean bReturnObjectsInAreaEvent = false;
@@ -47,6 +58,10 @@ public class BackendHandlerServiceTest {
     public void setUp() throws Exception {
         ShadowLog.stream = System.out;
         this.serviceCtrlr = Robolectric.buildService(BackendHandlerService.class);
+        this.urlProvider = new UrlProvider("", "", "", "");
+        this.authProvider = new DummyAuthProvider();
+        this.urlreader = new BasicUrlReader();
+        this.urlreader.initialize(this.authProvider, new Pair<>("", mock(Certificate.class)));
         BusHandler.getBus().register(this);
     }
 
@@ -67,7 +82,7 @@ public class BackendHandlerServiceTest {
     }
     @Subscribe
     public void onEvent(final RequestFailedEvent event) {
-        System.out.println("onEvent: RequestFailedEvent");
+        System.out.println("onEvent: RequestFailedEvent: "+ event);
         bRequestFailedEvent = true;
     }
 
@@ -79,6 +94,7 @@ public class BackendHandlerServiceTest {
         System.out.println("---------------------------------------------------------------------");
 
         BackendHandlerService service = this.serviceCtrlr.create().startCommand(0,0).get();
+        service.forceUrlReaderAndProvider(urlreader, this.urlProvider);
 
         this.bReturnNearObjectsEvent = false;
         this.bReturnObjectsInAreaEvent = false;
@@ -108,6 +124,7 @@ public class BackendHandlerServiceTest {
         System.out.println("---------------------------------------------------------------------");
 
         BackendHandlerService service = this.serviceCtrlr.create().startCommand(0,0).get();
+        service.forceUrlReaderAndProvider(urlreader, this.urlProvider);
 
         this.bReturnNearObjectsEvent = false;
         this.bReturnObjectsInAreaEvent = false;
@@ -137,6 +154,7 @@ public class BackendHandlerServiceTest {
         System.out.println("---------------------------------------------------------------------");
 
         BackendHandlerService service = this.serviceCtrlr.create().startCommand(0,0).get();
+        service.forceUrlReaderAndProvider(urlreader, this.urlProvider);
 
         this.bReturnNearObjectsEvent = false;
         this.bReturnObjectsInAreaEvent = false;
@@ -167,6 +185,7 @@ public class BackendHandlerServiceTest {
         System.out.println("---------------------------------------------------------------------");
 
         BackendHandlerService service = this.serviceCtrlr.create().startCommand(0,0).get();
+        service.forceUrlReaderAndProvider(urlreader, this.urlProvider);
 
         this.bReturnNearObjectsEvent = false;
         this.bReturnObjectsInAreaEvent = false;
@@ -199,6 +218,7 @@ public class BackendHandlerServiceTest {
         System.out.println("---------------------------------------------------------------------");
 
         BackendHandlerService service = this.serviceCtrlr.create().startCommand(0,0).get();
+        service.forceUrlReaderAndProvider(urlreader, this.urlProvider);
 
         this.bReturnNearObjectsEvent = false;
         this.bReturnObjectsInAreaEvent = false;
@@ -229,6 +249,7 @@ public class BackendHandlerServiceTest {
         System.out.println("---------------------------------------------------------------------");
 
         BackendHandlerService service = this.serviceCtrlr.create().startCommand(0,0).get();
+        service.forceUrlReaderAndProvider(urlreader, this.urlProvider);
 
         this.bReturnNearObjectsEvent = false;
         this.bReturnObjectsInAreaEvent = false;
@@ -259,6 +280,7 @@ public class BackendHandlerServiceTest {
         System.out.println("---------------------------------------------------------------------");
 
         BackendHandlerService service = this.serviceCtrlr.create().startCommand(0,0).get();
+        service.forceUrlReaderAndProvider(urlreader, this.urlProvider);
 
         this.bReturnNearObjectsEvent = false;
         this.bReturnObjectsInAreaEvent = false;
@@ -288,6 +310,7 @@ public class BackendHandlerServiceTest {
         System.out.println("---------------------------------------------------------------------");
 
         BackendHandlerService service = this.serviceCtrlr.create().startCommand(0,0).get();
+        service.forceUrlReaderAndProvider(urlreader, this.urlProvider);
 
         this.bReturnNearObjectsEvent = false;
         this.bReturnObjectsInAreaEvent = false;

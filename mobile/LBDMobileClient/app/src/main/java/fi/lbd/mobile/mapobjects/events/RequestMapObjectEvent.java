@@ -4,6 +4,9 @@ import android.support.annotation.NonNull;
 
 import fi.lbd.mobile.events.AbstractEvent;
 
+/**
+ * Requests for details about a single map object.
+ */
 public class RequestMapObjectEvent extends AbstractEvent {
     private final String id;
 

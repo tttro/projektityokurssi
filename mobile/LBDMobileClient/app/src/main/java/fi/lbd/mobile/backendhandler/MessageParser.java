@@ -17,6 +17,9 @@ import fi.lbd.mobile.messaging.messageobjects.MessageObject;
 import fi.lbd.mobile.messaging.messageobjects.StringMessageObject;
 
 /**
+ * Parses message JSON into message objects.
+ * TODO: Parse attachments
+ *
  * Created by Tommi on 20.12.2014.
  */
 public class MessageParser {
@@ -25,7 +28,6 @@ public class MessageParser {
             throw new JSONException("Input string cannot be null!");
         }
 
-//        Log.d(MessageParser.class.getSimpleName(), "parse message json: "+ json);
         ObjectMapper mapper = new ObjectMapper();
         JsonNode rootNode = mapper.readTree(json);
         return MessageParser.parseCollection(rootNode);
@@ -60,7 +62,6 @@ public class MessageParser {
     private static MessageObject parseMessage(JsonNode rootNode) throws IOException, JSONException {
         Log.d(MessageParser.class.getSimpleName(), "parse message node json: "+ rootNode);
         JsonNode categoryNode = rootNode.path("category");
-//        check(categoryNode, "Category");
         String category = categoryNode.asText();
 
         JsonNode senderNode = rootNode.path("sender");
