@@ -9,6 +9,7 @@ MIT https://github.com/twbs/bootstrap/blob/master/LICENSE
  https://developers.google.com/maps/documentation/javascript/usage
 * Google Plus Sign-in based on https://github.com/sirkitree/angular-directive.g-signin
 * Angular-Notify https://github.com/cgross/angular-notify
+* HTML5 Shiv 3.7.2 MIT/GPL2
 
 
 Settings
