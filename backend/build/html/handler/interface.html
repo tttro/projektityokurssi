@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>7.1. RESThandlers.HandlerInterface REST Handler Interface &mdash; LBD location data and messaging backend Dev documentation</title>
+    <title>9.1. RESThandlers.HandlerInterface REST Handler Interface &mdash; LBD location data and messaging backend Dev documentation</title>
     
     <link rel="stylesheet" href="../_static/default.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
@@ -24,9 +24,9 @@
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
     <link rel="top" title="LBD location data and messaging backend Dev documentation" href="../index.html" />
-    <link rel="up" title="7. Code documentation: Handlers" href="../hand.html" />
-    <link rel="next" title="7.2. RESThandlers.HandlerInterface.Factory Handler Factory" href="factory.html" />
-    <link rel="prev" title="7. Code documentation: Handlers" href="../hand.html" /> 
+    <link rel="up" title="9. Code documentation: Handlers" href="../hand.html" />
+    <link rel="next" title="9.2. RESThandlers.HandlerInterface.Factory Handler Factory" href="factory.html" />
+    <link rel="prev" title="9. Code documentation: Handlers" href="../hand.html" /> 
   </head>
   <body>
     <div class="related">
@@ -39,13 +39,13 @@
           <a href="../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="factory.html" title="7.2. RESThandlers.HandlerInterface.Factory Handler Factory"
+          <a href="factory.html" title="9.2. RESThandlers.HandlerInterface.Factory Handler Factory"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="../hand.html" title="7. Code documentation: Handlers"
+          <a href="../hand.html" title="9. Code documentation: Handlers"
              accesskey="P">previous</a> |</li>
         <li><a href="../index.html">LBD location data and messaging backend Dev documentation</a> &raquo;</li>
-          <li><a href="../hand.html" accesskey="U">7. Code documentation: Handlers</a> &raquo;</li> 
+          <li><a href="../hand.html" accesskey="U">9. Code documentation: Handlers</a> &raquo;</li> 
       </ul>
     </div>  
 
@@ -55,7 +55,7 @@
           <div class="body">
             
   <div class="section" id="module-RESThandlers.HandlerInterface.Exceptions">
-<span id="resthandlers-handlerinterface-rest-handler-interface"></span><h1>7.1. <tt class="xref py py-mod docutils literal"><span class="pre">RESThandlers.HandlerInterface</span></tt> REST Handler Interface<a class="headerlink" href="#module-RESThandlers.HandlerInterface.Exceptions" title="Permalink to this headline">¶</a></h1>
+<span id="resthandlers-handlerinterface-rest-handler-interface"></span><h1>9.1. <tt class="xref py py-mod docutils literal"><span class="pre">RESThandlers.HandlerInterface</span></tt> REST Handler Interface<a class="headerlink" href="#module-RESThandlers.HandlerInterface.Exceptions" title="Permalink to this headline">¶</a></h1>
 <span class="target" id="module-Handlers.Interface.Exceptions"></span><dl class="exception">
 <dt id="RESThandlers.HandlerInterface.Exceptions.CollectionNotInstalled">
 <em class="property">exception </em><tt class="descclassname">RESThandlers.HandlerInterface.Exceptions.</tt><tt class="descname">CollectionNotInstalled</tt><a class="headerlink" href="#RESThandlers.HandlerInterface.Exceptions.CollectionNotInstalled" title="Permalink to this definition">¶</a></dt>
@@ -80,54 +80,217 @@
 <dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">exceptions.Exception</span></tt></p>
 </dd></dl>
 
-<span class="target" id="module-RESThandlers.HandlerInterface.HandlerBaseClass"></span><span class="target" id="module-Handlers.Interface.base"></span><dl class="class">
+<span class="target" id="module-RESThandlers.HandlerInterface.HandlerBaseClass"></span><div class="section" id="handler-interface">
+<span id="handlerinterface"></span><h2>9.1.1. Handler interface<a class="headerlink" href="#handler-interface" title="Permalink to this headline">¶</a></h2>
+<p><strong>This is the interface a new handler class has to implement</strong></p>
+<span class="target" id="module-Handlers.Interface.base"></span><dl class="class">
 <dt id="RESThandlers.HandlerInterface.HandlerBaseClass.HandlerBase">
 <em class="property">class </em><tt class="descclassname">RESThandlers.HandlerInterface.HandlerBaseClass.</tt><tt class="descname">HandlerBase</tt><a class="headerlink" href="#RESThandlers.HandlerInterface.HandlerBaseClass.HandlerBase" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<p>Class HandlerBase</p>
+<p>Interface and the base class for Handler classes. If duplication of the third party data source is required,
+the data structure should be defined in corresponding model for the handler class. For example of a model, see
+Streetlight handler model.</p>
+<p>If any method is unsupported, it should return NotImplementedError.</p>
 <dl class="method">
 <dt id="RESThandlers.HandlerInterface.HandlerBaseClass.HandlerBase.delete_all">
 <tt class="descname">delete_all</tt><big>(</big><big>)</big><a class="headerlink" href="#RESThandlers.HandlerInterface.HandlerBaseClass.HandlerBase.delete_all" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Delete all items in open data source or in local database.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first simple">
+<li><strong>GeneridDBError</strong> &#8211; Should be raised if something went wrong with the transaction.</li>
+<li><strong>NotImplementedError</strong> &#8211; Raised if the method is not implemented.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">None</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 <dl class="method">
 <dt id="RESThandlers.HandlerInterface.HandlerBaseClass.HandlerBase.delete_item_by_id">
 <tt class="descname">delete_item_by_id</tt><big>(</big><em>iid</em><big>)</big><a class="headerlink" href="#RESThandlers.HandlerInterface.HandlerBaseClass.HandlerBase.delete_item_by_id" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Delete item by GeoJSON id.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>iid</strong> &#8211; <strong>String</strong> A id of a GeoJSON item</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first simple">
+<li><strong>GeneridDBError</strong> &#8211; Should be raised if something went wrong with the transaction.</li>
+<li><strong>NotImplementedError</strong> &#8211; Raised if the method is not implemented.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">None</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 <dl class="method">
 <dt id="RESThandlers.HandlerInterface.HandlerBaseClass.HandlerBase.delete_near">
 <tt class="descname">delete_near</tt><big>(</big><em>latitude</em>, <em>longitude</em>, <em>nrange</em><big>)</big><a class="headerlink" href="#RESThandlers.HandlerInterface.HandlerBaseClass.HandlerBase.delete_near" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Delete items within a circular area.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>latitude</strong> &#8211; <strong>Float</strong> Latitude of the center</li>
+<li><strong>longitude</strong> &#8211; <strong>Float</strong> Longitude of the center</li>
+<li><strong>nrange</strong> &#8211; <strong>Float</strong> Radius of the circle</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first simple">
+<li><strong>GeneridDBError</strong> &#8211; Should be raised if something went wrong with the transaction.</li>
+<li><strong>NotImplementedError</strong> &#8211; Raised if the method is not implemented.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">None</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 <dl class="method">
 <dt id="RESThandlers.HandlerInterface.HandlerBaseClass.HandlerBase.get_all">
 <tt class="descname">get_all</tt><big>(</big><em>mini=False</em><big>)</big><a class="headerlink" href="#RESThandlers.HandlerInterface.HandlerBaseClass.HandlerBase.get_all" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Return all items from REST or database as GeoJson feature collection.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>mini</strong> &#8211; <strong>Boolean</strong> Return only minimum amount of data</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">Raises NotImplementedError:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">Raised if the method is not implemented.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><strong>Dictionary</strong> Returns a GeoJson Feature Collection. (Even if no results)</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 <dl class="method">
 <dt id="RESThandlers.HandlerInterface.HandlerBaseClass.HandlerBase.get_by_id">
 <tt class="descname">get_by_id</tt><big>(</big><em>iid</em><big>)</big><a class="headerlink" href="#RESThandlers.HandlerInterface.HandlerBaseClass.HandlerBase.get_by_id" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Get item by GeoJSON id.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>iid</strong> &#8211; <strong>String</strong> GeoJSON id of the object</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">Raises NotImplementedError:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">Raised if the method is not implemented.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><strong>Dictionary</strong> GeoJSON Feature</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 <dl class="method">
 <dt id="RESThandlers.HandlerInterface.HandlerBaseClass.HandlerBase.get_field_names">
 <tt class="descname">get_field_names</tt><big>(</big><big>)</big><a class="headerlink" href="#RESThandlers.HandlerInterface.HandlerBaseClass.HandlerBase.get_field_names" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Returns a flattened version of data source document structure.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><strong>List</strong> List of fields in data source document.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 <dl class="method">
 <dt id="RESThandlers.HandlerInterface.HandlerBaseClass.HandlerBase.get_item_count">
 <tt class="descname">get_item_count</tt><big>(</big><big>)</big><a class="headerlink" href="#RESThandlers.HandlerInterface.HandlerBaseClass.HandlerBase.get_item_count" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Returns the amount of items in open data source.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first simple">
+<li><strong>NotImplementedError</strong> &#8211; Raised if the method is not implemented.</li>
+<li><strong>ObjectNotFound</strong> &#8211; Raised if no results.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><strong>Integer</strong> Amount of items</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 <dl class="method">
 <dt id="RESThandlers.HandlerInterface.HandlerBaseClass.HandlerBase.get_near">
 <tt class="descname">get_near</tt><big>(</big><em>longitude</em>, <em>latitude</em>, <em>nrange</em><big>)</big><a class="headerlink" href="#RESThandlers.HandlerInterface.HandlerBaseClass.HandlerBase.get_near" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Returns all items from database within range from each other</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>longitude</strong> &#8211; <strong>Float</strong> Longitude of the center</li>
+<li><strong>latitude</strong> &#8211; <strong>Float</strong> Latitude of the center</li>
+<li><strong>nrange</strong> &#8211; <strong>Float</strong> Radius of the circle</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">Raises NotImplementedError:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body"><p class="first">Raised if the method is not implemented.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><strong>Dictionary</strong> Results as GeoJSON Feature Collection. (Even if no results)</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 <dl class="method">
 <dt id="RESThandlers.HandlerInterface.HandlerBaseClass.HandlerBase.get_within_rectangle">
 <tt class="descname">get_within_rectangle</tt><big>(</big><em>xtop_right</em>, <em>ytop_right</em>, <em>xbottom_left</em>, <em>ybottom_left</em>, <em>mini=False</em><big>)</big><a class="headerlink" href="#RESThandlers.HandlerInterface.HandlerBaseClass.HandlerBase.get_within_rectangle" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Returns all items inside a rectangular area.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>xtop_right</strong> &#8211; <strong>Float</strong> longitude of top left corner</li>
+<li><strong>ytop_right</strong> &#8211; <strong>Float</strong> latitude of top left corner</li>
+<li><strong>xbottom_left</strong> &#8211; <strong>Float</strong> longitude of bottom left corner</li>
+<li><strong>ybottom_left</strong> &#8211; <strong>Float</strong> latitude of bottom left corner</li>
+<li><strong>mini</strong> &#8211; <strong>Boolean</strong> Return only minimum amount of data</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">Raises NotImplementedError:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body"><p class="first">Raised if the method is not implemented.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><strong>Dictionary</strong> Returns a GeoJSON Feature Collection. (Even if no results)</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 <dl class="attribute">
 <dt id="RESThandlers.HandlerInterface.HandlerBaseClass.HandlerBase.handler_id">
@@ -149,20 +312,64 @@ For a more advanced concept, see the classmethod builtin.</p>
 <dl class="method">
 <dt id="RESThandlers.HandlerInterface.HandlerBaseClass.HandlerBase.insert_to_db">
 <tt class="descname">insert_to_db</tt><big>(</big><em>jsonitem</em><big>)</big><a class="headerlink" href="#RESThandlers.HandlerInterface.HandlerBaseClass.HandlerBase.insert_to_db" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Inserts jsonItem to database.
+Content of jsonItem depends on the Handler implementation</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>jsonitem</strong> &#8211; <strong>Dictionary</strong> Item to be added into the open data database in GeoJSON format</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first simple">
+<li><strong>GeneridDBError</strong> &#8211; Should be raised if something went wrong with the transaction.</li>
+<li><strong>NotImplementedError</strong> &#8211; Raised if the method is not implemented.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><strong>Boolean</strong> True if successful, False if failed.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 <dl class="method">
 <dt id="RESThandlers.HandlerInterface.HandlerBaseClass.HandlerBase.search">
-<tt class="descname">search</tt><big>(</big><em>phrase</em>, <em>field</em><big>)</big><a class="headerlink" href="#RESThandlers.HandlerInterface.HandlerBaseClass.HandlerBase.search" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<tt class="descname">search</tt><big>(</big><em>phrase</em>, <em>limit</em>, <em>field</em><big>)</big><a class="headerlink" href="#RESThandlers.HandlerInterface.HandlerBaseClass.HandlerBase.search" title="Permalink to this definition">¶</a></dt>
+<dd><p>Search from the data source.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>phrase</strong> &#8211; <strong>String</strong> Search phrase</li>
+<li><strong>limit</strong> &#8211; <strong>Integer</strong> Limit the amount of results to <em>limit</em></li>
+<li><strong>field</strong> &#8211; <strong>String</strong> Limit to a certain field. If not specified or set as None,
+then search from all fields <strong>Default:</strong> <em>None</em>.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><strong>Dictionary</strong> GeoJSON Feature Collection. (Even if no results)</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 <dl class="method">
 <dt id="RESThandlers.HandlerInterface.HandlerBaseClass.HandlerBase.update_db">
 <tt class="descname">update_db</tt><big>(</big><big>)</big><a class="headerlink" href="#RESThandlers.HandlerInterface.HandlerBaseClass.HandlerBase.update_db" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Gets content from rest and inserts to duplication database.
+Do not call if duplication database is not used.
+:exception GeneridDBError: Should be raised if something went wrong with the transaction.
+:exception NotImplementedError: Raised if the method is not implemented.
+:return: <strong>Boolean</strong> True if successful, False if failed.</p>
+</dd></dl>
 
 </dd></dl>
 
+</div>
 </div>
 
 
@@ -171,12 +378,20 @@ For a more advanced concept, see the classmethod builtin.</p>
       </div>
       <div class="sphinxsidebar">
         <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">9.1. <tt class="docutils literal"><span class="pre">RESThandlers.HandlerInterface</span></tt> REST Handler Interface</a><ul>
+<li><a class="reference internal" href="#handler-interface">9.1.1. Handler interface</a></li>
+</ul>
+</li>
+</ul>
+
   <h4>Previous topic</h4>
   <p class="topless"><a href="../hand.html"
-                        title="previous chapter">7. Code documentation: Handlers</a></p>
+                        title="previous chapter">9. Code documentation: Handlers</a></p>
   <h4>Next topic</h4>
   <p class="topless"><a href="factory.html"
-                        title="next chapter">7.2. <tt class="docutils literal"><span class="pre">RESThandlers.HandlerInterface.Factory</span></tt> Handler Factory</a></p>
+                        title="next chapter">9.2. <tt class="docutils literal"><span class="pre">RESThandlers.HandlerInterface.Factory</span></tt> Handler Factory</a></p>
   <h3>This Page</h3>
   <ul class="this-page-menu">
     <li><a href="../_sources/handler/interface.txt"
@@ -209,13 +424,13 @@ For a more advanced concept, see the classmethod builtin.</p>
           <a href="../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="factory.html" title="7.2. RESThandlers.HandlerInterface.Factory Handler Factory"
+          <a href="factory.html" title="9.2. RESThandlers.HandlerInterface.Factory Handler Factory"
              >next</a> |</li>
         <li class="right" >
-          <a href="../hand.html" title="7. Code documentation: Handlers"
+          <a href="../hand.html" title="9. Code documentation: Handlers"
              >previous</a> |</li>
         <li><a href="../index.html">LBD location data and messaging backend Dev documentation</a> &raquo;</li>
-          <li><a href="../hand.html" >7. Code documentation: Handlers</a> &raquo;</li> 
+          <li><a href="../hand.html" >9. Code documentation: Handlers</a> &raquo;</li> 
       </ul>
     </div>
     <div class="footer">

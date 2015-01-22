@@ -9,6 +9,8 @@ __author__ = 'Aki Mäkinen'
 
 from RESThandlers.Streetlight import Handler as SL_Handler
 from RESThandlers.Playgrounds import Handler as P_Handler
+
+
 _installedSources = {
     "Streetlights": {
         "handler": SL_Handler.StreetlightHandler,

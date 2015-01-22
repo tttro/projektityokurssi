@@ -1,0 +1,177 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>3. Configuration &mdash; LBD location data and messaging backend Dev documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     'Dev',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="LBD location data and messaging backend Dev documentation" href="index.html" />
+    <link rel="next" title="4. Headers and CORS" href="headersandcors.html" />
+    <link rel="prev" title="2. Installation" href="installation.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="headersandcors.html" title="4. Headers and CORS"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="installation.html" title="2. Installation"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">LBD location data and messaging backend Dev documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="configuration">
+<span id="config"></span><h1>3. Configuration<a class="headerlink" href="#configuration" title="Permalink to this headline">¶</a></h1>
+<p>Now to get the back-end properly configured. First thing is to check Django&#8217;s settings.:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">BASE_DIR</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">__file__</span><span class="p">))</span>
+
+<span class="c"># SECURITY WARNING: keep the secret key used in production secret!</span>
+<span class="n">SECRET_KEY</span> <span class="o">=</span> <span class="s">&#39;&#39;</span>
+
+<span class="n">TESTING_URLS</span> <span class="o">=</span> <span class="bp">True</span>
+
+<span class="n">DEBUG</span> <span class="o">=</span> <span class="bp">True</span>
+
+<span class="n">TEMPLATE_DEBUG</span> <span class="o">=</span> <span class="n">DEBUG</span>
+
+<span class="n">ALLOWED_HOSTS</span> <span class="o">=</span> <span class="p">[</span><span class="s">&quot;*&quot;</span><span class="p">]</span>
+</pre></div>
+</div>
+<p><em>BASE_DIR</em> defines the installation directory. The value in the sample settings file should be left alone, unless you are
+certain on what you are doing.</p>
+<p><em>SECRET_KEY</em> should always be kept as a secret and changed for each production server. In order to generate a new secret key,
+run <em>generate_skey.py</em> located in <em>backend/lbd_backend</em> folder and paste the string to SECRET_KEY.</p>
+<p><em>TESTING_URLS</em> is used to enable and disable some URL configurations. In the current stage of development, this means
+the unofficial &#8220;registeration&#8221; URLs (only used to add a new user to user database). In production this should be set
+False and only enabled temporarily if/when needed and if you are absolutely sure about it.</p>
+<p><em>DEBUG</em> enables some Django debug printing such as stack trace when an exception is left uncaught. In production this should
+always be False.</p>
+<p><em>TEMPLATE_DEBUG</em> should have same value as DEBUG.</p>
+<p>The code below connects to the mongoengine database. The first argument is the name of the database and the second the address
+and port of the database. Change these according to your MongoDB configuration.:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">mongoengine</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s">&quot;lbd_backend&quot;</span><span class="p">,</span> <span class="n">host</span><span class="o">=</span><span class="s">&quot;127.0.0.1:27017&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The following set some settings needed for the mongoengine and MongoDB. Change these at your own risk.:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">AUTHENTICATION_BACKENDS</span> <span class="o">=</span> <span class="p">(</span>
+                            <span class="s">&#39;mongoengine.django.auth.MongoEngineBackend&#39;</span><span class="p">,</span>
+                            <span class="p">)</span>
+<span class="n">SESSION_ENGINE</span> <span class="o">=</span> <span class="s">&#39;mongoengine.django.sessions&#39;</span>
+
+<span class="n">TEST_RUNNER</span> <span class="o">=</span> <span class="s">&#39;lbd_backend.LBD_REST_locationdata.testrunner.NoSQLTestRunner&#39;</span>
+
+
+<span class="n">SESSION_COOKIE_SECURE</span> <span class="o">=</span> <span class="bp">True</span>
+<span class="n">CSRF_COOKIE_SECURE</span> <span class="o">=</span> <span class="bp">True</span>
+<span class="n">SESSION_EXPIRE_AT_BROWSER_CLOSE</span> <span class="o">=</span> <span class="bp">True</span>
+
+<span class="n">SECURE_PROXY_SSL_HEADER</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;HTTP_X_FORWARDED_PROTOCOL&#39;</span><span class="p">,</span> <span class="s">&#39;https&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Also the following should be modified only if you are certain of what you are doing.:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">TEMPLATE_LOADERS</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="s">&#39;django.template.loaders.filesystem.Loader&#39;</span><span class="p">,</span>
+    <span class="s">&#39;django.template.loaders.app_directories.Loader&#39;</span><span class="p">,</span>
+    <span class="s">&#39;django.template.loaders.eggs.Loader&#39;</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">root_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">__file__</span><span class="p">))</span>
+
+<span class="n">TEMPLATE_DIRS</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">normpath</span><span class="p">(</span><span class="n">root_path</span><span class="o">+</span><span class="s">&quot;/templates&quot;</span><span class="p">),</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>For the rest of the settings, please see <a class="reference external" href="https://docs.djangoproject.com/en/1.7/ref/settings/">https://docs.djangoproject.com/en/1.7/ref/settings/</a></p>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="installation.html"
+                        title="previous chapter">2. Installation</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="headersandcors.html"
+                        title="next chapter">4. Headers and CORS</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/configuration.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="headersandcors.html" title="4. Headers and CORS"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="installation.html" title="2. Installation"
+             >previous</a> |</li>
+        <li><a href="index.html">LBD location data and messaging backend Dev documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright LBD Project Group (Riitta Hietaranta, Aki Mäkinen, Tero Taipale, Ossi Teikari, Tommi Utter, Aappo Ålander).
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+    </div>
+  </body>
+</html>

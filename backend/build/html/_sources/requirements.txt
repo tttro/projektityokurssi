@@ -18,6 +18,7 @@ Software requirements:
 * **MongoDB 2.6.6** or greater (designed with 2.6.6)
 * **Python 2.7.x** (designed with 2.7.8)
 
+    * **Django 1.7** (*web-framework*)
     * **pymongo 2.7.2** or greater (designed with 2.7.2) (*Python library*)
     * **mongoengine 0.8.7** or greater (designed with 0.8.7) (*Python library*)
     * **httplib2 0.9** or greater (designed with 0.9) (*Python library*)

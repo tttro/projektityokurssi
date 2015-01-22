@@ -3,8 +3,8 @@
 .. _handlerinterface:
 
 
-Decorators for location data REST
-+++++++++++++++++++++++++++++++++
+Handler interface
++++++++++++++++++
 **This is the interface a new handler class has to implement**
 
 .. module:: Handlers.Interface.base
