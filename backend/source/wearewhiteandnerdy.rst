@@ -7,4 +7,4 @@ So yes, we are quite white and nerdy.
 
 .. raw:: html
 
-   <iframe width="560" height="315" src="http://www.youtube.com/embed/N9qYF9DZPdw" frameborder="0" allowfullscreen></iframe>
+   <iframe width="560" height="315" src="//www.youtube.com/embed/N9qYF9DZPdw" frameborder="0" allowfullscreen></iframe>

@@ -1,6 +1,8 @@
 import json
+
 from django.http import HttpResponse
-from django.shortcuts import render, render_to_response
+from django.shortcuts import render_to_response
+
 
 # Create your views here.
 from django.views.decorators.http import require_http_methods

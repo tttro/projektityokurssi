@@ -14,7 +14,6 @@ import json
 from RESThandlers.HandlerInterface.Exceptions import GenericDBError, ObjectNotFound
 from RESThandlers.HandlerInterface.HandlerBaseClass import HandlerBase
 from RESThandlers.Streetlight.models import Streetlights
-
 from lbd_backend.utils import flattener
 
 
@@ -191,12 +190,11 @@ class StreetlightHandler(HandlerBase):
     # Boolean: True if all were deleted, False if objects remain in db after deletion
     def delete_all(self):
         obj = self.modelobject.objects()
-        items = obj.count()
-        deleted = obj.delete()
-        if items == deleted:
-            return True
-        else:
-            return False
+        try:
+            deleted = obj.delete()
+        except Exception as e:
+            raise GenericDBError(e.message)
+
 
     def delete_near(self, latitude, longitude, nrange):
         itemcount = self.modelobject.objects(geometry__geo_within_center=

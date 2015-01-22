@@ -16,7 +16,6 @@ import json
 from RESThandlers.HandlerInterface.Exceptions import GenericDBError, ObjectNotFound
 from RESThandlers.HandlerInterface.HandlerBaseClass import HandlerBase
 from RESThandlers.Playgrounds.models import Playgrounds
-
 from lbd_backend.utils import flattener
 
 

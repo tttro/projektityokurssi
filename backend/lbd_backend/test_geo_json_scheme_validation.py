@@ -3,7 +3,9 @@ __author__ = 'Aki Mäkinen'
 
 import json
 from unittest import TestCase
+
 from lbd_backend.utils import geo_json_scheme_validation
+
 
 class TestGeo_json_scheme_validation(TestCase):
 

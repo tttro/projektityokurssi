@@ -15,9 +15,10 @@ Decorators for location data REST
 __author__ = 'Aki Mäkinen'
 
 import httplib
-import mongoengine
 import json
 from functools import wraps
+
+import mongoengine
 from django.http import HttpResponse
 
 from lbd_backend.utils import s_codes

@@ -3,10 +3,13 @@ __author__ = 'Aki Mäkinen'
 
 import json
 import urllib
+import time
+
+import mongoengine
+
 from lbd_backend.LBD_REST_locationdata.models import *
 from RESThandlers.Streetlight import models as SL
-import time
-import mongoengine
+
 
 req = urllib.urlopen(
             'http://tampere.navici.com/tampere_wfs_geoserver/opendata/ows?service=WFS&version=1.0.0&request=GetFeature'

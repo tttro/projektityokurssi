@@ -16,6 +16,7 @@ from lbd_backend.LBD_REST_locationdata.views import single_resource, collection,
 from lbd_backend.LBD_REST_messagedata.views import msg_general, msg_send, mark_as_read
 from lbd_backend.LBD_REST_users.views import list_users, user_exists, add_user, index
 
+
 admin.autodiscover()
 
 urlpatterns = patterns('',
