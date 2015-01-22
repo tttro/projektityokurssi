@@ -13,7 +13,7 @@ MIT https://github.com/twbs/bootstrap/blob/master/LICENSE
 
 Installing
 -----------------
-Copy app-folder content and change settings into app.js. Run.
+Copy app-folder content and change settings into app.js. Run index.html.
 
 Settings
 -----------------
