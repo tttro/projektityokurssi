@@ -89,8 +89,6 @@ def lbd_require_login(func):
         else:
             require_authentication_headers = True
 
-        print require_authentication_headers
-
         if require_authentication_headers:
             if "HTTP_LBD_LOGIN_HEADER" in request.META and "HTTP_LBD_OAUTH_ID" in request.META:
                 access_token = request.META["HTTP_LBD_LOGIN_HEADER"]
@@ -104,18 +102,15 @@ def lbd_require_login(func):
                     result = json.loads(res_content)
                 except ValueError:
                     return HttpResponse(status=s_codes["INTERNALERROR"])
-                #if True:
+
                 if response.status == 200 and userid == result["user_id"]:
                     print response.status
-                    print "User matches"
                 else:
-                    print "ERROR!"
                     print "STATUS: " + str(response.status)
                     if "error_description" in result:
                         errormsg = result["error_description"]
                     else:
                         errormsg = "Unknown error happened. Oh noes!"
-                    print errormsg
 
                     return HttpResponse(status=s_codes["BAD"], content='{"message": "%s"}' % errormsg,
                                         content_type="application/json; charset=utf-8")
@@ -124,7 +119,6 @@ def lbd_require_login(func):
                     user = User.objects.get(user_id=request.META["HTTP_LBD_OAUTH_ID"])
                     kwargs["lbduser"] = user
                 except mongoengine.DoesNotExist:
-                    print userid
                     return HttpResponse(status=s_codes["UNAUTH"], content_type="application/json; charset=utf-8",
                                         content='{"message": "Unauthorized"}')
                 except Exception as e:

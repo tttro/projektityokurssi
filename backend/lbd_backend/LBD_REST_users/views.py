@@ -51,8 +51,6 @@ def add_user(request, *args, **kwargs):
         return HttpResponse(status=s_codes["INTERNALERROR"])
 
     if rstatus != 200:
-        print "STATUS: " + str(resp.get('status'))
-        print "CONTENT: "+ content
         return HttpResponse(status=s_codes["BAD"])
 
     if userid == res["user_id"]:
