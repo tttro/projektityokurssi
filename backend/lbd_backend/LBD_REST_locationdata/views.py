@@ -44,7 +44,8 @@ from django.shortcuts import HttpResponse
 from django.views.decorators.http import require_http_methods
 from pymongo.errors import DuplicateKeyError
 
-from lbd_backend.LBD_REST_locationdata.decorators import location_collection, lbd_require_login
+from lbd_backend.LBD_REST_locationdata.decorators import location_collection, lbd_require_login, \
+    authenticate_only_methods
 from lbd_backend.LBD_REST_locationdata.models import MetaDocument, MetaData
 from lbd_backend.utils import s_codes, geo_json_scheme_validation
 
@@ -70,10 +71,10 @@ def api(request):
     installed_sources_json = json.dumps(temp)
     return HttpResponse(content=installed_sources_json, content_type="application/json; charset=utf-8")
 
-
-@location_collection
-@lbd_require_login
 @require_http_methods(["GET", "DELETE", "PUT"])
+@location_collection
+@authenticate_only_methods(["DELETE", "PUT", "POST"])
+@lbd_require_login
 def single_resource(request, *args, **kwargs):
     """
     REST single resource (in certain collection) request handler.
@@ -162,7 +163,6 @@ def single_resource(request, *args, **kwargs):
 
 
         if geo_json_scheme_validation(content_json):
-            print "After Geo valid"
             try:
                 if content_json["id"] != kwargs["resource"]:
                     return HttpResponse(status=s_codes["BAD"], content='{"message":"Bad JSON. Id does not match the resource in the URL."}',
@@ -201,9 +201,10 @@ def single_resource(request, *args, **kwargs):
             return HttpResponse(status=s_codes["BAD"])
 
 
-@location_collection
-@lbd_require_login
 @require_http_methods(["GET", "DELETE", "PUT", "POST"])
+@location_collection
+@authenticate_only_methods(["DELETE", "PUT", "POST"])
+@lbd_require_login
 def collection(request, *args, **kwargs):
     """
     REST main collection request handler.
@@ -337,10 +338,10 @@ def collection(request, *args, **kwargs):
         else:
             return HttpResponse(status=s_codes["BAD"])
 
-
-@location_collection
-@lbd_require_login
 @require_http_methods(["GET", "DELETE"])
+@location_collection
+@authenticate_only_methods(["DELETE", "PUT", "POST"])
+@lbd_require_login
 def collection_near(request, *args, **kwargs):
     """
     REST subcollection "near" request handler. Handles objects in certain range of given coordinates
@@ -428,9 +429,10 @@ def collection_near(request, *args, **kwargs):
                             content_type="application/json; charset=utf-8")
 
 
-@location_collection
-@lbd_require_login
 @require_http_methods(["GET", "DELETE"])
+@location_collection
+@authenticate_only_methods(["DELETE", "PUT", "POST"])
+@lbd_require_login
 def collection_inarea(request, *args, **kwargs):
     """
     REST subcollection "inarea" request handler. Handles objects inside a rectangular area.
@@ -516,9 +518,10 @@ def collection_inarea(request, *args, **kwargs):
                                 content_type="application/json; charset=utf-8")
 
 
-@location_collection
-@lbd_require_login
 @require_http_methods(["POST"])
+@location_collection
+@authenticate_only_methods(["DELETE", "PUT", "POST"])
+@lbd_require_login
 def search_from_rest(request, *args, **kwargs):
     """
     This view searches for the given search phrase from the database. Currently only search from id field is supported.
@@ -554,13 +557,11 @@ def search_from_rest(request, *args, **kwargs):
         return HttpResponse(status=s_codes["BAD"], content_type="applicetion/json; charset=utf-8",
                             content='{"message":"Result limit must be an integer."}')
 
-
     original_search_phrase = contentjson["search"]
     allowed_chars = "[A-Za-z0-9\\.\\@]"
     search_regex = contentjson["search"].replace("?", allowed_chars).replace("*", allowed_chars+"*")
 
     handlerinterface = kwargs["handlerinterface"]
-
     try:
         totalresults, results = handlerinterface.search(search_regex, limit, contentjson["from"])
     except NotImplementedError:

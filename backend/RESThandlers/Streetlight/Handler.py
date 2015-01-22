@@ -235,18 +235,15 @@ class StreetlightHandler(HandlerBase):
                 results = raw["result"]
             else:
                 results = []
-
             totalresults = len(results)
             if totalresults > limit:
                 results = results[:limit]
             featurecollection = self._featurecollection
             featurecollection["totalFeatures"] = len(results)
             featurecollection["features"] = results
-
             return totalresults, featurecollection
         else:
             raise NotImplementedError
-
 
     def get_field_names(self):
         doc = self.modelobject._get_collection().find_one()
