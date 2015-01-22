@@ -1,0 +1,11 @@
+Using Google+ Sign In in this product creates some attachments towards Google.
+
+First of all, using the sign in requires the usage of Google Developer Console (https://console.developers.google.com) and it is required to agree to some conditions set by Google.
+
+On the console, Google+ API has to be activated for the project that uses Google+ Sign In. To use this API you must consent to both general Google API terms (https://developers.google.com/terms/) and Google+ API specific terms (https://developers.google.com/+/terms). The API has a usage quota but for only signing in, it is very high (20,000,000 requests/day).
+
+For a user to use this application, they have to give the application some usage permissions (called scopes) which are listed on a consent screen in the application. Actions that go beyond the scopes the user has accepted, will fail. This should be noted if the product is further developed.
+
+Google+ developer policies (https://developers.google.com/+/policies) require that the product user needs to be able to disconnect from the application. This means that the user must be able to deny the applications the permissions they have previously granted to the application upon usage. It is not, however, defined how the disconnection should be made possible to do. This product does not yet implement the disconnection.
+
+Further information about the Google+ can be accessed in https://developers.google.com/+/ .
