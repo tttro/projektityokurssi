@@ -31,7 +31,6 @@ def user_exists(request, *args, **kwargs):
 
 @require_http_methods(["POST"])
 def add_user(request, *args, **kwargs):
-    print request
     access_token = request.META["HTTP_LBD_LOGIN_HEADER"]
 
     userid = request.META["HTTP_LBD_OAUTH_ID"]

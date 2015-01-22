@@ -77,7 +77,6 @@ def lbd_require_login(func):
     """
     @wraps(func)
     def wrapper(request, *args, **kwargs):
-        print "In lbd_require_login"
         if "authenticate_only_methods" in kwargs:
             for item in kwargs["authenticate_only_methods"]:
                 if item not in _supported_http_methods:
@@ -124,6 +123,7 @@ def lbd_require_login(func):
                     user = User.objects.get(user_id=request.META["HTTP_LBD_OAUTH_ID"])
                     kwargs["lbduser"] = user
                 except mongoengine.DoesNotExist:
+                    print userid
                     return HttpResponse(status=s_codes["UNAUTH"], content_type="application/json; charset=utf-8",
                                         content='{"message": "Unauthorized"}')
                 except Exception as e:
