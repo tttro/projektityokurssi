@@ -1,4 +1,4 @@
-/* Main application which start up the app */
+/* Main application which start up the app and app settings*/
 'use strict';
 
 // Init main application and used modules

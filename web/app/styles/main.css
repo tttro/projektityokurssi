@@ -1,9 +1,12 @@
 /*------------------------------------------------------------------
-Project:	LBD
+Project:	LBD/TUT/LeadIn
 Descr:		Web-client custom styles
-Author:     Tero Taipale
+Author:     Tero Taipale @ TUT
 Version:	0.1
-Licence:	?
+Licence:	some
+Order:
+            1. Bootstrap (base)
+            2. main.css
 -------------------------------------------------------------------*/
 
 html, body{
@@ -196,7 +199,7 @@ header a {
     margin: 14px 0;
     padding: 0px 14px;
 }
-
+/*** Tabs ***/
 #tabs,
 .tabs-content
 {
@@ -233,21 +236,8 @@ header a {
     margin-right: 20px;
 }
 
-#loadingOverlay {
-    position: absolute;
-    left: 0;
-    top: 0;
-    bottom: 0;
-    right: 0;
-    background: #fff;
-    opacity: 0.8;
-    filter: alpha(opacity=80);
-    z-index: 9999;
-}
 
-
-
-/* map search */
+/*** map search-input  ***/
 .controls {
     margin-top: 16px;
     border: 1px solid transparent;
@@ -328,6 +318,10 @@ header a {
     width: 100%;
     margin-top: 10px;
 }
+.accord-content .btn.btn-xs {
+    width: auto;
+    margin-top: 0;
+}
 .save {
     cursor: pointer;
     border: 1px solid #ccc;
@@ -370,7 +364,7 @@ header a {
     margin: 5px 0;
 }
 
-/* Infowindow */
+/*** Infowindow ***/
 .markerDetails {
     border-collapse: collapse;
     margin: 0;
@@ -408,7 +402,7 @@ header a {
     margin-right: 0px;
 }
 
-/* Settings */
+/*** Settings page ***/
 .single-page {
     padding: 20px;
 }
@@ -419,7 +413,7 @@ header a {
     right: 200px;
 }
 
-/*Notifactions*/
+/*** Notifactions ***/
 .cg-notify-message {
     position:fixed;
     left:50%;
@@ -490,6 +484,8 @@ header a {
     clip: rect(0,0,0,0);
     border: 0;
 }
+
+/*** Google map overrides ***/
 
 .gm-style-iw {
     height: auto;

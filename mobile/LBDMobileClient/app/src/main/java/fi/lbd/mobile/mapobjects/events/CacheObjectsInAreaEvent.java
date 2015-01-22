@@ -3,6 +3,9 @@ package fi.lbd.mobile.mapobjects.events;
 import fi.lbd.mobile.events.AbstractEvent;
 import fi.lbd.mobile.location.ImmutablePointLocation;
 
+/**
+ * Cache objects inside an area but don't return them.
+ */
 public class CacheObjectsInAreaEvent extends AbstractEvent {
     private final ImmutablePointLocation southWest;
     private final ImmutablePointLocation northEast;

@@ -1,17 +1,8 @@
 package fi.lbd.mobile.backendhandler;
 
-import android.accounts.Account;
-import android.accounts.AccountManager;
-import android.content.Context;
-import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.util.Log;
 import android.util.Pair;
-
-import com.google.android.gms.auth.GoogleAuthException;
-import com.google.android.gms.auth.GoogleAuthUtil;
-import com.google.android.gms.auth.UserRecoverableAuthException;
-import com.google.android.gms.common.Scopes;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
@@ -49,10 +40,6 @@ import java.security.UnrecoverableKeyException;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
 
-import fi.lbd.mobile.ApplicationDetails;
-
-import static android.support.v4.app.ActivityCompat.startActivityForResult;
-
 /**
  * Static methods for reading an url.
  *
@@ -62,14 +49,16 @@ public class BasicUrlReader implements UrlReader {
     static final int REQUEST_AUTHORIZATION = 1138;
     private static final int CONNECTIONS_PER_ROUTE = 4;
     private static DefaultHttpClient httpClient;
-    private Context context;
+    private AuthProvider authProvider;
+
     public BasicUrlReader() {}
 
-    public void initialize(Context cont,
+    public void initialize(@NonNull AuthProvider authProvider,
                            @NonNull Pair<String, Certificate> firstCertificate,
                            @NonNull Pair<String, Certificate>... certificates) throws UrlReaderException {
         try {
-            context = cont;
+            this.authProvider = authProvider;
+
             // Store given certificates to the key store
             String keyStoreType = KeyStore.getDefaultType();
             KeyStore keyStore = KeyStore.getInstance(keyStoreType);
@@ -112,40 +101,10 @@ public class BasicUrlReader implements UrlReader {
 
     private void setHeaders(AbstractHttpMessage message) {
         if(message != null) {
-            AccountManager accountManager = AccountManager.get(context);
-            Account[] accounts = accountManager.getAccountsByType("com.google");
-            Account account;
-            if (accounts.length > 0) {
-                account = accounts[0];
-            } else {
-                account = null;
-            }
-            Log.d("******", account.toString());
-            String email = account.name;
-            String token = "foo";
-            String scope = "oauth2:" + Scopes.PROFILE;
-            String gid = "";
-            try {
-                token = GoogleAuthUtil.getToken(context, email, scope);
-                gid = GoogleAuthUtil.getAccountId(context, email);
-                Log.d("******", token);
-            } catch (UserRecoverableAuthException userRecoverableException) {
-                // GooglePlayServices.apk is either old, disabled, or not present, which is
-                // recoverable, so we need to show the user some UI through the activity.
-
-//                startActivityForResult(new myActivity(), userRecoverableException.getIntent(),
-//                        REQUEST_AUTHORIZATION, new Bundle());
-                Log.d("******", userRecoverableException.toString());
-            } catch (GoogleAuthException fatalException) {
-                Log.d("******", fatalException.toString());
-                Log.d("******", fatalException.getMessage());
-            } catch (IOException io) {
-                Log.d("******", "Blah3");
-            }
-            Log.i(this.getClass().getSimpleName(), "USER ID: "+ ApplicationDetails.get().getUserId());
-            Log.i(this.getClass().getSimpleName(), "USER ID: "+ gid);
-            message.addHeader("LBD_LOGIN_HEADER", token); // TODO: Access token
-            message.addHeader("LBD_OAUTH_ID", gid); // Google id
+            Pair<String, String> auth = this.authProvider.getIdToken();
+            message.addHeader("LBD_OAUTH_ID", auth.first); // Google id
+            message.addHeader("LBD_LOGIN_HEADER", auth.second); // Access token
+            Log.d(this.getClass().getSimpleName(), "Auth object: LBD_OAUTH_ID: "+ auth.first + " LBD_LOGIN_HEADER: "+ auth.second);
         }
     }
 
@@ -170,11 +129,15 @@ public class BasicUrlReader implements UrlReader {
      */
     @Override
 	public UrlResponse get(String url) {
+        if (url == null) {
+            Log.e(this.getClass().getSimpleName(), "Failed to get from url, URL was null!");
+            return null;
+        }
         try {
             HttpGet getObj = new HttpGet(url);
             setHeaders(getObj);
             return this.process(getObj); // If the url reading fails, null is returned.
-        } catch (Exception exception){
+        } catch (IllegalArgumentException exception){
             Log.d("URL get unsuccessful. Resulted in exception: ",
                     exception.getClass().toString() + ": " + exception.getMessage());
             return null;
@@ -189,13 +152,27 @@ public class BasicUrlReader implements UrlReader {
      */
     @Override
     public UrlResponse delete(String url) {
-        HttpDelete deleteObj = new HttpDelete(url);
-        setHeaders(deleteObj);
-        return this.process(deleteObj); // If the url reading fails, null is returned.
+        if (url == null) {
+            Log.e(this.getClass().getSimpleName(), "Failed to perform delete, URL was null!");
+            return null;
+        }
+        try {
+            HttpDelete deleteObj = new HttpDelete(url);
+            setHeaders(deleteObj);
+            return this.process(deleteObj); // If the url reading fails, null is returned.
+        } catch (IllegalArgumentException exception){
+            Log.d("URL delete unsuccessful. Resulted in exception: ",
+                    exception.getClass().toString() + ": " + exception.getMessage());
+            return null;
+        }
     }
 
     @Override
     public UrlResponse postJson(String url, String jsonContents) {
+        if (url == null) {
+            Log.e(this.getClass().getSimpleName(), "Failed to post json, URL was null!");
+            return null;
+        }
         StringEntity entity;
         try {
             entity = new StringEntity(jsonContents, HTTP.UTF_8);
@@ -210,11 +187,12 @@ public class BasicUrlReader implements UrlReader {
             setHeaders(postObj);
             postObj.setEntity(entity);
             return this.process(postObj); // If the url reading fails, null is returned.
-        } catch (Exception exception){
+        } catch (IllegalArgumentException exception){
             Log.d("URL post unsuccessful. Resulted in exception: ",
                     exception.getClass().toString() + ": " + exception.getMessage());
             return null;
         }
+
     }
 
 

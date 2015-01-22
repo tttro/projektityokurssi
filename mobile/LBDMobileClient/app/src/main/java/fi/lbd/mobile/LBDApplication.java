@@ -9,6 +9,8 @@ import fi.lbd.mobile.messaging.MessageObjectSelectionManager;
 import fi.lbd.mobile.messaging.MessageObjectRepository;
 
 /**
+ * Custom application class. Initializes singletons and other static things.
+ *
  * Created by Tommi.
  */
 public class LBDApplication extends Application {
@@ -20,8 +22,6 @@ public class LBDApplication extends Application {
     public void onCreate() {
         super.onCreate();
 
-        // TODO: Dependency injection?
-        //"the static variables instances are bound to the class loader of the class that first initialized them"
         BusHandler.initialize();
         MapObjectSelectionManager.initialize();
         MessageObjectRepository.initialize();
@@ -29,8 +29,6 @@ public class LBDApplication extends Application {
         ServiceManager.initialize(getApplicationContext());
         GlobalToastMaker.initialize(getApplicationContext());
         ApplicationDetails.initialize();
-        ApplicationDetails.get().setUserId("108363990223992898018"); // TODO: FIXME
-        //ApplicationDetails.get().setCurrentCollection(getString(R.string.streetlights)); // TODO: FIXME
 
         Log.d("MAIN APPLICATION CONTEXT-----------", "ALL INITIALIZED");
     }

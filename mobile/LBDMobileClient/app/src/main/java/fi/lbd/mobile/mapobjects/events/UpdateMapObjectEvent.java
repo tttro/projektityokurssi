@@ -6,6 +6,7 @@ import fi.lbd.mobile.events.AbstractEvent;
 import fi.lbd.mobile.mapobjects.MapObject;
 
 /**
+ * Try to update map object details in the backend handler.
  * Created by Tommi on 10.1.2015.
  */
 public class UpdateMapObjectEvent extends AbstractEvent {

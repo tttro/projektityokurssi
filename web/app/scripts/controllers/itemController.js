@@ -59,7 +59,7 @@ itemController.controller('itemController', function($scope, $http, $rootScope, 
 
                     }
                     else {
-                        //TODO: no items found
+
                         $scope.showSearchResultText = true;
                         $scope.searchResultText = 'No results found';
                         $scope.items = [];

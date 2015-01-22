@@ -3,6 +3,7 @@ package fi.lbd.mobile.messaging.events;
 import fi.lbd.mobile.events.AbstractEvent;
 
 /**
+ * Tries to delete message with the given id from the backend.
  * Created by Tommi on 3.1.2015.
  */
 public class DeleteMessageEvent extends AbstractEvent {

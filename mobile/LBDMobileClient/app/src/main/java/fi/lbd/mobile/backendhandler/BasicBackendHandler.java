@@ -409,7 +409,7 @@ public class BasicBackendHandler implements BackendHandler {
             if (response != null) {
                 if (shouldRetry(response.getStatus())) {
                     Log.e(BasicBackendHandler.class.getSimpleName(), "Retrying request on url: "+url+", response was: "+ response);
-                    return response; // Got a response object but the returned status code was not OK.
+//                    return response; // Got a response object but the returned status code was not OK.
                 } else {
                     return response; // Response was valid. Return it.
                 }

@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * Contains details about the currently selected urls and collections.
+ *
  * Created by Tommi on 3.1.2015.
  */
 public class ApplicationDetails {
@@ -15,7 +17,6 @@ public class ApplicationDetails {
     private static ApplicationDetails singleton;
     private List<ApplicationDetailListener> apiListeners;
 
-    private String userId;
     private String currentCollection;
     private String currentBaseUrl;
     private String currentObjectApiUrl;
@@ -36,13 +37,12 @@ public class ApplicationDetails {
         this.apiListeners = new ArrayList<>();
     }
 
-    public String getUserId() {
-        return userId;
-    }
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
 
+    /**
+     * Sets the current base api url. Also sets the object api and message api urls.
+     *
+     * @param currentBaseUrl
+     */
     public void setCurrentBaseApiUrl(String currentBaseUrl){
         Log.e(ApplicationDetails.class.getSimpleName(), "Change currentBaseUrl: " + currentBaseUrl);
         this.currentBaseUrl = currentBaseUrl;
@@ -52,30 +52,59 @@ public class ApplicationDetails {
     }
 
 
+    /**
+     * Returns the current base api url.
+     * @return
+     */
     public String getCurrentBaseApiUrl(){
         return this.currentBaseUrl;
     }
 
+    /**
+     * Returns the current object api url.
+     * @return
+     */
     public String getCurrentObjectApiUrl(){
         return this.currentObjectApiUrl;
     }
 
+    /**
+     * Returns the current message api url.
+     * @return
+     */
     public String getCurrentMessageApiUrl(){
         return this.currentMessageApiUrl;
     }
 
+    /**
+     * Returns the current collection.
+     * @return
+     */
     public String getCurrentCollection() {
         return currentCollection;
     }
+
+    /**
+     * Set the current collection.
+     * @param currentCollection
+     */
     public void setCurrentCollection(String currentCollection) {
         this.currentCollection = currentCollection;
         this.notifyCollectionChange(this.currentCollection);
     }
 
+    /**
+     * Register a listener to listen the url and collection changes.
+     * @param listener
+     */
     public void registerApiChangeListener(ApplicationDetailListener listener) {
         this.apiListeners.add(listener);
     }
 
+    /**
+     * Unregister a listener.
+     * @param listener
+     */
     public void unregisterApiChangeListener(ApplicationDetailListener listener) {
         this.apiListeners.remove(listener);
     }
@@ -92,6 +121,9 @@ public class ApplicationDetails {
         }
     }
 
+    /**
+     * Listener which can be registered to ApplicationDetails to listen url and collection changes.
+     */
     public static interface ApplicationDetailListener {
         public void notifyApiUrlChange(String newBaseUrl, String newMessageApiUrl, String newObjectApiUrl);
         public void notifyCollectionChange(String newCollection);

@@ -7,7 +7,9 @@ import java.util.List;
 import fi.lbd.mobile.events.AbstractEvent;
 import fi.lbd.mobile.mapobjects.MapObject;
 
-
+/**
+ * Returns detailed information about a single map object.
+ */
 public class ReturnMapObjectEvent extends AbstractEvent {
     private final MapObject mapObject;
 

@@ -6,6 +6,7 @@ import fi.lbd.mobile.events.AbstractEvent;
 import fi.lbd.mobile.mapobjects.MapObject;
 
 /**
+ * Updating map object details succeeded.
  * Created by Tommi on 10.1.2015.
  */
 public class UpdateMapObjectSucceededEvent extends AbstractEvent {

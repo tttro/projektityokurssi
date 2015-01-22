@@ -12,6 +12,7 @@ import fi.lbd.mobile.events.AbstractEvent;
 import fi.lbd.mobile.mapobjects.MapObject;
 
 /**
+ * Tries to send message to the backend.
  * Created by Tommi on 3.1.2015.
  */
 public class SendMessageEvent<T> extends AbstractEvent {
