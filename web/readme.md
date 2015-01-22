@@ -1,5 +1,8 @@
 WEB-CLIENT
 ==========
+
+Used components
+-----------------
 * AngularJS 1.2.28
 MIT https://github.com/angular/angular.js/blob/master/LICENSE
 * Bootstrap 
