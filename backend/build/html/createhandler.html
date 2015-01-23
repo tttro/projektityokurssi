@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>6. Creating a new handler module &mdash; LBD location data and messaging backend Dev documentation</title>
+    <title>8. Creating a new handler module &mdash; LBD location data and messaging backend Dev documentation</title>
     
     <link rel="stylesheet" href="_static/default.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -24,8 +24,8 @@
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
     <link rel="top" title="LBD location data and messaging backend Dev documentation" href="index.html" />
-    <link rel="next" title="7. REST documentation" href="restdoc.html" />
-    <link rel="prev" title="5.3. Search" href="json/search.html" /> 
+    <link rel="next" title="9. REST documentation" href="restdoc.html" />
+    <link rel="prev" title="7.3. Search" href="json/search.html" /> 
   </head>
   <body>
     <div class="related">
@@ -38,10 +38,10 @@
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="restdoc.html" title="7. REST documentation"
+          <a href="restdoc.html" title="9. REST documentation"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="json/search.html" title="5.3. Search"
+          <a href="json/search.html" title="7.3. Search"
              accesskey="P">previous</a> |</li>
         <li><a href="index.html">LBD location data and messaging backend Dev documentation</a> &raquo;</li> 
       </ul>
@@ -53,8 +53,64 @@
           <div class="body">
             
   <div class="section" id="creating-a-new-handler-module">
-<h1>6. Creating a new handler module<a class="headerlink" href="#creating-a-new-handler-module" title="Permalink to this headline">¶</a></h1>
-<p>How to create a new handler module</p>
+<h1>8. Creating a new handler module<a class="headerlink" href="#creating-a-new-handler-module" title="Permalink to this headline">¶</a></h1>
+<p>Creating a new handler requires one to implement the handler interface specified in HandlerBaseClass.py
+(RESThandlers/HandlerInterface). For the documentation, see <a class="reference internal" href="handler/interface.html#hanint"><em>Handler Interface documentation</em></a></p>
+<p>When returning location data from a method, GeoJSON format is used: GeoJSON Feature when a method always returns only one
+object and GeoJSON Feature Collection when it is possible to get multiple objects in return.</p>
+<p>If data duplication is needed, a model should be created. This is not required as it is possible to use MongoDB through
+PyMongo and because the MongoDB documents do not have set form (like SQL tables have), but it can make inserting documents
+much easier.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">It is not possible to have a user specified field called &#8220;id&#8221; because of MongoDB. It should be renamed to something internally.</p>
+</div>
+<p>An example model (Tampere Streetlight):</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">Geometry</span><span class="p">(</span><span class="n">EmbeddedDocument</span><span class="p">):</span>
+    <span class="nb">type</span> <span class="o">=</span> <span class="n">StringField</span><span class="p">()</span>
+    <span class="n">coordinates</span> <span class="o">=</span> <span class="n">ListField</span><span class="p">()</span>
+
+<span class="k">class</span> <span class="nc">Properties</span><span class="p">(</span><span class="n">EmbeddedDocument</span><span class="p">):</span>
+    <span class="n">KATUVALO_ID</span> <span class="o">=</span> <span class="n">IntField</span><span class="p">()</span>
+    <span class="n">NIMI</span> <span class="o">=</span> <span class="n">StringField</span><span class="p">()</span>
+    <span class="n">TYYPPI_KOODI</span> <span class="o">=</span> <span class="n">StringField</span><span class="p">()</span>
+    <span class="n">TYYPPI</span> <span class="o">=</span> <span class="n">StringField</span><span class="p">()</span>
+    <span class="n">LAMPPU_TYYPPI_KOODI</span> <span class="o">=</span> <span class="n">StringField</span><span class="p">()</span>
+    <span class="n">LAMPPU_TYYPPI</span> <span class="o">=</span> <span class="n">StringField</span><span class="p">()</span>
+
+<span class="k">class</span> <span class="nc">Streetlights</span><span class="p">(</span><span class="n">Document</span><span class="p">):</span>
+    <span class="nb">type</span> <span class="o">=</span> <span class="n">StringField</span><span class="p">()</span>
+    <span class="n">feature_id</span> <span class="o">=</span> <span class="n">StringField</span><span class="p">(</span><span class="n">unique</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">geometry</span> <span class="o">=</span>  <span class="n">EmbeddedDocumentField</span><span class="p">(</span><span class="n">Geometry</span><span class="p">)</span>
+    <span class="n">geometry_name</span> <span class="o">=</span> <span class="n">StringField</span><span class="p">()</span>
+    <span class="n">properties</span> <span class="o">=</span> <span class="n">EmbeddedDocumentField</span><span class="p">(</span><span class="n">Properties</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The above model matches the following json:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="p">{</span>
+    <span class="s">&quot;geometry&quot;</span><span class="p">:</span>
+    <span class="p">{</span>
+        <span class="s">&quot;type&quot;</span><span class="p">:</span> <span class="s">&quot;Point&quot;</span><span class="p">,</span>
+        <span class="s">&quot;coordinates&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mf">23.643239226767022</span><span class="p">,</span> <span class="mf">61.519112683582854</span><span class="p">]</span>
+    <span class="p">},</span>
+    <span class="s">&quot;id&quot;</span><span class="p">:</span> <span class="s">&quot;WFS_KATUVALO.405172&quot;</span><span class="p">,</span>
+    <span class="s">&quot;type&quot;</span><span class="p">:</span> <span class="s">&quot;Feature&quot;</span><span class="p">,</span>
+    <span class="s">&quot;properties&quot;</span><span class="p">:</span>
+    <span class="p">{</span>
+        <span class="s">&quot;NIMI&quot;</span><span class="p">:</span> <span class="s">&quot;XPWR_6769212&quot;</span><span class="p">,</span>
+        <span class="s">&quot;TYYPPI_KOODI&quot;</span><span class="p">:</span> <span class="s">&quot;105007&quot;</span><span class="p">,</span>
+        <span class="s">&quot;KATUVALO_ID&quot;</span><span class="p">:</span> <span class="mi">405172</span><span class="p">,</span>
+        <span class="s">&quot;LAMPPU_TYYPPI&quot;</span><span class="p">:</span> <span class="s">&quot;ST 100 (SIEMENS)&quot;</span><span class="p">,</span>
+        <span class="s">&quot;LAMPPU_TYYPPI_KOODI&quot;</span><span class="p">:</span> <span class="s">&quot;100340&quot;</span>
+    <span class="p">},</span>
+    <span class="s">&quot;geometry_name&quot;</span><span class="p">:</span> <span class="s">&quot;GEOLOC&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Notice that the id field in the JSON equates to feature_id in the model.</p>
+</div>
 </div>
 
 
@@ -65,10 +121,10 @@
         <div class="sphinxsidebarwrapper">
   <h4>Previous topic</h4>
   <p class="topless"><a href="json/search.html"
-                        title="previous chapter">5.3. Search</a></p>
+                        title="previous chapter">7.3. Search</a></p>
   <h4>Next topic</h4>
   <p class="topless"><a href="restdoc.html"
-                        title="next chapter">7. REST documentation</a></p>
+                        title="next chapter">9. REST documentation</a></p>
   <h3>This Page</h3>
   <ul class="this-page-menu">
     <li><a href="_sources/createhandler.txt"
@@ -101,16 +157,16 @@
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="restdoc.html" title="7. REST documentation"
+          <a href="restdoc.html" title="9. REST documentation"
              >next</a> |</li>
         <li class="right" >
-          <a href="json/search.html" title="5.3. Search"
+          <a href="json/search.html" title="7.3. Search"
              >previous</a> |</li>
         <li><a href="index.html">LBD location data and messaging backend Dev documentation</a> &raquo;</li> 
       </ul>
     </div>
     <div class="footer">
-        &copy; Copyright LBD Project Group (Riitta Hietaranta, Aki Mäkinen, Tero Taipale, Ossi Teikari, Tommi Utter, Aappo Ålander).
+        &copy; Copyright LBD Project Group Riitta Hietaranta, Aki Mäkinen, Tero Taipale, Ossi Teikari, Tommi Utter, Aappo Ålander.
       Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
     </div>
   </body>

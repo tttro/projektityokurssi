@@ -6,7 +6,7 @@
 LBD Open Data Backend Documentation
 ===================================
 Welcome to the documentation of the LBD Open data Backend. This documentation explains everything you ever wanted to know
-about this software, except what the Secret Government prohibits us to reveal.
+about this software.
 
 Table of Content
 ^^^^^^^^^^^^^^^^
@@ -27,4 +27,3 @@ Table of Content
    codedoc
    hand
    license
-

@@ -12,7 +12,7 @@ from django.contrib import admin
 from django.conf import settings
 
 from lbd_backend.LBD_REST_locationdata.views import single_resource, collection, \
-    collection_near, collection_inarea, search_from_rest, api
+    collection_near, collection_inarea, search_from_rest, api, update_db
 from lbd_backend.LBD_REST_messagedata.views import msg_general, msg_send, mark_as_read
 from lbd_backend.LBD_REST_users.views import list_users, user_exists, add_user, index
 
@@ -28,6 +28,7 @@ urlpatterns = patterns('',
     url(r'^locationdata/api/(?P<collection>\w+)/near/$', collection_near),
     url(r'^locationdata/api/(?P<collection>\w+)/inarea/$', collection_inarea),
     url(r'^locationdata/api/(?P<collection>\w+)/search/$', search_from_rest),
+    url(r'^locationdata/api/(?P<collection>\w+)/updatedb/$', update_db),
 
     url(r'^messagedata/api/send/$', msg_send),
     url(r'^messagedata/api/users/list/$', list_users),

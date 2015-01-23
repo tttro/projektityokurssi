@@ -31,7 +31,6 @@ reasons unknown.
    For kwargs added by the decorators, see :ref:`the decorator documentation <locdecos>`.
 
 """
-from RESThandlers.HandlerInterface.Exceptions import ObjectNotFound
 
 __author__ = 'Aki Mäkinen'
 
@@ -48,6 +47,7 @@ from lbd_backend.LBD_REST_locationdata.decorators import location_collection, lb
     authenticate_only_methods
 from lbd_backend.LBD_REST_locationdata.models import MetaDocument, MetaData
 from lbd_backend.utils import s_codes, geo_json_scheme_validation
+from RESThandlers.HandlerInterface.Exceptions import ObjectNotFound
 
 
 @require_http_methods(["GET"])
@@ -617,35 +617,28 @@ def _addmeta(items, coll):
 
     return items
 
-######################################### FOR TESTING ONLY #########################################
-#
-# def testing_view_popmeta(request):
-#     if "HTTP_LBD_LOGIN_HEADER" not in request.META or request.META["HTTP_LBD_LOGIN_HEADER"] != "VakaVanhaVainamoinen":
-#         return HttpResponse(status=403)
-#
-#
-#     from RESThandlers.Streetlight import models as SL
-#     o = SL.Streetlights.objects()
-#     MetaDocument.drop_collection()
-#     templist = []
-#     i = 0
-#     for item in o:
-#         temp = MetaDocument(
-#             feature_id = item.feature_id,
-#             collection = "Streetlights",
-#             meta_data = MetaData(status="SNAFU", modified=int(time.time()), modifier="Seppo Sähkäri")
-#         )
-#         templist.append(temp)
-#     MetaDocument.objects.insert(templist)
-#     return HttpResponse(status=200)
-#
-#
-# def testing_view_dropmeta(request):
-#     if "HTTP_LBD_LOGIN_HEADER" not in request.META or request.META["HTTP_LBD_LOGIN_HEADER"] != "VakaVanhaVainamoinen":
-#         return HttpResponse(status=403)
-#
-#     MetaDocument.drop_collection()
-#     if MetaDocument.objects.count() > 0:
-#         return HttpResponse(status=500)
-#     else:
-#         return HttpResponse(status=200)
+@location_collection
+@authenticate_only_methods(["GET"])
+def update_db(request, *args, **kwargs):
+    origin = request.get_host()
+    splitted = origin.split(":")
+
+    if (splitted[0] == "127.0.0.1" or splitted[0] == "localhost") and "HTTP_LBD_INTERNAL_REST_CALL" in request.META:
+        if request.META["HTTP_LBD_INTERNAL_REST_CALL"] == "curlcall":
+            handlerinterface = kwargs["handlerinterface"]
+            result = handlerinterface.update_db()
+            if result:
+                metaitems = MetaDocument.objects(collection=kwargs["collection"])
+                for item in metaitems:
+                    try:
+                        locobj = handlerinterface.get_by_id(item.feature_id)
+                    except ObjectNotFound:
+                        item.delete()
+                return HttpResponse(content="Updated: "+kwargs["collection"]+" at "+str(time.time()), status=s_codes["OK"])
+            else:
+                return HttpResponse(content="Updating: "+kwargs["collection"]+" at "+str(time.time()) + "FAILED!",
+                                    status=s_codes["INTERNALERROR"])
+        else:
+            return HttpResponse(status=s_codes["NOTFOUND"])
+    else:
+        return HttpResponse(status=s_codes["NOTFOUND"])

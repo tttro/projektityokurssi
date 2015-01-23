@@ -51,7 +51,7 @@
   <div class="section" id="lbd-open-data-backend-documentation">
 <h1>LBD Open Data Backend Documentation<a class="headerlink" href="#lbd-open-data-backend-documentation" title="Permalink to this headline">¶</a></h1>
 <p>Welcome to the documentation of the LBD Open data Backend. This documentation explains everything you ever wanted to know
-about this software, except what the Secret Government prohibits us to reveal.</p>
+about this software.</p>
 <div class="section" id="table-of-content">
 <h2>Table of Content<a class="headerlink" href="#table-of-content" title="Permalink to this headline">¶</a></h2>
 <div class="toctree-wrapper compound">
@@ -63,38 +63,50 @@ about this software, except what the Secret Government prohibits us to reveal.</
 <li class="toctree-l2"><a class="reference internal" href="installation.html#django">2.3. Django</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="configuration.html">3. Configuration</a></li>
-<li class="toctree-l1"><a class="reference internal" href="headersandcors.html">4. Headers and CORS</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="headersandcors.html#headers">4.1. Headers</a></li>
-<li class="toctree-l2"><a class="reference internal" href="headersandcors.html#cors">4.2. CORS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="configuration.html">3. Configuration</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="configuration.html#google-apis">3.1. Google APIs</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="json/jsondoc.html">5. JSON Formats</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="json/locationdatajson.html">5.1. Location data</a></li>
-<li class="toctree-l2"><a class="reference internal" href="json/messagejson.html">5.2. Message</a></li>
-<li class="toctree-l2"><a class="reference internal" href="json/search.html">5.3. Search</a></li>
+<li class="toctree-l1"><a class="reference internal" href="server.html">4. Server and WSGI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="security.html">5. Security</a></li>
+<li class="toctree-l1"><a class="reference internal" href="headersandcors.html">6. Headers and CORS</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="headersandcors.html#headers">6.1. Headers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="headersandcors.html#cors">6.2. CORS</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="createhandler.html">6. Creating a new handler module</a></li>
-<li class="toctree-l1"><a class="reference internal" href="restdoc.html">7. REST documentation</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="restdoc.html#location-data-rest">7.1. Location data REST</a></li>
-<li class="toctree-l2"><a class="reference internal" href="restdoc.html#message-data-rest">7.2. Message data REST</a></li>
+<li class="toctree-l1"><a class="reference internal" href="json/jsondoc.html">7. JSON Formats</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="json/locationdatajson.html">7.1. Location data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="json/messagejson.html">7.2. Message</a></li>
+<li class="toctree-l2"><a class="reference internal" href="json/search.html">7.3. Search</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="codedoc.html">8. Code documentation: REST</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="codedoc/decdoc.html">8.1. <tt class="docutils literal"><span class="pre">lbd_backend.LBD_REST_locationdata.decorators</span></tt> Location data decorators</a></li>
-<li class="toctree-l2"><a class="reference internal" href="codedoc/locdoc.html">8.2. <tt class="docutils literal"><span class="pre">lbd_backend.LBD_REST_locationdata</span></tt> Location data REST</a></li>
-<li class="toctree-l2"><a class="reference internal" href="codedoc/msgdoc.html">8.3. <tt class="docutils literal"><span class="pre">lbd_backend.LBD_REST_messagedata</span></tt> Message data REST</a></li>
+<li class="toctree-l1"><a class="reference internal" href="createhandler.html">8. Creating a new handler module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="restdoc.html">9. REST documentation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="restdoc.html#location-data-rest">9.1. Location data REST</a></li>
+<li class="toctree-l2"><a class="reference internal" href="restdoc.html#message-data-rest">9.2. Message data REST</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="hand.html">9. Code documentation: Handlers</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="handler/interface.html">9.1. <tt class="docutils literal"><span class="pre">RESThandlers.HandlerInterface</span></tt> REST Handler Interface</a></li>
-<li class="toctree-l2"><a class="reference internal" href="handler/factory.html">9.2. <tt class="docutils literal"><span class="pre">RESThandlers.HandlerInterface.Factory</span></tt> Handler Factory</a></li>
-<li class="toctree-l2"><a class="reference internal" href="handler/handlers.html">9.3. <tt class="docutils literal"><span class="pre">RESThandlers.Streetlight</span></tt> Streetlight REST handler</a></li>
-<li class="toctree-l2"><a class="reference internal" href="handler/handlers.html#module-RESThandlers.Playgrounds.Handler">9.4. <tt class="docutils literal"><span class="pre">RESThandlers.Playgrounds</span></tt> Playgrounds REST handler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="codedoc.html">10. Code documentation: REST</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="codedoc/decdoc.html">10.1. <tt class="docutils literal"><span class="pre">lbd_backend.LBD_REST_locationdata.decorators</span></tt> Location data decorators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="codedoc/locdoc.html">10.2. <tt class="docutils literal"><span class="pre">lbd_backend.LBD_REST_locationdata</span></tt> Location data REST</a></li>
+<li class="toctree-l2"><a class="reference internal" href="codedoc/msgdoc.html">10.3. <tt class="docutils literal"><span class="pre">lbd_backend.LBD_REST_messagedata</span></tt> Message data REST</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="license.html">10. Backend License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="hand.html">11. Code documentation: Handlers</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="handler/interface.html">11.1. <tt class="docutils literal"><span class="pre">RESThandlers.HandlerInterface</span></tt> REST Handler Interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="handler/factory.html">11.2. <tt class="docutils literal"><span class="pre">RESThandlers.HandlerInterface.Factory</span></tt> Handler Factory</a></li>
+<li class="toctree-l2"><a class="reference internal" href="handler/handlers.html">11.3. <tt class="docutils literal"><span class="pre">RESThandlers.Streetlight</span></tt> Streetlight REST handler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="handler/handlers.html#module-RESThandlers.Playgrounds.Handler">11.4. <tt class="docutils literal"><span class="pre">RESThandlers.Playgrounds</span></tt> Playgrounds REST handler</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="license.html">12. Licenses</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="license.html#backend">12.1. Backend</a></li>
+<li class="toctree-l2"><a class="reference internal" href="license.html#pymongo">12.2. PyMongo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="license.html#mongoengine">12.3. mongoengine</a></li>
+<li class="toctree-l2"><a class="reference internal" href="license.html#httplib2">12.4. Httplib2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="license.html#tampere-open-data">12.5. Tampere Open Data</a></li>
+</ul>
+</li>
 </ul>
 </div>
 </div>
@@ -155,7 +167,7 @@ about this software, except what the Secret Government prohibits us to reveal.</
       </ul>
     </div>
     <div class="footer">
-        &copy; Copyright LBD Project Group (Riitta Hietaranta, Aki Mäkinen, Tero Taipale, Ossi Teikari, Tommi Utter, Aappo Ålander).
+        &copy; Copyright LBD Project Group Riitta Hietaranta, Aki Mäkinen, Tero Taipale, Ossi Teikari, Tommi Utter, Aappo Ålander.
       Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
     </div>
   </body>

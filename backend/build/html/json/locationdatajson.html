@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>5.1. Location data &mdash; LBD location data and messaging backend Dev documentation</title>
+    <title>7.1. Location data &mdash; LBD location data and messaging backend Dev documentation</title>
     
     <link rel="stylesheet" href="../_static/default.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
@@ -24,9 +24,9 @@
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
     <link rel="top" title="LBD location data and messaging backend Dev documentation" href="../index.html" />
-    <link rel="up" title="5. JSON Formats" href="jsondoc.html" />
-    <link rel="next" title="5.2. Message" href="messagejson.html" />
-    <link rel="prev" title="5. JSON Formats" href="jsondoc.html" /> 
+    <link rel="up" title="7. JSON Formats" href="jsondoc.html" />
+    <link rel="next" title="7.2. Message" href="messagejson.html" />
+    <link rel="prev" title="7. JSON Formats" href="jsondoc.html" /> 
   </head>
   <body>
     <div class="related">
@@ -39,13 +39,13 @@
           <a href="../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="messagejson.html" title="5.2. Message"
+          <a href="messagejson.html" title="7.2. Message"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="jsondoc.html" title="5. JSON Formats"
+          <a href="jsondoc.html" title="7. JSON Formats"
              accesskey="P">previous</a> |</li>
         <li><a href="../index.html">LBD location data and messaging backend Dev documentation</a> &raquo;</li>
-          <li><a href="jsondoc.html" accesskey="U">5. JSON Formats</a> &raquo;</li> 
+          <li><a href="jsondoc.html" accesskey="U">7. JSON Formats</a> &raquo;</li> 
       </ul>
     </div>  
 
@@ -55,14 +55,14 @@
           <div class="body">
             
   <div class="section" id="location-data">
-<span id="locationjson"></span><h1>5.1. Location data<a class="headerlink" href="#location-data" title="Permalink to this headline">¶</a></h1>
+<span id="locationjson"></span><h1>7.1. Location data<a class="headerlink" href="#location-data" title="Permalink to this headline">¶</a></h1>
 <p>Location data uses GeoJSON (<a class="reference external" href="http://geojson.org/">http://geojson.org/</a>) specification, so all objects retrieved from the back-end are compatible
 with GeoJSON readers. Thanks to GeoJSON&#8217;s flexibility, new elements can be added to the objects. Back-end utilizes this
 by adding &#8220;metadata&#8221; element inside &#8220;properties&#8221; element. This new field is completely optional and may contain information
 such as status of the location data object, who has modified the metadata and so on. In this chapter this new element is
 described in detail.</p>
 <div class="section" id="json-format">
-<h2>5.1.1. JSON Format<a class="headerlink" href="#json-format" title="Permalink to this headline">¶</a></h2>
+<h2>7.1.1. JSON Format<a class="headerlink" href="#json-format" title="Permalink to this headline">¶</a></h2>
 <p>Like stated above, the JSON used by the software follows the GeoJSON specification.</p>
 <p>An example from <a class="reference external" href="http://gejson.org/geojson-spec.html">http://gejson.org/geojson-spec.html</a> (referenced 11.1.2015):</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="p">{</span>
@@ -201,18 +201,18 @@ the Streetlight information:</p>
         <div class="sphinxsidebarwrapper">
   <h3><a href="../index.html">Table Of Contents</a></h3>
   <ul>
-<li><a class="reference internal" href="#">5.1. Location data</a><ul>
-<li><a class="reference internal" href="#json-format">5.1.1. JSON Format</a></li>
+<li><a class="reference internal" href="#">7.1. Location data</a><ul>
+<li><a class="reference internal" href="#json-format">7.1.1. JSON Format</a></li>
 </ul>
 </li>
 </ul>
 
   <h4>Previous topic</h4>
   <p class="topless"><a href="jsondoc.html"
-                        title="previous chapter">5. JSON Formats</a></p>
+                        title="previous chapter">7. JSON Formats</a></p>
   <h4>Next topic</h4>
   <p class="topless"><a href="messagejson.html"
-                        title="next chapter">5.2. Message</a></p>
+                        title="next chapter">7.2. Message</a></p>
   <h3>This Page</h3>
   <ul class="this-page-menu">
     <li><a href="../_sources/json/locationdatajson.txt"
@@ -245,17 +245,17 @@ the Streetlight information:</p>
           <a href="../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="messagejson.html" title="5.2. Message"
+          <a href="messagejson.html" title="7.2. Message"
              >next</a> |</li>
         <li class="right" >
-          <a href="jsondoc.html" title="5. JSON Formats"
+          <a href="jsondoc.html" title="7. JSON Formats"
              >previous</a> |</li>
         <li><a href="../index.html">LBD location data and messaging backend Dev documentation</a> &raquo;</li>
-          <li><a href="jsondoc.html" >5. JSON Formats</a> &raquo;</li> 
+          <li><a href="jsondoc.html" >7. JSON Formats</a> &raquo;</li> 
       </ul>
     </div>
     <div class="footer">
-        &copy; Copyright LBD Project Group (Riitta Hietaranta, Aki Mäkinen, Tero Taipale, Ossi Teikari, Tommi Utter, Aappo Ålander).
+        &copy; Copyright LBD Project Group Riitta Hietaranta, Aki Mäkinen, Tero Taipale, Ossi Teikari, Tommi Utter, Aappo Ålander.
       Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
     </div>
   </body>

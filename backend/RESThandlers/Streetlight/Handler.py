@@ -68,39 +68,22 @@ class StreetlightHandler(HandlerBase):
             '&typeName=opendata:WFS_KATUVALO&outputFormat=json&srsName=EPSG:4326',
             proxies={})
         try:
+            print "reading data"
             jsonitem = json.loads(req.read())
         except ValueError:
-            return
+            print "ValueError"
+            return False
+        print "Updating"
+        self.modelobject.drop_collection()
+        doclist = []
+        for d in jsonitem["features"]:
+            id = d.pop("id")
+            temp = self.modelobject(d)
+            temp.feature_id = id
+            doclist.append(temp)
+        self.modelobject.objects.insert(doclist)
 
-        current_result = self.modelobject._get_collection().aggregate([
-            {"$project": {"feature_id": 1,
-                          "_id": 0}}
-        ])
-        if current_result["ok"] == 1 and len(current_result["result"]):
-            current_items = []
-            for item in current_result["result"]:
-                current_items.append(item["feature_id"])
-        else:
-            current_items = []
-        itemsinserted = 0
-        to_add = list()
-        loop = 0
-        for item in jsonitem["features"]:
-            loop += 1
-            fid = item.pop("id")
-            if fid not in current_items:
-                temp = item
-                temp["feature_id"] = fid
-                to_add.append(temp)
-                itemsinserted += 1
-            else:
-                current_items.remove(fid)
-        if len(to_add) > 0:
-            self.modelobject._get_collection().insert(to_add)
-        if len(current_items) > 0:
-            self.modelobject._get_collection().remove({"feature_id": {"$in": current_items}})
-
-        return itemsinserted, len(current_items)
+        return True
 
     def get_by_id(self, iid):
         result = self.modelobject._get_collection().aggregate([

@@ -24,7 +24,7 @@
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
     <link rel="top" title="LBD location data and messaging backend Dev documentation" href="index.html" />
-    <link rel="next" title="4. Headers and CORS" href="headersandcors.html" />
+    <link rel="next" title="4. Server and WSGI" href="server.html" />
     <link rel="prev" title="2. Installation" href="installation.html" /> 
   </head>
   <body>
@@ -38,7 +38,7 @@
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="headersandcors.html" title="4. Headers and CORS"
+          <a href="server.html" title="4. Server and WSGI"
              accesskey="N">next</a> |</li>
         <li class="right" >
           <a href="installation.html" title="2. Installation"
@@ -115,6 +115,11 @@ and port of the database. Change these according to your MongoDB configuration.:
 </pre></div>
 </div>
 <p>For the rest of the settings, please see <a class="reference external" href="https://docs.djangoproject.com/en/1.7/ref/settings/">https://docs.djangoproject.com/en/1.7/ref/settings/</a></p>
+<div class="section" id="google-apis">
+<h2>3.1. Google APIs<a class="headerlink" href="#google-apis" title="Permalink to this headline">¶</a></h2>
+<p>The user &#8220;registeration&#8221; requires a google client-id and requires that a Google project has Google plus API enabled, so that
+user information can be accessed in order to add it to local database.</p>
+</div>
 </div>
 
 
@@ -123,12 +128,20 @@ and port of the database. Change these according to your MongoDB configuration.:
       </div>
       <div class="sphinxsidebar">
         <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">3. Configuration</a><ul>
+<li><a class="reference internal" href="#google-apis">3.1. Google APIs</a></li>
+</ul>
+</li>
+</ul>
+
   <h4>Previous topic</h4>
   <p class="topless"><a href="installation.html"
                         title="previous chapter">2. Installation</a></p>
   <h4>Next topic</h4>
-  <p class="topless"><a href="headersandcors.html"
-                        title="next chapter">4. Headers and CORS</a></p>
+  <p class="topless"><a href="server.html"
+                        title="next chapter">4. Server and WSGI</a></p>
   <h3>This Page</h3>
   <ul class="this-page-menu">
     <li><a href="_sources/configuration.txt"
@@ -161,7 +174,7 @@ and port of the database. Change these according to your MongoDB configuration.:
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="headersandcors.html" title="4. Headers and CORS"
+          <a href="server.html" title="4. Server and WSGI"
              >next</a> |</li>
         <li class="right" >
           <a href="installation.html" title="2. Installation"
@@ -170,7 +183,7 @@ and port of the database. Change these according to your MongoDB configuration.:
       </ul>
     </div>
     <div class="footer">
-        &copy; Copyright LBD Project Group (Riitta Hietaranta, Aki Mäkinen, Tero Taipale, Ossi Teikari, Tommi Utter, Aappo Ålander).
+        &copy; Copyright LBD Project Group Riitta Hietaranta, Aki Mäkinen, Tero Taipale, Ossi Teikari, Tommi Utter, Aappo Ålander.
       Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
     </div>
   </body>

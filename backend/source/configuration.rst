@@ -72,3 +72,9 @@ Also the following should be modified only if you are certain of what you are do
 
 
 For the rest of the settings, please see https://docs.djangoproject.com/en/1.7/ref/settings/
+
+Google APIs
++++++++++++
+
+The user "registeration" requires a google client-id and requires that a Google project has Google plus API enabled, so that
+user information can be accessed in order to add it to local database.

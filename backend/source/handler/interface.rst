@@ -1,3 +1,4 @@
+.. _hanint:
 
 :mod:`RESThandlers.HandlerInterface` REST Handler Interface
 -----------------------------------------------------------

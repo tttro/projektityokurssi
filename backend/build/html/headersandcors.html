@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>4. Headers and CORS &mdash; LBD location data and messaging backend Dev documentation</title>
+    <title>6. Headers and CORS &mdash; LBD location data and messaging backend Dev documentation</title>
     
     <link rel="stylesheet" href="_static/default.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -24,8 +24,8 @@
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
     <link rel="top" title="LBD location data and messaging backend Dev documentation" href="index.html" />
-    <link rel="next" title="5. JSON Formats" href="json/jsondoc.html" />
-    <link rel="prev" title="3. Configuration" href="configuration.html" /> 
+    <link rel="next" title="7. JSON Formats" href="json/jsondoc.html" />
+    <link rel="prev" title="5. Security" href="security.html" /> 
   </head>
   <body>
     <div class="related">
@@ -38,10 +38,10 @@
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="json/jsondoc.html" title="5. JSON Formats"
+          <a href="json/jsondoc.html" title="7. JSON Formats"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="configuration.html" title="3. Configuration"
+          <a href="security.html" title="5. Security"
              accesskey="P">previous</a> |</li>
         <li><a href="index.html">LBD location data and messaging backend Dev documentation</a> &raquo;</li> 
       </ul>
@@ -53,9 +53,9 @@
           <div class="body">
             
   <div class="section" id="headers-and-cors">
-<h1>4. Headers and CORS<a class="headerlink" href="#headers-and-cors" title="Permalink to this headline">¶</a></h1>
+<h1>6. Headers and CORS<a class="headerlink" href="#headers-and-cors" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="headers">
-<h2>4.1. Headers<a class="headerlink" href="#headers" title="Permalink to this headline">¶</a></h2>
+<h2>6.1. Headers<a class="headerlink" href="#headers" title="Permalink to this headline">¶</a></h2>
 <p>The back-end uses two un-standard headers for user authentication and authorization. Both of these are required for most
 functionalities.</p>
 <table border="1" class="docutils">
@@ -79,7 +79,7 @@ functionalities.</p>
 </table>
 </div>
 <div class="section" id="cors">
-<h2>4.2. CORS<a class="headerlink" href="#cors" title="Permalink to this headline">¶</a></h2>
+<h2>6.2. CORS<a class="headerlink" href="#cors" title="Permalink to this headline">¶</a></h2>
 <p>CORS or Cross-origin resource sharing mechanism allows resources to be requested from other domains. In order to be able to
 use the back-end for example with AngularJS from another domain, some headers needed to be added. This is done in cors-middleware.</p>
 <p>Cors middleware adds support for HTTP OPTIONS method and adds <em>Access-Control-Allow-Origin</em>, <em>Access-Control-Allow-Credentials</em> and
@@ -95,19 +95,19 @@ use the back-end for example with AngularJS from another domain, some headers ne
         <div class="sphinxsidebarwrapper">
   <h3><a href="index.html">Table Of Contents</a></h3>
   <ul>
-<li><a class="reference internal" href="#">4. Headers and CORS</a><ul>
-<li><a class="reference internal" href="#headers">4.1. Headers</a></li>
-<li><a class="reference internal" href="#cors">4.2. CORS</a></li>
+<li><a class="reference internal" href="#">6. Headers and CORS</a><ul>
+<li><a class="reference internal" href="#headers">6.1. Headers</a></li>
+<li><a class="reference internal" href="#cors">6.2. CORS</a></li>
 </ul>
 </li>
 </ul>
 
   <h4>Previous topic</h4>
-  <p class="topless"><a href="configuration.html"
-                        title="previous chapter">3. Configuration</a></p>
+  <p class="topless"><a href="security.html"
+                        title="previous chapter">5. Security</a></p>
   <h4>Next topic</h4>
   <p class="topless"><a href="json/jsondoc.html"
-                        title="next chapter">5. JSON Formats</a></p>
+                        title="next chapter">7. JSON Formats</a></p>
   <h3>This Page</h3>
   <ul class="this-page-menu">
     <li><a href="_sources/headersandcors.txt"
@@ -140,16 +140,16 @@ use the back-end for example with AngularJS from another domain, some headers ne
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="json/jsondoc.html" title="5. JSON Formats"
+          <a href="json/jsondoc.html" title="7. JSON Formats"
              >next</a> |</li>
         <li class="right" >
-          <a href="configuration.html" title="3. Configuration"
+          <a href="security.html" title="5. Security"
              >previous</a> |</li>
         <li><a href="index.html">LBD location data and messaging backend Dev documentation</a> &raquo;</li> 
       </ul>
     </div>
     <div class="footer">
-        &copy; Copyright LBD Project Group (Riitta Hietaranta, Aki Mäkinen, Tero Taipale, Ossi Teikari, Tommi Utter, Aappo Ålander).
+        &copy; Copyright LBD Project Group Riitta Hietaranta, Aki Mäkinen, Tero Taipale, Ossi Teikari, Tommi Utter, Aappo Ålander.
       Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
     </div>
   </body>

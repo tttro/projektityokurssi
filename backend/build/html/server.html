@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>We are white and nerdy &mdash; LBD location data and messaging backend Dev documentation</title>
+    <title>4. Server and WSGI &mdash; LBD location data and messaging backend Dev documentation</title>
     
     <link rel="stylesheet" href="_static/default.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -24,7 +24,8 @@
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
     <link rel="top" title="LBD location data and messaging backend Dev documentation" href="index.html" />
-    <link rel="prev" title="7.3. RESThandlers.Streetlight Streetlight REST handler" href="handler/handlers.html" /> 
+    <link rel="next" title="5. Security" href="security.html" />
+    <link rel="prev" title="3. Configuration" href="configuration.html" /> 
   </head>
   <body>
     <div class="related">
@@ -37,7 +38,10 @@
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="handler/handlers.html" title="7.3. RESThandlers.Streetlight Streetlight REST handler"
+          <a href="security.html" title="5. Security"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="configuration.html" title="3. Configuration"
              accesskey="P">previous</a> |</li>
         <li><a href="index.html">LBD location data and messaging backend Dev documentation</a> &raquo;</li> 
       </ul>
@@ -48,11 +52,18 @@
         <div class="bodywrapper">
           <div class="body">
             
-  <div class="section" id="we-are-white-and-nerdy">
-<h1>We are white and nerdy<a class="headerlink" href="#we-are-white-and-nerdy" title="Permalink to this headline">¶</a></h1>
-<p>The LBD project group is a Finnish six member team formed for the Tampere University of Technology project course.</p>
-<p>So yes, we are quite white and nerdy.</p>
-<iframe width="560" height="315" src="//www.youtube.com/embed/N9qYF9DZPdw" frameborder="0" allowfullscreen></iframe></div>
+  <div class="section" id="server-and-wsgi">
+<h1>4. Server and WSGI<a class="headerlink" href="#server-and-wsgi" title="Permalink to this headline">¶</a></h1>
+<p>This documentation itself does not guide how to setup a HTTP server or WSGI. However, we (the development team) can give
+you some suggestions what software to use.</p>
+<p>One quite popular HTTP server is <strong>Apache HTTP Server</strong> (<a class="reference external" href="http://httpd.apache.org/">http://httpd.apache.org/</a>). However, when testing the performance
+on Raspberry Pi where the server&#8217;s role is emphasized when determining response times (of course this software is not
+meant to run on Raspberry Pi ;) ).</p>
+<p>Much better performance was achieved with <strong>nginx</strong> (<a class="reference external" href="http://nginx.org/">http://nginx.org/</a>). Response time was drastically decreased with it and the configuration
+is simple and relatively quick.</p>
+<p>With nginx, best result in terms of configuration and performance was achieved with uWSGI (<a class="reference external" href="http://uwsgi-docs.readthedocs.org/en/latest/index.html">http://uwsgi-docs.readthedocs.org/en/latest/index.html</a>).</p>
+<p>Of course you do not have to use nginx and uwsgi, but it worked well for the developers.</p>
+</div>
 
 
           </div>
@@ -61,11 +72,14 @@
       <div class="sphinxsidebar">
         <div class="sphinxsidebarwrapper">
   <h4>Previous topic</h4>
-  <p class="topless"><a href="handler/handlers.html"
-                        title="previous chapter">7.3. <tt class="docutils literal"><span class="pre">RESThandlers.Streetlight</span></tt> Streetlight REST handler</a></p>
+  <p class="topless"><a href="configuration.html"
+                        title="previous chapter">3. Configuration</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="security.html"
+                        title="next chapter">5. Security</a></p>
   <h3>This Page</h3>
   <ul class="this-page-menu">
-    <li><a href="_sources/wearewhiteandnerdy.txt"
+    <li><a href="_sources/server.txt"
            rel="nofollow">Show Source</a></li>
   </ul>
 <div id="searchbox" style="display: none">
@@ -95,13 +109,16 @@
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="handler/handlers.html" title="7.3. RESThandlers.Streetlight Streetlight REST handler"
+          <a href="security.html" title="5. Security"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="configuration.html" title="3. Configuration"
              >previous</a> |</li>
         <li><a href="index.html">LBD location data and messaging backend Dev documentation</a> &raquo;</li> 
       </ul>
     </div>
     <div class="footer">
-        &copy; Copyright LBD Project Group (Riitta Hietaranta, Aki Mäkinen, Tero Taipale, Ossi Teikari, Tommi Utter, Aappo Ålander).
+        &copy; Copyright LBD Project Group Riitta Hietaranta, Aki Mäkinen, Tero Taipale, Ossi Teikari, Tommi Utter, Aappo Ålander.
       Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
     </div>
   </body>

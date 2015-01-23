@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>11. Code documentation: Handlers &mdash; LBD location data and messaging backend Dev documentation</title>
+    <title>5. Security &mdash; LBD location data and messaging backend Dev documentation</title>
     
     <link rel="stylesheet" href="_static/default.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -24,8 +24,8 @@
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
     <link rel="top" title="LBD location data and messaging backend Dev documentation" href="index.html" />
-    <link rel="next" title="11.1. RESThandlers.HandlerInterface REST Handler Interface" href="handler/interface.html" />
-    <link rel="prev" title="10.3. lbd_backend.LBD_REST_messagedata Message data REST" href="codedoc/msgdoc.html" /> 
+    <link rel="next" title="6. Headers and CORS" href="headersandcors.html" />
+    <link rel="prev" title="4. Server and WSGI" href="server.html" /> 
   </head>
   <body>
     <div class="related">
@@ -38,10 +38,10 @@
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="handler/interface.html" title="11.1. RESThandlers.HandlerInterface REST Handler Interface"
+          <a href="headersandcors.html" title="6. Headers and CORS"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="codedoc/msgdoc.html" title="10.3. lbd_backend.LBD_REST_messagedata Message data REST"
+          <a href="server.html" title="4. Server and WSGI"
              accesskey="P">previous</a> |</li>
         <li><a href="index.html">LBD location data and messaging backend Dev documentation</a> &raquo;</li> 
       </ul>
@@ -52,19 +52,12 @@
         <div class="bodywrapper">
           <div class="body">
             
-  <div class="section" id="code-documentation-handlers">
-<h1>11. Code documentation: Handlers<a class="headerlink" href="#code-documentation-handlers" title="Permalink to this headline">¶</a></h1>
-<div class="toctree-wrapper compound">
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="handler/interface.html">11.1. <tt class="docutils literal"><span class="pre">RESThandlers.HandlerInterface</span></tt> REST Handler Interface</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="handler/interface.html#handler-interface">11.1.1. Handler interface</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="handler/factory.html">11.2. <tt class="docutils literal"><span class="pre">RESThandlers.HandlerInterface.Factory</span></tt> Handler Factory</a></li>
-<li class="toctree-l1"><a class="reference internal" href="handler/handlers.html">11.3. <tt class="docutils literal"><span class="pre">RESThandlers.Streetlight</span></tt> Streetlight REST handler</a></li>
-<li class="toctree-l1"><a class="reference internal" href="handler/handlers.html#module-RESThandlers.Playgrounds.Handler">11.4. <tt class="docutils literal"><span class="pre">RESThandlers.Playgrounds</span></tt> Playgrounds REST handler</a></li>
-</ul>
-</div>
+  <div class="section" id="security">
+<h1>5. Security<a class="headerlink" href="#security" title="Permalink to this headline">¶</a></h1>
+<p>Django provides some security for the user. In combination with MongoDB (no SQL injections) the software is relatively
+secure to use with open data. However the authentication needs to be secured against for example man-in-the-middle attacks.
+Good way to achieve security is to use HTTPS. HTTPS is already enabled from Django settings so you only need to see
+what needs to be done to nginx/uwsgi to start using it.</p>
 </div>
 
 
@@ -74,14 +67,14 @@
       <div class="sphinxsidebar">
         <div class="sphinxsidebarwrapper">
   <h4>Previous topic</h4>
-  <p class="topless"><a href="codedoc/msgdoc.html"
-                        title="previous chapter">10.3. <tt class="docutils literal"><span class="pre">lbd_backend.LBD_REST_messagedata</span></tt> Message data REST</a></p>
+  <p class="topless"><a href="server.html"
+                        title="previous chapter">4. Server and WSGI</a></p>
   <h4>Next topic</h4>
-  <p class="topless"><a href="handler/interface.html"
-                        title="next chapter">11.1. <tt class="docutils literal"><span class="pre">RESThandlers.HandlerInterface</span></tt> REST Handler Interface</a></p>
+  <p class="topless"><a href="headersandcors.html"
+                        title="next chapter">6. Headers and CORS</a></p>
   <h3>This Page</h3>
   <ul class="this-page-menu">
-    <li><a href="_sources/hand.txt"
+    <li><a href="_sources/security.txt"
            rel="nofollow">Show Source</a></li>
   </ul>
 <div id="searchbox" style="display: none">
@@ -111,10 +104,10 @@
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="handler/interface.html" title="11.1. RESThandlers.HandlerInterface REST Handler Interface"
+          <a href="headersandcors.html" title="6. Headers and CORS"
              >next</a> |</li>
         <li class="right" >
-          <a href="codedoc/msgdoc.html" title="10.3. lbd_backend.LBD_REST_messagedata Message data REST"
+          <a href="server.html" title="4. Server and WSGI"
              >previous</a> |</li>
         <li><a href="index.html">LBD location data and messaging backend Dev documentation</a> &raquo;</li> 
       </ul>
