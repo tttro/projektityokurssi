@@ -32,6 +32,7 @@ import fi.lbd.mobile.messaging.messageobjects.MessageObject;
 public class MessageUpdateService extends Service {
     private Timer timer = new Timer();
     private static final long UPDATE_INTERVAL = 30*1000;
+    private boolean waitingForReturnEvent;
 
     public MessageUpdateService() {}
 
@@ -69,13 +70,17 @@ public class MessageUpdateService extends Service {
            new TimerTask() {
                public void run() {
                    Log.d(getClass().toString(), " Sending a new RequestUserMessagesEvent from background service");
-                   BusHandler.getBus().post(new RequestUserMessagesEvent());
+                   if (!waitingForReturnEvent) {
+                       BusHandler.getBus().post(new RequestUserMessagesEvent());
+                       waitingForReturnEvent = true;
+                   }
                }
            }, 500, UPDATE_INTERVAL);
     }
 
     @Subscribe
     public void onEvent(ReturnUserMessagesEvent event) {
+        waitingForReturnEvent = false;
         List<MessageObject> newMessageObjects = event.getMessageObjects();
         List<MessageObject> oldMessageObjects = MessageObjectRepository.get().getObjects();
 

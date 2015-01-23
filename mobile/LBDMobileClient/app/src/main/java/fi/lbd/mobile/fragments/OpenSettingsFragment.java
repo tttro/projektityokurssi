@@ -2,8 +2,10 @@ package fi.lbd.mobile.fragments;
 
 import android.accounts.Account;
 import android.accounts.AccountManager;
+import android.app.Activity;
 import android.app.Fragment;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -16,11 +18,16 @@ import com.google.android.gms.auth.GoogleAuthException;
 import com.google.android.gms.auth.GoogleAuthUtil;
 import com.google.android.gms.auth.UserRecoverableAuthException;
 import com.google.android.gms.common.Scopes;
+import com.squareup.otto.Bus;
 
 import java.io.IOException;
 
+import fi.lbd.mobile.ApplicationDetails;
+import fi.lbd.mobile.GlobalToastMaker;
 import fi.lbd.mobile.R;
 import fi.lbd.mobile.SettingsActivity;
+import fi.lbd.mobile.authorization.AuthorizedEvent;
+import fi.lbd.mobile.events.BusHandler;
 
 /**
  * Fragment that only contains a button to open SettingsActivity.
@@ -40,6 +47,20 @@ public class OpenSettingsFragment extends Fragment{
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), SettingsActivity.class);
                 startActivity(intent);
+            }
+        });
+
+        view.findViewById(R.id.signOutButton).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                SharedPreferences settings = getActivity().getApplication().getApplicationContext()
+                        .getSharedPreferences(getActivity().getString(R.string.shared_preferences), Activity.MODE_PRIVATE);
+                String userAccount = getActivity().getResources().getString(R.string.user_account);
+                SharedPreferences.Editor editor = settings.edit();
+                editor.putString(userAccount, null);
+                editor.apply();
+                ApplicationDetails.get().setUserEmail(null);
+                BusHandler.getBus().post( new AuthorizedEvent() );
             }
         });
 

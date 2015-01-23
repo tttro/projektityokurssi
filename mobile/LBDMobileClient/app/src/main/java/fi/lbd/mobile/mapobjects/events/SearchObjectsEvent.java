@@ -5,15 +5,14 @@ import android.support.annotation.NonNull;
 import java.util.ArrayList;
 import java.util.List;
 
-import fi.lbd.mobile.events.AbstractEvent;
-import fi.lbd.mobile.location.PointLocation;
+import fi.lbd.mobile.authorization.AuthorizedEvent;
 
 /**
  * Event for OTTO-bus. Searches for objects with string.
  *
  * Created by Tommi.
  */
-public class SearchObjectsEvent extends AbstractEvent {
+public class SearchObjectsEvent extends AuthorizedEvent {
     private final List<String> fromFields;
     private final String searchString;
     private final int limit;

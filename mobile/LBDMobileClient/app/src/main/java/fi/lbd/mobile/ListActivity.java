@@ -17,6 +17,7 @@ import android.view.inputmethod.InputMethodManager;
 import java.util.ArrayDeque;
 import java.util.Locale;
 
+import fi.lbd.mobile.authorization.AuthorizedEventHandler;
 import fi.lbd.mobile.events.BusHandler;
 import fi.lbd.mobile.fragments.OpenSettingsFragment;
 import fi.lbd.mobile.mapobjects.MapObjectSelectionManager;
@@ -253,5 +254,10 @@ public class ListActivity extends Activity {
 
     public LocationHandler getLocationHandler(){
         return this.locationHandler;
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        AuthorizedEventHandler.processResults(requestCode, resultCode, data);
     }
 }

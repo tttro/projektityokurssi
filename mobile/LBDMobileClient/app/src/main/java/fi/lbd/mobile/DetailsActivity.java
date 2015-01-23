@@ -19,6 +19,7 @@ import android.widget.Toast;
 import com.squareup.otto.Subscribe;
 
 import fi.lbd.mobile.adapters.ListDetailsAdapter;
+import fi.lbd.mobile.authorization.AuthorizedEventHandler;
 import fi.lbd.mobile.backendhandler.BackendHandlerService;
 import fi.lbd.mobile.events.BusHandler;
 import fi.lbd.mobile.events.RequestCollectionsEvent;
@@ -169,4 +170,9 @@ public class DetailsActivity extends Activity {
         @Override
         public void onServiceDisconnected(ComponentName name) {}
     };
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        AuthorizedEventHandler.processResults(requestCode, resultCode, data);
+    }
 }

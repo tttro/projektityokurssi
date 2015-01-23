@@ -1,12 +1,12 @@
 package fi.lbd.mobile.mapobjects.events;
 
-import fi.lbd.mobile.events.AbstractEvent;
+import fi.lbd.mobile.authorization.AuthorizedEvent;
 import fi.lbd.mobile.location.ImmutablePointLocation;
 
 /**
  * Requests for objects in a given area.
  */
-public class RequestObjectsInAreaEvent extends AbstractEvent {
+public class RequestObjectsInAreaEvent extends AuthorizedEvent {
     private final ImmutablePointLocation southWest;
     private final ImmutablePointLocation northEast;
     private final boolean minimized;

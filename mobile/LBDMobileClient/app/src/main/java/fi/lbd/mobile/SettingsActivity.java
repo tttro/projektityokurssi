@@ -1,7 +1,11 @@
 package fi.lbd.mobile;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
+
+import fi.lbd.mobile.authorization.Authorization;
+import fi.lbd.mobile.authorization.AuthorizedEventHandler;
 import fi.lbd.mobile.fragments.SettingsFragment;
 
 /**
@@ -34,4 +38,8 @@ public class SettingsActivity extends Activity {
         ActiveActivitiesTracker.activityStopped(this);
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        AuthorizedEventHandler.processResults(requestCode, resultCode, data);
+    }
 }

@@ -2,8 +2,8 @@ package fi.lbd.mobile.backendhandler;
 
 import android.support.annotation.NonNull;
 import android.util.Log;
+import android.util.Pair;
 
-import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
@@ -15,6 +15,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import fi.lbd.mobile.backendhandler.url.UrlProvider;
+import fi.lbd.mobile.backendhandler.url.UrlReader;
+import fi.lbd.mobile.backendhandler.url.UrlResponse;
 import fi.lbd.mobile.location.PointLocation;
 import fi.lbd.mobile.mapobjects.MapObject;
 import fi.lbd.mobile.messaging.messageobjects.MessageObject;
@@ -41,7 +44,7 @@ public class BasicBackendHandler implements BackendHandler {
     }
 
     @Override
-	public HandlerResponse<MapObject> getObjectsNearLocation(PointLocation location, double range, boolean mini) {
+	public HandlerResponse<MapObject> getObjectsNearLocation(PointLocation location, double range, boolean mini, Pair<String, String>... customHeaders) {
         StringBuilder str = new StringBuilder();
         str.append(this.urlProvider.getBaseObjectUrl());
         str.append(this.urlProvider.getObjectCollection());
@@ -59,7 +62,7 @@ public class BasicBackendHandler implements BackendHandler {
             str.append(range);
         }
         String url = str.toString();
-        UrlResponse response = this.getUrl(url, RETRY_AMOUNT);
+        UrlResponse response = this.getUrl(url, RETRY_AMOUNT, customHeaders);
 
         // Only if the url returns code 200, we can parse the results.
         if (response != null && response.getStatus() == UrlResponse.ResponseStatus.STATUS_200) {
@@ -81,7 +84,7 @@ public class BasicBackendHandler implements BackendHandler {
 
     @Override
     public HandlerResponse<MapObject> getObjectsFromSearch(@NonNull List<String> fromFields, @NonNull String searchString,
-                                                int limit, boolean mini) {
+                                                int limit, boolean mini, Pair<String, String>... customHeaders) {
         StringBuilder str = new StringBuilder();
         str.append(this.urlProvider.getBaseObjectUrl());
         str.append(this.urlProvider.getObjectCollection());
@@ -107,7 +110,7 @@ public class BasicBackendHandler implements BackendHandler {
                 .put("from", fields.toString())
                 .put("search", searchString)
                 .put("limit", limit);
-        UrlResponse response = this.urlReader.postJson(url, jsonObj.toString());
+        UrlResponse response = this.urlReader.postJson(url, jsonObj.toString(), customHeaders);
 
         // Only if the url returns code 200, we can parse the results.
         if (response != null && response.getStatus() == UrlResponse.ResponseStatus.STATUS_200) {
@@ -129,7 +132,7 @@ public class BasicBackendHandler implements BackendHandler {
 
 
     @Override
-    public HandlerResponse<MapObject> getObjectsInArea(PointLocation southWest, PointLocation northEast, boolean mini) {
+    public HandlerResponse<MapObject> getObjectsInArea(PointLocation southWest, PointLocation northEast, boolean mini, Pair<String, String>... customHeaders) {
         StringBuilder str = new StringBuilder();
         str.append(this.urlProvider.getBaseObjectUrl());
         str.append(this.urlProvider.getObjectCollection());
@@ -147,7 +150,7 @@ public class BasicBackendHandler implements BackendHandler {
             str.append("&mini=true");
         }
         String url = str.toString();
-        UrlResponse response = this.getUrl(url, RETRY_AMOUNT);
+        UrlResponse response = this.getUrl(url, RETRY_AMOUNT, customHeaders);
 
         // Only if the url returns code 200, we can parse the results.
         if (response != null && response.getStatus() == UrlResponse.ResponseStatus.STATUS_200) {
@@ -168,9 +171,9 @@ public class BasicBackendHandler implements BackendHandler {
     }
 
     @Override
-    public HandlerResponse<MapObject> getMapObject(String id) {
+    public HandlerResponse<MapObject> getMapObject(String id, Pair<String, String>... customHeaders) {
         String url = this.urlProvider.getBaseObjectUrl() + this.urlProvider.getObjectCollection() + "/"+ id;
-        UrlResponse response = this.getUrl(url, RETRY_AMOUNT);
+        UrlResponse response = this.getUrl(url, RETRY_AMOUNT, customHeaders);
 
         // Only if the url returns code 200, we can parse the results.
         if (response != null && response.getStatus() == UrlResponse.ResponseStatus.STATUS_200) {
@@ -203,7 +206,7 @@ public class BasicBackendHandler implements BackendHandler {
      * @return
      */
     @Override
-    public HandlerResponse<MapObject> updateMapObject(@NonNull MapObject updatedMapObject) {
+    public HandlerResponse<MapObject> updateMapObject(@NonNull MapObject updatedMapObject, Pair<String, String>... customHeaders) {
         String url = this.urlProvider.getBaseObjectUrl() + this.urlProvider.getObjectCollection() +"/"+ updatedMapObject.getId();
 
         String objectJson = MapObjectParser.createJsonFromObject(updatedMapObject);
@@ -211,7 +214,7 @@ public class BasicBackendHandler implements BackendHandler {
 //        Log.d(this.getClass().getSimpleName(), "SENDING URL: "+ url);
 //        Log.d(this.getClass().getSimpleName(), "SENDING JSON: "+ objectJson);
         // Update object to backend
-        UrlResponse response = this.urlReader.putJson(url, objectJson);
+        UrlResponse response = this.urlReader.putJson(url, objectJson, customHeaders);
 
         if (response != null && response.getStatus() == UrlResponse.ResponseStatus.STATUS_200) {
             // If the update operation succeeded, fetch object with the id from backend
@@ -237,7 +240,7 @@ public class BasicBackendHandler implements BackendHandler {
         return new HandlerResponse<>(null, HandlerResponse.Status.Failed, "Failed to update object, response: "+ response);
     }
 
-    private static boolean matchingMapObjects(MapObject obj1, MapObject obj2) {
+    private static boolean matchingMapObjects(MapObject obj1, MapObject obj2, Pair<String, String>... customHeaders) {
         if (!obj1.getId().equals(obj2.getId())) {
             Log.d(BasicBackendHandler.class.getSimpleName(), "matchingMapObjects id:s didn't match");
             return false;
@@ -265,9 +268,9 @@ public class BasicBackendHandler implements BackendHandler {
     }
 
     @Override
-    public HandlerResponse<String> getUsers(){
+    public HandlerResponse<String> getUsers(Pair<String, String>... customHeaders){
         String url = this.urlProvider.getBaseMessageUrl() + "users/list/";
-        UrlResponse response = this.getUrl(url, RETRY_AMOUNT);
+        UrlResponse response = this.getUrl(url, RETRY_AMOUNT, customHeaders);
 
         // Only if the url returns code 200, we can parse the results.
         if (response != null && response.getStatus() == UrlResponse.ResponseStatus.STATUS_200) {
@@ -288,9 +291,9 @@ public class BasicBackendHandler implements BackendHandler {
     }
 
     @Override
-    public HandlerResponse<String> getCollections(String url){
+    public HandlerResponse<String> getCollections(String url, Pair<String, String>... customHeaders){
         //String url = this.baseObjectUrl;
-        UrlResponse response = this.getUrl(url+"locationdata/api/", RETRY_AMOUNT);
+        UrlResponse response = this.getUrl(url+"locationdata/api/", RETRY_AMOUNT, customHeaders);
 
         // Only if the url returns code 200, we can parse the results.
         if (response != null && response.getStatus() == UrlResponse.ResponseStatus.STATUS_200) {
@@ -311,9 +314,9 @@ public class BasicBackendHandler implements BackendHandler {
     }
 
     @Override
-    public HandlerResponse<MessageObject> getMessages() {
+    public HandlerResponse<MessageObject> getMessages(Pair<String, String>... customHeaders) {
         String url = this.urlProvider.getBaseMessageUrl() + "messages/";
-        UrlResponse response = this.getUrl(url, RETRY_AMOUNT);
+        UrlResponse response = this.getUrl(url, RETRY_AMOUNT, customHeaders);
 
         // Only if the url returns code 200, we can parse the results.
         if (response != null && response.getStatus() == UrlResponse.ResponseStatus.STATUS_200) {
@@ -337,7 +340,8 @@ public class BasicBackendHandler implements BackendHandler {
     public HandlerResponse<MessageObject> postMessage(String receiver,
                                                       String topic,
                                                       Object message,
-                                                      List<String> attachedObjectIds) {
+                                                      List<String> attachedObjectIds,
+                                                      Pair<String, String>... customHeaders) {
 //        String testMsg = "{\"category\": \"Streetlights\", \"recipient\": \"lbd@lbd.net\"," +
 //            "\"attachements\": [{\"category\": \"Jokin\", \"aid\": \"jokin id\"}], \"topic\": \"Meeppä kuule korjaan toi valo\"," +
 //            "\"message\": \"Tässä sulle tikkaat\"}";
@@ -363,7 +367,7 @@ public class BasicBackendHandler implements BackendHandler {
 
         Log.d(this.getClass().getSimpleName(), "Send message: " + objNode.toString());
         Log.d(this.getClass().getSimpleName(), "Send to url: "+ urlBuilder.toString());
-        UrlResponse response = this.urlReader.postJson(urlBuilder.toString(), objNode.toString());
+        UrlResponse response = this.urlReader.postJson(urlBuilder.toString(), objNode.toString(), customHeaders);
 
         if (response != null && response.getStatus() == UrlResponse.ResponseStatus.STATUS_200) {
             return new HandlerResponse<>(null, HandlerResponse.Status.Succeeded);
@@ -373,9 +377,9 @@ public class BasicBackendHandler implements BackendHandler {
     }
 
     @Override
-    public HandlerResponse<MessageObject> deleteMessage(String messageId) {
+    public HandlerResponse<MessageObject> deleteMessage(String messageId, Pair<String, String>... customHeaders) {
         String url = this.urlProvider.getBaseMessageUrl() + "messages/" + /*dataSource +"/"+*/ messageId;
-        UrlResponse response = this.urlReader.delete(url);
+        UrlResponse response = this.urlReader.delete(url, customHeaders);
 
         Log.d(BasicBackendHandler.class.getSimpleName(), "deleteMessage from url: " + url);
 
@@ -386,7 +390,7 @@ public class BasicBackendHandler implements BackendHandler {
         return new HandlerResponse<>(null, HandlerResponse.Status.Failed, "Failed to delete message, response: "+ response);
     }
 
-    private void addMessageToObjectNode(Object message, ObjectNode objNode) {
+    private void addMessageToObjectNode(Object message, ObjectNode objNode, Pair<String, String>... customHeaders) {
         // TODO: JSON transformers for different message types.
         if (message instanceof String) {
             objNode.put("message", (String)message);
@@ -402,10 +406,10 @@ public class BasicBackendHandler implements BackendHandler {
      * @param retries   Amount of retries before giving up.
      * @return  Returned response or null.
      */
-    private UrlResponse getUrl(String url, int retries) {
+    private UrlResponse getUrl(String url, int retries, Pair<String, String>... customHeaders) {
         UrlResponse response;
         for (int i = 0; i < retries+1; i++) {
-            response = this.urlReader.get(url);
+            response = this.urlReader.get(url, customHeaders);
             if (response != null) {
                 if (shouldRetry(response.getStatus())) {
                     Log.e(BasicBackendHandler.class.getSimpleName(), "Retrying request on url: "+url+", response was: "+ response);

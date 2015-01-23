@@ -4,6 +4,7 @@ import android.support.annotation.Nullable;
 
 import java.util.List;
 
+import fi.lbd.mobile.authorization.AuthorizedEvent;
 import fi.lbd.mobile.events.AbstractEvent;
 import fi.lbd.mobile.location.ImmutablePointLocation;
 import fi.lbd.mobile.mapobjects.MapObject;

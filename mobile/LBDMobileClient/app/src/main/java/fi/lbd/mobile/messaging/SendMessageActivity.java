@@ -6,6 +6,7 @@ import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
@@ -20,6 +21,7 @@ import java.util.List;
 import fi.lbd.mobile.ActiveActivitiesTracker;
 import fi.lbd.mobile.GlobalToastMaker;
 import fi.lbd.mobile.R;
+import fi.lbd.mobile.authorization.AuthorizedEventHandler;
 import fi.lbd.mobile.events.BusHandler;
 import fi.lbd.mobile.events.RequestFailedEvent;
 import fi.lbd.mobile.events.RequestUsersEvent;
@@ -214,5 +216,10 @@ public class SendMessageActivity extends Activity {
             int duration = Toast.LENGTH_SHORT;
             Toast.makeText(this, message, duration).show();
         }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        AuthorizedEventHandler.processResults(requestCode, resultCode, data);
     }
 }

@@ -23,8 +23,15 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 import fi.lbd.mobile.ApplicationDetails;
+import fi.lbd.mobile.backendhandler.url.BasicUrlReader;
+import fi.lbd.mobile.backendhandler.url.UrlProvider;
+import fi.lbd.mobile.backendhandler.url.UrlReaderException;
 import fi.lbd.mobile.events.BusHandler;
+import fi.lbd.mobile.events.RequestCollectionsEvent;
 import fi.lbd.mobile.events.RequestFailedEvent;
+import fi.lbd.mobile.events.RequestUsersEvent;
+import fi.lbd.mobile.events.ReturnCollectionsEvent;
+import fi.lbd.mobile.events.ReturnUsersEvent;
 import fi.lbd.mobile.mapobjects.MapObject;
 import fi.lbd.mobile.mapobjects.events.CacheObjectsInAreaEvent;
 import fi.lbd.mobile.mapobjects.events.RequestMapObjectEvent;
@@ -37,17 +44,13 @@ import fi.lbd.mobile.mapobjects.events.ReturnSearchResultEvent;
 import fi.lbd.mobile.mapobjects.events.SearchObjectsEvent;
 import fi.lbd.mobile.mapobjects.events.UpdateMapObjectEvent;
 import fi.lbd.mobile.mapobjects.events.UpdateMapObjectSucceededEvent;
-import fi.lbd.mobile.messaging.messageobjects.MessageObject;
 import fi.lbd.mobile.messaging.events.DeleteMessageEvent;
 import fi.lbd.mobile.messaging.events.DeleteMessageSucceededEvent;
-import fi.lbd.mobile.events.RequestCollectionsEvent;
 import fi.lbd.mobile.messaging.events.RequestUserMessagesEvent;
-import fi.lbd.mobile.events.RequestUsersEvent;
-import fi.lbd.mobile.events.ReturnCollectionsEvent;
 import fi.lbd.mobile.messaging.events.ReturnUserMessagesEvent;
-import fi.lbd.mobile.events.ReturnUsersEvent;
 import fi.lbd.mobile.messaging.events.SendMessageEvent;
 import fi.lbd.mobile.messaging.events.SendMessageSucceededEvent;
+import fi.lbd.mobile.messaging.messageobjects.MessageObject;
 
 
 /**
@@ -121,8 +124,7 @@ public class BackendHandlerService extends Service {
 
         BasicUrlReader urlReader = new BasicUrlReader();
         try {
-            urlReader.initialize(new GoogleAuthProvider(getApplicationContext()),
-                    new Pair<>("LBDServiceCertificate", certificate));
+            urlReader.initialize(new Pair<>("LBDServiceCertificate", certificate));
         } catch (UrlReaderException ex) {
             throw new RuntimeException(ex.getOriginalException());
         }
@@ -183,7 +185,7 @@ public class BackendHandlerService extends Service {
         // Start the repeating check for outdated caches.
         this.scheduledExecutor.scheduleAtFixedRate(new Runnable() {
             public void run() {
-                ((CachingBackendHandler)backendHandler).checkForOutdatedCaches();
+                ((CachingBackendHandler) backendHandler).checkForOutdatedCaches();
             }
         }, INTERVAL_START_DURATION, INTERVAL_DURATION, INTERVAL_TIME_UNIT);
     }
@@ -221,7 +223,8 @@ public class BackendHandlerService extends Service {
             public void run() {
                 Log.d(this.getClass().getSimpleName(), "RequestNearObjectsEvent: "+ event.getLocation());
 
-                HandlerResponse<MapObject> response = backendHandler.getObjectsNearLocation(event.getLocation(), event.getRange(), event.isMinimized());
+                HandlerResponse<MapObject> response = backendHandler.getObjectsNearLocation(event.getLocation(),
+                        event.getRange(), event.isMinimized(), event.getIdHeader(), event.getTokenHeader());
                 if (response.isOk()) {
                     BusHandler.getBus().post(new ReturnNearObjectsEvent(response.getObjects()));
                     Log.d(this.getClass().getSimpleName(), "RequestNearObjectsEvent: Sent OK response.");
@@ -245,7 +248,8 @@ public class BackendHandlerService extends Service {
             @Override
             public void run() {
                 Log.d(this.getClass().getSimpleName(), "RequestObjectsInAreaEvent: "+ event.getSouthWest() + event.getNorthEast());
-                HandlerResponse<MapObject> response = backendHandler.getObjectsInArea(event.getSouthWest(), event.getNorthEast(), event.isMinimized());
+                HandlerResponse<MapObject> response = backendHandler.getObjectsInArea(event.getSouthWest(),
+                        event.getNorthEast(), event.isMinimized(), event.getIdHeader(), event.getTokenHeader());
                 if (response.isOk()) {
                     BusHandler.getBus().post(new ReturnObjectsInAreaEvent(event.getSouthWest(), event.getNorthEast(), response.getObjects()));
                     Log.d(this.getClass().getSimpleName(), "RequestObjectsInAreaEvent: Sent OK response.");
@@ -271,7 +275,8 @@ public class BackendHandlerService extends Service {
             public void run() {
                 if (backendHandler instanceof CachingBackendHandler) {
                     Log.d(this.getClass().getSimpleName(), "CacheObjectsInAreaEvent: "+ event.getSouthWest() + event.getNorthEast());
-                    HandlerResponse<MapObject> response = backendHandler.getObjectsInArea(event.getSouthWest(), event.getNorthEast(), event.isMinimized());
+                    HandlerResponse<MapObject> response = backendHandler.getObjectsInArea(event.getSouthWest(),
+                            event.getNorthEast(), event.isMinimized(), event.getIdHeader(), event.getTokenHeader());
                     if (response.isOk()) {
                         Log.d(this.getClass().getSimpleName(), "CacheObjectsInAreaEvent: Sent OK response.");
                     } else {
@@ -296,7 +301,7 @@ public class BackendHandlerService extends Service {
             @Override
             public void run() {
                 Log.d(this.getClass().getSimpleName(), "RequestMapObjectEvent: "+ event.getId());
-                HandlerResponse<MapObject> response = backendHandler.getMapObject(event.getId());
+                HandlerResponse<MapObject> response = backendHandler.getMapObject(event.getId(), event.getIdHeader(), event.getTokenHeader());
 
                 if (response.isOk()) {
                     MapObject obj = (response.getObjects().size() > 0) ? response.getObjects().get(0) : null;
@@ -322,7 +327,8 @@ public class BackendHandlerService extends Service {
             @Override
             public void run() {
                 Log.d(this.getClass().getSimpleName(), "UpdateMapObjectEvent");
-                HandlerResponse<MapObject> response = backendHandler.updateMapObject(event.getUpdatedMapObject());
+                HandlerResponse<MapObject> response = backendHandler.updateMapObject(event.getUpdatedMapObject(),
+                        event.getIdHeader(), event.getTokenHeader());
                 if (response.isOk()) {
                     BusHandler.getBus().post(new UpdateMapObjectSucceededEvent(response.getObjects().get(0)));
                     Log.d(this.getClass().getSimpleName(), "UpdateMapObjectEvent: Sent OK response.");
@@ -346,7 +352,8 @@ public class BackendHandlerService extends Service {
             @Override
             public void run() {
                 Log.d(this.getClass().getSimpleName(), "SearchObjectsEvent");
-                HandlerResponse<MapObject> response = backendHandler.getObjectsFromSearch(event.getFromFields(), event.getSearchString(), event.getLimit(), event.isMini());
+                HandlerResponse<MapObject> response = backendHandler.getObjectsFromSearch(event.getFromFields(),
+                        event.getSearchString(), event.getLimit(), event.isMini(), event.getIdHeader(), event.getTokenHeader());
 
                 if (response.isOk()) {
                     BusHandler.getBus().post(new ReturnSearchResultEvent(response.getObjects()));
@@ -371,7 +378,7 @@ public class BackendHandlerService extends Service {
             @Override
             public void run(){
                 Log.d(this.getClass().getSimpleName(), "RequestUsersEvent");
-                HandlerResponse<String> response = backendHandler.getUsers();
+                HandlerResponse<String> response = backendHandler.getUsers(event.getIdHeader(), event.getTokenHeader());
 
                 if (response.isOk()) {
                     BusHandler.getBus().post(new ReturnUsersEvent(response.getObjects()));
@@ -397,7 +404,7 @@ public class BackendHandlerService extends Service {
             @Override
             public void run(){
                 Log.e(this.getClass().getSimpleName(), "RequestCollectionsEvent");
-                HandlerResponse<String> response = backendHandler.getCollections(event.getUrl());
+                HandlerResponse<String> response = backendHandler.getCollections(event.getUrl(), event.getIdHeader(), event.getTokenHeader());
 
                 if (response.isOk()) {
                     BusHandler.getBus().post(new ReturnCollectionsEvent(response.getObjects()));
@@ -422,8 +429,7 @@ public class BackendHandlerService extends Service {
         this.executorPool.execute( new Runnable() {
             @Override
             public void run() {
-                Log.d(this.getClass().getSimpleName(), "RequestUserMessagesEvent");
-                HandlerResponse<MessageObject> response = backendHandler.getMessages();
+                HandlerResponse<MessageObject> response = backendHandler.getMessages(event.getIdHeader(), event.getTokenHeader());
 
                 if (response.isOk()) {
                     BusHandler.getBus().post(new ReturnUserMessagesEvent(response.getObjects()));
@@ -450,7 +456,8 @@ public class BackendHandlerService extends Service {
             public void run() {
                 Log.d(this.getClass().getSimpleName(), "SendMessageEvent");
 
-                HandlerResponse<MessageObject> response = backendHandler.postMessage(event.getReceiver(), event.getTopic(), event.getMessage(), event.getObjectAttachments());
+                HandlerResponse<MessageObject> response = backendHandler.postMessage(event.getReceiver(),
+                        event.getTopic(), event.getMessage(), event.getObjectAttachments(), event.getIdHeader(), event.getTokenHeader());
 
                 if (response.isOk()) {
                     BusHandler.getBus().post(new SendMessageSucceededEvent(event));
@@ -477,7 +484,7 @@ public class BackendHandlerService extends Service {
             public void run() {
                 Log.d(this.getClass().getSimpleName(), "DeleteMessageEvent");
 
-                HandlerResponse<MessageObject> response = backendHandler.deleteMessage(event.getMessageId());
+                HandlerResponse<MessageObject> response = backendHandler.deleteMessage(event.getMessageId(), event.getIdHeader(), event.getTokenHeader());
 
                 if (response.isOk()) {
                     BusHandler.getBus().post(new DeleteMessageSucceededEvent(event));

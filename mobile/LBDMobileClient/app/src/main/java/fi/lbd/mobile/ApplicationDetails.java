@@ -22,6 +22,7 @@ public class ApplicationDetails {
     private String currentObjectApiUrl;
     private String currentMessageApiUrl;
 
+    private String email;
 
     public static void initialize() {
         if (ApplicationDetails.singleton == null) {
@@ -51,6 +52,21 @@ public class ApplicationDetails {
         this.notifyListenersApiUrlChange(this.currentBaseUrl, this.currentMessageApiUrl, this.currentObjectApiUrl);
     }
 
+    /**
+     * Get current users email
+     * @return
+     */
+    public String getUserEmail() {
+        return this.email;
+    }
+
+    /**
+     * Set current user email
+     * @param email
+     */
+    public void setUserEmail(String email) {
+        this.email = email;
+    }
 
     /**
      * Returns the current base api url.
