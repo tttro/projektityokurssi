@@ -68,18 +68,16 @@ class StreetlightHandler(HandlerBase):
             '&typeName=opendata:WFS_KATUVALO&outputFormat=json&srsName=EPSG:4326',
             proxies={})
         try:
-            print "reading data"
             jsonitem = json.loads(req.read())
         except ValueError:
-            print "ValueError"
             return False
-        print "Updating"
         self.modelobject.drop_collection()
         doclist = []
         for d in jsonitem["features"]:
             id = d.pop("id")
-            temp = self.modelobject(d)
-            temp.feature_id = id
+            d["feature_id"] = id
+            temp = self.modelobject(**d)
+            #temp.save()
             doclist.append(temp)
         self.modelobject.objects.insert(doclist)
 

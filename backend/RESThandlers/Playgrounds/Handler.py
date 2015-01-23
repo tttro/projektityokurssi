@@ -86,10 +86,12 @@ class PlaygroundHandler(HandlerBase):
 
         self.modelobject.drop_collection()
         doclist = []
+
         for d in jsonitem["features"]:
             id = d.pop("id")
-            temp = self.modelobject(d)
-            temp.feature_id = id
+            d["feature_id"] = id
+            temp = self.modelobject(**d)
+            #temp.save()
             doclist.append(temp)
 
         self.modelobject.objects.insert(doclist)
