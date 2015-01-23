@@ -58,3 +58,37 @@ The above model matches the following json: ::
 
 .. note::
     Notice that the id field in the JSON equates to feature_id in the model.
+
+
+Once a new handler is created, it must be "installed" to the software. This is done by adding it to the Sources.py file in
+RESThandlers-folder.
+
+A sample file: ::
+
+   # -*- coding: utf-8 -*-
+    """
+    .. module:: Handlers.Sources
+        :platform: Unix, Windows
+    .. moduleauthor:: Aki Mäkinen <aki.makinen@outlook.com>
+
+    """
+    __author__ = 'Aki Mäkinen'
+
+    from RESThandlers.Streetlight import Handler as SL_Handler
+    from RESThandlers.Playgrounds import Handler as P_Handler
+
+
+    _installedSources = {
+        "Streetlights": {
+            "handler": SL_Handler.StreetlightHandler,
+            "name": "Tampere Streetlights"
+        },
+        "Playgrounds": {
+            "handler": P_Handler.PlaygroundHandler,
+            "name": "Ring around the rosie"
+        }
+    }
+
+The _installedSources dictionary is the one to edit. The first key is the name of the handler that is added to the URLs
+after /locationdata/api/ it is also used as message category. The value is a dictionary consisting of the handler class
+and a name or description of the handler.
