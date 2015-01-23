@@ -22,8 +22,8 @@ Table of Content
    security
    headersandcors
    json/jsondoc
-   createhandler
    restdoc
+   createhandler
    codedoc
    hand
    license

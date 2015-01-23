@@ -92,3 +92,12 @@ A sample file: ::
 The _installedSources dictionary is the one to edit. The first key is the name of the handler that is added to the URLs
 after /locationdata/api/ it is also used as message category. The value is a dictionary consisting of the handler class
 and a name or description of the handler.
+
+The backend allows the data in the database to be updated by a local GET request. This can only be done from localhost to url:
+/locationdata/api/<collection>/updatedb/ with LBD_INTERNAL_REST_CALL header set to "curlcall". This allows the automation of the
+update process with cron.
+
+An example cron jobs: ::
+
+    1 */2 * * * curl --header "LBD_INTERNAL_REST_CALL: curlcall" https://127.0.0.1/locationdata/api/Streetlights/updatedb/ >> /home/user/cron.log 2>&1
+    1 */1 * * * curl --header "LBD_INTERNAL_REST_CALL: curlcall" https://127.0.0.1/locationdata/api/Playgrounds/updatedb/ >> /home/user/cron.log 2>&1

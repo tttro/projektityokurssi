@@ -111,6 +111,45 @@ much easier.</p>
 <p class="first admonition-title">Note</p>
 <p class="last">Notice that the id field in the JSON equates to feature_id in the model.</p>
 </div>
+<p>Once a new handler is created, it must be &#8220;installed&#8221; to the software. This is done by adding it to the Sources.py file in
+RESThandlers-folder.</p>
+<p>A sample file:</p>
+<div class="highlight-python"><div class="highlight"><pre># -*- coding: utf-8 -*-
+ &quot;&quot;&quot;
+ .. module:: Handlers.Sources
+     :platform: Unix, Windows
+ .. moduleauthor:: Aki Mäkinen &lt;aki.makinen@outlook.com&gt;
+
+ &quot;&quot;&quot;
+ __author__ = &#39;Aki Mäkinen&#39;
+
+ from RESThandlers.Streetlight import Handler as SL_Handler
+ from RESThandlers.Playgrounds import Handler as P_Handler
+
+
+ _installedSources = {
+     &quot;Streetlights&quot;: {
+         &quot;handler&quot;: SL_Handler.StreetlightHandler,
+         &quot;name&quot;: &quot;Tampere Streetlights&quot;
+     },
+     &quot;Playgrounds&quot;: {
+         &quot;handler&quot;: P_Handler.PlaygroundHandler,
+         &quot;name&quot;: &quot;Ring around the rosie&quot;
+     }
+ }
+</pre></div>
+</div>
+<p>The _installedSources dictionary is the one to edit. The first key is the name of the handler that is added to the URLs
+after /locationdata/api/ it is also used as message category. The value is a dictionary consisting of the handler class
+and a name or description of the handler.</p>
+<p>The backend allows the data in the database to be updated by a local GET request. This can only be done from localhost to url:
+/locationdata/api/&lt;collection&gt;/updatedb/ with LBD_INTERNAL_REST_CALL header set to &#8220;curlcall&#8221;. This allows the automation of the
+update process with cron.</p>
+<p>An example cron jobs:</p>
+<div class="highlight-python"><div class="highlight"><pre>1 */2 * * * curl --header &quot;LBD_INTERNAL_REST_CALL: curlcall&quot; https://127.0.0.1/locationdata/api/Streetlights/updatedb/ &gt;&gt; /home/user/cron.log 2&gt;&amp;1
+1 */1 * * * curl --header &quot;LBD_INTERNAL_REST_CALL: curlcall&quot; https://127.0.0.1/locationdata/api/Playgrounds/updatedb/ &gt;&gt; /home/user/cron.log 2&gt;&amp;1
+</pre></div>
+</div>
 </div>
 
 
