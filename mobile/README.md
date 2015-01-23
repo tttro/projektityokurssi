@@ -17,3 +17,11 @@ Used components
 Installing
 -----------------
 To compile the project, download newest Android Studio IDE and Android SDK tools from http://developer.android.com/sdk/index.html
+
+
+Running tests
+-----------------
+1. Open terminal at the root path of the project (not in the /app/ folder).
+2. Execute command: gradlew.bat test jacocoTestReport
+3. Test report: /mobile/LBDMobileClient/app/build/test-report/index.html
+4. Test coverage report: /mobile/LBDMobileClient/app/build/reports/jacoco/jacocoTestReport/html/index.html
