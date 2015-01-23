@@ -8,14 +8,14 @@ import com.google.common.collect.ImmutableList;
 import java.util.ArrayList;
 import java.util.List;
 
-import fi.lbd.mobile.events.AbstractEvent;
+import fi.lbd.mobile.authorization.AuthorizedEvent;
 import fi.lbd.mobile.mapobjects.MapObject;
 
 /**
  * Tries to send message to the backend.
  * Created by Tommi on 3.1.2015.
  */
-public class SendMessageEvent<T> extends AbstractEvent {
+public class SendMessageEvent<T> extends AuthorizedEvent {
     private final String receiver;
     private final String topic;
     private final T message;

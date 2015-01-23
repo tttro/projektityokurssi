@@ -22,19 +22,38 @@
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true" />
 
+
     <Button
-        android:layout_marginTop="30dp"
-        android:layout_width="200dp"
-        android:textSize="6pt"
-        android:minHeight="30dp"
+        android:layout_width="150dp"
         android:layout_height="wrap_content"
-        android:text="INVALIDATE SIGN-IN TOKEN"
-        android:id="@+id/invalidateOauthToken"
+        android:text="INVALIDATE TOKEN"
         android:background="@android:color/holo_red_dark"
+        android:id="@+id/invalidateOauthToken"
+        android:minHeight="50dp"
+        android:textSize="6pt"
         android:textColor="@color/white_text"
-        android:visibility="gone"
+        android:layout_gravity="center_horizontal"
+        android:singleLine="true"
+        android:layout_marginTop="32dp"
         android:layout_below="@+id/openSettingsButton"
-        android:layout_centerHorizontal="true" />
+        android:layout_alignLeft="@+id/openSettingsButton"
+        android:layout_alignStart="@+id/openSettingsButton" />
+
+    <Button
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:text="CHANGE USER"
+        android:background="@android:color/holo_red_dark"
+        android:id="@+id/signOutButton"
+        android:minHeight="50dp"
+        android:textSize="6pt"
+        android:textColor="@color/white_text"
+        android:layout_gravity="center_horizontal"
+        android:singleLine="true"
+        android:layout_below="@+id/invalidateOauthToken"
+        android:layout_alignLeft="@+id/invalidateOauthToken"
+        android:layout_alignStart="@+id/invalidateOauthToken"
+        android:layout_marginTop="10dp" />
 
 </RelativeLayout>
 

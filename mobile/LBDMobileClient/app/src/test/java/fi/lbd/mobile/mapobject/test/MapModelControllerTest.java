@@ -52,6 +52,7 @@ public class MapModelControllerTest {
         this.requestedAreas = new ArrayList<>();
         this.cachedAreas = new ArrayList<>();
         BusHandler.getBus().register(this);
+        BusHandler.getBus().setTestMode(true);
     }
 
 

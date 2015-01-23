@@ -1,12 +1,12 @@
 package fi.lbd.mobile.mapobjects.events;
 
-import fi.lbd.mobile.events.AbstractEvent;
+import fi.lbd.mobile.authorization.AuthorizedEvent;
 import fi.lbd.mobile.location.ImmutablePointLocation;
 
 /**
  * Cache objects inside an area but don't return them.
  */
-public class CacheObjectsInAreaEvent extends AbstractEvent {
+public class CacheObjectsInAreaEvent extends AuthorizedEvent {
     private final ImmutablePointLocation southWest;
     private final ImmutablePointLocation northEast;
     private final boolean minimized;

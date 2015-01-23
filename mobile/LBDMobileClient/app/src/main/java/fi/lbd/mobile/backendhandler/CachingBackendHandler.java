@@ -1,10 +1,14 @@
 package fi.lbd.mobile.backendhandler;
 
+import android.util.Pair;
+
 import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
 import fi.lbd.mobile.ApplicationDetails;
+import fi.lbd.mobile.backendhandler.url.UrlProvider;
+import fi.lbd.mobile.backendhandler.url.UrlReader;
 import fi.lbd.mobile.mapobjects.MapObject;
 import fi.lbd.mobile.location.PointLocation;
 
@@ -52,11 +56,11 @@ public class CachingBackendHandler extends BasicBackendHandler implements Applic
      * @return
      */
     @Override
-    public HandlerResponse getObjectsInArea(PointLocation southWest, PointLocation northEast, boolean mini) {
+    public HandlerResponse getObjectsInArea(PointLocation southWest, PointLocation northEast, boolean mini, Pair<String, String>... customHeaders) {
         String hash = "inarea/"+southWest.getLongitude()+","+southWest.getLatitude()+","+northEast.getLatitude()+","+northEast.getLongitude()+"&m:"+mini;
         CachedQuery cached = this.cachedQueries.get(hash);
         if (cached == null) {
-            HandlerResponse response = super.getObjectsInArea(southWest, northEast, mini);
+            HandlerResponse response = super.getObjectsInArea(southWest, northEast, mini, customHeaders);
 
             // If the connection succeeded, cache the results.
             if (response.isOk()) {

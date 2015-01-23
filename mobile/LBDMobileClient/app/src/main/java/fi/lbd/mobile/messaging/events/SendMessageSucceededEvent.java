@@ -1,5 +1,6 @@
 package fi.lbd.mobile.messaging.events;
 
+import fi.lbd.mobile.authorization.AuthorizedEvent;
 import fi.lbd.mobile.events.AbstractEvent;
 
 /**

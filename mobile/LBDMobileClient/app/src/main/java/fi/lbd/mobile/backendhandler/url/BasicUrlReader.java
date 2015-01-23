@@ -1,4 +1,4 @@
-package fi.lbd.mobile.backendhandler;
+package fi.lbd.mobile.backendhandler.url;
 
 import android.support.annotation.NonNull;
 import android.util.Log;
@@ -40,24 +40,22 @@ import java.security.UnrecoverableKeyException;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
 
+import fi.lbd.mobile.ApplicationDetails;
+
 /**
  * Static methods for reading an url.
  *
  * Created by Tommi.
  */
 public class BasicUrlReader implements UrlReader {
-    static final int REQUEST_AUTHORIZATION = 1138;
     private static final int CONNECTIONS_PER_ROUTE = 4;
     private static DefaultHttpClient httpClient;
-    private AuthProvider authProvider;
 
     public BasicUrlReader() {}
 
-    public void initialize(@NonNull AuthProvider authProvider,
-                           @NonNull Pair<String, Certificate> firstCertificate,
+    public void initialize(@NonNull Pair<String, Certificate> firstCertificate,
                            @NonNull Pair<String, Certificate>... certificates) throws UrlReaderException {
         try {
-            this.authProvider = authProvider;
 
             // Store given certificates to the key store
             String keyStoreType = KeyStore.getDefaultType();
@@ -99,12 +97,17 @@ public class BasicUrlReader implements UrlReader {
         }
     }
 
-    private void setHeaders(AbstractHttpMessage message) {
-        if(message != null) {
-            Pair<String, String> auth = this.authProvider.getIdToken();
-            message.addHeader("LBD_OAUTH_ID", auth.first); // Google id
-            message.addHeader("LBD_LOGIN_HEADER", auth.second); // Access token
-            Log.d(this.getClass().getSimpleName(), "Auth object: LBD_OAUTH_ID: "+ auth.first + " LBD_LOGIN_HEADER: "+ auth.second);
+    protected void setHeaders(AbstractHttpMessage message, Pair<String, String>... customHeaders) {
+        if (customHeaders != null && customHeaders.length > 0) {
+            for (Pair<String, String> header : customHeaders) {
+                if (header != null) {
+                    if (header.first != null && header.second != null) {
+                        message.setHeader(header.first, header.second);
+                    } else {
+                        Log.e(this.getClass().getSimpleName(), "Header had null element: first: "+ header.first + " second: "+ header.second);
+                    }
+                }
+            }
         }
     }
 
@@ -128,14 +131,14 @@ public class BasicUrlReader implements UrlReader {
      * @return  URLResponse-object with results from the URL.
      */
     @Override
-	public UrlResponse get(String url) {
+	public UrlResponse get(String url, Pair<String, String>... customHeaders) {
         if (url == null) {
             Log.e(this.getClass().getSimpleName(), "Failed to get from url, URL was null!");
             return null;
         }
         try {
             HttpGet getObj = new HttpGet(url);
-            setHeaders(getObj);
+            setHeaders(getObj, customHeaders);
             return this.process(getObj); // If the url reading fails, null is returned.
         } catch (IllegalArgumentException exception){
             Log.d("URL get unsuccessful. Resulted in exception: ",
@@ -151,14 +154,14 @@ public class BasicUrlReader implements UrlReader {
      * @return
      */
     @Override
-    public UrlResponse delete(String url) {
+    public UrlResponse delete(String url, Pair<String, String>... customHeaders) {
         if (url == null) {
             Log.e(this.getClass().getSimpleName(), "Failed to perform delete, URL was null!");
             return null;
         }
         try {
             HttpDelete deleteObj = new HttpDelete(url);
-            setHeaders(deleteObj);
+            setHeaders(deleteObj, customHeaders);
             return this.process(deleteObj); // If the url reading fails, null is returned.
         } catch (IllegalArgumentException exception){
             Log.d("URL delete unsuccessful. Resulted in exception: ",
@@ -168,7 +171,7 @@ public class BasicUrlReader implements UrlReader {
     }
 
     @Override
-    public UrlResponse postJson(String url, String jsonContents) {
+    public UrlResponse postJson(String url, String jsonContents, Pair<String, String>... customHeaders) {
         if (url == null) {
             Log.e(this.getClass().getSimpleName(), "Failed to post json, URL was null!");
             return null;
@@ -184,7 +187,7 @@ public class BasicUrlReader implements UrlReader {
         }
         try {
             HttpPost postObj = new HttpPost(url);
-            setHeaders(postObj);
+            setHeaders(postObj, customHeaders);
             postObj.setEntity(entity);
             return this.process(postObj); // If the url reading fails, null is returned.
         } catch (IllegalArgumentException exception){
@@ -198,7 +201,7 @@ public class BasicUrlReader implements UrlReader {
 
 
     @Override
-    public UrlResponse putJson(String url, String jsonContents) {
+    public UrlResponse putJson(String url, String jsonContents, Pair<String, String>... customHeaders) {
         StringEntity entity;
         try {
             entity = new StringEntity(jsonContents, HTTP.UTF_8);
@@ -208,12 +211,12 @@ public class BasicUrlReader implements UrlReader {
             return null;
         }
         HttpPut putObj = new HttpPut(url);
-        setHeaders(putObj);
+        setHeaders(putObj, customHeaders);
         putObj.setEntity(entity);
         return this.process(putObj); // If the url reading fails, null is returned.
     }
 
-    private UrlResponse process(HttpUriRequest request) {
+    protected UrlResponse process(HttpUriRequest request) {
         String resultContent = "";
         UrlResponse urlResponse = null;
         BufferedReader bufferedReader = null;

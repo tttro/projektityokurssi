@@ -1,4 +1,4 @@
-package fi.lbd.mobile.backendhandler;
+package fi.lbd.mobile.backendhandler.url;
 
 
 import java.util.HashMap;

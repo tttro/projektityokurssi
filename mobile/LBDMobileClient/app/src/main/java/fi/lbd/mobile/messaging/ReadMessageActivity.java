@@ -18,6 +18,7 @@ import java.util.Date;
 import fi.lbd.mobile.ActiveActivitiesTracker;
 import fi.lbd.mobile.GlobalToastMaker;
 import fi.lbd.mobile.R;
+import fi.lbd.mobile.authorization.AuthorizedEventHandler;
 import fi.lbd.mobile.events.BusHandler;
 import fi.lbd.mobile.events.RequestFailedEvent;
 import fi.lbd.mobile.messaging.events.DeleteMessageEvent;
@@ -134,5 +135,10 @@ public class ReadMessageActivity extends Activity {
             String dialogText = "Failed to delete message";
             GlobalToastMaker.makeShortToast(dialogText);
         }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        AuthorizedEventHandler.processResults(requestCode, resultCode, data);
     }
 }

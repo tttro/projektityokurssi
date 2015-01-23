@@ -2,7 +2,7 @@ package fi.lbd.mobile.events;
 
 import android.support.annotation.NonNull;
 
-import com.google.android.gms.internal.id;
+import fi.lbd.mobile.authorization.AuthorizedEvent;
 
 /**
  * Returned from the backendhandler service if some request failed.

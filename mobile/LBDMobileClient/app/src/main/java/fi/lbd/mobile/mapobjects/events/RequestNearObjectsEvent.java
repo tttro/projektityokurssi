@@ -2,7 +2,7 @@ package fi.lbd.mobile.mapobjects.events;
 
 import android.support.annotation.NonNull;
 
-import fi.lbd.mobile.events.AbstractEvent;
+import fi.lbd.mobile.authorization.AuthorizedEvent;
 import fi.lbd.mobile.location.PointLocation;
 
 /**
@@ -10,7 +10,7 @@ import fi.lbd.mobile.location.PointLocation;
  *
  * Created by tommi on 19.10.2014.
  */
-public class RequestNearObjectsEvent extends AbstractEvent {
+public class RequestNearObjectsEvent extends AuthorizedEvent {
     private final PointLocation location;
     private final boolean minimized;
     private final double range;

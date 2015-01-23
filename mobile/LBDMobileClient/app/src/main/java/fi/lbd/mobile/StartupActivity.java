@@ -1,70 +1,66 @@
 package fi.lbd.mobile;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.util.Log;
 
-import fi.lbd.mobile.backendhandler.GoogleAuthProvider;
+import fi.lbd.mobile.authorization.Authorization;
+import fi.lbd.mobile.authorization.AuthorizationListener;
+import fi.lbd.mobile.authorization.AuthorizedEventHandler;
 
 /**
  * The first activity which is launched when the application is started. Tries to get one token from
  * google to check if the user has given access to details.
  */
 public class StartupActivity extends Activity {
-    private String BACKEND_URL = "";
-    private String OBJECT_COLLECTION = "";
-//    static final int REQUEST_CODE_PICK_ACCOUNT = 1000;
-//    static final int REQUEST_CODE_RECOVER_FROM_AUTH_ERROR = 1001;
-//    static final int REQUEST_CODE_RECOVER_FROM_PLAY_SERVICES_ERROR = 1002;
-//    static final int REQUEST_AUTHORIZATION = 1138;
 
-//    private String mEmail;
-//    private static final String SCOPE = "oauth2:https://www.googleapis.com/auth/userinfo.profile";
+    private AuthorizationListener authListener = new AuthorizationListener() {
+        @Override
+        public Activity getActivity() {
+            return StartupActivity.this;
+        }
+
+        @Override
+        public void onTokenSuccess(Authorization.AuthResult token) {
+            Log.d(this.getClass().getSimpleName(), "Got auth result in StartupActivity, id: " + token.getId() + " token: " + token.getToken());
+            moveToNextActivity();
+        }
+
+        @Override
+        public void onWaitingForResult() {}
+
+        @Override
+        public void onFatalException() {
+            Log.e(this.getClass().getSimpleName(), "Failed to get authorization token in StartupActivity!");
+//            StartupActivity.this.finish();
+            moveToNextActivity();
+        }
+
+        @Override
+        public void setCurrentRequestCode(int currentRequestCode) {
+        }
+    };
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.d("******", "StartupActivity onCreate()");
+        setContentView(R.layout.activity_startup);
+        Authorization.getToken(this.authListener);
+    }
 
-        BACKEND_URL = getResources().getString(R.string.backend_url);
-        OBJECT_COLLECTION = getResources().getString(R.string.object_collection);
-
-        Thread t = new Thread(new Runnable() {
-            @Override
-            public void run() {
-            (new GoogleAuthProvider(getApplicationContext())).getIdToken(); // TODO: Jotenki se errorin handlaus...
-            }
-        });
-        t.start();
-
-        SharedPreferences settings = getSharedPreferences(getString(R.string.shared_preferences), MODE_PRIVATE);
-        String url = settings.getString(BACKEND_URL, null);
-        String collection = settings.getString(OBJECT_COLLECTION, null);
-
-        // If no previous settings were found, move the user to SettingsActivity
-        if(url == null || collection == null){
-            finish();
-            Intent intent = new Intent(this, SettingsActivity.class);
-            startActivity(intent);
-        }
-        // Else go straight to ListActivity
-        else {
-            finish();
-            ApplicationDetails.get().setCurrentCollection(collection);
-            ApplicationDetails.get().setCurrentBaseApiUrl(url);
-            Intent intent = new Intent(this, ListActivity.class);
-            startActivity(intent);
-        }
-
+    @Override
+    protected void onStart() {
+        super.onStart();
+//        ActiveActivitiesTracker.activityStarted(this);
     }
 
     @Override
     protected void onStop(){
         super.onStop();
+//        ActiveActivitiesTracker.activityStopped(this);
     }
 
     @Override
@@ -72,18 +68,39 @@ public class StartupActivity extends Activity {
         super.onDestroy();
     }
 
-    private boolean isDeviceOnline() {
-        ConnectivityManager connMgr = (ConnectivityManager)
-                getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
-        if (networkInfo != null && networkInfo.isConnected()) {
-            return true;
-        }
-        return false;
-    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        Authorization.resolveResult(this.authListener, requestCode, resultCode, data);
+        AuthorizedEventHandler.processResults(requestCode, resultCode, data);
+    }
 
+    /**
+     * When the execution gets to this point, user email has been chosen and a test token has been
+     * successfully requested.
+     */
+    private void moveToNextActivity() {
+
+        String backend_url = this.getResources().getString(R.string.backend_url);
+        String object_collection = this.getResources().getString(R.string.object_collection);
+        SharedPreferences settings = this.getApplication().getApplicationContext()
+                .getSharedPreferences(this.getString(R.string.shared_preferences), Activity.MODE_PRIVATE);
+        String url = settings.getString(backend_url, null);
+        String collection = settings.getString(object_collection, null);
+
+        // If no previous settings were found, move the user to SettingsActivity
+        if(url == null || collection == null){
+            finish();
+            Intent intent = new Intent(this, SettingsActivity.class);
+            startActivity(intent);
+            this.overridePendingTransition(0, 0);
+        }
+        // Else go straight to ListActivity
+        else {
+            finish();
+            Intent intent = new Intent(this, ListActivity.class);
+            startActivity(intent);
+            this.overridePendingTransition(0, 0);
+        }
     }
 }

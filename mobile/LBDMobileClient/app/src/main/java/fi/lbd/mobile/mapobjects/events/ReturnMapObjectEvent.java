@@ -2,8 +2,7 @@ package fi.lbd.mobile.mapobjects.events;
 
 import android.support.annotation.Nullable;
 
-import java.util.List;
-
+import fi.lbd.mobile.authorization.AuthorizedEvent;
 import fi.lbd.mobile.events.AbstractEvent;
 import fi.lbd.mobile.mapobjects.MapObject;
 

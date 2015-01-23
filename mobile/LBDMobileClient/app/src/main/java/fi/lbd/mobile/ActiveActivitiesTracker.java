@@ -13,10 +13,16 @@ import android.util.Log;
 public class ActiveActivitiesTracker {
     private static int activeActivities = 0;
 
+    public static Activity getLatestActiveActivity() {
+        return latestActiveActivity;
+    }
+
+    private static Activity latestActiveActivity;
+
     public static void activityStarted(Activity activity)
     {
-        if( activeActivities == 0 )
-        {
+        latestActiveActivity = activity;
+        if( activeActivities == 0 ) {
             Log.d("Activity: " + activity.getClass().toString() + " going to foreground", " starting services...");
 
             String backend_url = activity.getResources().getString(R.string.backend_url);
@@ -46,6 +52,9 @@ public class ActiveActivitiesTracker {
             Log.d("Activity: " + activity.getClass().toString() + " going to background", " stopping services...");
             ServiceManager.stopMessageService();
             ServiceManager.stopBackendService();
+        }
+        if (latestActiveActivity == activity) {
+            latestActiveActivity = null;
         }
         //Log.d("Number of active activities: ", Integer.toString(activeActivities));
     }

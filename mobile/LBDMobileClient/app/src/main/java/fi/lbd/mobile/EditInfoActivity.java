@@ -3,6 +3,7 @@ package fi.lbd.mobile;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -16,6 +17,7 @@ import com.squareup.otto.Subscribe;
 import java.util.HashMap;
 import java.util.Map;
 
+import fi.lbd.mobile.authorization.AuthorizedEventHandler;
 import fi.lbd.mobile.events.BusHandler;
 import fi.lbd.mobile.events.RequestFailedEvent;
 import fi.lbd.mobile.location.ImmutablePointLocation;
@@ -121,5 +123,10 @@ public class EditInfoActivity extends Activity {
 
     public void onCancelClick(View view){
         onBackPressed();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        AuthorizedEventHandler.processResults(requestCode, resultCode, data);
     }
 }

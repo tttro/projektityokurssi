@@ -12,16 +12,12 @@ import org.robolectric.shadows.ShadowLog;
 import java.security.cert.Certificate;
 
 import fi.lbd.mobile.CustomRobolectricTestRunner;
-import fi.lbd.mobile.backendhandler.AuthProvider;
-import fi.lbd.mobile.backendhandler.GoogleAuthProvider;
-import fi.lbd.mobile.backendhandler.BasicUrlReader;
 import fi.lbd.mobile.backendhandler.CachingBackendHandler;
 import fi.lbd.mobile.backendhandler.HandlerResponse;
-import fi.lbd.mobile.backendhandler.UrlProvider;
-import fi.lbd.mobile.backendhandler.UrlReader;
+import fi.lbd.mobile.backendhandler.url.BasicUrlReader;
+import fi.lbd.mobile.backendhandler.url.UrlProvider;
 import fi.lbd.mobile.location.ImmutablePointLocation;
 import fi.lbd.mobile.location.PointLocation;
-import fi.lbd.mobile.utils.DummyAuthProvider;
 import fi.lbd.mobile.utils.TestData;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -35,13 +31,11 @@ import static org.mockito.Mockito.mock;
 @RunWith(CustomRobolectricTestRunner.class)
 public class CachingBackendHandlerTest {
     private UrlProvider urlProvider;
-    private AuthProvider authProvider;
 
     @Before
     public void setUp() throws Exception {
         ShadowLog.stream = System.out;
         this.urlProvider = new UrlProvider("", "", "", "");
-        this.authProvider = new DummyAuthProvider();
     }
 
     @Test
@@ -51,7 +45,7 @@ public class CachingBackendHandlerTest {
         System.out.println("TESTING: "+testName);
         System.out.println("---------------------------------------------------------------------");
         BasicUrlReader urlreader = new BasicUrlReader();
-        urlreader.initialize(this.authProvider, new Pair<>("", mock(Certificate.class)));
+        urlreader.initialize(new Pair<>("", mock(Certificate.class)));
 
         CachingBackendHandler handler = new CachingBackendHandler(urlreader, this.urlProvider, 100);
 
@@ -119,7 +113,7 @@ public class CachingBackendHandlerTest {
         System.out.println("TESTING: "+testName);
         System.out.println("---------------------------------------------------------------------");
         BasicUrlReader urlreader = new BasicUrlReader();
-        urlreader.initialize(this.authProvider, new Pair<>("", mock(Certificate.class)));
+        urlreader.initialize(new Pair<>("", mock(Certificate.class)));
         CachingBackendHandler handler = new CachingBackendHandler(urlreader, this.urlProvider, 100);
 
         PointLocation point1 = new ImmutablePointLocation(10, 10);
