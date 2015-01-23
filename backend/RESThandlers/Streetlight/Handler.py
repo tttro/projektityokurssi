@@ -79,7 +79,11 @@ class StreetlightHandler(HandlerBase):
             temp = self.modelobject(**d)
             #temp.save()
             doclist.append(temp)
-        self.modelobject.objects.insert(doclist)
+            if len(doclist) % 2000 == 0:
+                self.modelobject.objects.insert(doclist)
+                doclist = []
+        if len(doclist) > 0:
+            self.modelobject.objects.insert(doclist)
 
         return True
 
