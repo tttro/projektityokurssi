@@ -17,18 +17,18 @@ var app = angular.module('app',[
 ])
 // Configs
 .constant('appConfig', {
-    defaultPosition: [61.51241, 23.634931],
-    baseApiUrl: 'https://lbdbackend.ignorelist.com/',
-    dataTypeUrl:'locationdata/api/',
-    dataCollectionUrl:'Streetlights',
-    dataPlaygroundsUrl: 'https://lbdbackend.ignorelist.com/locationdata/api/',
-    googleToken: 'ABCDEFG',
-    googleId: '',
-    nearRange: '0.0001',
-    inareaRange: 0.1, // 0.1 - 1
-    defaultZoom: 17,
-    searchLimit: 10, // Result max count
-    googleClientId:'388919682787-3ckv87e4aibqnt788a4omio7d3j3665e.apps.googleusercontent.com'
+    defaultPosition: [long, lat], // default position when app start up
+    baseApiUrl: '', // server base url (required)
+    dataTypeUrl:'locationdata/api/', // data type
+    dataCollectionUrl:'', // collection type
+    dataPlaygroundsUrl: '', // playgrounds
+    googleToken: '', // this for testing
+    googleId: '', // this for testing
+    nearRange: '0.0001', // marker range
+    inareaRange: 0.1, // 0.1 - 1 
+    defaultZoom: 17, // Google Maps default zoom value
+    searchLimit: 10, // Max items count
+    googleClientId:'' // Google Client Id for google SignIn (required)
 })
 .config(function( $httpProvider, $routeProvider, $locationProvider, appConfig ){
 
