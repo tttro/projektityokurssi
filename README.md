@@ -7,11 +7,6 @@ Pervasive Systems and whole application is licenced under MIT License. Made in c
 * Web-client: HTML, CSS, JS, AngularJS
 * Server-side: Python/Django (REST-api), MongoDB
 
-Description
------------------
-
-Project home page: http://www.cs.tut.fi/~taipale/project-lbd/
-
 3rd party libraries
 -------------------
 Web
